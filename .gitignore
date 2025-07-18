@@ -138,4 +138,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Ignore sensitive configuration files
+application.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,maven
