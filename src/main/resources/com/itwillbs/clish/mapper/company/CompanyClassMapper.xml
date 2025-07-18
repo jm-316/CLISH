@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.clish.course.mapper.CompanyClassMapper">
+	
+	<!-- 강의 등록 -->
+	<insert id="insertCompanyClass">
+	    INSERT INTO CLASS 
+	    VALUES (
+	        #{classIdx},
+	        #{classTitle},
+	        #{categoryIdx},
+	        #{classStatus},
+	        #{classPrice},
+	        #{classMember},
+	        10,
+	        #{startDate},
+	        #{endDate},
+	        #{classDays},
+	        #{location},
+	        now(),
+			null,
+	        #{userIdx}
+	    )
+	</insert>
+	
+	<!-- 등록한 강의 조회 -->
+	<select id="selectClassByIdx" resultType="com.itwillbs.clish.course.dto.ClassDTO">
+		SELECT *
+		FROM CLASS
+		WHERE class_idx = #{classIdx}
+	</select>
+	
+	<!-- 전체강의 조회 -->
+	<select id="selectAllClassList" resultType="map">
+	    SELECT 
+	        C.*, 
+	        PC.CATEGORY_NAME AS parent_category_name, 
+	        CC.CATEGORY_NAME AS child_category_name
+	    FROM CLASS C
+	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
+	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
+	</select>
+	
+	<!-- 단기 & 정기강의 조회 -->
+	<select id="selectClassListByType" parameterType="String" resultType="map">
+	    SELECT 
+	        C.*, 
+	        PC.CATEGORY_NAME AS parent_category_name, 
+	        CC.CATEGORY_NAME AS child_category_name
+	    FROM CLASS C
+	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
+	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
+	    <where>
+	        <if test="type == 'short'">
+	            <![CDATA[Datediff(C.END_DATE, C.START_DATE) <= 2]]>
+	            <!-- 단기 강의: 시작일~종료일이 2일 이하 -->
+	        </if>
+	        <if test="type == 'regular'">
+	            <![CDATA[Datediff(C.END_DATE, C.START_DATE) >= 3]]>
+	            <!-- 정기 강의: 시작일~종료일이 3일 이상 -->
+	        </if>
+	    </where>
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.clish.myPage.mapper.PaymentMapper">
+	<insert id="insertPayInfo">
+		insert into PAYMENT_INFO values(
+			#{impUid}
+		    , #{reservationIdx}
+		    , #{classTitle}
+		    , #{amount}
+		    , #{status}
+		    , #{userName}
+		    , #{payMethod}
+		    , #{requestTime}
+		    , #{payTime}
+		    , #{failReason}
+		    , #{failTime}
+		    , #{receiptUrl}
+		); 
+	</insert>
+	
+	<update id="updateReservationStatus">
+		UPDATE RESERVATION
+		SET reservation_status = 2
+		WHERE reservation_idx = #{reservationIdx}
+	</update>
+	
+	<select id="selectPayResult" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO">	
+		SELECT *
+		from PAYMENT_INFO
+		where imp_uid = #{impUid}
+	</select>
+	
+	<insert id="insertCancelInfo">
+		insert into PAYMENT_CANCEL values(
+			#{impUid}
+			, #{reservationIdx}
+			, #{classTitle}
+			, #{amount}
+			, #{cancelAmount}
+			, #{status}
+			, #{cancelReason}
+			, #{cancelledAt}
+			, #{userName}
+			, #{payMethod}
+			, #{receiptUrl}
+			, #{cancelRequestTime}
+			, #{cancelReceiptUrl}
+		)
+	</insert>
+	
+	<update id="updatePaymentInfo">
+		update PAYMENT_INFO
+		set status = #{status}
+		where imp_uid = #{impUid}		
+	</update>
+	
+	<select id="selectCancelResult" resultType="com.itwillbs.clish.myPage.dto.PaymentCancelDTO">
+		select *
+		from 
+			PAYMENT_CANCEL
+		WHERE
+			imp_uid = #{impUid}
+	</select>
+</mapper>
