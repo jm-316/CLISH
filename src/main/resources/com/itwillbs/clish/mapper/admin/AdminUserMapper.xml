@@ -74,6 +74,8 @@
 			USER
 		WHERE
 			user_type = 2
+		ORDER BY
+			user_status = 5 DESC
 	</select>
 	
 	<!-- 기업 회원 상세 정보 -->
