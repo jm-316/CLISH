@@ -43,7 +43,7 @@
 	    <mvc:interceptor>
 	        <mvc:mapping path="/admin/**" />
 	        <mvc:mapping path="/company/**" />
-	        <mvc:mapping path="/mypage/**" />
+	        <mvc:mapping path="/myPage/**" />
 	
 	        <!-- 등록된 Bean 참조 -->
 	        <beans:ref bean="loginInterceptor"/>
