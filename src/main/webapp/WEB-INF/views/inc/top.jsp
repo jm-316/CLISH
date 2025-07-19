@@ -10,8 +10,8 @@
                   <input type="search" id="search" placeholder="검색어를 입력하세요" name="query" required>
               </form>
           </li>
-          <li><a id="sub-nav-toggle" href="/course/user/classList">정기 강의</a></li>
-          <li><a href="#">단기 강의</a></li>
+          <li><a id="sub-nav-toggle" href="/course/user/classList?classType=0">정기 강의</a></li>
+          <li><a href="/course/user/classList?classType=1">단기 강의</a></li>
           <li><a href="#">고객 센터</a> </li> 
           <li><a href="#">이벤트</a></li>
 
@@ -19,20 +19,19 @@
           
 	<div id="sub-nav">
         <ul>
-            <li><a href="#"><b>정기 강의</b></a></li>
-            <li><a href="#">IT</a></li>
-            <li><a href="#">운동 / 건강</a></li> 
-            <li><a href="#">라이프 스타일</a></li>
-            <li><a href="#">외국어</a></li> 
-            <li><a href="#">요리 / 베이킹</a></li>
+            <li><a href="/course/user/classList?classType=0"><b>정기 강의</b></a></li>
+           	<c:forEach var="Pcat" items="${parentCategories}">
+           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx }">
+           		${Pcat.categoryName }</a></li>
+           		
+           	</c:forEach>
         </ul>
         <ul>
-            <li><a href="#"><b>단기 강의</b></a></li>
-            <li><a href="#">IT</a></li>
-            <li><a href="#">운동 / 건강</a></li> 
-            <li><a href="#">라이프 스타일</a></li>
-            <li><a href="#">외국어</a></li> 
-            <li><a href="#">요리 / 베이킹</a></li>
+            <li><a href="/course/user/classList?classType=1"><b>단기 강의</b></a></li>
+			<c:forEach var="Pcat" items="${parentCategories}">
+           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Pcat.categoryIdx }">
+           		${Pcat.categoryName }</a></li>
+           	</c:forEach>
         </ul>
         <ul>
             <li><a href="#"><b>고객 센터</b></a></li>
