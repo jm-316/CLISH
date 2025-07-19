@@ -17,7 +17,6 @@ public class UserClassService {
 	private final UserClassMapper userClassMapper;
 
 	public UserDTO getUserIdx(String userIdx) {
-		
 		return userClassMapper.selectUser(userIdx);
 	}
 

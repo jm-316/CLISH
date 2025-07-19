@@ -6,14 +6,13 @@
 
 	<insert id="insertReservation">
 		INSERT
-		INTO
-			RESERVATION 
+		INTO RESERVATION 
 		VALUES (
 			#{reservationIdx}
-			, #{userId}
+			, #{userIdx}
 			, #{reservationMembers}
 			, #{reservationClassDate}
-			, #{reservationCom}
+			, now()
 			, #{classIdx}
 			, #{reservationStatus}
 		)

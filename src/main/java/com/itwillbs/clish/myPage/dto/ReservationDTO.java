@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,13 +14,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReservationDTO {
-	String reservationIdx;
-	String userIdx;
-	int reservationMembers;
-	Timestamp reservationClassDate;
-	Timestamp reservationCom;
-	String classIdx;
-	int reservationStatus;
-	BigDecimal priceFin;
+	private String reservationIdx; 
+	private String userIdx;
+	private int reservationMembers;
+	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime reservationClassDate;
+	
+	private LocalDateTime reservationCom;
+	private String classIdx;
+	private int reservationStatus;
 	
 }

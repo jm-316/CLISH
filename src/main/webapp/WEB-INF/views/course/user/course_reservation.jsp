@@ -13,7 +13,7 @@
 		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
 	</header>
 	<main>
-		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
+		<form action="/course/user/reservationSuccess" style="max-width: 800px; margin: 50px auto; padding: 40px;" method="get">
 				<h1>클래스 예약 정보입력 페이지</h1>
 				<h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 				
@@ -40,30 +40,24 @@
 						<th>장소</th> <td>${classInfo.location}</td>
 					</tr>
 					<tr>
-						<th>예약 일자</th> <td><input type="date" name="reservationDate" id="reservationDate" required></td>
+						<th><label for="reservationClassDate">예약 날짜 및 시간:</label></th> 
+						<td><input type="datetime-local" name="reservationClassDate" id="reservationClassDate" required></td>
 					</tr>
 					<tr>
 						<th>신청 인원</th> <td><input type="text" name="reservationMembers" id="reservationMembers" placeholder="인원을 입력해주세요."></td>
 					</tr>
 				</table>
 				
-				<input type="text" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
+				<input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
+				<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
 					
-				<!-- 아직 안함.. -->
 	            <button class="orange-button" onclick="location.href='classList'">클래스 목록</button>
-	            <button class="orange-button" onclick="reservation()">예약 확정</button>
-		</section>
+	            <button type="submit" class="orange-button">예약 확정</button>
+		</form>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp"></jsp:include>
 	</footer>
-	<script type="text/javascript">
-		function reservation() {
-			alert("예약이 완료 되었습니다!");
-			
-			location.href="/course/user/success";
-		}	
-	</script>
 </body>
 </html>
 

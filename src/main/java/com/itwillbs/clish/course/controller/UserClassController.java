@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -59,37 +60,38 @@ public class UserClassController {
 	
 	// 예약정보 입력 페이지
 	@GetMapping("user/courseReservation")
-	public String classReservation(Model model, HttpSession session, ClassDTO classDTO, UserDTO userDTO) {
+	public String classReservation(@RequestParam String classIdx, Model model, HttpSession session, 
+			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO) {
 		
-		String classIdx = (String)session.getAttribute("classIdx");
 		String userId = (String)session.getAttribute("sId");
-		
+		UserDTO userInfo = userClassService.getUserIdx(userId); 
+		String userIdx = userInfo.getUserIdx(); // userIdx
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // classIdx
-		UserDTO userIdx = userClassService.getUserIdx(userId); // userIdx
 		
+		reservationDTO.setClassIdx(classIdx);
+		reservationDTO.setUserIdx(userIdx);
+
 		model.addAttribute("classInfo", classInfo);
+		model.addAttribute("userInfo", userInfo);
 		
 		return "/course/user/course_reservation";
 	}
 	
-	@GetMapping("user/success")
+	@GetMapping("user/reservationSuccess")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO) {
 		
-		String userId = (String)session.getAttribute("sId");
+		System.out.println("예약일시: " + reservationDTO.getReservationClassDate());
 		
-		UserDTO userInfo = userClassService.getUserIdx(userId); // userIdx
-		String userIdx = userInfo.getUserIdx();
-		
+		// reservationIdx 생성
 		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 		String reservationIdx = "RE" + now;
 		
-		reservationDTO.setReservationIdx(reservationIdx);
-		reservationDTO.setUserIdx(userIdx);
-		reservationDTO.setClassIdx("classIdx");
+		reservationDTO.setReservationIdx(reservationIdx); // reservationIdx
 		
 		userClassService.registReservation(reservationDTO);
-		
-		
+	
+//		return "/course/user/reservationSuccess";
 		return "/course/user/course_list";
 	}
+	
 }
