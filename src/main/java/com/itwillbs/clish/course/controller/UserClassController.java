@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.clish.admin.controller.AdminUserController;
+import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.AdminUserService;
 import com.itwillbs.clish.course.dto.ClassDTO;
@@ -36,10 +37,15 @@ public class UserClassController {
 	
 	// 클래스 리스트
 	@GetMapping("user/classList")
-	public String classListForm(Model model, HttpSession session) {
+	public String classListForm(Model model, HttpSession session,
+			@RequestParam int classType,
+			@RequestParam(required = false)String categoryIdx) {
+//		System.out.println("아무거나 송출 " + classType + " 다음거 " + categoryName);
+//		String userId = (String)session.getAttribute("sId");
+//		List<Map<String , Object>> classList = adminClassService.getClassList();
+		  
 		
-		String userId = (String)session.getAttribute("sId");
-		List<Map<String , Object>> classList = adminClassService.getClassList();
+		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		
 		model.addAttribute("classList", classList);
 		

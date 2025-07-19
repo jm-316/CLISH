@@ -26,5 +26,42 @@
 		WHERE
 			user_id = #{userId}
 	</select>
+	
+	<select id="selectClass" resultType="com.itwillbs.clish.course.dto.ClassDTO">
+		SELECT *
+		FROM 
+			CLASS
+		WHERE 
+			class_type = #{classType}
+			<if test="categoryIdx != null">
+			AND
+			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
+			</if>
+			
+		
+	</select>
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

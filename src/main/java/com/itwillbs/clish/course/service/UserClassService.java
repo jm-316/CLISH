@@ -1,5 +1,8 @@
 package com.itwillbs.clish.course.service;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +25,11 @@ public class UserClassService {
 
 	public int registReservation(ReservationDTO reservationDTO) {
 		return userClassMapper.insertReservation(reservationDTO);
+	}
+
+	public List<ClassDTO> getClassList(int classType, String categoryIdx) {
+		// TODO Auto-generated method stub
+		return userClassMapper.selectClass(classType, categoryIdx);
 	}
 
 

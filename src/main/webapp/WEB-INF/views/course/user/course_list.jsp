@@ -40,15 +40,15 @@
                     <tbody>
            		   		<c:set var="hasRegisteredClass" value="false" />
 						<c:forEach var="classItem" items="${classList}">
-						    <c:if test="${classItem.class_status != 1}">
+						    <c:if test="${classItem.classStatus != 1}">
 						        <c:set var="hasRegisteredClass" value="true" />
 						        <tr>
-						            <td onclick="location.href='/course/user/classDetail?classIdx=${classItem.class_idx}'">${classItem.class_title}</td>
-						            <td>${classItem.parent_category_name}</td>
-						            <td>${classItem.child_category_name}</td>
+						            <td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}'">${classItem.classTitle}</td>
+<%-- 						            <td>${classItem.parent_category_name}</td> --%>
+<%-- 						            <td>${classItem.child_category_name}</td> --%>
 						            <td>
 						                <c:choose>
-						                    <c:when test="${classItem.class_status == 2}">오픈</c:when>
+						                    <c:when test="${classItem.classStatus == 2}">오픈</c:when>
 						                    <c:otherwise>마감</c:otherwise>
 						                </c:choose>
 						            </td>
