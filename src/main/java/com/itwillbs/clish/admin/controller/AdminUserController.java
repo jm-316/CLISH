@@ -25,18 +25,6 @@ import lombok.extern.log4j.Log4j2;
 public class AdminUserController {
 	private final AdminUserService adminService;
 	
-	/*
-	 * 추가해야 될 부분
-	 * 관리자가 로그인한건지 확인하는 부분
-	 * - 관리자 로그인이 아닐 경우 접근하지 못하게 하기
-	 * 
-	 * 신고 회원 처리
-	 * - 테이블 생성
-	 * 
-	 * 필터링 기능
-	 * 
-	 */
-	
 	@GetMapping("/")
 	public String adminIndex() {
 
@@ -45,18 +33,7 @@ public class AdminUserController {
 	
 	// 일반 회원 정보 리스트
 	@GetMapping("/user")
-	public String userList(HttpSession session, Model model) {
-		// 로그인 세션에 저장되었을 경우 생각하고 작업
-		// --------------------------------------
-		session.setAttribute("sId", "admin");
-		String id = (String) session.getAttribute("sId");
-		
-		if (!id.equals("admin")) {
-			model.addAttribute("msg", "접근 권한이 없습니다!");
-			return "commons/fail";
-		}
-		// --------------------------------------
-		
+	public String userList(Model model) {
 		List<UserDTO> userList = adminService.getUserList();
 		
 		model.addAttribute("users", userList);
