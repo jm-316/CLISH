@@ -35,8 +35,7 @@ public class AdminClassController {
 	
 	// 카테고리 리스트
 	@GetMapping("/category")
-	public String categoryList(Model model) {
-		
+	public String categoryList(Model model) {		
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
 		
