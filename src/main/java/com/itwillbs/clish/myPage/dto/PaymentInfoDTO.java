@@ -1,7 +1,9 @@
 package com.itwillbs.clish.myPage.dto;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +28,16 @@ public class PaymentInfoDTO {
     private String receiptUrl; // 결제영수증주소
     private String failReason;
     private long failTime;
+    private String payTimeFormatted;
+    
+    public void setPayTime(long payTime) {
+    	this.payTime = payTime;
+    	this.payTimeFormatted = formatPayTime(payTime);
+    }
+    
+    private String formatPayTime(long timestamp) {
+    	Date date = new Date(timestamp);
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	return format.format(date);
+    }
 }
