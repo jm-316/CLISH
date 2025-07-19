@@ -34,4 +34,9 @@ public class ClassDTO {
 	private String location;
 	private List<String> classDayNames;
 	private String userIdx;
+	private int classType;
+	private String classIntro;
+	private String classContent;
+	private String classPic1;
+	
 }

@@ -40,6 +40,16 @@
 						<th>장소</th> <td>${classInfo.location}</td>
 					</tr>
 					
+					<tr>
+					    <th>강의 소개</th> <td>${classInfo.classIntro}</td>
+					</tr>
+					<tr>
+					    <th>강의 상세 내용</th> <td>${classInfo.classContent}</td>
+					</tr>
+					<tr>
+					    <th>썸네일 이미지</th>
+					    <td><img src="${pageContext.request.contextPath}${classInfo.classPic1}" width="200"></td>
+					</tr>
 					
 				</table>
 					

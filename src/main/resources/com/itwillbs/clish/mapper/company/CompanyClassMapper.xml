@@ -21,7 +21,11 @@
 	        #{location},
 	        now(),
 			null,
-	        #{userIdx}
+			#{userIdx},
+	        #{classType},
+	        #{classIntro},
+	        #{classContent},
+	        #{classPic1}
 	    )
 	</insert>
 	

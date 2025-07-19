@@ -142,7 +142,8 @@
                     <tbody>
                         <c:set var="hasRegisteredClass" value="false" />
                         <c:forEach var="classItem" items="${classList}">
-                            <c:if test="${classItem.class_status != 1}">
+                        <%-- CLASS 테이블 컬럼 3개 수정 후 클래스 개설 및 클래스 관리에 조회할 수 있게 임시로 관리자 상태 c:if문 주석 처리--%>
+<%--                             <c:if test="${classItem.class_status != 1}"> --%>
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
                                     <td>${classItem.class_title}</td>
@@ -158,7 +159,7 @@
                                         <button class="orange-button">수정</button>
                                     </td>
                                 </tr>
-                            </c:if>
+<%--                             </c:if> --%>
                         </c:forEach>
                         <c:if test="${not hasRegisteredClass}">
                             <tr><td colspan="5">등록된 강의가 없습니다.</td></tr>

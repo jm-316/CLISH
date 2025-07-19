@@ -47,7 +47,10 @@ public class CompanyClassController {
 	// 클래스 관리 페이지
 	@GetMapping("/myPage/classManage")
     public String classManageForm(@RequestParam(required = false) String type, Model model) {
-		List<Map<String , Object>> classList = adminClassService.getClassList();
+		// 클래스 개설되는지 확인용(임시) - adminClassService => companyClassService 로 잠시 변경
+		List<Map<String , Object>> classList = companyClassService.getAllClassList();
+		// 관리자 승인 후 목록 확인이 되게 adminClassSerive 로 적음
+//		List<Map<String , Object>> classList = adminClassService.getClassList();
 		
 		if (type == null || type.isBlank()) {
 			// 전체

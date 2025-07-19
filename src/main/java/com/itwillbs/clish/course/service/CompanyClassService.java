@@ -59,6 +59,8 @@ public class CompanyClassService {
 		return companyClassMapper.selectClassListByType(type);
 	}
 	
+	
+	
 }	
 	
 	
