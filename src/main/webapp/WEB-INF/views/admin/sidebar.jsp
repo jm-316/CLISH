@@ -6,14 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/admin/sidebar.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<nav class="navbar">
 	   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
 	   <ul>
-	   	   <li> <a href="/admin/">main</a></li>
+	   	   <li class="admin-main">
+	   	   		<a href="/admin/">MAIN</a>
+	   	    </li>
 	       <li>
 	       		<span>강좌 관리</span>
 	       		<ul>
@@ -31,6 +33,14 @@
 	               <a href="/admin/company">기업 회원 목록</a>
 	             </li>
 	           </ul>
+			</li>
+			<li>
+				<span>결제 관리</span>
+				<ul>
+					<li>
+						<a href="/admin/paymentList">결제 내역 관리</a>
+					</li>
+				</ul>
 			</li>
 	   </ul>
 	</nav>
