@@ -88,9 +88,8 @@ public class UserClassController {
 		
 		reservationDTO.setReservationIdx(reservationIdx); // reservationIdx
 		
-		userClassService.registReservation(reservationDTO);
+		int insertCount = userClassService.registReservation(reservationDTO);
 	
-//		return "/course/user/reservationSuccess";
 		return "/course/user/course_list";
 	}
 	

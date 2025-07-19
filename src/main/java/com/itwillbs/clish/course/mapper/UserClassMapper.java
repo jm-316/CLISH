@@ -13,6 +13,6 @@ public interface UserClassMapper {
 
 	UserDTO selectUser(String userIdx);
 
-	void insertReservation(ReservationDTO reservationDTO);
+	int insertReservation(ReservationDTO reservationDTO);
 
 }

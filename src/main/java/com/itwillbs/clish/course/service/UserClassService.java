@@ -20,8 +20,8 @@ public class UserClassService {
 		return userClassMapper.selectUser(userIdx);
 	}
 
-	public void registReservation(ReservationDTO reservationDTO) {
-		userClassMapper.insertReservation(reservationDTO);
+	public int registReservation(ReservationDTO reservationDTO) {
+		return userClassMapper.insertReservation(reservationDTO);
 	}
 
 

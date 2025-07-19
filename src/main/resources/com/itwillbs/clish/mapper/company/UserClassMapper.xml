@@ -14,7 +14,7 @@
 			, #{reservationClassDate}
 			, now()
 			, #{classIdx}
-			, #{reservationStatus}
+			, 1
 		)
 	</insert>
 	
