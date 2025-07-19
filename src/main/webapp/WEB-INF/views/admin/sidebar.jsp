@@ -21,7 +21,7 @@
 	       		<ul>
 	       			<li>
 	       				<a href="/admin/category">카테고리 편집</a>
-	       				<a href="/admin/classList">강좌 리스트</a>
+	       				<a href="/admin/classList">강좌 목록</a>
 	       			</li>
 	       		</ul>
 	       	</li>
@@ -38,7 +38,7 @@
 				<span>결제 관리</span>
 				<ul>
 					<li>
-						<a href="/admin/paymentList">결제 내역 관리</a>
+						<a href="/admin/paymentList">결제 목록</a>
 					</li>
 				</ul>
 			</li>
