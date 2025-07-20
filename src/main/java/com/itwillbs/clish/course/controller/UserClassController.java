@@ -19,6 +19,7 @@ import com.itwillbs.clish.admin.controller.AdminUserController;
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.AdminUserService;
+import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
 import com.itwillbs.clish.course.service.UserClassService;
@@ -34,6 +35,7 @@ public class UserClassController {
 	private final AdminClassService adminClassService;
 	private final CompanyClassService companyClassService;
 	private final UserClassService userClassService;
+	private final CategoryService categoryService;
 	
 	// 클래스 리스트
 	@GetMapping("user/classList")
@@ -43,10 +45,12 @@ public class UserClassController {
 //		System.out.println("아무거나 송출 " + classType + " 다음거 " + categoryName);
 //		String userId = (String)session.getAttribute("sId");
 //		List<Map<String , Object>> classList = adminClassService.getClassList();
-		  
-		
+		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
+		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		
+		model.addAttribute("parentCategories", parentCategories);
+		model.addAttribute("childCategories", childCategories);  
 		model.addAttribute("classList", classList);
 		
 		return "/course/user/course_list";

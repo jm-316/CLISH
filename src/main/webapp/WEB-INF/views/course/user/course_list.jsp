@@ -6,11 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
 	<main class="main">
 		 <div class="main_container">
@@ -64,6 +67,36 @@
                 </table>
            </div>
         </div>
+        <nav class="side-nav">
+		    <ul>
+		    	<c:if test="${param.classType eq 0}">
+					<li><a href="/course/user/classList?classType=0"><b>정기 강의</b></a></li>
+		           	<c:forEach var="Pcat" items="${parentCategories}">
+		           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx }">
+		           		${Pcat.categoryName }</a></li>
+		           		<c:forEach var="Ccat" items="${childCategories }">
+		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx }">
+				           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Ccat.categoryIdx }">
+				           		${Ccat.categoryName }</a></li>
+		           			</c:if>
+		           		</c:forEach>
+		           	</c:forEach>		
+		    	</c:if>
+		    	<c:if test="${param.classType eq 1}">
+					<li><a href="/course/user/classList?classType=1"><b>단기 강의</b></a></li>
+		           	<c:forEach var="Pcat" items="${parentCategories}">
+		           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Pcat.categoryIdx }">
+		           		${Pcat.categoryName }</a></li>
+		           		<c:forEach var="Ccat" items="${childCategories }">
+		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx }">
+				           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Ccat.categoryIdx }">
+				           		${Ccat.categoryName }</a></li>
+		           			</c:if>
+		           		</c:forEach>
+		           	</c:forEach>		
+		    	</c:if>
+		    </ul>
+		</nav>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp"></jsp:include>
