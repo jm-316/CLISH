@@ -24,7 +24,8 @@
 						<label>카테고리 이름</label> <input type="text" name="categoryName" />
 					</div>
 					<div>
-						<span>대분류</span> <select name="parentIdx">
+						<span>대분류</span> 
+						<select name="parentIdx">
 							<option value="no_parent">없음</option>
 							<c:forEach var="category" items="${parentCategories}">
 								<option
@@ -33,7 +34,8 @@
 						</select> <span>1차 카테고리는 없음 선택</span>
 					</div>
 					<div>
-						<label>카테고리 순서</label> <input type="number" name="sortOrder" />
+						<label>카테고리 순서</label> 
+						<input type="number" name="sortOrder" />
 					</div>
 					<button type="button" onclick="closeAddModal()">닫기</button>
 					<button type="submit">등록하기</button>
@@ -48,19 +50,18 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h5 class="sub-title">카테고리 편집</h5>
+						<h5 class="section-title">카테고리 편집</h5>
 					</div>
 					<div>
 						<div>
 							<div class="category-header">
-								<h3>대분류</h3>
+								<h3 class="sub-title">대분류</h3>
 								<button type="button" onclick="onAddModal()">추가</button>
 							</div>
 						</div>
 						<table id="parentTable">
 							<thead>
 								<tr>
-									<th>#</th>
 									<th>대분류</th>
 									<th>카테고리 이름</th>
 									<th>카테고리 순서</th>
@@ -70,11 +71,11 @@
 							<tbody>
 								<c:forEach var="category" items="${parentCategories}">
 									<tr>
-										<td><input type="checkbox" /></td>
-										<td><input type="text"
-											value="${fn:substringAfter(category.categoryIdx, 'CT_')}" /></td>
-										<td><input type="text" value="${category.categoryName}"></td>
-										<td><input type="text" value="${category.sortOrder}" /></td>
+<!-- 										<td><input type="text" -->
+<%-- 											value="${fn:substringAfter(category.categoryIdx, 'CT_')}" /></td> --%>
+										<td>${fn:substringAfter(category.categoryIdx, 'CT_')}</td>
+										<td>${category.categoryName}</td>
+										<td>${category.sortOrder}</td>
 										<td class="category-controls">
 											<button type="button"
 												onclick="onModifyModal('${category.categoryIdx}')">수정</button>
@@ -89,13 +90,12 @@
 					<div>
 						<div>
 							<div>
-								<h3>소분류</h3>
+								<h3 class="sub-title">소분류</h3>
 							</div>
 						</div>
 						<table id="childTable">
 							<thead>
 								<tr>
-									<th>#</th>
 									<th>대분류</th>
 									<th>소분류</th>
 									<th>카테고리 이름</th>
@@ -106,14 +106,11 @@
 							<tbody>
 								<c:forEach var="category" items="${childCategories}">
 									<tr>
-										<td><input type="checkbox" /></td>
-										<td><input type="text"
-											value="${fn:substringAfter(category.parentIdx, 'CT_')}" /></td>
+										<td>${fn:substringAfter(category.parentIdx, 'CT_')}</td>
 										<c:set var="prefix" value="${category.parentIdx}_" />
-										<td><input type="text"
-											value="${fn:substringAfter(category.categoryIdx, prefix)}" /></td>
-										<td><input type="text" value="${category.categoryName}" /></td>
-										<td><input type="text" value="${category.sortOrder}" /></td>
+										<td>${fn:substringAfter(category.categoryIdx, prefix)}</td>
+										<td>${category.categoryName}ㄴ</td>
+										<td>${category.sortOrder}</td>
 										<td class="category-controls">
 											<button type="button"
 												onclick="onModifyModal('${category.categoryIdx}')">수정</button>

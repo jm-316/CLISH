@@ -6,9 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자페이지</title>
-<link
-	href="${pageContext.request.contextPath}/resources/css/the_best_styles.css"
-	rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div class="container">
@@ -24,18 +21,21 @@
 				<div class="bg-light">
 					<div>
 						<div>
-							<h5 class="sub-title">기업 회원 목록</h5>
+							<h5 class="section-title">기업 회원 목록</h5>
 						</div>
-						<div class="form">
-							<select>
+						<form class="filter-form">
+							<select class="filter-select">
 								<option>전체</option>
 								<option>최신가입순</option>
 								<option>오래된가입순</option>
 								<option>승인대기</option>
 								<option>승인완료</option>
-							</select> <input type="text" />
-							<button>검색</button>
-						</div>
+							</select> 
+							<div class="search-box">
+								<input type="text" class="search-input"/>
+								<button class="search-button">검색</button>
+							</div>
+						</form>
 					</div>
 					<div>
 						<table class="table">
@@ -47,7 +47,8 @@
 									<th>연락처</th>
 									<th>이메일</th>
 									<th>가입일</th>
-									<th colspan="2">승인여부</th>
+									<th>상태</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,7 +65,7 @@
 										            승인
 										        </c:when>
 												<c:otherwise>
-										            승인대기
+										            대기
 										        </c:otherwise>
 											</c:choose></td>
 										<td><button

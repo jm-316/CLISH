@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.clish.admin.dto.CategoryRevenueDTO;
+import com.itwillbs.clish.admin.dto.DashboardSummaryDTO;
+import com.itwillbs.clish.admin.dto.RevenueDTO;
+import com.itwillbs.clish.admin.service.AdminDashboardService;
 import com.itwillbs.clish.admin.service.AdminUserService;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -24,11 +29,38 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class AdminUserController {
 	private final AdminUserService adminService;
+	private final AdminDashboardService adminDashboardService;
 	
 	@GetMapping("/")
-	public String adminIndex() {
+	public String adminIndex(DashboardSummaryDTO summaryDTO, Model model) {
+		adminDashboardService.getSummary(summaryDTO);
+		
+		List<RevenueDTO> dailyList = adminDashboardService.getDailyRevenue();
+		List<RevenueDTO> weeklyList  = adminDashboardService.getMonthlyRevenue();
+		
+		model.addAttribute("summary", summaryDTO);
+		model.addAttribute("dailyList", dailyList);
+		model.addAttribute("weeklyList", weeklyList);
 
 		return "/admin/admin_page";
+	}
+	
+	@GetMapping("/revenue/daily")
+	@ResponseBody
+	public List<RevenueDTO> getDailyRevenue() {
+		return adminDashboardService.getDailyRevenue();
+	}
+	
+	@GetMapping("/revenue/monthly")
+	@ResponseBody
+	public List<RevenueDTO> getMonthlyRevenue() {
+		return adminDashboardService.getMonthlyRevenue();
+	}
+	
+	@GetMapping("/revenue/category")
+	@ResponseBody
+	public List<CategoryRevenueDTO> getCategoryRevenue() {
+		return adminDashboardService.getCategoryRevenue();
 	}
 	
 	// 일반 회원 정보 리스트

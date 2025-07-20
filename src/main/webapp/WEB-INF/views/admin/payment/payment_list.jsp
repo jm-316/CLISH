@@ -22,7 +22,7 @@
 				<div class="bg-light">
 					<div>
 						<div>
-							<h5 class="sub-title">결제 목록</h5>
+							<h5 class="section-title">결제 목록</h5>
 						</div>
 						<div class="sort-buttons">
 							<button class="sort-button" data-value="all">전체</button>
@@ -38,7 +38,7 @@
 								<div class="list-empty">결제된 강의가 없습니다.</div>
 							</c:when>
 							<c:otherwise>
-								<table>
+								<table id="table">
 									<thead>
 										<tr>
 											<th>결제번호</th>

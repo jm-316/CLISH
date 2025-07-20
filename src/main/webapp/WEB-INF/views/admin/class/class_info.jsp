@@ -45,7 +45,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h5 class="sub-title">회원 정보 수정</h5>
+						<h3>강좌 수정</h3>
 					</div>
 					<form id="classForm">
 						<input type="hidden" name="userIdx" id="userIdx"
