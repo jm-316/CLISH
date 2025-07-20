@@ -4,6 +4,7 @@
 
 /**  Opens sub-navigation on hover  마우스를 올리면 하위 탐색이 열립니다. */
 window.onload = () => {
+	
 	const flexItem2 = document.getElementById('flex-item2');
 	const subNav = document.getElementById('sub-nav');
 	
@@ -16,14 +17,6 @@ window.onload = () => {
 	subNav.addEventListener('mouseleave', () => {
 	    subNav.style.display = 'none';
 	});
-	
-	function logout() {
-		// confirm() 함수 활용하여 "로그아웃하시겠습니까?" 질문을 통해
-		// 확인 버튼 클릭 시 "MemberLogout" 페이지로 이동 처리
-		if(confirm("로그아웃하시겠습니까?")) {
-			location.href = "/member/logout";
-		}
-	}
 	
 	$(function() {
 		let timer;
@@ -38,7 +31,7 @@ window.onload = () => {
 					+ (seconds < 10 ? "0" + seconds : seconds);
 				$("#countdow").text(displayCount);
 				if(count > 0) {
-					count--;
+					count--;s
 					
 				}
 				else {
@@ -47,7 +40,14 @@ window.onload = () => {
 				}
 			
 			}
-		timer = setInterval(updateCoundown, 1000);
+		timer = setInterval(updateCountdown, 1000);
 		updateCountdown();
 	});
 }
+	function logout() {
+		// confirm() 함수 활용하여 "로그아웃하시겠습니까?" 질문을 통해
+		// 확인 버튼 클릭 시 "MemberLogout" 페이지로 이동 처리
+		if(confirm("로그아웃하시겠습니까?")) {
+			location.href = "/member/logout";
+		}
+	}

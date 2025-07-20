@@ -12,8 +12,8 @@
           </li>
           <li><a id="sub-nav-toggle" href="/course/user/classList?classType=0">정기 강의</a></li>
           <li><a href="/course/user/classList?classType=1">단기 강의</a></li>
-          <li><a href="#">고객 센터</a> </li> 
-          <li><a href="#">이벤트</a></li>
+          <li><a href="/customer/customerCenter">고객 센터</a> </li> 
+          <li><a href="/event/eventHome">이벤트</a></li>
 
       </ul>
           
@@ -34,33 +34,57 @@
            	</c:forEach>
         </ul>
         <ul>
-            <li><a href="#"><b>고객 센터</b></a></li>
-            <li><a href="#">공지사항</a></li>
-            <li><a href="#"> FAQ</a></li> 
-            <li><a href="#">문의 게시판</a></li>
+            <li><a href="/customer/customerCenter"><b>고객 센터</b></a></li>
+            <li><a href="/customer/announcements">공지사항</a></li>
+            <li><a href="/customer/FAQ"> FAQ</a></li> 
+            <li><a href="/customer/inquiry">문의 게시판</a></li>
 
         </ul>
         <ul>
-            <li><a href="#"><b>이벤트</b></a></li>
-            <li><a href="#">얼리버드 할인</a></li>
-            <li><a href="#">특별 할인</a></li> 
+            <li><a href="/event/eventHome"><b>이벤트</b></a></li>
+            <li><a href="/event/earlyDiscount">얼리버드 할인</a></li>
+            <li><a href="/event/specialDiscount">특별 할인</a></li> 
         </ul>
       
 	</div> 
 	</nav>  
-       <div id="header-buttons">
-           <a id="noti" href="/home/notification"><img alt="notification" src="${pageContext.request.contextPath}/resources/images/notification.png"></a>
+      <div id="header-buttons">
+           <a id="noti" href="javascript:void(0)" onclick="notification()"><img alt="notification" src="${pageContext.request.contextPath}/resources/images/notification.png"></a>
+           		<div id="notification-box">
+           			<h3>알림</h3>
+           			<ul>
+           				<li onmouseover="changeNotiColor(e)" >notification 1 <span >🔴</span></li>
+           				<li>notification 2 <span onmouseover="changeNotiColor(e)">🔴</span></li>
+           				<li>notification 3 <span onmouseover="changeNotiColor(e)">🔴</span></li>
+           			</ul>
+           		</div>
            <a class="button header-button">마이페이지</a>
            <c:choose>
 				<c:when test="${empty sessionScope.sId}">
-		            <a href="/user/login" class="header-button button">로그인</a>
+		            <a href="/login" class="header-button button">로그인</a>
 				</c:when>
 				<c:otherwise>
-					<a class="header-button button" href="javascript:void(0)" onclick="logout()">로그아웃</a>  
-					<c:if test="${sessionScope.sId eq 'admin'}">
+					<a class="header-button button" href="javascript:void(0)" onclick="logout()">라그아웃</a>  
+					<c:if test="${sessionScope.userType eq '관리자'}">
 						 <a class="header-button button" href="/admin/main">management page</a>
+					</c:if>
+					<c:if test="${sessionScope.userType eq '기업'}">
+						 <a class="header-button button" href="/company/main">management page</a>
 					</c:if>
 				</c:otherwise>
 			</c:choose>
     	</div>
+    	<script type="text/javascript">
+	    	const notiButton = document.getElementById('notification-box');
+    		function notification() {
+    			notiButton.style.display = "block";
+    		}
+    	
+    		notiButton.addEventListener('mousenter', () => {
+    		    notiButton.style.display = 'none';
+    		});
+    		function changeNotiColor(e) {
+    			e.target.innerText = "";
+    		}
+    	</script>
 </section>

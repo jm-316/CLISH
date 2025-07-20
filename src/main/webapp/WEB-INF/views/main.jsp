@@ -19,6 +19,10 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
 	<h1>Main.jsp</h1>
+	
+	<div class="event">
+		<img src="/resources/images/event.png" alt="event banner">
+	</div>
 
 </body>
 </html>

@@ -9,12 +9,15 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.home.service.MainService;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainController {
 	private final CategoryService categoryService;
+//	private final MainService mainService;
+//	
+//	public MainController(MainService mainService) {
+//		this.mainService = mainService;
+//	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -43,6 +51,62 @@ public class MainController {
 //		return "home";
 		return "main";
 		
+	}
+	
+	@GetMapping("/customer/customerCenter")
+	public String notification() {
+		
+		return "customer/customer_center";
+	}
+	@GetMapping("/customer/announcements")
+	public String announcements() {
+		
+		return "customer/customer_announcements";
+	}
+	@GetMapping("/customer/FAQ")
+	public String faq() {
+		
+		return "customer/FAQ";
+	}
+	@GetMapping("/customer/inquiry")
+	public String inquiry() {
+		
+		return "customer/inquiry";
+	}
+	@GetMapping("/event/eventHome")
+	public String eventHome() {
+		
+		return "event/event_home";
+	}
+	@GetMapping("/event/earlyDiscount")
+	public String eventEarlyDiscount() {
+		
+		return "event/early_discount";
+	}
+	@GetMapping("/event/specialDiscount")
+	public String eventSpecialDiscount() {
+		
+		return "event/special_discount";
+	}
+	@GetMapping("/admin/main")
+	public String adminMain() {
+		
+		return "admin/user/admin_page";
+	}
+	@GetMapping("/company/main")
+	public String companyMain() {
+		
+		return "company/company_main";
+	}
+	@GetMapping("login") 
+	public String loginForm(@CookieValue(value = "rememberId", required = false) String userId) {
+		return "user/login_form";
+	}
+	
+	@GetMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 
 }
