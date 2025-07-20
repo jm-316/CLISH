@@ -14,8 +14,6 @@
 	        , user_id                = #{userId}
 	        , user_password          = #{userPassword}
 	        , user_email             = #{userEmail}
-	        , user_email_token       = ""
-          	, user_email_auth_yn     = "Y"
 	        , user_phone_number      = #{userPhoneNumber}
 	        , user_phone_number_sub  = #{userPhoneNumberSub}
 	        , user_postcode          = #{userPostcode}
@@ -48,8 +46,7 @@
 	        user_id,
 	        user_password,
 	        user_status,
-	        user_type,
-	        user_email_auth_yn
+	        user_type
 	    FROM
 	        USER
 	    WHERE

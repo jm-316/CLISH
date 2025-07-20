@@ -131,11 +131,6 @@ public class UserController {
 	        return "redirect:/user/login";
 	    }
 
-	    if (Objects.equals(dbUser.getUserEmailAuthYn(), "N")) {
-	        redirect.addFlashAttribute("errorMsg", "이메일 인증 후 로그인 가능합니다.");
-	        return "redirect:/user/login";
-	    }
-
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
 	    session.setAttribute("loginUser", dbUser);

@@ -18,8 +18,6 @@ public class UserDTO {
 	private String userPassword;
 	private String userEmail;
 	private String newEmail;
-	private String userEmailToken;
-	private String userEmailAuthYn;
 	private String userPhoneNumber;
 	private String userPhoneNumberSub;
 	private String userPostcode;

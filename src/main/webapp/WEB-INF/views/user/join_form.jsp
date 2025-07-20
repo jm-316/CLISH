@@ -33,9 +33,9 @@
 			<tr>
 				<th>이메일</th>
 				<td>
-					<input type="email" name="userEmail" required>
-					<button type="button" onclick="confirmEmailAuth()">[이메일 인증]</button>
-					<span id="email-auth-result" style="margin-left: 10px; color: green;"></span>
+					<input type="email" id="userEmail" name="userEmail" />
+					<button type="button" id="emailVerifyBtn">[이메일 인증]</button>
+					<span id="email-auth-result" style="color: red; margin-left: 10px;">이메일 인증 필요</span>
 				</td>
 			</tr>
 			<tr>
@@ -113,6 +113,14 @@
 	</form>
 	
 </body>
-<script src="${pageContext.request.contextPath}/resources/js/user/join_form.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="module">
+	import { initEmailAuth } from '/resources/js/email/email_auth.js';
+	import { initJoinForm } from '/resources/js/user/join_form.js';
+
+	window.addEventListener("DOMContentLoaded", () => {
+		initJoinForm();
+		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
+	});
+</script>
 </html>

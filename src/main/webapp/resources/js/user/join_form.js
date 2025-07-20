@@ -1,8 +1,9 @@
-window.onload = () => {
+// resources/js/user/join_form.js
+export function initJoinForm() {
+	// 1. 비밀번호 복잡도 검사
 	const passwordInput = document.getElementById("userPassword");
 	const confirmInput = document.getElementById("userPasswordConfirm");
 
-	// 1. 비밀번호 복잡도 검사
 	if (passwordInput) {
 		passwordInput.onblur = function () {
 			const pwd = this.value;
@@ -13,16 +14,8 @@ window.onload = () => {
 				result.innerText = "영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!";
 				result.style.color = "red";
 			} else {
-				if (pwd.length >= 12) {
-					result.innerText = "안전";
-					result.style.color = "green";
-				} else if (pwd.length >= 10) {
-					result.innerText = "보통";
-					result.style.color = "orange";
-				} else {
-					result.innerText = "위험";
-					result.style.color = "red";
-				}
+				result.innerText = pwd.length >= 12 ? "안전" : (pwd.length >= 10 ? "보통" : "위험");
+				result.style.color = pwd.length >= 12 ? "green" : (pwd.length >= 10 ? "orange" : "red");
 			}
 		};
 	}
@@ -51,7 +44,7 @@ window.onload = () => {
 			new daum.Postcode({
 				oncomplete: function (data) {
 					const address = data.buildingName
-						? '${data.address} (${data.buildingName})'
+						? `${data.address} (${data.buildingName})`
 						: data.address;
 
 					document.getElementById("userPostcode").value = data.zonecode;
@@ -61,11 +54,4 @@ window.onload = () => {
 			}).open();
 		};
 	}
-};
-
-// 이메일 검증
-function confirmEmailAuth() {
-	const resultSpan = document.getElementById("email-auth-result");
-	resultSpan.innerText = "인증이 완료되었습니다!";
-	resultSpan.style.color = "green";
 }

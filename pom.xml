@@ -279,7 +279,7 @@
                 <version>2.5.1</version>
                 <configuration>
                     <source>${java-version}</source>
-                    <target>${java-versieon}</target>
+                    <target>${java-version}</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
@@ -294,5 +294,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>ROOT</finalName>
     </build>
 </project>
