@@ -7,7 +7,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/admin/sidebar.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin/dashboard.css" rel="stylesheet" type="text/css">
+<script src="https://kit.fontawesome.com/a96e186b03.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -15,9 +18,203 @@
 			<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"></jsp:include>	
 		</div>
 		<div class="main">
-			<div>관리자 대시보드</div>
-			<div>통계자료 넣을 예정</div>
+			<div class="navbar-expand">
+				<h4 class="pageSubject">CLISH 관리자 대시보드</h4>
+				<div>관리자</div>
+			</div>
+			<div class="main_container">
+				<div class="bg-light">
+					<div class="dashboard-container">
+						<div class="dashboard-summary">
+							<div class="summary-card">
+								<div class="summary-icon">
+									<i class="fa-solid fa-users"></i>
+								</div>
+								<div class="summary-text">
+									<div class="summary-label">총 회원수</div>
+									<div class="summary-value">${summary.userCount}명</div>
+								</div>
+							</div>
+						</div>
+						<div class="dashboard-summary">
+							<div class="summary-card">
+								<div class="summary-icon">
+									<i class="fa-solid fa-building"></i>
+								</div>
+								<div class="summary-text">
+									<div class="summary-label">총 기업수</div>
+									<div class="summary-value">${summary.companyCount}개</div>
+								</div>
+							</div>
+						</div>
+						<div class="dashboard-summary">
+							<div class="summary-card">
+								<div class="summary-icon">
+									<i class="fa-solid fa-address-card"></i>
+								</div>
+								<div class="summary-text">
+									<div class="summary-label">가입 승인 대기</div>
+									<div class="summary-value">${summary.pendingCompanyCount}개</div>
+								</div>
+							</div>
+						</div>
+						<div class="dashboard-summary">
+							<div class="summary-card">
+								<div class="summary-icon">
+									<i class="fa-solid fa-landmark"></i>
+								</div>
+								<div class="summary-text">
+									<div class="summary-label">강의 승인 대기</div>
+									<div class="summary-value">${summary.pendingClassCount}개</div>
+								</div>
+							</div>
+						</div>
+					</div>		
+					<canvas id="dailyChart" width="300" height="300"></canvas>
+					<canvas id="categoryChart" width="300" height="300"></canvas>
+					<canvas id="monthlyChart" width="800" height="400"></canvas>
+				
+				</div>
+			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+function loadDailyRevenueChart() {
+	  fetch("/admin/revenue/daily")
+	    .then(res => res.json())
+	    .then(data => {
+	      const today = new Date();
+	      const day = today.getDay();
+	      const monday = new Date(today);
+	      monday.setDate(today.getDate() - ((day + 6) % 7));
+	      
+	      const labels = [];
+	      const dataMap = {};
+
+	      for (let i = 0; i < 5; i++) {
+	          const d = new Date(monday);
+	          d.setDate(monday.getDate() + i);
+	          const label = d.toISOString().split('T')[0];
+	          labels.push(label);
+	      }
+
+	      data.forEach(item => {
+	        dataMap[item.date] = item.total;
+	      });
+
+	      const values = labels.map(label => dataMap[label] || 0);
+
+	      new Chart(document.getElementById("dailyChart").getContext("2d"), {
+	        type: 'bar',
+	        data: {
+	          labels: labels.map(d => d.slice(5)), // MM-DD 형태
+	          datasets: [{
+	            label: "일별 매출",
+	            data: values,
+	            backgroundColor: 'rgba(255, 118, 1, 0.7)'
+	          }]
+	        },
+	        options: {
+	          responsive: false,
+	          scales: {
+	            y: { beginAtZero: true }
+	          }
+	        }
+	      });
+	    });
+	}
+	
+	const labels = Array.from({ length: 12 }, (_, i) => {
+	  const month = i + 1;
+	  return month + "월";
+	});
+	
+
+	function loadMonthlyRevenueChart() {
+	  fetch("/admin/revenue/monthly")
+	    .then(res => res.json())
+	    .then(data => {
+	      const revenueMap = new Map();
+	      data.forEach(item => {
+	        const month = parseInt((item.date || "").split('-')[1]);
+	        if (!isNaN(month)) {
+	          revenueMap.set(month + "월", item.total);
+	        }
+	      });
+
+	      const values = labels.map(label => revenueMap.get(label) || 0);
+
+	      const ctx = document.getElementById("monthlyChart").getContext("2d");
+	      new Chart(ctx, {
+	        type: "bar",
+	        data: {
+	          labels: labels,
+	          datasets: [{
+	            label: "월간 매출",
+	            data: values,
+	            backgroundColor: "rgba(255, 118, 1, 0.7)",
+	            borderRadius: 6
+	          }]
+	        },
+	        options: {
+	          responsive: false,
+	          scales: {
+	            y: {
+	              beginAtZero: true,
+	              title: { display: true, text: "매출 (원)" }
+	            },
+	            x: {
+	              title: { display: true, text: "월" }
+	            }
+	          }
+	        }
+	      });
+	    });
+	}
+	
+	function loadCategoryRevenueChart() {
+		fetch("/admin/revenue/category")
+		  .then(res => res.json())
+		  .then(data => {
+			  const labels = data.map(item => item.categoryName);
+			  const values = data.map(item => item.total);
+			  
+			  const ctx = document.getElementById("categoryChart").getContext("2d");
+			  
+			  new Chart(ctx, {
+			        type: "bar",
+			        data: {
+			          labels: labels,
+			          datasets: [{
+			            label: "카테고리별 매출",
+			            data: values,
+			            borderRadius: 6
+			          }]
+			        },
+			        options: {
+			          responsive: false,
+			          scales: {
+			            y: {
+			              beginAtZero: true,
+			              title: { display: true, text: "매출 (원)" }
+			            },
+			            x: {
+			              title: { display: true, text: "카테고리" }
+			            }
+			          }
+			        }
+			      });
+			    })
+			    .catch(err => {
+			      console.error("카테고리별 매출 로딩 실패:", err);
+			    });
+			}
+	
+	document.addEventListener("DOMContentLoaded", () => {
+		  loadDailyRevenueChart();
+		  loadMonthlyRevenueChart();
+		  loadCategoryRevenueChart();
+		});
+</script>
 </body>
 </html>

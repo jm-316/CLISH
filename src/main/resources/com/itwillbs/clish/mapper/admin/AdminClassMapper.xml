@@ -9,6 +9,7 @@
 			c.class_idx
 			, c.class_title
 			, c.class_status
+			, c.created_at
 			, pc.category_name AS parent_category_name
 			, cc.category_name AS child_category_name
 		FROM
@@ -21,6 +22,8 @@
 			CATEGORY pc
 		ON
 			cc.parent_idx = pc.category_idx
+		ORDER BY
+			c.class_status
 	</select>
 	
 	<!-- 강좌 승인 -->
