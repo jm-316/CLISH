@@ -6,9 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자페이지</title>
-<link
-	href="${pageContext.request.contextPath}/resources/css/the_best_styles.css"
-	rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div class="container">
@@ -24,18 +21,20 @@
 				<div class="bg-light">
 					<div>
 						<div>
-							<h5 class="sub-title">일반 회원 목록</h5>
+							<h5 class="section-title">일반 회원 목록</h5>
 						</div>
-						<div class="form" >
-							<select>
+						<form class="filter-form">
+							<select class="filter-select">
 								<option>전체</option>
 								<option>최신가입순</option>
 								<option>오래된가입순</option>
 								<option>신고</option>
 							</select>
-							<input type="text" />
-							<button>검색</button>
-						</div>
+							<div class="search-box">
+								<input type="text" class="search-input"/>
+								<button class="search-button">검색</button>
+							</div>
+						</form>
 					</div>
 					<div>
 						<div>

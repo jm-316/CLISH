@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div class="container">
@@ -21,7 +20,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h5 class="sub-title">회원 정보 수정</h5>
+						<h3>기업 정보 수정</h3>
 					</div>
 					<form>
 						<div>
