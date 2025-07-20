@@ -1,4 +1,3 @@
-// ✅ 이메일 인증 모듈
 export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 	let emailCheckInterval = null;
 
@@ -11,7 +10,6 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 		return;
 	}
 
-	// 이메일 인증 버튼 클릭 시
 	verifyBtn.addEventListener("click", () => {
 		const email = emailInput.value;
 		if (!email) {
@@ -42,7 +40,6 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 			});
 	});
 
-	// 인증 여부 확인 polling
 	function startEmailPolling(email) {
 		if (emailCheckInterval) clearInterval(emailCheckInterval);
 
@@ -54,7 +51,6 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 						resultSpan.innerText = "이메일 인증 완료!";
 						resultSpan.style.color = "green";
 						clearInterval(emailCheckInterval);
-						console.log("✅ 이메일 인증 성공 → polling 중지");
 					}
 				})
 				.catch(err => console.error("인증 상태 확인 실패", err));
@@ -62,14 +58,11 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 	}
 }
 
-// ✅ verify.jsp에서 부모창에게 인증 성공 알림
+// verify.jsp에서 부모창에게 인증 성공 알림
 window.setEmailVerified = function () {
 	const resultSpan = document.getElementById("email-auth-result");
 	if (resultSpan) {
 		resultSpan.innerText = "이메일 인증 완료!";
 		resultSpan.style.color = "green";
-		console.log("✅ verify.jsp → 부모창 setEmailVerified 호출 성공");
-	} else {
-		console.warn("❌ email-auth-result 요소를 찾을 수 없음");
 	}
 };

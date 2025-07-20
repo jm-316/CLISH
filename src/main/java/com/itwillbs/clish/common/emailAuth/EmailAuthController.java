@@ -17,7 +17,6 @@ public class EmailAuthController {
 
     private final EmailAuthService emailAuthService;
 
-    // 1️⃣ 이메일 인증 요청 (AJAX POST)
     @PostMapping("/send")
     @ResponseBody
     public String sendEmailAuth(@RequestBody EmailAuthDTO dto) {
@@ -26,7 +25,6 @@ public class EmailAuthController {
         return token != null ? token : "";
     }
 
-    // 2️⃣ 이메일 링크 클릭 → 인증 확인 페이지로 이동
     @GetMapping("/verify")
     public String verifyToken(@RequestParam("token") String token, Model model) {
         boolean result = emailAuthService.verifyToken(token); // DB에서 is_verified = 1 처리

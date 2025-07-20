@@ -27,12 +27,6 @@ public class EmailClient {
     @Value("${mail.sender.name}")
     private String senderName;
 
-    /**
-     * 메일 전송
-     * @param toEmail 수신자 이메일
-     * @param subject 제목
-     * @param htmlContent HTML 본문 내용
-     */
     public void sendMail(String toEmail, String subject, String htmlContent) {
         try {
             
@@ -55,7 +49,6 @@ public class EmailClient {
             message.setSubject(subject);
             message.setContent(htmlContent, "text/html; charset=UTF-8");
 
-            // 비동기 전송
             new Thread(() -> {
                 try {
                     Transport.send(message);

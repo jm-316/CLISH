@@ -19,37 +19,29 @@ public class EmailAuthService {
     private final EmailAuthMapper emailAuthMapper;
     private final EmailClient emailClient;
 
-    /**
-     * 이메일 인증 토큰 생성 및 이메일 전송
-     */
     @Transactional
     public String createAndSendToken(String email) {
-        // 1. 토큰 생성
-        String token = UUID.randomUUID().toString();
+
+    	String token = UUID.randomUUID().toString();
         LocalDateTime expire = LocalDateTime.now().plusMinutes(10);
 
-        // 2. DTO 생성
         EmailAuthDTO dto = new EmailAuthDTO();
         dto.setUserEmail(email);
         dto.setUserEmailToken(token);
         dto.setUserEmailTokenExpire(expire);
         dto.setUserEmailAuthYn("N");
 
-        // 3. 기존 이메일 인증 정보 조회
         EmailAuthDTO existing = emailAuthMapper.selectByEmail(email);
 
         int result = 0;
 
         if (existing == null) {
-            // 4-1. 없으면 INSERT
             result = emailAuthMapper.insertEmailAuth(dto);
         } else {
-            // 4-2. 있으면 UPDATE
             result = emailAuthMapper.updateEmailAuth(dto);
         }
 
         if (result > 0) {
-            // 5. 이메일 전송
         	
             String subject = "[CLISH] 이메일 인증 요청";
             String verifyLink = baseUrl + "/email/verify?token=" + token;
@@ -72,7 +64,6 @@ public class EmailAuthService {
         if ("Y".equals(auth.getUserEmailAuthYn())) return false;
         if (auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return false;
 
-        // 인증 성공 → 상태 업데이트
         emailAuthMapper.updateAuthYn(auth.getUserEmail());
         return true;
     }
