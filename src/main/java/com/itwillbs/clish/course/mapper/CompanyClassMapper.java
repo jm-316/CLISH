@@ -23,5 +23,8 @@ public interface CompanyClassMapper {
 	// 단기 & 정기강의 조회
 	List<Map<String, Object>> selectClassListByType(String type);
 	
+	// 클래스 수정
+//	int updateClassInfo(String idx, ClassDTO classInfo);
+	
 
 }

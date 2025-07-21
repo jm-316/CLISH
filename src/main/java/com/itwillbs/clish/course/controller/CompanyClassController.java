@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -15,11 +16,17 @@ import java.util.UUID;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
+import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -36,6 +43,8 @@ public class CompanyClassController {
 	private final CompanyClassService companyClassService;
 	private final AdminClassService adminClassService;
 	private final CurriculumService curriculumService;
+	private final CategoryService categoryService;
+	private final NotificationService notificationService;
 	
 	// 기업 메인페이지
 	@GetMapping("")
@@ -54,9 +63,9 @@ public class CompanyClassController {
 	@GetMapping("/myPage/classManage")
     public String classManageForm(@RequestParam(required = false) String type, Model model) {
 		// 클래스 개설되는지 확인용(임시) - adminClassService => companyClassService 로 잠시 변경
-		List<Map<String , Object>> classList = companyClassService.getAllClassList();
+//		List<Map<String , Object>> classList = companyClassService.getAllClassList();
 		// 관리자 승인 후 목록 확인이 되게 adminClassSerive 로 적음
-//		List<Map<String , Object>> classList = adminClassService.getClassList();
+		List<Map<String , Object>> classList = adminClassService.getClassList();
 		
 		if (type == null || type.isBlank()) {
 			// 전체
@@ -77,7 +86,13 @@ public class CompanyClassController {
 	
 	// 클래스 개설 페이지
 	@GetMapping("/myPage/registerClass")
-    public String registerClassForm() {
+    public String registerClassForm(Model model) {
+		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); // 대분류
+	    List<CategoryDTO> subCategories = categoryService.getCategoriesByDepth(2);    // 소분류
+
+	    model.addAttribute("parentCategories", parentCategories);
+	    model.addAttribute("subCategories", subCategories);
+	    
         return "/company/companyClass/registerClass"; 
     }
 	
@@ -159,11 +174,62 @@ public class CompanyClassController {
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
 		
+		// 카테고리 불러오기
+	    List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
+	    List<CategoryDTO> subCategories = categoryService.getCategoriesByDepth(2);
+		
 		model.addAttribute("classInfo", classInfo);
 	    model.addAttribute("curriculumList", curriculumList);
+	    model.addAttribute("parentCategories", parentCategories);
+	    model.addAttribute("subCategories", subCategories);
 		
 		return "/company/companyClass/modifyClass";
+//	    return "/company/companyClass/classDetail";
 	}
 	
 	// 클래스 수정 로직
+	@PostMapping("/myPage/modifyClass")
+	public String modifyClassSubmit(@RequestParam("classIdx") String classIdx, @RequestParam("classDays") int classDays,
+			Model model, @ModelAttribute ClassDTO classInfo,
+			@RequestParam("curriculumIdx") List<String> curriculumIdxList,
+			@RequestParam("curriculumTitle") List<String> curriculumTitleList,
+			@RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
+		System.out.println(classInfo);
+		
+		List<CurriculumDTO> curriculumList = new ArrayList<>();
+	    for (int i = 0; i < curriculumIdxList.size(); i++) {
+	        CurriculumDTO dto = new CurriculumDTO();
+	        dto.setCurriculumIdx(curriculumIdxList.get(i));
+	        dto.setCurriculumTitle(curriculumTitleList.get(i));
+	        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
+	        dto.setClassIdx(classIdx);
+	        curriculumList.add(dto);
+	    }
+	    
+//	    // 요일 처리 로직 추가 (checkbox 처리)
+//	    int classDaysValue = 0;
+//	    List<String> tempDays = classInfo.getClassDayNames();
+//
+//	    if (tempDays != null) {
+//	        for (String val : tempDays) {
+//	            classDaysValue += Integer.parseInt(val);
+//	        }
+//	    }
+	    classInfo.setClassDays(classDays);
+		
+	   
+		int count = adminClassService.modifyClassInfo(classIdx, classInfo, curriculumList);	
+		
+		if (count > 0) {
+			model.addAttribute("msg", "강좌 정보를 수정했습니다.");
+			model.addAttribute("targetURL", "/company/myPage/classDetail?classIdx=" + classIdx);
+		} else {
+			model.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		
+		return "commons/result_process";
+	}
+	
 }

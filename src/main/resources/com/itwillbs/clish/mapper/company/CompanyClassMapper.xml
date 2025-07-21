@@ -67,5 +67,23 @@
 	    </where>
 	</select>
 	
+	<!-- 클래스 수정 -->
+	<update id="updateClassInfo">
+		UPDATE
+			CLASS
+		SET
+			class_title = #{classInfo.classTitle}
+			, category_idx = #{classInfo.categoryIdx}
+			, class_status = #{classInfo.classStatus}
+			, class_price = #{classInfo.classPrice}
+			, class_member = #{classInfo.classMember}
+			, start_date = #{classInfo.startDate}
+			, end_date = #{classInfo.endDate}
+			, class_days = #{classInfo.classDays}
+			, location = #{classInfo.location}
+			, updated_at = now()
+		WHERE
+			class_idx = #{idx}
+	</update>
 
 </mapper>

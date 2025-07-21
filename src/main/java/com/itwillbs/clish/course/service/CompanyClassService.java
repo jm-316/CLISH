@@ -5,17 +5,27 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.clish.admin.mapper.AdminClassMapper;
+import com.itwillbs.clish.admin.service.AdminClassService;
+import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class CompanyClassService {
 	private final CompanyClassMapper companyClassMapper;
-	
-	public CompanyClassService(CompanyClassMapper companyClassMapper) {
-		this.companyClassMapper = companyClassMapper;
-	}
+	private final CurriculumService curriculumService;
+	private final NotificationService notificationService;
 	
 	// 강의 등록
 	public int registerClass(ClassDTO companyClass) {
@@ -58,6 +68,23 @@ public class CompanyClassService {
 	public List<Map<String, Object>> getClassListByType(String type) {
 		return companyClassMapper.selectClassListByType(type);
 	}
+	
+	// 클래스 수정
+//	@Transactional
+//	public int modifyClassInfo(String idx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) {
+//		int update = companyClassMapper.updateClassInfo(idx, classInfo);
+//		int updateCurriculume = 0;
+//		
+//		for (CurriculumDTO dto : curriculumList) {
+//			updateCurriculume = curriculumService.updateCurriculumeInfo(idx, dto);
+//		}
+//		
+//		if (update > 0 || updateCurriculume > 0) {
+//			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");
+//			return update;
+//		}
+//		return 0;
+//	}
 	
 	
 	
