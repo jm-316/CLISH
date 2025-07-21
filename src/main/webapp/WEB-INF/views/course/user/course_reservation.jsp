@@ -10,10 +10,10 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/admin/header.jsp" />
 	</header>
 	<main>
-		<form action="/course/user/reservationSuccess" style="max-width: 800px; margin: 50px auto; padding: 40px;" method="get">
+		<form action="/course/myPage/reservationInfo" method="get">
 				<h1>클래스 예약 정보입력 페이지</h1>
 				<h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 				
@@ -50,6 +50,7 @@
 				
 				<input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
 				<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
+				<input type="hidden" id="classType" name="classType" value="${classInfo.classType}"><br>
 					
 	            <button class="orange-button" onclick="location.href='classList'">클래스 목록</button>
 	            <button type="submit" class="orange-button">예약 확정</button>

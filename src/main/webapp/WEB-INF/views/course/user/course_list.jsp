@@ -13,7 +13,7 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
+		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 	</header>
 	<main class="main">
 		 <div class="main_container">
@@ -47,23 +47,43 @@
 						        <c:set var="hasRegisteredClass" value="true" />
 						        <tr>
 						            <td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}'">${classItem.classTitle}</td>
-<%-- 						            <td>${classItem.parent_category_name}</td> --%>
-<%-- 						            <td>${classItem.child_category_name}</td> --%>
+						            <!-- 대분류 -->
+									<c:forEach var="Pcat" items="${parentCategories}">
+										<c:forEach var="Ccat" items="${childCategories}">
+											<c:if test="${classItem.categoryIdx eq Ccat.categoryIdx}">
+												<td>${Pcat.categoryName}</td>
+											</c:if>
+										</c:forEach>
+									</c:forEach>
+									<!-- 소분류 -->
+									<c:forEach var="Pcat" items="${parentCategories}">
+										<c:forEach var="Ccat" items="${childCategories}">
+											<c:if test="${Pcat.categoryIdx eq Ccat.parentIdx}">
+												<td>${Ccat.categoryName}</td>
+											</c:if>
+										</c:forEach>
+									</c:forEach>
 						            <td>
 						                <c:choose>
 						                    <c:when test="${classItem.classStatus == 2}">오픈</c:when>
 						                    <c:otherwise>마감</c:otherwise>
 						                </c:choose>
 						            </td>
-						            <td><button>수정</button></td>
-						            <td><button onclick="location.href='/myPage/payment_info/payReservation''">예약</button></td>
+					            	<c:if test="${user.userType eq 1}">
+							            <td><button onclick="location.href='/course/user/courseReservation?classIdx=${classItem.classIdx}'">예약</button></td>
+					            	</c:if>
+					            	<c:if test="${user.userType eq 2}">
+							            <td><button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button></td>
+					            	</c:if>
 						        </tr>
 						    </c:if>
 						</c:forEach>
 						<c:if test="${not hasRegisteredClass}">
 						    <tr><td colspan="5">등록된 강의가 없습니다.</td></tr>
 						</c:if>
+	                    
                     </tbody>
+                    
                 </table>
            </div>
         </div>
@@ -72,12 +92,12 @@
 		    	<c:if test="${param.classType eq 0}">
 					<li><a href="/course/user/classList?classType=0"><b>정기 강의</b></a></li>
 		           	<c:forEach var="Pcat" items="${parentCategories}">
-		           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx }">
-		           		${Pcat.categoryName }</a></li>
-		           		<c:forEach var="Ccat" items="${childCategories }">
-		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx }">
-				           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Ccat.categoryIdx }">
-				           		${Ccat.categoryName }</a></li>
+		           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx}">
+		           		${Pcat.categoryName}</a></li>
+		           		<c:forEach var="Ccat" items="${childCategories}">
+		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx}">
+				           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Ccat.categoryIdx}">
+				           		${Ccat.categoryName}</a></li>
 		           			</c:if>
 		           		</c:forEach>
 		           	</c:forEach>		
@@ -85,12 +105,12 @@
 		    	<c:if test="${param.classType eq 1}">
 					<li><a href="/course/user/classList?classType=1"><b>단기 강의</b></a></li>
 		           	<c:forEach var="Pcat" items="${parentCategories}">
-		           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Pcat.categoryIdx }">
+		           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Pcat.categoryIdx}">
 		           		${Pcat.categoryName }</a></li>
-		           		<c:forEach var="Ccat" items="${childCategories }">
-		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx }">
-				           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Ccat.categoryIdx }">
-				           		${Ccat.categoryName }</a></li>
+		           		<c:forEach var="Ccat" items="${childCategories}">
+		           			<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx}">
+				           		<li><a href="/course/user/classList?classType=1&categoryIdx=${Ccat.categoryIdx}">
+				           		${Ccat.categoryName}</a></li>
 		           			</c:if>
 		           		</c:forEach>
 		           	</c:forEach>		
@@ -99,7 +119,7 @@
 		</nav>
 	</main>
 	<footer>
-		<jsp:include page="/WEB-INF/views/admin/bottom.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 	</footer>
 
 </body>

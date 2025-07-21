@@ -25,6 +25,7 @@ import com.itwillbs.clish.course.service.CompanyClassService;
 import com.itwillbs.clish.course.service.UserClassService;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
+import com.itwillbs.clish.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +37,7 @@ public class UserClassController {
 	private final CompanyClassService companyClassService;
 	private final UserClassService userClassService;
 	private final CategoryService categoryService;
+	private final UserService userService;
 	
 	// 클래스 리스트
 	@GetMapping("user/classList")
@@ -43,7 +45,9 @@ public class UserClassController {
 			@RequestParam int classType,
 			@RequestParam(required = false)String categoryIdx) {
 //		System.out.println("아무거나 송출 " + classType + " 다음거 " + categoryName);
-//		String userId = (String)session.getAttribute("sId");
+		String userId = (String)session.getAttribute("sId");
+		UserDTO user = userService.selectUserId(userId);
+		
 //		List<Map<String , Object>> classList = adminClassService.getClassList();
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
@@ -52,6 +56,7 @@ public class UserClassController {
 		model.addAttribute("parentCategories", parentCategories);
 		model.addAttribute("childCategories", childCategories);  
 		model.addAttribute("classList", classList);
+		model.addAttribute("user", user);
 		
 		return "/course/user/course_list";
 	}
@@ -87,7 +92,7 @@ public class UserClassController {
 		return "/course/user/course_reservation";
 	}
 	
-	@GetMapping("user/reservationSuccess")
+	@GetMapping("myPage/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO) {
 		
 		System.out.println("예약일시: " + reservationDTO.getReservationClassDate());
@@ -100,7 +105,7 @@ public class UserClassController {
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
 	
-		return "/course/user/course_list";
+		return "/clish/myPage/myPage_payment";
 	}
 	
 }
