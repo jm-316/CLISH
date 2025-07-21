@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
+import com.itwillbs.clish.course.service.CurriculumService;
+import com.itwillbs.clish.user.dto.CompanyDTO;
+import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class CompanyClassController {
 	private final CompanyClassService companyClassService;
 	private final AdminClassService adminClassService;
+	private final CurriculumService curriculumService;
 	
 	// 기업 메인페이지
 	@GetMapping("")
@@ -75,16 +81,13 @@ public class CompanyClassController {
         return "/company/companyClass/registerClass"; 
     }
 	
+	// 클래스 개설 로직
 	@PostMapping("/myPage/registerClass")
 	public String registerClassSubmit(ClassDTO companyClass, Model model, HttpServletRequest request) {
 		// 고유 번호 생성 - 등록 시점에서 class_idx를 직접 만들어 넣기 (예: CLS202507132152)
 		String classIdx = "CLS" + new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
 		companyClass.setClassIdx(classIdx);
 		
-		// -------------------------------------------------------------------
-		// classIdx 확인용
-//		System.out.println("생성된 classIdx: " + classIdx);
-//		System.out.println("DTO에 들어간 값: " + companyClass.getClassIdx());
 		// -------------------------------------------------------------------
 		// 수강료 기본값 처리
 		if(companyClass.getClassPrice() == null) {
@@ -107,10 +110,25 @@ public class CompanyClassController {
 	    // ------------------------------------------------------------------------------------------------------
 	    // 강좌 등록
 	    int result = companyClassService.registerClass(companyClass);
+	    // ------------------------------------------------------------------------------------------------------
+	    // 커리큘럼 등록 로직 (폼에서 여러 개 받아온 값 처리)
+	    String[] titles = request.getParameterValues("curriculumTitle");
+	    String[] runtimes = request.getParameterValues("curriculumRuntime");
+
+	    if (titles != null && runtimes != null) {
+	        for (int i = 0; i < titles.length; i++) {
+	            CurriculumDTO curri = new CurriculumDTO();
+	            curri.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
+	            curri.setClassIdx(classIdx); // 외래키 설정
+	            curri.setCurriculumTitle(titles[i]);
+	            curri.setCurriculumRuntime(runtimes[i]);
+
+	            curriculumService.insertCurriculum(curri);
+	        }
+	    }
 	    
 	    if (result > 0) {
 	    	model.addAttribute("msg", "강좌 개설이 완료되었습니다.");
-//	    	model.addAttribute("targetURL", "/company/myPage/classDetail"); // 성공 시 클래스 상세페이지로
 	    	model.addAttribute("targetURL", "/company/myPage/classDetail?classIdx=" + companyClass.getClassIdx());
 	    } else {
 	    	model.addAttribute("msg", "강좌 개설에 실패했습니다. 다시 시도해주세요.");
@@ -118,7 +136,6 @@ public class CompanyClassController {
 	    }
 	    
 	    return "commons/result_process";
-//	    return "redirect:/myPage/classDetail?classIdx=" + companyClass.getClassIdx();
 	}
 
 	
@@ -127,11 +144,26 @@ public class CompanyClassController {
 	public String classDetailForm(@RequestParam String classIdx, Model model) {
 		
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
-		
 		model.addAttribute("classInfo", classInfo);
 		
-		return "/company/companyClass/classDetail";
+		// 커리큘럼 목록 조회
+	    List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
+	    model.addAttribute("curriculumList", curriculumList);
+		
+		return "company/companyClass/classDetail";
 	}
 	
+	// 클래스 수정 페이지
+	@GetMapping("/myPage/modifyClass")
+	public String modifyClassForm(@RequestParam String classIdx, Model model) {
+		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
+		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
+		
+		model.addAttribute("classInfo", classInfo);
+	    model.addAttribute("curriculumList", curriculumList);
+		
+		return "/company/companyClass/modifyClass";
+	}
 	
+	// 클래스 수정 로직
 }

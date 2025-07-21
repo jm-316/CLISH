@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>클래스 상세 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 </head>
 <body>
@@ -52,6 +52,13 @@
 					</tr>
 					
 				</table>
+				
+				<h3>📚 커리큘럼 소개</h3>
+				<c:forEach var="curri" items="${curriculumList}">
+					<div>
+						<b>${curri.curriculumTitle}</b> (${curri.curriculumRuntime})<br><br>
+					</div>
+				</c:forEach>
 					
 				<div style="display: flex; justify-content: center; margin-top: 40px;">
 				    <button class="orange-button"
