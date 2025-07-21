@@ -61,7 +61,7 @@ public class MainController {
 	@GetMapping("/customer/announcements")
 	public String announcements() {
 		
-		return "customer/customer_announcements";
+		return "customer/announcements";
 	}
 	@GetMapping("/customer/FAQ")
 	public String faq() {
@@ -88,19 +88,25 @@ public class MainController {
 		
 		return "event/special_discount";
 	}
-	@GetMapping("/admin/main")
-	public String adminMain() {
-		
-		return "admin/user/admin_page";
-	}
+//	@GetMapping("/admin/main")
+//	public String adminMain() {
+//		
+//		return "admin/user/admin_page";
+//	}
 	@GetMapping("/company/main")
 	public String companyMain() {
 		
 		return "company/company_main";
 	}
-	@GetMapping("login") 
-	public String loginForm(@CookieValue(value = "rememberId", required = false) String userId) {
-		return "user/login_form";
+	@GetMapping("clish/myPage/main")
+	public String myPageMain() {
+		
+		return "clish/myPage/myPage_main";
+	}
+	@GetMapping("user/joinForm")
+	public String userJoin() {
+		
+		return "user/join_form";
 	}
 	
 	@GetMapping("logout")

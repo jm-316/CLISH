@@ -22,5 +22,6 @@ public interface CompanyClassMapper {
 	
 	// 단기 & 정기강의 조회
 	List<Map<String, Object>> selectClassListByType(String type);
+	
 
 }

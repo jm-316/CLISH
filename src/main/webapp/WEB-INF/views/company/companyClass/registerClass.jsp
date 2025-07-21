@@ -52,22 +52,43 @@
 		  <option value="1">단기 강의</option>
 		</select>
         
-        <!-- 강의 소개 -->
 		<label><b>강의 소개</b></label>
 		<textarea name="classIntro" rows="3" required></textarea>
 		
-		<!-- 강의 상세내용 -->
 		<label><b>강의 상세 내용</b></label>
 		<textarea name="classContent" rows="5" required></textarea>
 		
-		<!-- 썸네일 이미지 경로 -->
 		<label><b>썸네일 이미지 경로</b></label>
 		<input type="text" name="classPic1" value="/resources/images/logo4-2.png" required>
+		
+		 <!-- 커리큘럼 등록 폼 (여러개 입력 가능) -->
+		<h3>커리큘럼 등록</h3>
+		<div id="curri-area">
+		  <div class="curri-item">
+		    제목: <input type="text" name="curriculumTitle"><br>
+		    시간: <input type="text" name="curriculumRuntime"><br>
+		  </div>
+		</div>
+		
+		<button type="button" onclick="addCurriculum()" style="width: 100px;">커리큘럼 추가</button><br><br>
 
         <div style="text-align: center; margin-top: 30px;">
             <input type="submit" value="강좌 개설 신청" class="orange-button big-button">
         </div>
     </form>
+    
+	<script>
+	function addCurriculum() {
+		const div = document.createElement('div');
+		div.classList.add("curri-item");
+		div.innerHTML = `
+		제목: <input type="text" name="curriculumTitle"><br>
+		시간: <input type="text" name="curriculumRuntime"><br><br>
+		`;
+		document.getElementById("curri-area").appendChild(div);
+	}
+	</script>
+		
 </section>
 </body>
 </html>

@@ -46,8 +46,8 @@ window.onload = () => {
 }
 	function logout() {
 		// confirm() 함수 활용하여 "로그아웃하시겠습니까?" 질문을 통해
-		// 확인 버튼 클릭 시 "MemberLogout" 페이지로 이동 처리
 		if(confirm("로그아웃하시겠습니까?")) {
-			location.href = "/member/logout";
+			location.href = "/logout";
+			
 		}
 	}

@@ -156,8 +156,12 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <button class="orange-button">수정</button>
-                                    </td>
+								        <!-- 버튼 클릭 시, 수정 페이지로 이동 -->
+								        <button class="orange-button"
+								            onclick="event.stopPropagation(); location.href='${pageContext.request.contextPath}/company/myPage/modifyClass?classIdx=${classItem.class_idx}'">
+								            수정
+								        </button>
+								    </td>
                                 </tr>
 <%--                             </c:if> --%>
                         </c:forEach>
