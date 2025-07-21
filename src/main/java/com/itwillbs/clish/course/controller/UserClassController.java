@@ -66,9 +66,11 @@ public class UserClassController {
 	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session) {
 		
 		String userId = (String)session.getAttribute("sId");
+		UserDTO user = userService.selectUserId(userId);
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		
 		model.addAttribute("classInfo", classInfo);
+		model.addAttribute("user", user);
 		
 		return "/course/user/course_detail";
 	}

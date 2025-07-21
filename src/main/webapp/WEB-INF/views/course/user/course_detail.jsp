@@ -46,8 +46,10 @@
 					
 				<!-- 아직 안함.. -->
 		        <div style="text-align: center; padding-top: 30px;">
-		            <button class="orange-button">클래스 목록</button>
-		            <button class="orange-button" onclick="location.href='/course/user/courseReservation?classIdx=${classInfo.classIdx}'">예약정보 입력</button>
+		            <button class="orange-button" onclick="/course/user/classList?classType=0'">클래스 목록</button>
+		            <c:if test="${user.userType eq 2 or user.userType eq 1}">
+		            <button class="orange-button" onclick="location.href='/course/user/courseReservation?classIdx=${classInfo.classIdx}'" >예약정보 입력</button>
+		            </c:if>
 		        </div>
 		</section>
 	</main>
