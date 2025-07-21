@@ -65,10 +65,10 @@
 				</c:when>
 				<c:otherwise>
 					<a class="header-button button" href="javascript:void(0)" onclick="logout()">라그아웃</a>  
-					<c:if test="${sessionScope.userType eq '관리자'}">
+					<c:if test="${sessionScope.userType eq '3'}">
 						 <a class="header-button button" href="/admin/main">management page</a>
 					</c:if>
-					<c:if test="${sessionScope.userType eq '기업'}">
+					<c:if test="${sessionScope.userType eq '2'}">
 						 <a class="header-button button" href="/company/main">management page</a>
 					</c:if>
 				</c:otherwise>

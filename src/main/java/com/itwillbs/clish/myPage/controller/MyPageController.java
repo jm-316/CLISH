@@ -47,28 +47,24 @@ public class MyPageController {
 	@PostMapping("/change_user_info_form")
 	public String mypage_change_user_info_form(UserDTO user, HttpSession session, Model model) {
 		String inputPw = user.getUserPassword();
-		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg","로그인 이용후 사용가능한 페이지입니다.");
-			model.addAttribute("targetUrl","/");
-		} 
 			
 		user.setUserId((String)session.getAttribute("sId"));
 		user = myPageService.getUserInfo(user);
 		
 		if(user.getUserPassword().equals(inputPw)) {
-			System.out.println("정보변경으로이동");
 			model.addAttribute("user", user);
 			return "clish/myPage/myPage_change_user_info_form"; //비밀번호 일치시 이동페이지
 		}
+		
 		model.addAttribute("msg","비밀번호가 틀렸습니다.");
 		model.addAttribute("targetUrl","myPage/change_user_info_form");
-		return "/clish/myPage/myPage_change_user_info";
+		return "commons/result_process";
 	}
 	
 	// 수정정보 UPDATE문 으로 반영후 정보변경 메인페이지로 이동
 	@PostMapping("/change_user_info")
 	public String mypage_change_user_info(UserDTO user, HttpSession session,
-			@RequestParam("new_password2") String new_password) {
+			@RequestParam("newPasswordConfirm") String new_password) {
 		user.setUserId((String)session.getAttribute("sId"));
 		
 		UserDTO user1 = myPageService.getUserInfo(user); // 기존 유저 정보 불러오기

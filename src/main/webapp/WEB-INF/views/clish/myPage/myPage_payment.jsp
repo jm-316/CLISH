@@ -32,9 +32,7 @@
 			<h3>예약 목록</h3>
 			<table border="solid 1px">
 				<tr>
-					<th>선택</th>
 					<th>결제상태</th>
-					
 					<th>예약번호</th>
 					<th>예약자</th>
 					<th>클래스아이디</th>
@@ -47,7 +45,6 @@
 				<c:forEach var="reserve" items="${reservationList }" >
 					<c:if test="${reserve.reservationStatus == 1}">
 			        	<tr>
-			        		<td><input type="checkbox" name="${reserve.reservationIdx}"> </td>
 			        		<td><c:if test="${reserve.reservationStatus eq 1 }">미결제</c:if></td>
 			        		<td>${reserve.reservationIdx}</td>
 							<td>${user.userName}</td>
@@ -64,7 +61,6 @@
 			        </c:if>
 			        <c:if test="${reserve.reservationStatus == 2}">
 			        	<tr>
-			        		<td><input type="checkbox" name="${reserve.reservationIdx}"> </td>
 			        		<td><c:if test="${reserve.reservationStatus eq 2 }">결제완료</c:if></td>
 			        		<td>${reserve.reservationIdx}</td>
 							<td>${user.userName}</td>
