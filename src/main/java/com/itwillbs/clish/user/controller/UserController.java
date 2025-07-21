@@ -43,9 +43,9 @@ public class UserController {
 	//일반-기업 분류 회원가입
 	@GetMapping("/join/form")
 	public String joinForm(HttpSession session, @RequestParam(required = false) String from) {
-	    if ("general".equals(from)) {
+	    if("general".equals(from)) {
 	        session.setAttribute("userType", 1);
-	    } else if ("company".equals(from)) {
+	    } else if("company".equals(from)) {
 	        session.setAttribute("userType", 2);
 	    }
 	    return "user/join_form";
@@ -65,14 +65,14 @@ public class UserController {
 	    userDTO.setUserIdx(userIdx);
 
 	    CompanyDTO companyDTO = null;
-	    if (userDTO.getUserType() == 2) {
+	    if(userDTO.getUserType() == 2) {
 	        companyDTO = new CompanyDTO();
 	        companyDTO.setUserIdx(userIdx);
 	        companyDTO.setBizRegNo(bizRegNo);
 
 	        try {
 	            File uploadDir = new File(UPLOAD_DIR);
-	            if (!uploadDir.exists()) {
+	            if(!uploadDir.exists()) {
 	                uploadDir.mkdirs();
 	            }
 	            String originalFilename = bizFileName.getOriginalFilename();
@@ -95,7 +95,7 @@ public class UserController {
 	        ? userService.registerCompanyUser(userDTO, companyDTO)
 	        : userService.registerGeneralUser(userDTO);
 
-	    if (result > 0) {
+	    if(result > 0) {
 	        return "redirect:/user/join_success";
 	    } else {
 	        redirect.addFlashAttribute("errorMsg", "회원가입 실패");
@@ -121,12 +121,12 @@ public class UserController {
 	    
 	    UserDTO dbUser = userService.selectUserId(userDTO.getUserId());
 	    
-	    if (dbUser == null || !dbUser.getUserPassword().equals(userDTO.getUserPassword())) {
+	    if(dbUser == null || !dbUser.getUserPassword().equals(userDTO.getUserPassword())) {
 	        redirect.addFlashAttribute("errorMsg", "비밀번호 불일치");
 	        return "redirect:/user/login";
 	    }
 
-	    if (Objects.equals(dbUser.getUserStatus(), 3)) {
+	    if(Objects.equals(dbUser.getUserStatus(), 3)) {
 	        redirect.addFlashAttribute("errorMsg", "탈퇴한 회원입니다.");
 	        return "redirect:/user/login";
 	    }
@@ -134,11 +134,11 @@ public class UserController {
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
 	    session.setAttribute("loginUser", dbUser);
-	    session.setMaxInactiveInterval(600);
+	    session.setMaxInactiveInterval(60 * 60 * 24);
 
 	    Cookie cookie = new Cookie("rememberId", dbUser.getUserId());
 	    cookie.setPath("/");
-	    if (rememberId != null) {
+	    if(rememberId != null) {
 	        cookie.setMaxAge(60 * 60 * 24 * 30); 
 	    } else {
 	        cookie.setMaxAge(0);

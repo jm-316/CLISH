@@ -5,14 +5,14 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 	const verifyBtn = document.getElementById(buttonId);
 	const resultSpan = document.getElementById(statusSpanId);
 
-	if (!emailInput || !verifyBtn || !resultSpan) {
+	if(!emailInput || !verifyBtn || !resultSpan) {
 		console.error("email_auth.js 초기화 실패: 요소 확인 필요");
 		return;
 	}
 
 	verifyBtn.addEventListener("click", () => {
 		const email = emailInput.value;
-		if (!email) {
+		if(!email) {
 			alert("이메일을 입력하세요!");
 			emailInput.focus();
 			return;
@@ -25,7 +25,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 		})
 			.then(res => res.text())
 			.then(token => {
-				if (token && token.length > 0) {
+				if(token && token.length > 0) {
 					alert("이메일이 전송되었습니다. 받은 메일에서 인증 링크를 클릭하세요.");
 					resultSpan.innerText = "이메일 인증 중...";
 					resultSpan.style.color = "orange";
@@ -41,13 +41,13 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 	});
 
 	function startEmailPolling(email) {
-		if (emailCheckInterval) clearInterval(emailCheckInterval);
+		if(emailCheckInterval) clearInterval(emailCheckInterval);
 
 		emailCheckInterval = setInterval(() => {
 			fetch(`/email/check?email=${encodeURIComponent(email)}`)
 				.then(res => res.json())
 				.then(data => {
-					if (data.verified) {
+					if(data.verified) {
 						resultSpan.innerText = "이메일 인증 완료!";
 						resultSpan.style.color = "green";
 						clearInterval(emailCheckInterval);
@@ -61,7 +61,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 // verify.jsp에서 부모창에게 인증 성공 알림
 window.setEmailVerified = function () {
 	const resultSpan = document.getElementById("email-auth-result");
-	if (resultSpan) {
+	if(resultSpan) {
 		resultSpan.innerText = "이메일 인증 완료!";
 		resultSpan.style.color = "green";
 	}

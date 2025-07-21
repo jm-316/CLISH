@@ -29,7 +29,7 @@ public class EmailAuthController {
     public String verifyToken(@RequestParam("token") String token, Model model) {
         boolean result = emailAuthService.verifyToken(token); // DB에서 is_verified = 1 처리
         model.addAttribute("authResult", result);
-        return "email/verify"; // verify.jsp로 이동
+        return "email/verify"; 
     }
     
     @GetMapping("/check")

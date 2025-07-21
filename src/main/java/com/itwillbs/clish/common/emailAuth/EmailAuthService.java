@@ -35,13 +35,13 @@ public class EmailAuthService {
 
         int result = 0;
 
-        if (existing == null) {
+        if(existing == null) {
             result = emailAuthMapper.insertEmailAuth(dto);
         } else {
             result = emailAuthMapper.updateEmailAuth(dto);
         }
 
-        if (result > 0) {
+        if(result > 0) {
         	
             String subject = "[CLISH] 이메일 인증 요청";
             String verifyLink = baseUrl + "/email/verify?token=" + token;
@@ -60,9 +60,9 @@ public class EmailAuthService {
     public boolean verifyToken(String token) {
         EmailAuthDTO auth = emailAuthMapper.selectByToken(token);
 
-        if (auth == null) return false;
-        if ("Y".equals(auth.getUserEmailAuthYn())) return false;
-        if (auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return false;
+        if(auth == null) return false;
+        if("Y".equals(auth.getUserEmailAuthYn())) return false;
+        if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return false;
 
         emailAuthMapper.updateAuthYn(auth.getUserEmail());
         return true;
