@@ -1,9 +1,9 @@
-export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}) {
-
+export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
+	
 	const emailInput = document.getElementById(emailInputId);
 	const verifyBtn = document.getElementById(buttonId);
 	const resultSpan = document.getElementById(statusSpanId);
-	const lockOnSuccess = options.lockOnSuccess ?? true;
+	const lockOnSuccess = options.lockOnSuccess;
 	
 	let emailCheckInterval = null;
 
@@ -27,7 +27,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}
 		})
 			.then(res => res.text())
 			.then(token => {
-				if(token && token.length > 0) {
+				if(token) {
 					alert("이메일이 전송되었습니다. 받은 메일에서 인증 링크를 클릭하세요.");
 					resultSpan.innerText = "이메일 인증 중...";
 					resultSpan.style.color = "orange";
@@ -43,7 +43,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}
 	});
 
 	function startEmailPolling(email) {
-		if(emailCheckInterval) clearInterval(emailCheckInterval);
+		clearInterval(emailCheckInterval);
 
 		emailCheckInterval = setInterval(() => {
 			fetch(`/email/check?email=${encodeURIComponent(email)}`)
@@ -55,14 +55,14 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}
 						
 						clearInterval(emailCheckInterval);
 						
-						if (lockOnSuccess) {
+						if(lockOnSuccess) {
 							emailInput.readOnly = true;
 						}
 						verifyBtn.disabled = true;
 						document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
 								.forEach(el => el.disabled = false);
 						const submitBtn = document.getElementById("submitBtn");
-						if (submitBtn) submitBtn.disabled = false;
+						if(submitBtn) submitBtn.disabled = false;
 					}
 				})
 				.catch(err => console.error("인증 상태 확인 실패", err));
@@ -71,7 +71,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}
 }
 
 // verify.jsp에서 부모창에게 인증 성공 알림
-window.setEmailVerified = function () {
+window.setEmailVerified = function() {
 	const resultSpan = document.getElementById("email-auth-result");
 	if(resultSpan) {
 		resultSpan.innerText = "이메일 인증 완료!";
