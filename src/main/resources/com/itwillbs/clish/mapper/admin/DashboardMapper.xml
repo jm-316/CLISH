@@ -47,7 +47,7 @@
 	<select id="selectDailyRevenue" resultType="com.itwillbs.clish.admin.dto.RevenueDTO">
 		SELECT
 			DATE(FROM_UNIXTIME(pay_time / 1000)) AS date
-			, SUM(amount) AS total
+			, IFNULL(SUM(amount), 0) AS total
 		FROM 
 			PAYMENT_INFO
 		WHERE
@@ -62,7 +62,7 @@
 	<select id="selectMonthlyRevenue" resultType="com.itwillbs.clish.admin.dto.RevenueDTO">
 		SELECT
 	  		DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000), '%Y-%m') AS date
-	  		, SUM(amount) AS total
+	  		, IFNULL(SUM(amount), 0) AS total
 		FROM
 	  		PAYMENT_INFO
 		WHERE

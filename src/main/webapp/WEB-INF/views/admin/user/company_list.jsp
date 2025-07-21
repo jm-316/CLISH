@@ -53,23 +53,28 @@
 							</thead>
 							<tbody>
 								<c:forEach var="company" items="${companys}">
-									<tr onclick="location.href='/admin/company/${company.userIdx}'">
+									<tr>
 										<td>${company.userIdx}</td>
 										<td>${company.userId}</td>
 										<td>${company.userName}</td>
 										<td>${company.userPhoneNumber}</td>
 										<td>${company.userEmail}</td>
 										<td>${company.userRegDate}</td>
-										<td><c:choose>
+										<td>
+											<c:choose>
 												<c:when test="${company.userStatus == 1}">
 										            승인
 										        </c:when>
 												<c:otherwise>
 										            대기
 										        </c:otherwise>
-											</c:choose></td>
-										<td><button
-												onclick="location.href=`/admin/company/${company.userIdx}">수정</button></td>
+											</c:choose>
+										</td>
+										<td>
+											<button onclick="location.href='/admin/company/${company.userIdx}'" >
+												수정
+											</button>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>

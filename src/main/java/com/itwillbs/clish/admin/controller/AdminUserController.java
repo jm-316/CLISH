@@ -31,7 +31,7 @@ public class AdminUserController {
 	private final AdminUserService adminService;
 	private final AdminDashboardService adminDashboardService;
 	
-	@GetMapping("/")
+	@GetMapping("/main")
 	public String adminIndex(DashboardSummaryDTO summaryDTO, Model model) {
 		adminDashboardService.getSummary(summaryDTO);
 		
@@ -101,7 +101,7 @@ public class AdminUserController {
 	
 	// 일반 회원 탈퇴처리
 	@PostMapping("/user/{idx}/withdraw")
-	public String withdraw(@PathVariable("idx") String idx, Model model) {
+	public String userWithdraw(@PathVariable("idx") String idx, Model model) {
 		int count = adminService.setUserStatus(idx, 3);
 		
 		if (count > 0) {
@@ -119,11 +119,8 @@ public class AdminUserController {
 	// 기업 정보 리스트
 	@GetMapping("/company")
 	public String companyList(Model model) {
-		// 데이터베이스에서 원하는 정보 가져온다
-		// service -> mapper -> xml
-		// 받아온 데이터를 jsp로 넘겨준다 -> n개 이상 -> list로 받아온다?
 		List<UserDTO> companyList = adminService.getCompanyList();
-		// jsp에서 해당 데이터를 보여준다
+		
 		model.addAttribute("companys", companyList);
 		
 		return "/admin/user/company_list";
@@ -132,11 +129,6 @@ public class AdminUserController {
 	// 기업 상세 정보
 	@GetMapping("/company/{idx}")
 	public String companyInfo(@PathVariable("idx") String idx, Model model) {
-		// 관리자가 아닐 경우 권한이 없다고 알려주는 로직 필요
-		// GET으로 데이터 조회해서 가져오기
-		// 이때 id값을 전달
-		// 알림 테이블 데이터 업데이트 하는 로직 추가 필요
-		// 전달받은 데이터를 jsp로 전달
 		UserDTO companyInfo = adminService.getcompanyInfo(idx);
 		model.addAttribute("company", companyInfo);
 		return "/admin/user/company_info";
@@ -145,10 +137,6 @@ public class AdminUserController {
 	// 기업 승인
 	@PostMapping("/company/{idx}/approve")
 	public String approveCompany(@PathVariable("idx") String idx, Model model) {
-		// permit_company의 permit_is_approved 값 변경
-		// 성공 실패 로직 필요 
-		// 성공 시 리다이렉트, 실패 시 실패했다라는 알림
-		// 알림 테이블에 데이터 넣기 (승인완료된걸 알려줘야하니까??)
 		int success = adminService.modifyStatus(idx, 1);
 		
 		if (success > 0) {
@@ -165,9 +153,6 @@ public class AdminUserController {
 	// 기업 승인취소
 	@PostMapping("/company/{idx}/cancelApproval")
 	public String cancelApproveCompany(@PathVariable("idx") String idx, Model model) {
-		// permit_company의 permit_is_approved 값 변경
-		// 성공 실패 로직 필요 
-		// 성공 시 리다이렉트, 실패 시 실패했다라는 알림
 		int success = adminService.modifyStatus(idx, 5);
 		
 		if (success > 0) {
@@ -184,10 +169,6 @@ public class AdminUserController {
 	// 기업 정보수정
 	@PostMapping("/company/{idx}/update")
 	public String companyInfoModify(@PathVariable("idx") String idx, Model model, @ModelAttribute UserDTO company) {
-		// db에서 데이터 가져오기 
-		// 가져온 데이터랑 
-		// 성공 실패 로직 필요 
-		// 성공 시 리다이렉트, 실패 시 실패했다라는 알림
 		int count = adminService.modifycompanyInfo(idx, company);
 		
 		if (count > 0) {
@@ -200,5 +181,22 @@ public class AdminUserController {
 		
 		return "commons/result_process";
 	}
+	
+	// 일반 회원 탈퇴처리
+	@PostMapping("/company/{idx}/withdraw")
+	public String companyWithdraw(@PathVariable("idx") String idx, Model model) {
+		int count = adminService.modifyStatus(idx, 3);
+		
+		if (count > 0) {
+			model.addAttribute("msg", "탈퇴를 처리했습니다.");
+			model.addAttribute("targetURL", "/admin/company");
+		} else {
+			model.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		return "commons/result_process";
+	}
+	
 	
 }

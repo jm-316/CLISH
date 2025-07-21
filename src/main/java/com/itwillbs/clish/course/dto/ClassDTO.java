@@ -35,8 +35,8 @@ public class ClassDTO {
 	private List<String> classDayNames;
 	private String userIdx;
 	private int classType;
-	private String classIntro;
-	private String classContent;
-	private String classPic1;
+	private String classIntro; // 소개글
+	private String classContent; // 상세내용
+	private String classPic1; // 썸네일
 	
 }

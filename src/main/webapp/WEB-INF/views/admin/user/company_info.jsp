@@ -62,8 +62,8 @@
 							<c:otherwise>
 								<button type="submit" name="action" value="update" 
 										formaction="/admin/company/${company.userIdx}/update" formmethod="post">수정</button>
-								<button type="submit" name="action" value="cancel_approval" 
-										formaction="/admin/company/${company.userIdx}/cancelApproval" formmethod="post">승인취소</button>
+								<button type="submit" name="action" value="withdraw" 
+										formaction="/admin/company/${company.userIdx}/withdraw" formmethod="post">탈퇴</button>
 							</c:otherwise>
 						</c:choose>
 					</form>

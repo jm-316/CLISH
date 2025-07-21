@@ -53,7 +53,7 @@
 								</thead>
 								<tbody>
 									<c:forEach var="user" items="${users}">
-										<tr onclick="location.href='/admin/user/${user.userIdx}'">
+										<tr>
 											<td>${user.userIdx}</td>
 											<td>${user.userId}</td>
 											<td>${user.userName}</td>
@@ -62,19 +62,12 @@
 											<td>${user.userGender}</td>
 											<td>${user.userRegDate}</td>
 											<td>
-												<button onclick="location.href=`/admin/user/${user.userIdx}">수정</button>
+												<button onclick="location.href='/admin/user/${user.userIdx}'">수정</button>
 											</td>
 											<td>
-												<c:choose>
-													<c:when test="${user.userStatus == 3}">
-														<button class="gray-button" disabled>탈퇴회원</button>
-													</c:when>
-													<c:otherwise>
-														<button type="button"
-															onclick="event.stopPropagation(); withdraw('${user.userIdx}')">
-															탈퇴</button>
-													</c:otherwise>
-												</c:choose>
+												<button type="button" onclick="event.stopPropagation(); withdraw('${user.userIdx}')">
+													탈퇴
+												</button>
 											</td>
 										</tr>
 									</c:forEach>

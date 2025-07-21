@@ -21,6 +21,13 @@
 	</repositories>
 	
 	<dependencies>
+		<!-- 메일 한글이름 인코딩 -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		
 		<!-- 카카오결제 필요 라이브러리 -->
 		<dependency>
 	        <groupId>org.springframework</groupId>
@@ -279,7 +286,7 @@
                 <version>2.5.1</version>
                 <configuration>
                     <source>${java-version}</source>
-                    <target>${java-versieon}</target>
+                    <target>${java-version}</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
@@ -294,5 +301,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>ROOT</finalName>
     </build>
 </project>

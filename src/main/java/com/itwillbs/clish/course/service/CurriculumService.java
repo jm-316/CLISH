@@ -26,7 +26,10 @@ public class CurriculumService {
 	public List<CurriculumDTO> getCurriculumList(String classIdx) {
 		return curriculumMapper.selectCurriculumList(classIdx);
 	}
-	
+
+	public int updateCurriculumeInfo( String idx, CurriculumDTO dto) {
+		return curriculumMapper.updateCurriculum(idx, dto);
+	}
 	
 	 	
 }

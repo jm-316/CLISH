@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.admin.mapper.AdminClassMapper;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.course.dto.CurriculumDTO;
+import com.itwillbs.clish.course.service.CurriculumService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class AdminClassService {
 	private final AdminClassMapper adminClassMapper;
+	private final CurriculumService curriculumService;
 	private final NotificationService notificationService;
 	private final CategoryService categoryService;
 	
@@ -28,9 +31,10 @@ public class AdminClassService {
 	@Transactional
 	public int modifyStatus(String userIdx, String idx, int status) {
 		int update = adminClassMapper.updateClassStatus(idx, status);
+		
 		if (update > 0) {
 		  notificationService.send(userIdx, 3, "등록 요청하신 강좌가 승인되었습니다.");
-		  return 1;
+		  return update;
 		} 
 		
 		return 0;
@@ -38,13 +42,19 @@ public class AdminClassService {
 	
 	// 강좌 정보 수정
 	@Transactional
-	public int modifyClassInfo(String idx, ClassDTO classInfo) {
+	public int modifyClassInfo(String idx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) {
 		int update = adminClassMapper.updateClassInfo(idx, classInfo);
+		int updateCurriculume = 0;
 		
-		if (update > 0) {
-			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");
+		for (CurriculumDTO dto : curriculumList) {
+			updateCurriculume =  curriculumService.updateCurriculumeInfo(idx, dto);
 		}
-		return update;
+		
+		if (update > 0 || updateCurriculume > 0) {
+			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");
+			return update;
+		}
+		return 0;
 	}
 	
 	// 카테고리 삭제

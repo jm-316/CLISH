@@ -21,4 +21,16 @@
 		WHERE class_idx = #{classIdx}
 	</select>
 	
+	<update id="updateCurriculum">
+		UPDATE
+			CURRICULUM
+		SET
+			curriculum_title = #{curriculumInfo.curriculumTitle}
+			, curriculum_runtime = #{curriculumInfo.curriculumRuntime}
+		WHERE
+			class_idx = #{idx}
+		AND 
+			curriculum_idx = #{curriculumInfo.curriculumIdx}
+	</update>
+	
 </mapper>

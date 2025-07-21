@@ -1,5 +1,6 @@
 package com.itwillbs.clish.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
+import com.itwillbs.clish.course.service.CurriculumService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +32,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class AdminClassController {
 	private final CompanyClassService classService;
+	private final CurriculumService curriculumService;
 	private final AdminClassService adminClassService;
 	private final CategoryService categoryService;
 	private final NotificationService notificationService;
@@ -127,7 +131,6 @@ public class AdminClassController {
 	// 강좌 상세 정보
 	@GetMapping("/class/{idx}")
 	public String classInfo(@PathVariable("idx") String idx, Model model) {
-		// 클래스 정보 가져오기
 		ClassDTO classInfo = classService.getClassInfo(idx);
 		
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
@@ -140,21 +143,36 @@ public class AdminClassController {
 			parentCategory = categoryService.getCategoryByIdx(childCategory.getParentIdx());
 		}
 		
+		List<CurriculumDTO> curriculumDTO = curriculumService.getCurriculumList(idx);
+		
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("parentCategories", parentCategories);
 		model.addAttribute("childCategories", childCategories);
 		model.addAttribute("selectedParentCategory", parentCategory);
 		model.addAttribute("selectedChildCategory", childCategory);
+		model.addAttribute("curriculumList", curriculumDTO);
 		
-		System.out.println("어드민 상세 : " + classInfo);
 		return "/admin/class/class_info";
 	}
 	
 	// 강좌 수정
 	@PostMapping("/class/{idx}/update")
 	public String classInfoModify(@PathVariable("idx") String idx, Model model, 
-			@ModelAttribute ClassDTO classInfo) {
-		int count = adminClassService.modifyClassInfo(idx, classInfo);
+			@ModelAttribute ClassDTO classInfo,  @RequestParam("curriculumIdx") List<String> curriculumIdxList,
+            @RequestParam("curriculumTitle") List<String> curriculumTitleList,
+            @RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
+		
+	    List<CurriculumDTO> curriculumList = new ArrayList<>();
+	    for (int i = 0; i < curriculumIdxList.size(); i++) {
+	        CurriculumDTO dto = new CurriculumDTO();
+	        dto.setCurriculumIdx(curriculumIdxList.get(i));
+	        dto.setCurriculumTitle(curriculumTitleList.get(i));
+	        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
+	        dto.setClassIdx(idx);
+	        curriculumList.add(dto);
+	    }
+		
+		int count = adminClassService.modifyClassInfo(idx, classInfo, curriculumList);	
 		
 		if (count > 0) {
 			model.addAttribute("msg", "강좌 정보를 수정했습니다.");

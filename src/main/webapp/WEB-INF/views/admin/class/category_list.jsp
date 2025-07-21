@@ -109,7 +109,7 @@
 										<td>${fn:substringAfter(category.parentIdx, 'CT_')}</td>
 										<c:set var="prefix" value="${category.parentIdx}_" />
 										<td>${fn:substringAfter(category.categoryIdx, prefix)}</td>
-										<td>${category.categoryName}ㄴ</td>
+										<td>${category.categoryName}</td>
 										<td>${category.sortOrder}</td>
 										<td class="category-controls">
 											<button type="button"

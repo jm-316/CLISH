@@ -48,11 +48,26 @@
 						<h3>강좌 수정</h3>
 					</div>
 					<form id="classForm">
-						<input type="hidden" name="userIdx" id="userIdx"
-							value="${classInfo.userIdx}" />
+						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
 						<div>
-							<label>강좌 이름</label> <input type="text"
-								value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
+							<div style="display: flex;">
+								<div style="display: flex; flex-direction: column;">
+									<div>
+										<label>강좌 이름</label> <input type="text"
+											value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
+									</div>
+									<div>
+										<textarea rows="" cols="">${classInfo.classIntro}</textarea>
+									</div>
+									<div>
+										<textarea rows="" cols="">${classInfo.classContent}</textarea>
+									</div>
+								</div>
+								<div>
+									<img src="${classInfo.classPic1}"/>
+									<input type="file"/>
+								</div>
+							</div>
 						</div>
 						<div>
 							<label>정원</label> <input type="text"
@@ -62,6 +77,10 @@
 						<div>
 							<label>가격</label> <input type="text"
 								value="${classInfo.classPrice}" name="classPrice" id="classPrice" />
+						</div>
+						<div>
+							<label>강좌 타입</label> 
+							<input type="text" value="${classInfo.classType}" name="classType" id="classType" />
 						</div>
 						<div>
 							<label>시작날짜</label> <input type="date"
@@ -94,25 +113,27 @@
 								value="${classInfo.location}" name="location" id="location" />
 						</div>
 						<div>
-							<div>
-								<div>대분류</div>
-								<select>
-									<c:forEach var="category" items="${parentCategories}">
-										<option value="${category.categoryIdx}"
-											<c:if test="${selectedParentCategory != null && category.categoryIdx == selectedParentCategory.categoryIdx}">selected</c:if>>
-											${category.categoryName}</option>
-									</c:forEach>
-								</select>
-							</div>
-							<div>
-								<div>소분류</div>
-								<select name="categoryIdx">
-									<c:forEach var="category" items="${childCategories}">
-										<option value="${category.categoryIdx}"
-											<c:if test="${selectedChildCategory != null && category.categoryIdx == selectedChildCategory.categoryIdx}">selected</c:if>>
-											${category.categoryName}</option>
-									</c:forEach>
-								</select>
+							<div style="display: flex;">
+								<div>
+									<div>대분류</div>
+									<select>
+										<c:forEach var="category" items="${parentCategories}">
+											<option value="${category.categoryIdx}"
+												<c:if test="${selectedParentCategory != null && category.categoryIdx == selectedParentCategory.categoryIdx}">selected</c:if>>
+												${category.categoryName}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div>
+									<div>소분류</div>
+									<select name="categoryIdx">
+										<c:forEach var="category" items="${childCategories}">
+											<option value="${category.categoryIdx}"
+												<c:if test="${selectedChildCategory != null && category.categoryIdx == selectedChildCategory.categoryIdx}">selected</c:if>>
+												${category.categoryName}</option>
+										</c:forEach>
+									</select>
+								</div>
 							</div>
 						</div>
 						<c:if test="${classInfo.classStatus != 1}">
@@ -125,6 +146,14 @@
 								</select>
 							</div>
 						</c:if>
+						<h3>📚 커리큘럼 소개</h3>
+						<c:forEach var="curri" items="${curriculumList}">
+							<div style="margin-bottom: 10px;">
+								<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}"/>
+								<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" placeholder="제목">
+								<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" placeholder="시간">
+							</div>
+						</c:forEach>
 						<button type="button" onclick="history.back();">닫기</button>
 						<c:choose>
 							<c:when test="${classInfo.classStatus == 1}">

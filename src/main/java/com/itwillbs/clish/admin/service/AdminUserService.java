@@ -50,9 +50,10 @@ public class AdminUserService {
 		
 		if (update > 0) {
 			notificationService.send(idx, 5, "회원 정보가 수정되었습니다.");
+			return update;
 		}
 		
-		return update;
+		return 0;
 	}
 	
 	// 기업 정보 수정
@@ -62,26 +63,26 @@ public class AdminUserService {
 		
 		if (update > 0) {
 			notificationService.send(idx, 5, "회원 정보가 수정되었습니다.");
+			return update;
 		}
 		
-		return update;
+		return 0;
 	}
 	
 
-	// 승인 또는 승인 취소 로직
+	// 승인 또는 탈퇴 로직
 	@Transactional
 	public int modifyStatus(String idx, int status) {
 		int update = adminMapper.updateUserStatus(idx, status);
 		
 		if (update > 0) {
 			if (status == 1) {
-				notificationService.send(idx, 5, "가입이 승인되었습니다.");
-			} else if (status == 5) {
-				notificationService.send(idx, 5, "가입 승인이 취소되었습니다.");
-			}
+				notificationService.send(idx, 5, "가입이 승인되었습니다.");			
+			} 
+			return update;
 		}
 		
-		return update;
+		return 0;
 	}
 
 }
