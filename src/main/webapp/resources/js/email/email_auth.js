@@ -1,9 +1,11 @@
-export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
-	let emailCheckInterval = null;
+export function initEmailAuth(emailInputId, buttonId, statusSpanId, options = {}) {
 
 	const emailInput = document.getElementById(emailInputId);
 	const verifyBtn = document.getElementById(buttonId);
 	const resultSpan = document.getElementById(statusSpanId);
+	const lockOnSuccess = options.lockOnSuccess ?? true;
+	
+	let emailCheckInterval = null;
 
 	if(!emailInput || !verifyBtn || !resultSpan) {
 		console.error("email_auth.js 초기화 실패: 요소 확인 필요");
@@ -50,7 +52,17 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId) {
 					if(data.verified) {
 						resultSpan.innerText = "이메일 인증 완료!";
 						resultSpan.style.color = "green";
+						
 						clearInterval(emailCheckInterval);
+						
+						if (lockOnSuccess) {
+							emailInput.readOnly = true;
+						}
+						verifyBtn.disabled = true;
+						document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
+								.forEach(el => el.disabled = false);
+						const submitBtn = document.getElementById("submitBtn");
+						if (submitBtn) submitBtn.disabled = false;
 					}
 				})
 				.catch(err => console.error("인증 상태 확인 실패", err));

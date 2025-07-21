@@ -3,6 +3,14 @@ export function initJoinForm() {
 	// 1. 비밀번호 복잡도 검사
 	const passwordInput = document.getElementById("userPassword");
 	const confirmInput = document.getElementById("userPasswordConfirm");
+	
+	// 이메일 인증전 disabled 처리 
+	const disabledFields = document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button');
+	const submitBtn = document.getElementById("submitBtn");
+	disabledFields.forEach(el => {
+		el.disabled = true;
+	});
+	if (submitBtn) submitBtn.disabled = true;
 
 	if(passwordInput) {
 		passwordInput.onblur = function () {

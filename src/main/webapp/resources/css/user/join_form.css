@@ -1,0 +1,87 @@
+/* 전체 폼 너비 제한 및 가운데 정렬 */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form[name="joinForm"] p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#submitBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.email-auth-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ✅ 입력창과 버튼 사이 간격 */
+}
+
+.email-auth-wrap input[type="email"] {
+  flex: 1;
+}
+
+.email-auth-wrap button {
+  padding: 6px 12px;
+  height: 100%; /* 주소검색 버튼과 유사하게 */
+}
+
+form[name="joinForm"] {
+  max-width: 800px;     /* 최대 너비 지정 */
+  min-width: 700px;     /* 최소 너비 지정 */
+  
+  margin: 0 auto;       /* 중앙 정렬 */
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+  text-align: left;
+}
+
+th {
+  width: 180px;
+  background-color: #FF8C00; 
+  color: white;
+}
+
+/* input 스타일 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+input[readonly] {
+  background-color: #eee;
+}
+
+/* 버튼 */
+button {
+  padding: 6px 10px;
+  margin-left: 5px;
+}
+
+#email-auth-result {
+  font-weight: bold;
+}
