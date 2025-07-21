@@ -11,19 +11,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
+<style type="text/css">
+	#login-form {
+	width: 50%;
+	margin: 200px auto 0;
+	
+	}
+	#login-form > form {
+	border: none;
+	}
+	#login-form > input[type="submit"] {
+	margin: 0 auto;
+	}
+</style>
 </head>
 <body>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 	</header>
 	<main>
-		<h1>로그인</h1>
-		<form action="${pageContext.request.contextPath}/user/login" method="post">
-			<input type="text" name="userId" value = "${cookie.rememberId.value }" placeholder="아이디"><br>
-			<input type="password" name="userPassword" placeholder="패스워드"><br>
-			<input type="checkbox" name="rememberId" <c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억하기<br>
-			<input type="submit" value="로그인">
-		</form>	
+		<section id="login-form">
+			<h1>로그인</h1>
+			<form action="${pageContext.request.contextPath}/user/login" method="post">
+				<input type="text" name="userId" value = "${cookie.rememberId.value }" placeholder="아이디"><br>
+				<input type="password" name="userPassword" placeholder="패스워드"><br>
+				<input type="checkbox" name="rememberId" <c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억하기<br>
+				<input type="submit" value="로그인">
+			</form>
+		</section>
 	</main>
 </body>
 </html>

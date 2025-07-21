@@ -108,7 +108,7 @@ public class UserController {
 		return "/user/join_success";
 	}
 	
-	@GetMapping("login")
+	@GetMapping("/login")
 	public String showLoginForm() {
 	    return "user/login_form";
 	}
@@ -133,6 +133,7 @@ public class UserController {
 
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
+	    session.setAttribute("userType", dbUser.getUserType());
 	    session.setAttribute("loginUser", dbUser);
 	    session.setMaxInactiveInterval(60 * 60 * 24);
 

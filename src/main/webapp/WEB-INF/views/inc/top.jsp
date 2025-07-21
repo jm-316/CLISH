@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <section id="top-menu">
-  <a  href="/main.jsp"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
+  <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
   <nav>
       <ul id="flex-item2">
           <li>
@@ -58,19 +58,30 @@
            				<li>notification 3 <span onmouseover="changeNotiColor(e)">🔴</span></li>
            			</ul>
            		</div>
-           <a class="button header-button">마이페이지</a>
            <c:choose>
 				<c:when test="${empty sessionScope.sId}">
-		            <a href="/login" class="header-button button">로그인</a>
+		           <a class="button header-button" href="/user/joinForm">회원 가입</a>
+		            
+				</c:when>
+				<c:otherwise>
+					 
+					<c:if test="${sessionScope.userType == 3}">
+						 <a class="header-button button" href="/admin/">마이페이지</a>
+					</c:if>
+					<c:if test="${sessionScope.userType == 2}">
+						 <a class="header-button button" href="/company/main">마이페이지</a>
+					</c:if>
+					<c:if test="${sessionScope.userType == 1}">
+		          		 <a class="button header-button" href="/clish/myPage/main">마이페이지</a>
+					</c:if>
+				</c:otherwise>
+			</c:choose>
+           <c:choose>
+				<c:when test="${empty sessionScope.sId}">
+		            <a href="user/login" class="header-button button">로그인</a>
 				</c:when>
 				<c:otherwise>
 					<a class="header-button button" href="javascript:void(0)" onclick="logout()">라그아웃</a>  
-					<c:if test="${sessionScope.userType eq '관리자'}">
-						 <a class="header-button button" href="/admin/main">management page</a>
-					</c:if>
-					<c:if test="${sessionScope.userType eq '기업'}">
-						 <a class="header-button button" href="/company/main">management page</a>
-					</c:if>
 				</c:otherwise>
 			</c:choose>
     	</div>
@@ -80,7 +91,7 @@
     			notiButton.style.display = "block";
     		}
     	
-    		notiButton.addEventListener('mousenter', () => {
+    		notiButton.addEventListener('mouseleave', () => {
     		    notiButton.style.display = 'none';
     		});
     		function changeNotiColor(e) {
