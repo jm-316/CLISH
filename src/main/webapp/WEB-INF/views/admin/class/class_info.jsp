@@ -149,9 +149,9 @@
 						<h3>📚 커리큘럼 소개</h3>
 						<c:forEach var="curri" items="${curriculumList}">
 							<div style="margin-bottom: 10px;">
-								<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}"/>
-								<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" placeholder="제목">
-								<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" placeholder="시간">
+								<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}" />
+								<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" placeholder="제목" required>
+								<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" placeholder="시간" required>
 							</div>
 						</c:forEach>
 						<button type="button" onclick="history.back();">닫기</button>
