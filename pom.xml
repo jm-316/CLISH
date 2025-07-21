@@ -21,6 +21,13 @@
 	</repositories>
 	
 	<dependencies>
+		<!-- 메일 한글이름 인코딩 -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		
 		<!-- 카카오결제 필요 라이브러리 -->
 		<dependency>
 	        <groupId>org.springframework</groupId>

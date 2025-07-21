@@ -26,9 +26,11 @@ public class EmailClient {
 
     @Value("${mail.sender.name}")
     private String senderName;
-
+    
+    
     public void sendMail(String toEmail, String subject, String htmlContent) {
-        try {
+
+    	try {
             
             Properties props = new Properties();
             props.put("mail.smtp.host", host);
@@ -36,7 +38,7 @@ public class EmailClient {
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-
+            
             Session session = Session.getInstance(props, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(username, password);
@@ -44,7 +46,7 @@ public class EmailClient {
             });
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username, senderName));
+            message.setFrom(new InternetAddress(username, senderName, "UTF-8"));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             message.setSubject(subject);
             message.setContent(htmlContent, "text/html; charset=UTF-8");
