@@ -49,3 +49,18 @@
   	font-weight: bold;
   	color: #000;
 }
+
+.mini-chart {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+	
+}
+
+.chart {
+	margin-top: 20px;
+}
+
+.chart > canvas {
+	margin: auto;
+}

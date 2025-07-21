@@ -176,7 +176,7 @@ public class AdminClassController {
 		
 		if (count > 0) {
 			model.addAttribute("msg", "강좌 정보를 수정했습니다.");
-			model.addAttribute("targetURL", "/admin/classList");
+			model.addAttribute("targetURL", "/admin/class/" + idx);
 		} else {
 			model.addAttribute("msg", "다시 시도해주세요!");
 			return "commons/fail";

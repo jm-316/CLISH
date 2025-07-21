@@ -14,7 +14,7 @@
 	   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
 	   <ul>
 	   	   <li class="admin-main">
-	   	   		<a href="/admin/">MAIN</a>
+	   	   		<a href="/admin/main">MAIN</a>
 	   	    </li>
 	       <li>
 	       		<span>강좌 관리</span>
@@ -39,6 +39,28 @@
 				<ul>
 					<li>
 						<a href="/admin/paymentList">결제 목록</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<span>고객센터 관리</span>
+				<ul>
+					<li>
+						<a href="/admin/notice">공지사항 관리</a>
+					</li>
+					<li>
+						<a href="/admin/support">문의 관리</a>
+					</li>
+					<li>
+						<a href="/admin/faq">FAQ 관리</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<span>이벤트 관리</span>
+				<ul>
+					<li>
+						<a href="/admin/event">이벤트 관리</a>
 					</li>
 				</ul>
 			</li>

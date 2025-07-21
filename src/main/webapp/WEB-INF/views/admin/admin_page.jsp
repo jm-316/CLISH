@@ -23,20 +23,20 @@
 				<div>관리자</div>
 			</div>
 			<div class="main_container">
-				<div class="bg-light">
-					<div class="dashboard-container">
+				<div>
+					<div class="dashboard-container bg-light">
 						<div class="dashboard-summary">
 							<div class="summary-card">
 								<div class="summary-icon">
 									<i class="fa-solid fa-users"></i>
 								</div>
-								<div class="summary-text">
+								<div class="summary-text" onclick="location.href='/admin/user'">
 									<div class="summary-label">총 회원수</div>
 									<div class="summary-value">${summary.userCount}명</div>
 								</div>
 							</div>
 						</div>
-						<div class="dashboard-summary">
+						<div class="dashboard-summary" onclick="location.href='/admin/company'">
 							<div class="summary-card">
 								<div class="summary-icon">
 									<i class="fa-solid fa-building"></i>
@@ -47,7 +47,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="dashboard-summary">
+						<div class="dashboard-summary" onclick="location.href='/admin/company'">
 							<div class="summary-card">
 								<div class="summary-icon">
 									<i class="fa-solid fa-address-card"></i>
@@ -58,7 +58,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="dashboard-summary">
+						<div class="dashboard-summary" onclick="location.href='/admin/classList'">
 							<div class="summary-card">
 								<div class="summary-icon">
 									<i class="fa-solid fa-landmark"></i>
@@ -69,10 +69,14 @@
 								</div>
 							</div>
 						</div>
-					</div>		
-					<canvas id="dailyChart" width="300" height="300"></canvas>
-					<canvas id="categoryChart" width="300" height="300"></canvas>
-					<canvas id="monthlyChart" width="800" height="400"></canvas>
+					</div>
+					<div class="bg-light mini-chart">
+						<canvas id="dailyChart" width="500" height="300"></canvas>
+						<canvas id="categoryChart" width="500" height="300"></canvas>
+					</div>	
+					<div class="bg-light chart">
+						<canvas id="monthlyChart" width="1000" height="400"></canvas>
+					</div>	
 				
 				</div>
 			</div>
@@ -107,7 +111,7 @@ function loadDailyRevenueChart() {
 	      new Chart(document.getElementById("dailyChart").getContext("2d"), {
 	        type: 'bar',
 	        data: {
-	          labels: labels.map(d => d.slice(5)), // MM-DD 형태
+	          labels: labels.map(d => d.slice(5)),
 	          datasets: [{
 	            label: "일별 매출",
 	            data: values,
@@ -187,6 +191,7 @@ function loadDailyRevenueChart() {
 			          labels: labels,
 			          datasets: [{
 			            label: "카테고리별 매출",
+			            backgroundColor: "rgba(255, 118, 1, 0.7)",
 			            data: values,
 			            borderRadius: 6
 			          }]
