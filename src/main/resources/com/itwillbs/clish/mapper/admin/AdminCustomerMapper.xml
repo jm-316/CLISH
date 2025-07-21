@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.clish.admin.mapper.AdminCustomerMapper">
+	<!-- 공지사항 목록 -->
+	<select id="selectNotices" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+		SELECT *
+		FROM SUPPORT
+		ORDER BY
+			support_created_at ASC
+	</select>
+</mapper>  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
