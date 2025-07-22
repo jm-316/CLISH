@@ -1,7 +1,9 @@
 package com.itwillbs.clish.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
+import com.itwillbs.clish.admin.dto.InquiryDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 
 public interface AdminCustomerMapper {
@@ -19,5 +21,7 @@ public interface AdminCustomerMapper {
 	List<SupportDTO> selectFaqList();
 
 	SupportDTO selectFaq(String idx);
+
+	List<Map<String, Object>> selectInquiryList();
 
 }
