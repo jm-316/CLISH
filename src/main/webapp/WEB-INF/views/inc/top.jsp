@@ -60,7 +60,7 @@
            		</div>
            <c:choose>
 				<c:when test="${empty sessionScope.sId}">
-		           <a class="button header-button" href="/user/joinForm">회원 가입</a>
+		           <a class="button header-button" href="/user/join">회원 가입</a>
 		            
 				</c:when>
 				<c:otherwise>
