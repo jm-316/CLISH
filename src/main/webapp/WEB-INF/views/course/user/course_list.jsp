@@ -25,11 +25,11 @@
 		<main class="main">
 			<div class="main-content">
 				<div align="center">
-					<div class="box" align="justify">
-						<select>
+					<div class="box" align="right">
+						<select onchange="">
 								<option value="카테고리 선택" selected>카테고리 선택</option>
-							<c:forEach var="Pcat" items="${parentCategories}">
-								<option value="${fn:substringAfter(Pcat.categoryIdx, 'CT_')}">${fn:substringAfter(Pcat.categoryIdx, 'CT_')}</option>
+							<c:forEach var="parentCat" items="${parentCategories}">
+								<option value="${fn:substringAfter(parentCat.categoryIdx, 'CT_')}">${fn:substringAfter(parentCat.categoryIdx, 'CT_')}</option>
 							</c:forEach>
 						</select>
 						<select>
@@ -37,7 +37,7 @@
 							<option value="최신등록순">최신등록순</option>
 						</select>
 					</div>
-					<table class="table">
+					<table class="table"> 
 						<thead>
 							<tr>
 								<th colspan="6">강좌 목록</th>
@@ -48,7 +48,7 @@
 								<th>제목</th>
 								<th>일자</th>
 								<th>장소</th>
-								<th>오픈/마감</th>
+								<th>진행상태</th>
 								<th colspan="1"></th>
 							</tr>
 						</thead>
@@ -59,11 +59,12 @@
 									<c:set var="hasRegisteredClass" value="true" />
 									<tr>
 										<td
-											onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${param.categoryIdx}'">
-											<img src="/resources/images/${classItem.classPic1}">
+											onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
+											<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
+<%-- 											<img src="/resources/images/${classItem.classPic1}" alt="썸네일" style="width: 100px; height: auto;"> --%>
 										</td>
 										<td
-											onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${param.categoryIdx}'">
+											onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
 											${classItem.classTitle}</td>
 										<td>${classItem.startDate} ~ ${classItem.endDate}</td>
 										<td>${classItem.location}</td>
@@ -93,33 +94,24 @@
 			</div>
 			<div class="sidebar">
 				<ul class="category-list">
-					<c:if test="${param.classType eq 0}">
-						<li><a href="/course/user/classList?classType=0"><strong>정기
-									강의</strong></a></li>
+					<c:choose>
+						<c:when test="${param.classType eq 0}">
+							<c:set var="classType" value="정기 강의" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="classType" value="단기 강의" />
+						</c:otherwise>
+					</c:choose>
+					<c:if test="${param.classType eq 0 or param.classType eq 1}">
+						<li><a href="/course/user/classList?classType=${param.classType}"><strong>${classType}</strong></a></li>
 						<c:forEach var="Pcat" items="${parentCategories}">
 							<li><a
-								href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx}">
+								href="/course/user/classList?classType=${param.classType}&categoryIdx=${Pcat.categoryIdx}">
 									${Pcat.categoryName}</a></li>
 							<c:forEach var="Ccat" items="${childCategories}">
 								<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx}">
 									<li><a
-										href="/course/user/classList?classType=0&categoryIdx=${Ccat.categoryIdx}">
-											${Ccat.categoryName}</a></li>
-								</c:if>
-							</c:forEach>
-						</c:forEach>
-					</c:if>
-					<c:if test="${param.classType eq 1}">
-						<li><a href="/course/user/classList?classType=1"><strong>단기
-									강의</strong></a></li>
-						<c:forEach var="Pcat" items="${parentCategories}">
-							<li><a
-								href="/course/user/classList?classType=1&categoryIdx=${Pcat.categoryIdx}">
-									${Pcat.categoryName }</a></li>
-							<c:forEach var="Ccat" items="${childCategories}">
-								<c:if test="${Ccat.parentIdx eq Pcat.categoryIdx}">
-									<li><a
-										href="/course/user/classList?classType=1&categoryIdx=${Ccat.categoryIdx}">
+										href="/course/user/classList?classType=${param.classType}&categoryIdx=${Ccat.categoryIdx}">
 											${Ccat.categoryName}</a></li>
 								</c:if>
 							</c:forEach>

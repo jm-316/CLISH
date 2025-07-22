@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 </head>
 <body>
 	<header>
@@ -52,7 +54,14 @@
 				<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
 				<input type="hidden" id="classType" name="classType" value="${classInfo.classType}"><br>
 					
-	            <button class="orange-button" onclick="location.href='classList'">클래스 목록</button>
+	            <c:if test="${param.classType eq 0}">
+	            	<button class="orange-button" onclick="location.href='/course/user/classList?classType=0&categoryIdx=${param.categoryIdx}'">
+	            	클래스 목록</button>
+	            </c:if>
+	        	<c:if test="${param.classType eq 1}">
+	            	<button class="orange-button" onclick="location.href='/course/user/classList?classType=1&categoryIdx=${param.categoryIdx}'">
+	            	클래스 목록</button>
+	            </c:if>
 	            <button type="submit" class="orange-button">예약 확정</button>
 		</form>
 	</main>
