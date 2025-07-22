@@ -160,6 +160,7 @@
 		SELECT *
 		FROM INQUERY
 		WHERE user_idx = #{user.userIdx}
+		ORDER BY inquery_status, inquery_datetime DESC
 		LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -176,6 +177,17 @@
 		FROM INQUERY
 		WHERE inquery_idx = #{inqueryIdx}
 	</delete>
+	
+	<update id="updateInquery">
+		UPDATE INQUERY
+		SET
+			inquery_title = #{inqueryTitle}
+			, inquery_detail = #{inqueryDetail}
+			, inquery_modify_datetime = now()
+		WHERE
+			inquery_idx = #{inqueryIdx}
+		
+	</update>
 </mapper>
 
 

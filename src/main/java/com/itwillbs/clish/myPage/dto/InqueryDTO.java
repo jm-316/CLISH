@@ -15,7 +15,8 @@ public class InqueryDTO {
 	private String inqueryDetail;
 	private String inqueryAnswer;
 	private Timestamp inqueryDatetime;
-	private Timestamp inqueryAnswerDateTime;
+	private Timestamp inqueryAnswerDatetime;
+	private Timestamp inqueryModifyDatetime;
 	private int inqueryStatus;
 	
 }

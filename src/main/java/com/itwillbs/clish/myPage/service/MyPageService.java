@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
@@ -91,6 +92,10 @@ public class MyPageService {
 
 	public int getInqueryCount(UserDTO user) {
 		return myPageMapper.selectCountInquery(user);
+	}
+	
+	public void modifyInquery(InqueryDTO inqueryDTO) {
+		myPageMapper.updateInquery(inqueryDTO);
 	}
 	
 

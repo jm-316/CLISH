@@ -50,6 +50,8 @@ public interface MyPageMapper {
 
 	int selectCountInquery(UserDTO user);
 
+	void updateInquery(InqueryDTO inqueryDTO);
+
 
 
 

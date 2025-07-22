@@ -107,7 +107,7 @@ public class MyPageController {
 			
 			if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
 				return "commons/result_process";
 			}
 			model.addAttribute("reservationPageInfo", pageInfoDTO);
@@ -121,7 +121,7 @@ public class MyPageController {
 			
 			if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
 				return "commons/result_process";
 			}
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
@@ -256,7 +256,7 @@ public class MyPageController {
 			
 			if(inqueryPageNum < 1 || inqueryPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/myQuestion"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
 				return "commons/result_process";
 			}
 			model.addAttribute("inqueryPageInfo", pageInfoDTO);
@@ -273,10 +273,36 @@ public class MyPageController {
 	
 	// 수정
 	@GetMapping("/myQuestion/inquery/modify")
-	public String inqueryModify(InqueryDTO inqueryDTO) {
+	public String inqueryModifyForm(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user); // 유저 정보 조회
 		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
 		
-		return "";
+		model.addAttribute("user",user);
+		model.addAttribute("inqueryDTO", inqueryDTO);
+		return "/clish/myPage/myPage_question_inqueryForm";
+	}
+	
+	@PostMapping("/myQuestion/inquery/modify")
+	public String inqueryModify(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user); // 유저 정보 조회
+		InqueryDTO oriInqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
+		if (oriInqueryDTO.getInqueryStatus() == 1) {
+			myPageService.modifyInquery(inqueryDTO);
+		} else {
+			model.addAttribute("msg","이 문의는 수정이 불가능한 상태입니다.");
+			model.addAttribute("targetURL","/myPage/myQuestion");
+			return "commons/result_process";
+		}
+//		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
+		
+//		model.addAttribute("user",user);
+//		model.addAttribute("inqueryDTO", inqueryDTO);
+		return "redirect:/myPage/myQuestion";
+//		return "";
 	}
 	
 	// 삭제
