@@ -68,7 +68,7 @@ public class AdminClassController {
 		int count = categoryService.addCategory(category);
 		
 		if (count > 0) {
-			model.addAttribute("msg", "카테고리를 추가했습니다..");
+			model.addAttribute("msg", "카테고리를 추가했습니다.");
 			model.addAttribute("targetURL", "/admin/category");
 		} else {
 			model.addAttribute("msg", "다시 시도해주세요!");

@@ -268,3 +268,12 @@ table button {
   	margin-bottom: 10px;
   	cursor: pointer;
 }
+
+.flex {
+	display: flex;
+	justify-content: space-between;
+}
+
+.submitBtn {
+	margin-right: 30px;
+}

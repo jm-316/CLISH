@@ -7,9 +7,54 @@
 	<select id="selectNotices" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
 		SELECT *
 		FROM SUPPORT
+		WHERE
+			support_category = '공지사항'
 		ORDER BY
 			support_created_at ASC
 	</select>
+	
+	<!-- 공지사항 등록 -->
+	<insert id="insertNotice">
+		INSERT INTO
+			SUPPORT
+		VALUES (
+			#{supportIdx}
+			, #{supportTitle}
+			, #{supportDetail}
+			, now()
+			, #{supportCategory}
+			, #{supportAttach}
+		)
+	</insert>
+	
+	<!-- 공지사항 상세정보 -->
+	<select id="selectNotice" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+		SELECT *
+		FROM SUPPORT
+		WHERE
+			support_idx = #{idx}
+	</select>
+	
+	<!-- 공지사항 수정 -->
+	<update id="updateNotice">
+		UPDATE
+			SUPPORT
+		SET
+			support_title = #{supportTitle}
+			, support_detail = #{supportDetail}
+			, support_attach = #{supportAttach}
+		WHERE
+			support_idx = #{supportIdx}
+	</update>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="deleteNotice">
+		DELETE 
+		FROM
+			SUPPORT
+		WHERE
+			support_idx = #{idx}
+	</delete>
 </mapper>  
   
   

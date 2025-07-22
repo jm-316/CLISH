@@ -8,4 +8,12 @@ public interface AdminCustomerMapper {
 
 	List<SupportDTO> selectNotices();
 
+	void insertNotice(SupportDTO supportDTO);
+
+	SupportDTO selectNotice(String idx);
+
+	int updateNotice(SupportDTO supportDTO);
+
+	int deleteNotice(String idx);
+
 }
