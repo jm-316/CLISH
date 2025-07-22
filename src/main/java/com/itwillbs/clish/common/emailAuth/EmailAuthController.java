@@ -19,15 +19,24 @@ public class EmailAuthController {
 
     @PostMapping("/send")
     @ResponseBody
-    public String sendEmailAuth(@RequestBody EmailAuthDTO dto) {
-        String token = emailAuthService.createAndSendToken(dto.getUserEmail());
+    public Map<String, Object> sendEmailAuth(@RequestBody EmailAuthDTO dto) {
+    	Map<String, Object> res = new HashMap<>();
+    	String token = emailAuthService.createAndSendToken(dto.getUserEmail(), dto.getPurpose());
 
-        return token != null ? token : "";
+    	if(token != null) {
+			res.put("status", "이메일 발송 성공");
+			res.put("token", token);
+		} else {
+			res.put("status", "이메일 발송 실패");
+		}
+    	
+		return res;
     }
 
     @GetMapping("/verify")
-    public String verifyToken(@RequestParam("token") String token, Model model) {
-        boolean result = emailAuthService.verifyToken(token); // DB에서 is_verified = 1 처리
+    public String verifyToken(@RequestParam("token") String token, 
+    		@RequestParam(value = "purpose", required = false) String purpose, Model model) {
+        String result = emailAuthService.verifyToken(token, purpose);
         model.addAttribute("authResult", result);
         return "email/verify"; 
     }
