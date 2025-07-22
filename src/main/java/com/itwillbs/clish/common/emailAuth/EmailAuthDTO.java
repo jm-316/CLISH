@@ -12,4 +12,5 @@ public class EmailAuthDTO {
     private String userEmailToken;
     private LocalDateTime userEmailTokenExpire;
     private String userEmailAuthYn;
+    private String purpose;
 }

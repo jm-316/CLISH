@@ -1,11 +1,14 @@
 package com.itwillbs.clish.common.emailAuth;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.itwillbs.clish.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,12 +18,13 @@ public class EmailAuthService {
 	
 	@Value("${app.base-url}")
 	private String baseUrl;
-
+	
+	private final UserMapper userMapper;
     private final EmailAuthMapper emailAuthMapper;
     private final EmailClient emailClient;
 
     @Transactional
-    public String createAndSendToken(String email) {
+    public String createAndSendToken(String email, String purpose) {
 
     	String token = UUID.randomUUID().toString();
         LocalDateTime expire = LocalDateTime.now().plusMinutes(10);
@@ -33,18 +37,15 @@ public class EmailAuthService {
 
         EmailAuthDTO existing = emailAuthMapper.selectByEmail(email);
 
-        int result = 0;
-
-        if(existing == null) {
-            result = emailAuthMapper.insertEmailAuth(dto);
-        } else {
-            result = emailAuthMapper.updateEmailAuth(dto);
-        }
+        int result = (existing == null)
+        		? emailAuthMapper.insertEmailAuth(dto)
+        		: emailAuthMapper.updateEmailAuth(dto);
 
         if(result > 0) {
+        	String realPurpose = (purpose != null && !purpose.isBlank()) ? purpose : "user";
         	
             String subject = "[CLISH] 이메일 인증 요청";
-            String verifyLink = baseUrl + "/email/verify?token=" + token;
+            String verifyLink = baseUrl + "/email/verify?token=" + token + "&purpose=" + realPurpose;
             String content = "<h3>아래 링크를 클릭하여 이메일 인증을 완료해주세요.</h3>"
                            + "<a href='" + verifyLink + "'>이메일 인증하기</a>"
                            + "<p>(유효시간: 10분)</p>";
@@ -57,15 +58,21 @@ public class EmailAuthService {
     }
 
     @Transactional
-    public boolean verifyToken(String token) {
+    public String verifyToken(String token, String purpose) {
         EmailAuthDTO auth = emailAuthMapper.selectByToken(token);
-
-        if(auth == null) return false;
-        if("Y".equals(auth.getUserEmailAuthYn())) return false;
-        if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return false;
-
+        
+        if(auth == null) return "유효하지 않은 링크입니다";
+        if("Y".equals(auth.getUserEmailAuthYn())) return "이미 인증된 이메일 입니다";
+        if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return "링크가 만료되었습니다.";
+        
+        if("join".equals(purpose)) {
+    		if(userMapper.existsByEmail(auth.getUserEmail())) {
+    			return "이미 가입된 이메일입니다.";
+    		}
+    	}
+        
         emailAuthMapper.updateAuthYn(auth.getUserEmail());
-        return true;
+        return "이메일 인증이 완료되었습니다!";
     }
 
 

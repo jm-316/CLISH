@@ -10,5 +10,7 @@ public interface UserMapper {
 	int insertCompany(CompanyDTO companyDTO);
 
 	UserDTO selectUserId(String userId);
+	
+	boolean existsByEmail(String email);
 
 }

@@ -1,9 +1,10 @@
 export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	
+	options = options || {};
 	const emailInput = document.getElementById(emailInputId);
 	const verifyBtn = document.getElementById(buttonId);
 	const resultSpan = document.getElementById(statusSpanId);
-	const lockOnSuccess = options.lockOnSuccess;
+	const purpose = typeof options.purpose !== "undefined" ? options.purpose : "user";
 	
 	let emailCheckInterval = null;
 
@@ -19,11 +20,16 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 			emailInput.focus();
 			return;
 		}
-
+		
+		var bodyData = { userEmail: email };
+		if (purpose) {
+			bodyData.purpose = purpose;
+		}
+		
 		fetch("/email/send", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ userEmail: email })
+			body: JSON.stringify(bodyData)
 		})
 			.then(res => res.text())
 			.then(token => {
@@ -55,10 +61,9 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 						
 						clearInterval(emailCheckInterval);
 						
-						if(lockOnSuccess) {
-							emailInput.readOnly = true;
-						}
+						emailInput.readOnly = true;
 						verifyBtn.disabled = true;
+						
 						document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
 								.forEach(el => el.disabled = false);
 						const submitBtn = document.getElementById("submitBtn");
