@@ -61,6 +61,7 @@ public class CompanyClassController {
 	
 	// 클래스 관리 페이지
 	@GetMapping("/myPage/classManage")
+	// @RequestParam(required = false) String type - 쿼리스트링 type=short|regular 없으면 전체강의 조회
     public String classManageForm(@RequestParam(required = false) String type, Model model) {
 		// 클래스 개설되는지 확인용(임시) - adminClassService => companyClassService 로 잠시 변경
 //		List<Map<String , Object>> classList = companyClassService.getAllClassList();
@@ -194,7 +195,6 @@ public class CompanyClassController {
 			@RequestParam("curriculumIdx") List<String> curriculumIdxList,
 			@RequestParam("curriculumTitle") List<String> curriculumTitleList,
 			@RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
-		System.out.println(classInfo);
 		
 		List<CurriculumDTO> curriculumList = new ArrayList<>();
 	    for (int i = 0; i < curriculumIdxList.size(); i++) {
@@ -206,18 +206,8 @@ public class CompanyClassController {
 	        curriculumList.add(dto);
 	    }
 	    
-//	    // 요일 처리 로직 추가 (checkbox 처리)
-//	    int classDaysValue = 0;
-//	    List<String> tempDays = classInfo.getClassDayNames();
-//
-//	    if (tempDays != null) {
-//	        for (String val : tempDays) {
-//	            classDaysValue += Integer.parseInt(val);
-//	        }
-//	    }
 	    classInfo.setClassDays(classDays);
 		
-	   
 		int count = adminClassService.modifyClassInfo(classIdx, classInfo, curriculumList);	
 		
 		if (count > 0) {
