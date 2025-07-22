@@ -59,10 +59,18 @@
 					</tr>
 			
 					<tr>
-						<th><label for="userRepName"><c:if test="${sessionScope.userType == 1}">닉네임</c:if><c:if test="${sessionScope.userType == 2}">대표관리자명</c:if></label></th>
-						<td><input type="text" name="userRepName" id="userRepName"></td>
+					    <th>
+					        <label for="userRepName">
+					            <c:if test="${sessionScope.userType == 1}">닉네임</c:if>
+					            <c:if test="${sessionScope.userType == 2}">대표관리자명</c:if>
+					        </label>
+					    </th>
+					    <td>
+					        <input type="text" name="userRepName" id="userRepName">
+					        <span id="nicknameCheckResult"></span>
+					    </td>
 					</tr>
-			
+					
 					<tr>
 						<th><label for="userBirth"><c:if test="${sessionScope.userType == 1}">생년월일</c:if><c:if test="${sessionScope.userType == 2}">설립일</c:if></label></th>
 						<td><input type="date" name="userBirth" id="userBirth" required></td>
@@ -83,7 +91,10 @@
 			
 					<tr>
 						<th><label for="userId">아이디</label></th>
-						<td><input type="text" name="userId" id="userId" required></td>
+						<td>
+					        <input type="text" name="userId" id="userId">
+					        <span id="idCheckResult"></span>
+					    </td>
 					</tr>
 			
 					<tr>
@@ -104,12 +115,18 @@
 					</tr>
 					
 					<tr>
-						<th><label for="userPhoneNumber"><c:if test="${sessionScope.userType == 1}">휴대폰번호</c:if><c:if test="${sessionScope.userType == 2}">기업전화번호</c:if></label></th>
-						<td><input type="text" name="userPhoneNumber" id="userPhoneNumber" required></td>
+						<th><label for="userPhoneNumber"><c:if test="${sessionScope.userType == 1}">휴대폰번호</c:if>
+														<c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
+						<td>
+							<input type="text" name="userPhoneNumber" id="userPhoneNumber" required>
+							<span id="phoneCheckResult"></span>
+						</td>
+						
 					</tr>
 			
 					<tr>
-						<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.userType == 1}">비상연락망</c:if><c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
+						<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.userType == 1}">비상연락망</c:if>
+															<c:if test="${sessionScope.userType == 2}">기업전화번호</c:if></label></th>
 						<td><input type="text" name="userPhoneNumberSub" id="userPhoneNumberSub"></td>
 					</tr>
 			

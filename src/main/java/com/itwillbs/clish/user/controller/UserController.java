@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -149,12 +152,30 @@ public class UserController {
 	    return "redirect:/";
 	}
 	
-	@PostMapping("/saveEmailSession")
-	public String saveEmailSession(@RequestParam("user_email") String userEmail,
-	                               HttpSession session, RedirectAttributes redirect) {
-	    session.setAttribute("user_email", userEmail);
-	    redirect.addFlashAttribute("authMsg", "======");
-	    return "redirect:/member/general_join";
+//	@PostMapping("/saveEmailSession")
+//	public String saveEmailSession(@RequestParam("user_email") String userEmail,
+//	                               HttpSession session, RedirectAttributes redirect) {
+//	    session.setAttribute("user_email", userEmail);
+//	    redirect.addFlashAttribute("authMsg", "======");
+//	    return "redirect:/member/general_join";
+//	}
+	
+	@GetMapping("/checkNname")
+	@ResponseBody
+	public Map<String, Boolean> checkNickname(@RequestParam String nickname) {
+	    boolean nickExists = userService.isNickExists(nickname);
+	    Map<String, Boolean> result = new HashMap<>();
+	    result.put("nickExists", nickExists);
+	    return result;
+	}
+	
+	@GetMapping("/checkId")
+	@ResponseBody
+	public Map<String, Boolean> checkId(@RequestParam String userId) {
+	    boolean idExists = userService.isUserIdExists(userId);
+	    Map<String, Boolean> result = new HashMap<>();
+	    result.put("exists", idExists);
+	    return result;
 	}
 	
 }

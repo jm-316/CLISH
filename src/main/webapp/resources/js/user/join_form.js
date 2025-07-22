@@ -1,6 +1,9 @@
 export function initJoinForm() {
 	// const값 모음
+	const nicknameInput = document.getElementById('userRepName');
+	const resultSpan = document.getElementById('nicknameCheckResult');
 	const idInput = document.getElementById("userId");
+	const idResultSpan = document.getElementById('idCheckResult');
 	const pwInput = document.getElementById("userPassword");
 	const pwConf = document.getElementById("userPasswordConfirm");
 	const phoneInput = document.getElementById("userPhoneNumber");
@@ -19,10 +22,79 @@ export function initJoinForm() {
 	if (submitBtn) submitBtn.disabled = true;
 	
 	// 1. 닉네임 중복체크
+	let timerDelay = null;
+	
+	nicknameInput.addEventListener('input', function() {
+	    clearTimeout(timerDelay);
+	    const nickname = this.value.trim();
+
+	    if (nickname.length < 2) {
+	        resultSpan.innerText = '닉네임은 2글자 이상 입력';
+	        resultSpan.style.color = 'gray';
+	        return;
+	    }
+
+	    timerDelay = setTimeout(() => {
+	        fetch(`/user/checkNname?nickname=${encodeURIComponent(nickname)}`)
+	            .then(res => res.json())
+	            .then(data => {
+	                if (data.exists) {
+	                    resultSpan.innerText = '이미 사용 중인 닉네임입니다';
+	                    resultSpan.style.color = 'red';
+	                } else {
+	                    resultSpan.innerText = '사용 가능한 닉네임입니다!';
+	                    resultSpan.style.color = 'green';
+	                }
+	            }).catch(err => {
+	                resultSpan.innerText = '중복 확인 실패';
+	                resultSpan.style.color = 'gray';
+	            });
+	    }, 600); // 0.6초
+	});
+	
+	
 	
 	// 2. 생년월일 정규표현식 체크
 	
+	
+	
+	
+	
 	// 3. 아이디 중복 & 정규표현식 체크
+	let idTimerDelay = null;
+
+	idInput.addEventListener('input', function() {
+	    clearTimeout(idTimerDelay);
+	    const userId = this.value.trim();
+
+	    if (userId.length < 4) {
+	        idResultSpan.innerText = '아이디는 4글자 이상 입력';
+	        idResultSpan.style.color = 'gray';
+	        return;
+	    }
+
+	    idTimerDelay = setTimeout(() => {
+	        fetch(`/user/checkId?userId=${encodeURIComponent(userId)}`)
+	            .then(res => res.json())
+	            .then(data => {
+	                if (data.exists) {
+	                    idResultSpan.innerText = '이미 사용 중인 아이디입니다';
+	                    idResultSpan.style.color = 'red';
+	                } else {
+	                    idResultSpan.innerText = '사용 가능한 아이디입니다!';
+	                    idResultSpan.style.color = 'green';
+	                }
+	            }).catch(err => {
+	                idResultSpan.innerText = '중복 확인 실패';
+	                idResultSpan.style.color = 'gray';
+	            });
+		}, 600);
+	});
+	
+	
+	
+	
+	
 	
 	// 4. 비밀번호1 안전도검사
 	if(pwInput) {
@@ -59,7 +131,19 @@ export function initJoinForm() {
 	}
 	
 	// 6. 전화번호 중복 & 정규표현식 체크(->데이터 암호화)
+	phoneInput.addEventListener('blur', function() {
+	    const phone = this.value.replace(/\s+/g, "");
+	    const resultSpan = document.getElementById('phoneCheckResult');
 	
+	    const pattern = /^\d{3}-\d{4}-\d{4}$/;
+	    if (!pattern.test(phone)) {
+	        resultSpan.innerText = '전화번호 형식은 ***-****-**** 입니다.';
+	        resultSpan.style.color = 'red';
+	    } else {
+	        resultSpan.innerText = '올바른 전화번호 형식입니다!';
+	        resultSpan.style.color = 'green';
+	    }
+	});
 	
 	// 7. 주소 검색 API
 	const btn = document.getElementById("btnSearchAddress");

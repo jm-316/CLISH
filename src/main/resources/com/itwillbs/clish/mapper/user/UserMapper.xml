@@ -61,6 +61,18 @@
 		WHERE
 			user_email = #{email}
 	</select>
+	
+	<select id="countByNickname" parameterType="String" resultType="int">
+	    SELECT COUNT(*)
+	    FROM USER
+	    WHERE user_rep_name = #{nickname}
+	</select>
+	
+	<select id="countByUserId" parameterType="String" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM USER 
+	    WHERE user_id = #{userId}
+	</select>
 </mapper>  
   
   

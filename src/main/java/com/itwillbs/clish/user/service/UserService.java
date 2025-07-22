@@ -28,5 +28,13 @@ public class UserService {
 		return userMapper.selectUserId(userId);
 	}
 
+	public boolean isNickExists(String nickname) {
+		return userMapper.countByNickname(nickname) > 0;
+	}
+
+	public boolean isUserIdExists(String userId) {
+		 return userMapper.countByUserId(userId) > 0;
+	}
+
 
 }
