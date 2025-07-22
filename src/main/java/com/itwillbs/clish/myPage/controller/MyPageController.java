@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.clish.common.utils.PageInfoDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
@@ -88,24 +89,71 @@ public class MyPageController {
 	//결제내역
 	// 예약/결제 목록 불러오기
 	@GetMapping("/payment_info")
-	public String payment_info(HttpSession session, Model model,UserDTO user) {
+	public String payment_info(HttpSession session, Model model,UserDTO user
+			, @RequestParam(defaultValue = "1") int reservationPageNum
+			, @RequestParam(defaultValue = "1") int paymentPageNum) {
 		String sId = (String)session.getAttribute("sId");
 		user.setUserId(sId);
 		user = myPageService.getUserInfo(user);
-		System.out.println(user);
+		int listLimit = 5;
+		int reservationListCount = myPageService.getReservationCount(user);
+		int paymentListCount = myPageService.getPaymentCount(user);
+		
+		if(reservationListCount > 0 ) {
+			int listCount = reservationListCount;
+			int pageNum = reservationPageNum;
+			int startRow = (pageNum - 1) * listLimit;
+			int pageListLimit = 3;
+			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+			if(maxPage == 0) {
+				maxPage = 1;
+			}
+			int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+			int endPage = startPage + pageListLimit - 1;
+			if(endPage > maxPage) {
+				endPage = maxPage;
+			}
+			if(pageNum < 1 || pageNum > maxPage) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+			model.addAttribute("reservationPageInfo", pageInfoDTO);
 
-		if(sId != null && !sId.equals("")) {
-			List<ReservationDTO> reservationList = myPageService.getReservationInfo(user);
-			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(user);
+			List<ReservationDTO> reservationList = myPageService.getReservationInfo(startRow, listLimit, user);
 			model.addAttribute("reservationList",reservationList);
-			model.addAttribute("paymentList",paymentList);
-			model.addAttribute("user",user);
-			return "/clish/myPage/myPage_payment";
-		} else {
-			model.addAttribute("msg","잘못된 접근입니다.");
-			model.addAttribute("targetUrl","/");
-			return "commons/result_process";
+
 		}
+		if(paymentListCount > 0) {
+			int listCount = paymentListCount;
+			int pageNum = paymentPageNum;
+			int startRow = (pageNum - 1) * listLimit;
+			int pageListLimit = 3;
+			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+			if(maxPage == 0) {
+				maxPage = 1;
+			}
+			int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+			int endPage = startPage + pageListLimit - 1;
+			if(endPage > maxPage) {
+				endPage = maxPage;
+			}
+			if(pageNum < 1 || pageNum > maxPage) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+			model.addAttribute("paymentPageInfo", pageInfoDTO);
+
+			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(startRow, listLimit, user);
+			model.addAttribute("paymentList",paymentList);
+		}
+		model.addAttribute("user",user);
+		
+		return "/clish/myPage/myPage_payment";
+
 	}
 	
 	//예약 취소

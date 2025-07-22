@@ -74,6 +74,30 @@
 			        </c:if>
 	       		</c:forEach>
 			</table>
+			<section id="reservationPageList">
+				<c:if test="${not empty reservationPageInfo.maxPage or reservationPageInfo.maxPage > 0}">
+					<input type="button" value="이전" 
+						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum - 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
+						<c:if test="${reservationPageInfo.pageNum eq 1}">disabled</c:if>
+					>
+					
+					<c:forEach var="i" begin="${reservationPageInfo.startPage}" end="${reservationPageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq reservationPageInfo.pageNum}">
+								<strong>${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="/myPage/payment_info?reservationPageNum=${i}&paymentPageNum=${paymentPageInfo.pageNum }">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					<input type="button" value="다음" 
+						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum + 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
+						<c:if test="${reservationPageInfo.pageNum eq reservationPageInfo.maxPage}">disabled</c:if>
+					>
+				</c:if>
+			</section>
 		</div>
 		<div>
 		
@@ -106,6 +130,30 @@
 		        	</tr>
 	       		</c:forEach>
 			</table>
+			<section id="paymentPageList">
+				<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
+					<input type="button" value="이전" 
+						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum }&paymentPageNum=${paymentPageInfo.pageNum - 1}'" 
+						<c:if test="${paymentPageInfo.pageNum eq 1}">disabled</c:if>
+					>
+					
+					<c:forEach var="i" begin="${paymentPageInfo.startPage}" end="${paymentPageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq paymentPageInfo.pageNum}">
+								<strong>${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="/myPage/payment_info?reservationPageNum=${i}&paymentPageNum=${paymentPageInfo.pageNum }">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					<input type="button" value="다음" 
+						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum}&paymentPageNum=${paymentPageInfo.pageNum + 1}'" 
+						<c:if test="${paymentPageInfo.pageNum eq paymentPageInfo.maxPage}">disabled</c:if>
+					>
+				</c:if>
+			</section>
 		</div>
 	
 	</div>

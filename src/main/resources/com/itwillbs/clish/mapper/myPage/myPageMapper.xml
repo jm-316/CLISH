@@ -36,9 +36,12 @@
 		FROM 
 			RESERVATION
 		WHERE
-			user_idx = #{userIdx}
+			user_idx = #{user.userIdx}
 		ORDER BY 
 			(reservation_status = 1) DESC, reservation_com
+		LIMIT
+			#{startRow}
+			, #{listLimit}
 	</select>
 	<!-- 예약상세정보불러오기 -->
 	<select id="selectOneReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
@@ -116,7 +119,10 @@
 		JOIN
 			PAYMENT_INFO p ON r.reservation_idx = p.reservation_idx
 		WHERE
-			r.user_idx = #{userIdx}
+			r.user_idx = #{user.userIdx}
+		LIMIT
+			#{startRow}
+			, #{listLimit}
 	</select>
 	
 	<!-- 탈퇴 조회 -->
@@ -127,6 +133,21 @@
 		WHERE
 			user_id = #{userId}
 	</update>
+	
+	<select id="selectReservationCount" resultType="int">
+		SELECT COUNT(*)
+		FROM RESERVATION
+		WHERE user_idx = #{userIdx}
+	</select>
+	
+	<select id="selectPaymentCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PAYMENT_INFO
+		WHERE reservation_idx IN
+			(SELECT reservation_idx
+				FROM RESERVATION
+				WHERE user_idx = #{userIdx}	)
+	</select>
 </mapper>
 
 

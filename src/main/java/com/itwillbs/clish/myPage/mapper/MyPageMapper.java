@@ -19,7 +19,7 @@ public interface MyPageMapper {
 
 	int updateUserInfo(UserDTO user);
 
-	List<ReservationDTO> selectAllReservationInfo(UserDTO user);
+	List<ReservationDTO> selectAllReservationInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit,@Param("user")UserDTO user);
 
 	ReservationDTO selectOneReservationInfo(ReservationDTO reservation);
 
@@ -33,9 +33,13 @@ public interface MyPageMapper {
 
 	void updateReservationInfo(ReservationDTO reservation);
 
-	List<PaymentInfoDTO> selectAllPaymentInfo(UserDTO user);
+	List<PaymentInfoDTO> selectAllPaymentInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user);
 
 	int withdraw(UserDTO user);
+
+	int selectReservationCount(UserDTO user);
+
+	int selectPaymentCount(UserDTO user);
 
 
 

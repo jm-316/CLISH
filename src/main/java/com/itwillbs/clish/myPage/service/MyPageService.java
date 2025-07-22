@@ -30,8 +30,8 @@ public class MyPageService {
 		return myPageMapper.updateUserInfo(user);
 	}
 	
-	public List<ReservationDTO> getReservationInfo(UserDTO user) {
-		return myPageMapper.selectAllReservationInfo(user);
+	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
 	}
 	
 	public ReservationDTO getReservationInfo(ReservationDTO reservation) {
@@ -58,12 +58,20 @@ public class MyPageService {
 		myPageMapper.updateReservationInfo(reservation);
 	}
 
-	public List<PaymentInfoDTO> getPaymentList(UserDTO user) {
-		return myPageMapper.selectAllPaymentInfo(user);
+	public List<PaymentInfoDTO> getPaymentList(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectAllPaymentInfo(startRow, listLimit, user);
 	}
 
 	public int withdraw(UserDTO user) {
 		return myPageMapper.withdraw(user);
+	}
+
+	public int getReservationCount(UserDTO user) {
+		return myPageMapper.selectReservationCount(user);
+	}
+
+	public int getPaymentCount(UserDTO user) {
+		return myPageMapper.selectPaymentCount(user);
 	}
 	
 
