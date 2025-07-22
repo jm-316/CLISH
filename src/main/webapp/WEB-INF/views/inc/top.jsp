@@ -76,6 +76,14 @@
 					</c:if>
 				</c:otherwise>
 			</c:choose>
+			 <c:choose>
+				<c:when test="${empty sessionScope.sId}">
+		            <a href="user/login" class="header-button button">로그인</a>
+				</c:when>
+				<c:otherwise>
+					<a class="header-button button" href="javascript:void(0)" onclick="logout()">라그아웃</a>  
+				</c:otherwise>
+			</c:choose>
     	</div>
     	<script type="text/javascript">
 	    	const notiButton = document.getElementById('notification-box');
