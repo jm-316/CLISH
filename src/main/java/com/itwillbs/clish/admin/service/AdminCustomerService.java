@@ -21,25 +21,45 @@ public class AdminCustomerService {
 		return adminCustomerMapper.selectNotices();
 	}
 
-	public void registNotice(SupportDTO supportDTO) {
+	// SUPPORT 테이블 등록
+	public void registSupport(SupportDTO supportDTO) {
+		supportDTO.setSupportIdx(createIdx());
+		
+		if (supportDTO.getSupportCategory() == null) {
+			supportDTO.setSupportCategory("공지사항");
+		}
+		
+		adminCustomerMapper.insertSupport(supportDTO);
+	}
+	
+	// SUPPORT 테이블 상세 정보
+	public SupportDTO getSupport(String idx) {
+		return adminCustomerMapper.selectSupport(idx);
+	}
+
+	// SUPPORT 테이블 수정
+	public int modifySupport(SupportDTO supportDTO) {
+		return adminCustomerMapper.updateSupport(supportDTO);
+	}
+
+	// SUPPORT 테이블 삭제
+	public int removeSupport(String idx) {
+		return adminCustomerMapper.deleteSupport(idx);
+	}
+
+	// faq 리스트
+	public List<SupportDTO> getFaqList() {
+		return adminCustomerMapper.selectFaqList();
+	}
+
+	
+	// 아이디 생성 로직
+	private String createIdx() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String timestamp = LocalDateTime.now().format(formatter);
-		supportDTO.setSupportIdx("SUP" + timestamp);
-		supportDTO.setSupportCategory("공지사항");
+		String idx = "SUP" + timestamp;
 		
-		adminCustomerMapper.insertNotice(supportDTO);
-	}
-
-	public SupportDTO getNotice(String idx) {
-		return adminCustomerMapper.selectNotice(idx);
-	}
-
-	public int modifyNotice(SupportDTO supportDTO) {
-		return adminCustomerMapper.updateNotice(supportDTO);
-	}
-
-	public int removeNotice(String idx) {
-		return adminCustomerMapper.deleteNotice(idx);
+		return idx;
 	}
 
 }

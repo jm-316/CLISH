@@ -13,8 +13,8 @@
 			support_created_at ASC
 	</select>
 	
-	<!-- 공지사항 등록 -->
-	<insert id="insertNotice">
+	<!-- SUPPORT 테이블 내용 등록 -->
+	<insert id="insertSupport">
 		INSERT INTO
 			SUPPORT
 		VALUES (
@@ -27,34 +27,44 @@
 		)
 	</insert>
 	
-	<!-- 공지사항 상세정보 -->
-	<select id="selectNotice" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+	<!-- SUPPORT 테이블 상세정보 -->
+	<select id="selectSupport" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
 		SELECT *
 		FROM SUPPORT
 		WHERE
 			support_idx = #{idx}
 	</select>
 	
-	<!-- 공지사항 수정 -->
-	<update id="updateNotice">
+	<!-- SUPPORT 테이블 수정 -->
+	<update id="updateSupport">
 		UPDATE
 			SUPPORT
 		SET
 			support_title = #{supportTitle}
 			, support_detail = #{supportDetail}
+			, support_category = #{supportCategory}
 			, support_attach = #{supportAttach}
 		WHERE
 			support_idx = #{supportIdx}
 	</update>
 	
-	<!-- 공지사항 삭제 -->
-	<delete id="deleteNotice">
+	<!-- SUPPORT 테이블 삭제 -->
+	<delete id="deleteSupport">
 		DELETE 
 		FROM
 			SUPPORT
 		WHERE
 			support_idx = #{idx}
 	</delete>
+	
+	<!-- faq 목록 -->
+	<select id="selectFaqList" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+		SELECT *
+		FROM
+			SUPPORT
+		WHERE
+			support_category != '공지사항'
+	</select>
 </mapper>  
   
   
