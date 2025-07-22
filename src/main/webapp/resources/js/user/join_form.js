@@ -1,19 +1,32 @@
-// resources/js/user/join_form.js
 export function initJoinForm() {
-	// 1. 비밀번호 복잡도 검사
-	const passwordInput = document.getElementById("userPassword");
-	const confirmInput = document.getElementById("userPasswordConfirm");
-	
-	// 이메일 인증전 disabled 처리 
+	// const값 모음
+	const idInput = document.getElementById("userId");
+	const pwInput = document.getElementById("userPassword");
+	const pwConf = document.getElementById("userPasswordConfirm");
+	const phoneInput = document.getElementById("userPhoneNumber");
+	const agreeChk = document.getElementById("agreeTerms");
 	const disabledFields = document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button');
 	const submitBtn = document.getElementById("submitBtn");
+	const birthInput = document.getElementById("userBirth");
+
+	
+	// 이메일 인증전 disabled 처리 
 	disabledFields.forEach(el => {
 		el.disabled = true;
 	});
+	
+	// 서브밋 비활성화
 	if (submitBtn) submitBtn.disabled = true;
-
-	if(passwordInput) {
-		passwordInput.onblur = function () {
+	
+	// 1. 닉네임 중복체크
+	
+	// 2. 생년월일 정규표현식 체크
+	
+	// 3. 아이디 중복 & 정규표현식 체크
+	
+	// 4. 비밀번호1 안전도검사
+	if(pwInput) {
+		pwInput.onblur = function () {
 			const pwd = this.value;
 			const result = document.getElementById("checkPasswdResult");
 
@@ -28,10 +41,10 @@ export function initJoinForm() {
 		};
 	}
 
-	// 2. 비밀번호 확인
-	if(passwordInput && confirmInput) {
-		confirmInput.onblur = function () {
-			const pwd = passwordInput.value;
+	// 5. 비밀번호2 1과의 동일한 값 확인
+	if(pwInput && pwConf) {
+		pwConf.onblur = function () {
+			const pwd = pwInput.value;
 			const pwd2 = this.value;
 			const result = document.getElementById("checkPasswd2Result");
 
@@ -44,8 +57,11 @@ export function initJoinForm() {
 			}
 		};
 	}
-
-	// 3. 주소 검색 API
+	
+	// 6. 전화번호 중복 & 정규표현식 체크(->데이터 암호화)
+	
+	
+	// 7. 주소 검색 API
 	const btn = document.getElementById("btnSearchAddress");
 	if(btn) {
 		btn.onclick = function () {
