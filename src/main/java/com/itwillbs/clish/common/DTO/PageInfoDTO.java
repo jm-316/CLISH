@@ -1,4 +1,4 @@
-package com.itwillbs.clish.common.utils;
+package com.itwillbs.clish.common.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,4 +14,5 @@ public class PageInfoDTO {
 	private int startPage; // 현재 페이지에서의 페이지 목록 시작 번호
 	private int endPage; // 현재 페이지에서의 페이지 목록 끝 번호
 	private int pageNum; // 현재 페이지 번호
+	private int startRow;
 }
