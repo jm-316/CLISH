@@ -53,7 +53,14 @@
 	        user_id = #{userId}
 	</select>
 
-
+	<select id="existsByEmail" parameterType="String" resultType="boolean">
+		SELECT
+			COUNT(*) > 0
+		FROM
+			USER
+		WHERE
+			user_email = #{email}
+	</select>
 </mapper>  
   
   
