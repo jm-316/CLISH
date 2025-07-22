@@ -49,9 +49,12 @@ public class UserClassController {
 		UserDTO user = userService.selectUserId(userId);
 		
 //		List<Map<String , Object>> classList = adminClassService.getClassList();
-		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
-		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
+		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
+		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		
+		System.out.println(parentCategories);
+		System.out.println(childCategories);
 		
 		model.addAttribute("parentCategories", parentCategories);
 		model.addAttribute("childCategories", childCategories);  

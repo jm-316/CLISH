@@ -1,6 +1,7 @@
 package com.itwillbs.clish.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.clish.admin.dto.InquiryDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.service.AdminCustomerService;
 
@@ -149,5 +151,16 @@ public class AdminCustomerController {
 		}
 		
 		return "redirect:/admin/faq";
+	}
+	
+	// 문의 리스트 
+	@GetMapping("/inquiry")
+	public String supportList(Model model) {
+//		List<InquiryDTO> inquiryDTO = adminCustomerService.getInquiryList();
+		List<Map<String, Object>> inquiryList = adminCustomerService.getInquiryList();
+		
+		model.addAttribute("inquiryList", inquiryList);
+		
+		return "/admin/customer/inquiry_list";
 	}
 }

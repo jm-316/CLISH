@@ -73,8 +73,8 @@
 
     <!-- 공통 헤더 -->
     <header>
-        <jsp:include page="/WEB-INF/views/admin/header.jsp" />
-    </header>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	</header>
 
     <!-- 페이지 전체 컨테이너 -->
     <div class="classManage-container">

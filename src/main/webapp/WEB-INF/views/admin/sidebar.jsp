@@ -49,7 +49,7 @@
 						<a href="/admin/notice">공지사항 관리</a>
 					</li>
 					<li>
-						<a href="/admin/support">문의 관리</a>
+						<a href="/admin/inquiry">문의 관리</a>
 					</li>
 					<li>
 						<a href="/admin/faq">FAQ 관리</a>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.clish.company.mapper.CompanyInfoMapper">
+	<!-- 로그인한 기업회원 정보 조회 -->
+	<select id="selectUserInfo" resultType="com.itwillbs.clish.user.dto.UserDTO">
+		SELECT *
+		FROM USER
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 기업회원 정보 수정 처리 -->
+	<update id="updateUserInfo">
+    UPDATE USER
+	    <trim prefix="SET" suffixOverrides=",">
+	        <if test="userPassword != null and userPassword != ''">
+	            user_password = #{userPassword},
+	        </if>
+	        <if test="newEmail != null and newEmail != ''">
+	            user_email = #{newEmail},
+	        </if>
+	        user_name = #{userName},
+	        user_rep_name = #{userRepName},
+	        user_birth = #{userBirth},
+	        user_phone_number = #{userPhoneNumber},
+	        user_phone_number_sub = #{userPhoneNumberSub},
+	        user_postcode = #{userPostcode},
+	        user_address1 = #{userAddress1},
+	        user_address2 = #{userAddress2}
+	    </trim>
+	    WHERE user_id = #{userId}
+	</update>
+	
+	<!-- 기업회원 사업자등록증 정보 수정 처리 -->
+	<update id="updateCompanyInfo">
+		UPDATE COMPANY
+		SET 
+			biz_reg_no = #{bizRegNo},
+			biz_file_name = #{bizFileName},
+			biz_file_path = #{bizFilePath},
+			upload_date = NOW()
+		  WHERE
+			user_idx = #{userIdx}
+	</update>
+</mapper>

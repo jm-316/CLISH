@@ -3,9 +3,11 @@ package com.itwillbs.clish.admin.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.clish.admin.dto.InquiryDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.mapper.AdminCustomerMapper;
 
@@ -60,6 +62,10 @@ public class AdminCustomerService {
 		String idx = "SUP" + timestamp;
 		
 		return idx;
+	}
+
+	public List<Map<String, Object>> getInquiryList() {
+		return adminCustomerMapper.selectInquiryList();
 	}
 
 }

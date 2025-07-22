@@ -35,7 +35,7 @@
 	<div class="sidebar">
 	    <!-- 왼쪽 사이드 메뉴 -->
 	    <div class="sidebar">
-	        <h3><a href="">개인정보 수정</a></h3>
+	        <h3><a href="${pageContext.request.contextPath}/company/myPage/companyCheckPw">기업 정보 수정</a></h3>
 	        <h3><a href="${pageContext.request.contextPath}/company/myPage/classManage">클래스 관리</a></h3>
 	        <!-- 밑에꺼는 현재 매핑 안함 -->
 	        <h3><a href="">나의 문의</a></h3>

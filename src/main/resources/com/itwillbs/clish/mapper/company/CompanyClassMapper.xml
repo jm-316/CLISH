@@ -83,7 +83,7 @@
 			, location = #{classInfo.location}
 			, updated_at = now()
 		WHERE
-			class_idx = #{idx}
+			class_idx = #{classInfo.classIdx}
 	</update>
 
 </mapper>
