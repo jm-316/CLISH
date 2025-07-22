@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.myPage.mapper.MyPageMapper;
@@ -72,6 +73,24 @@ public class MyPageService {
 
 	public int getPaymentCount(UserDTO user) {
 		return myPageMapper.selectPaymentCount(user);
+	}
+
+	public List<InqueryDTO> getMyInquery(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllInquery(startRow, listLimit, user);
+	}
+
+	public void inqueryDelete(InqueryDTO inqueryDTO) {
+		myPageMapper.deleteInquery(inqueryDTO);
+		
+	}
+
+	public InqueryDTO getInqueryInfo(InqueryDTO inqueryDTO) {
+		return myPageMapper.selectOneInquery(inqueryDTO);
+	}
+
+	public int getInqueryCount(UserDTO user) {
+		return myPageMapper.selectCountInquery(user);
 	}
 	
 

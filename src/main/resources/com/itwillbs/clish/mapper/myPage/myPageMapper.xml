@@ -148,6 +148,34 @@
 				FROM RESERVATION
 				WHERE user_idx = #{userIdx}	)
 	</select>
+	
+	<select id="selectCountInquery" resultType="int">
+		SELECT COUNT(*)
+		FROM INQUERY
+		WHERE user_idx = #{userIdx}
+
+	</select>
+	
+	<select id="selectAllInquery" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+		SELECT *
+		FROM INQUERY
+		WHERE user_idx = #{user.userIdx}
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<select id="selectOneInquery" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+		SELECT *
+		FROM INQUERY
+		WHERE inquery_idx = #{inqueryIdx}
+	</select>
+	
+	<delete id="deleteInquery">
+		DELETE
+		FROM INQUERY
+		WHERE inquery_idx = #{inqueryIdx}
+	</delete>
 </mapper>
 
 

@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.clish.common.DTO.PageInfoDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.myPage.service.MyPageService;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
+import retrofit2.http.GET;
 
 @Controller
 @RequiredArgsConstructor
@@ -115,7 +117,7 @@ public class MyPageController {
 
 		}
 		if(paymentListCount > 0) {
-			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, paymentListCount, paymentPageNum, 3);
+			PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
 			
 			if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
@@ -236,6 +238,54 @@ public class MyPageController {
 		} else {
 			return "탈퇴실패 다시할것";
 		}
+	}
+	
+	// --------------------------------------------------------------------------------
+	// 나의문의
+	@GetMapping("/myQuestion")
+	public String myQuestion(HttpSession session, Model model, UserDTO user
+			, @RequestParam(defaultValue = "1") int classQuestionPageNum
+			, @RequestParam(defaultValue = "1") int inqueryPageNum) {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user); // 유저 정보 조회
+		int listLimit = 5;
+		int inqueryCount = myPageService.getInqueryCount(user);
+		if(inqueryCount > 0 ) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inqueryCount, inqueryPageNum, 3);
+			
+			if(inqueryPageNum < 1 || inqueryPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			model.addAttribute("inqueryPageInfo", pageInfoDTO);
+
+			List<InqueryDTO> inqueryDTOList = myPageService.getMyInquery(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("inqueryDTOList",inqueryDTOList);
+			model.addAttribute("user", user);
+
+		}
+		
+		
+		return "/clish/myPage/myPage_question";
+	}
+	
+	// 수정
+	@GetMapping("/myQuestion/inquery/modify")
+	public String inqueryModify(InqueryDTO inqueryDTO) {
+		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
+		
+		return "";
+	}
+	
+	// 삭제
+	@PostMapping("/myQuestion/inquery/delete")
+	public String inqueryDelete(InqueryDTO inqueryDTO) {
+		
+		myPageService.inqueryDelete(inqueryDTO);
+		
+		return "redirect:/myPage/myQuestion";
 	}
 	
 }
