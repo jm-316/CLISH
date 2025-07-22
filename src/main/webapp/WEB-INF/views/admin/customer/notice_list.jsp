@@ -8,6 +8,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<c:if test="${not empty msg}">
+		<script>
+	    	alert("${msg}");
+	    </script>
+	</c:if>
 	<div class="container">
 		<div class="sidebar">
 			<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"></jsp:include>	
@@ -22,11 +27,10 @@
 					<div>
 						<div class="flex">
 							<h5 class="section-title">공지사항</h5>
-							<button onclick="location.href='/admin/writeNotice'" class="submitBtn">등록</button>
+							<button onclick="location.href='/admin/notice/writeNotice'" class="submitBtn">등록</button>
 						</div>
 						<form class="filter-form">
 							<select class="filter-select">
-								<option>전체</option>
 								<option>최신순</option>
 								<option>과거순</option>
 							</select>
@@ -56,8 +60,8 @@
 											<td>${support.supportCreatedAt}</td>
 											<td>${support.supportCategory}</td>
 											<td class="flex">
-												<button onclick="location.href='/admin/detail/${support.supportIdx}'">상세보기</button>
-												<button onclick="location.href='/admin/delete/${support.supportIdx}'">삭제</button>
+												<button onclick="location.href='/admin/notice/detail/${support.supportIdx}'">상세보기</button>
+												<button onclick="location.href='/admin/notice/delete/${support.supportIdx}'">삭제</button>
 											</td>
 										</tr>
 									</c:forEach>									

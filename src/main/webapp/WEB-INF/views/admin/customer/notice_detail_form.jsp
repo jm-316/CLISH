@@ -21,11 +21,11 @@
 				<div class="bg-light">
 					<div>
 						<div>
-							<h5 class="section-title">공지사항 작성</h5>
+							<h5 class="section-title">공지사항 상세보기</h5>
 						</div>
 					</div>
 					<div>
-						<form action="/admin/modify" method="post">
+						<form action="/admin/notice/modify" method="post">
 							<input type="hidden" name="supportIdx"  id="supportIdx" value="${support.supportIdx}"/>
 							<table>
 								<colgroup>
@@ -51,7 +51,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<div>
+							<div class="button-wrapper">
 								<button type="submit" >수정</button>
 								<button type="button" onclick="location.href='/admin/notice'">취소</button>
 							</div>

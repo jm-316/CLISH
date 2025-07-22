@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<div>
-						<form action="/admin/writeNotice" method="post">
+						<form action="/admin/notice/writeNotice" method="post">
 							<table>
 								<colgroup>
 									<col width="20%">
@@ -50,7 +50,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<div>
+							<div class="button-wrapper">
 								<button type="submit" >등록</button>
 								<button type="button" onclick="history.back()">취소</button>
 							</div>
