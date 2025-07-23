@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.itwillbs.clish.admin.dto.InquiryDTO;
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.mapper.AdminCustomerMapper;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminCustomerService {
 	private final AdminCustomerMapper adminCustomerMapper;
+	private final NotificationService notificationService;
 
 	// 공지사항 리스트 
 	public List<SupportDTO> getNoticeList() {
@@ -54,6 +56,25 @@ public class AdminCustomerService {
 		return adminCustomerMapper.selectFaqList();
 	}
 
+	public List<InquiryJoinUserDTO> getInquiryList() {
+		return adminCustomerMapper.selectInquiryList();
+	}
+
+	public InquiryJoinUserDTO getInquiry(String idx) {
+		return adminCustomerMapper.selectInquiry(idx);
+	}
+	
+	@Transactional
+	public int writeAnswer(String idx, String userIdx, String inqueryAnswer) {
+		int update = adminCustomerMapper.updateInquiry(idx, inqueryAnswer);
+		
+		if (update > 0) {
+			notificationService.send(userIdx, 2, "문의하신 내용에 답변이 달렸습니다.");
+			return update;
+		}
+		
+		return 0;
+	}
 	
 	// 아이디 생성 로직
 	private String createIdx() {
@@ -64,8 +85,5 @@ public class AdminCustomerService {
 		return idx;
 	}
 
-	public List<Map<String, Object>> getInquiryList() {
-		return adminCustomerMapper.selectInquiryList();
-	}
 
 }

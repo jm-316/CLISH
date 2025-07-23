@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.itwillbs.clish.admin.dto.InquiryDTO;
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.service.AdminCustomerService;
 
@@ -155,12 +157,33 @@ public class AdminCustomerController {
 	
 	// 문의 리스트 
 	@GetMapping("/inquiry")
-	public String supportList(Model model) {
-//		List<InquiryDTO> inquiryDTO = adminCustomerService.getInquiryList();
-		List<Map<String, Object>> inquiryList = adminCustomerService.getInquiryList();
+	public String inquiryList(Model model) {
+		List<InquiryJoinUserDTO> inquiryList = adminCustomerService.getInquiryList();
 		
 		model.addAttribute("inquiryList", inquiryList);
 		
 		return "/admin/customer/inquiry_list";
+	}
+	
+	// 문의 상세
+	@GetMapping("/inquiry/detail/{idx}")
+	@ResponseBody
+	public InquiryJoinUserDTO inquiryDetail(@PathVariable("idx") String idx) {
+		return adminCustomerService.getInquiry(idx);
+	}
+	
+	// 문의 등록
+	@PostMapping("/inquiry/write")
+	public String writeInquiry(@RequestParam("inqueryIdx") String idx, @RequestParam("inqueryAnswer") String inqueryAnswer, @RequestParam("userIdx") String userIdx,  RedirectAttributes rttr) {
+		int update = adminCustomerService.writeAnswer(idx, userIdx, inqueryAnswer);
+		
+		if (update > 0) {
+			rttr.addFlashAttribute("msg", "답변이 등록되었습니다.");
+		} else {
+			rttr.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		return "redirect:/admin/inquiry";
 	}
 }
