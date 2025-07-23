@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.clish.course.dto.ClassDTO;
 
@@ -23,8 +24,12 @@ public interface CompanyClassMapper {
 	// 단기 & 정기강의 조회
 	List<Map<String, Object>> selectClassListByType(String type);
 	
-	// 클래스 수정
-//	int updateClassInfo(String idx, ClassDTO classInfo);
+	// 클래스수정페이지 - 클래스 정보 수정
+	int updateClassInfo(@Param("classIdx") String classIdx, @Param("classInfo") ClassDTO classInfo);
+	
+	// 클래스 삭제
+	void deleteClass(String classIdx);
+	
 	
 
 }

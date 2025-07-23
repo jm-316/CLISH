@@ -39,8 +39,7 @@
 	        <h3><a href="${pageContext.request.contextPath}/company/myPage/classManage">클래스 관리</a></h3>
 	        <!-- 밑에꺼는 현재 매핑 안함 -->
 	        <h3><a href="">나의 문의</a></h3>
-	        <h3><a href="">수강평 보기</a></h3>
-	        <h3><a href="">알람 내역</a></h3>
+	        <h3><a href="">나의 알림</a></h3>
 	        <h3><a href="">회원 탈퇴</a></h3>
 	    </div>
 	

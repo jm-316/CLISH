@@ -137,6 +137,7 @@
                             <th>소분류</th>
                             <th>상태</th>
                             <th>수정</th>
+                            <th>삭제</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,6 +163,13 @@
 								            수정
 								        </button>
 								    </td>
+								    <!-- 삭제 버튼 -->
+                                    <td>
+									    <button class="orange-button"
+									        onclick="event.stopPropagation(); deleteClass('${classItem.class_idx}')">
+									        삭제
+									    </button>
+									</td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -178,6 +186,14 @@
     <footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
     </footer>
-
+    
+	<script>
+	  // 클래스 삭제 함수 (클래스 idx를 파라미터로 받아서 삭제 요청)
+	  function deleteClass(classIdx) {
+	    if(confirm("정말 삭제하시겠습니까?")) {
+	      location.href = '${pageContext.request.contextPath}/company/myPage/deleteClass?classIdx=' + classIdx;
+	    }
+	  }
+	</script>
 </body>
 </html>
