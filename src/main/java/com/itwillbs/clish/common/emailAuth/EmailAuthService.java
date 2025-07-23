@@ -62,7 +62,7 @@ public class EmailAuthService {
         EmailAuthDTO auth = emailAuthMapper.selectByToken(token);
         
         if(auth == null) return "유효하지 않은 링크입니다";
-        if("Y".equals(auth.getUserEmailAuthYn())) return "이미 인증된 이메일 입니다";
+//        if("Y".equals(auth.getUserEmailAuthYn())) return "이미 인증된 이메일 입니다";
         if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return "링크가 만료되었습니다.";
         
         if("join".equals(purpose)) {

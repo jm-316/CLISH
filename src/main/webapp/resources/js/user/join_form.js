@@ -45,7 +45,7 @@ export function initJoinForm() {
 	                    resultSpan.innerText = '사용 가능한 닉네임입니다!';
 	                    resultSpan.style.color = 'green';
 	                }
-	            }).catch(err => {
+	            }).catch(_err => {
 	                resultSpan.innerText = '중복 확인 실패';
 	                resultSpan.style.color = 'gray';
 	            });
@@ -55,7 +55,19 @@ export function initJoinForm() {
 	
 	
 	// 2. 생년월일 정규표현식 체크
+	birthInput.addEventListener('blur', function() {
+	    const birth = this.value.replace(/\s+/g, "");
+	    const resultSpan = document.getElementById('birthCheckResult');
 	
+	    const pattern = /^\d{4}-\d{2}-\d{2}$/;
+	    if (!pattern.test(birth)) {
+	        resultSpan.innerText = '생년월일 형식은 ****-**-**입니다.';
+	        resultSpan.style.color = 'red';
+	    } else {
+	        resultSpan.innerText = '올바른 전화번호 형식입니다!';
+	        resultSpan.style.color = 'green';
+	    }
+	});
 	
 	
 	
@@ -65,7 +77,7 @@ export function initJoinForm() {
 
 	idInput.addEventListener('input', function() {
 	    clearTimeout(idTimerDelay);
-	    const userId = this.value.trim();
+	    const userId = this.value.replace(/\s+/g, "");
 
 	    if (userId.length < 4) {
 	        idResultSpan.innerText = '아이디는 4글자 이상 입력';
@@ -84,16 +96,12 @@ export function initJoinForm() {
 	                    idResultSpan.innerText = '사용 가능한 아이디입니다!';
 	                    idResultSpan.style.color = 'green';
 	                }
-	            }).catch(err => {
+	            }).catch(_err => {
 	                idResultSpan.innerText = '중복 확인 실패';
 	                idResultSpan.style.color = 'gray';
 	            });
 		}, 600);
 	});
-	
-	
-	
-	
 	
 	
 	// 4. 비밀번호1 안전도검사
