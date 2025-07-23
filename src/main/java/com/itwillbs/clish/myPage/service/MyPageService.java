@@ -97,6 +97,21 @@ public class MyPageService {
 	public void modifyInquery(InqueryDTO inqueryDTO) {
 		myPageMapper.updateInquery(inqueryDTO);
 	}
+
+	public int getclassQCount(UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectCountClassQ(user);
+	}
+
+	public List<InqueryDTO> getMyclassQ(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
+	}
+
+	public InqueryDTO getclassQInfo(InqueryDTO inqueryDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectOneClassQ(inqueryDTO);
+	}
 	
 
 

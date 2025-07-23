@@ -52,6 +52,12 @@ public interface MyPageMapper {
 
 	void updateInquery(InqueryDTO inqueryDTO);
 
+	int selectCountClassQ(UserDTO user);
+
+	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+
+	InqueryDTO selectOneClassQ(InqueryDTO inqueryDTO);
+
 
 
 

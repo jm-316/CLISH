@@ -51,71 +51,82 @@
 <!-- 		<input type="hidden" id="parent" value="list"> -->
 		<div>
 			<h3>강좌 문의</h3>
-			<table border="solid 1px">
-				<tr>
-					<th>결제상태</th>
-					<th>예약번호</th>
-					<th>예약자</th>
-					<th>클래스아이디</th>
-					<th>예약요청일</th>
-					<th>예약완료일</th>
-					<th>취소</th>
-					<th>결제</th>
-					<th>상세보기</th>
-				</tr>
-				<c:forEach var="reserve" items="${reservationList }" >
-					<c:if test="${reserve.reservationStatus == 1}">
-			        	<tr>
-			        		<td><c:if test="${reserve.reservationStatus eq 1 }">미결제</c:if></td>
-			        		<td>${reserve.reservationIdx}</td>
-							<td>${user.userName}</td>
-							<td>${reserve.classIdx}</td>
-							<td>${reserve.reservationClassDate}</td>
-							<td>${reserve.reservationCom}</td>
-							<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="cancelReservation(this)"></td>
-							<td><input type="button" value="결제" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="payReservation(this)"> </td>
-							<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="reservationInfo(this)"> </td>
-			        	</tr>
-			        </c:if>
-			        <c:if test="${reserve.reservationStatus == 2}">
-			        	<tr>
-			        		<td><c:if test="${reserve.reservationStatus eq 2 }">결제완료</c:if></td>
-			        		<td>${reserve.reservationIdx}</td>
-							<td>${user.userName}</td>
-							<td>${reserve.classIdx}</td>
-							<td>${reserve.reservationClassDate}</td>
-							<td>${reserve.reservationCom}</td>
-							<td></td><td></td>
-							<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="reservationInfo(this)"> </td>
-			        	</tr>
-			        </c:if>
-	       		</c:forEach>
-			</table>
-			<section id="reservationPageList">
-				<c:if test="${not empty reservationPageInfo.maxPage or reservationPageInfo.maxPage > 0}">
+			<table border="1" style="width: 100%; border-collapse: collapse;">
+				<thead style="background-color: #f5f5f5;">
+	   			<tr>
+	      			<th>문의 번호</th>
+				    <th>이름</th>
+				    <th>강좌명</th>
+				    <th>제목</th>
+				    <th>상태</th>
+			    </tr>
+			    </thead>
+			  	<tbody>
+				  	<c:forEach var="classQ" items="${classQDTOList}">
+					    <tr class="inquery-toggle">
+					    	<td>${classQ.inqueryIdx}</td>
+					      	<td>${user.userName}</td>
+					      	<td>${classQ.classTitle }</td>
+					      	<td>${classQ.inqueryTitle}</td>
+					      	<td>
+					        <c:choose>
+					        	<c:when test="${classQ.inqueryStatus == 1}">답변대기</c:when>
+					          	<c:when test="${classQ.inqueryStatus == 2}">답변완료</c:when>
+					       	 	<c:when test="${classQ.inqueryStatus == 3}">검토중</c:when>
+					        </c:choose>
+					     	</td>
+					    </tr>
+					
+					    <tr class="inquery-detail">
+					      	<td colspan="4">
+						        <strong>문의 내용:</strong><br>
+						        	${classQ.inqueryDetail}<br><br>
+						        <strong>답변 내용:</strong><br>
+						        <c:if test="${not empty classQ.inqueryAnswer}">
+						        	  ${classQ.inqueryAnswer}
+						        </c:if>
+						        <c:if test="${empty classQ.inqueryAnswer}">
+						         	 아직 답변이 등록되지 않았습니다.
+						        </c:if>
+						
+						        <c:if test="${classQ.inqueryStatus == 1}">
+						          	<div class="btn-wrap">
+							            <form action="/myPage/myQuestion/inquery/modify" method="get" style="display:inline;">
+							            	<input type="hidden" name="inqueryIdx" value="${classQ.inqueryIdx}">
+							            	<button type="submit">수정</button>
+							            </form>
+							            <form action="/myPage/myQuestion/inquery/delete" method="post" style="display:inline;">
+							              	<input type="hidden" name="inqueryIdx" value="${classQ.inqueryIdx}">
+							              	<button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+							            </form>
+						          	</div>
+						        </c:if>
+					    	</td>
+					    </tr>
+				  	</c:forEach>
+			  	</tbody>
+		  	</table>
+			<section id="inqueryList">
+				<c:if test="${not empty classQPageInfo.maxPage or classQPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum - 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
-						<c:if test="${reservationPageInfo.pageNum eq 1}">disabled</c:if>
+						onclick="location.href='/myPage/myQuestion?classQuestionPageNum=${classQPageInfo.pageNum - 1 }&inqueryPageNum=${inqueryPageInfo.pageNum}'" 
+						<c:if test="${classQPageInfo.pageNum eq 1}">disabled</c:if>
 					>
 					
-					<c:forEach var="i" begin="${reservationPageInfo.startPage}" end="${reservationPageInfo.endPage}">
+					<c:forEach var="i" begin="${classQPageInfo.startPage}" end="${classQPageInfo.endPage}">
 						<c:choose>
-							<c:when test="${i eq reservationPageInfo.pageNum}">
+							<c:when test="${i eq classQPageInfo.pageNum}">
 								<strong>${i}</strong>
 							</c:when>
 							<c:otherwise>
-								<a href="/myPage/payment_info?reservationPageNum=${i}&paymentPageNum=${paymentPageInfo.pageNum }">${i}</a>
+								<a href="/myPage/myQuestion?classQuestionPageNum=${i}&inqueryPageNum=${inqueryPageInfo.pageNum}">${i}</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 					
 					<input type="button" value="다음" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum + 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
-						<c:if test="${reservationPageInfo.pageNum eq reservationPageInfo.maxPage}">disabled</c:if>
+						onclick="location.href='/myPage/myQuestion?classQuestionPageNum=${classQPageInfo.pageNum + 1}&inqueryPageNum=${inqueryPageInfo.pageNum}'" 
+						<c:if test="${classQPageInfo.pageNum eq classQPageInfo.maxPage}">disabled</c:if>
 					>
 				</c:if>
 			</section>

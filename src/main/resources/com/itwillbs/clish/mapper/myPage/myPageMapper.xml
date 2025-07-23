@@ -153,6 +153,7 @@
 		SELECT COUNT(*)
 		FROM INQUERY
 		WHERE user_idx = #{userIdx}
+			AND inquery_type = 1
 
 	</select>
 	
@@ -160,6 +161,7 @@
 		SELECT *
 		FROM INQUERY
 		WHERE user_idx = #{user.userIdx}
+			AND inquery_type = 1
 		ORDER BY inquery_status, inquery_datetime DESC
 		LIMIT
 			#{startRow}
@@ -188,6 +190,32 @@
 			inquery_idx = #{inqueryIdx}
 		
 	</update>
+	
+	<select id="selectCountClassQ" resultType="int">
+		SELECT COUNT(*)
+		FROM INQUERY
+		WHERE user_idx = #{userIdx}
+			AND inquery_type = 2
+	</select>
+	
+	<select id="selectAllClassQ" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+		SELECT I.*, C.class_title
+		FROM INQUERY I
+		JOIN CLASS C ON I.class_idx = C.class_idx
+		WHERE I.user_idx = #{user.userIdx}
+			AND I.inquery_type = 2
+		ORDER BY I.inquery_status, I.inquery_datetime DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<select id="selectOneClassQ" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO"> 
+		SELECT I.*, C.class_title
+		FROM INQUERY I
+		JOIN CLASS C ON I.class_idx = C.class_idx
+		WHERE I.inquery_idx = #{inqueryIdx}
+	</select>
 </mapper>
 
 
