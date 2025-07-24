@@ -26,11 +26,11 @@
 				<div>
 					<div class="dashboard-container bg-light">
 						<div class="dashboard-summary">
-							<div class="summary-card">
+							<div class="summary-card" onclick="location.href='/admin/user'">
 								<div class="summary-icon">
 									<i class="fa-solid fa-users"></i>
 								</div>
-								<div class="summary-text" onclick="location.href='/admin/user'">
+								<div class="summary-text">
 									<div class="summary-label">총 회원수</div>
 									<div class="summary-value">${summary.userCount}명</div>
 								</div>
@@ -66,6 +66,17 @@
 								<div class="summary-text">
 									<div class="summary-label">강의 승인 대기</div>
 									<div class="summary-value">${summary.pendingClassCount}개</div>
+								</div>
+							</div>
+						</div>
+						<div class="dashboard-summary" onclick="location.href='/admin/inquiry'">
+							<div class="summary-card">
+								<div class="summary-icon">
+									<i class="fa-solid fa-bell"></i>
+								</div>
+								<div class="summary-text">
+									<div class="summary-label">미답변 문의</div>
+									<div class="summary-value">${summary.unAnsweredInquiryCount}개</div>
 								</div>
 							</div>
 						</div>

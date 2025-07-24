@@ -12,4 +12,5 @@ public class DashboardSummaryDTO {
 	private int companyCount;
 	private int pendingClassCount;
 	private int pendingCompanyCount;
+	private int unAnsweredInquiryCount;
 }
