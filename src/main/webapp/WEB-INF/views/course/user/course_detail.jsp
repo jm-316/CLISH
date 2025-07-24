@@ -6,9 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 
 <style type="text/css">
