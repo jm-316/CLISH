@@ -23,5 +23,18 @@ public class MainService {
 			
 		return mainMapper.selectClassInfo();
 	}
+	public List<ClassDTO> getClassList2() {
+		
+		return mainMapper.selectClassInfo2();
+	}
+	public List<ClassDTO> getClassListLongLatest() {
+		
+		return mainMapper.selectClassLongLatest();
+	}
+	public List<ClassDTO> getClassListShortLatest() {
+		
+		return mainMapper.selectClassInfoShortLatest();
+	}
+	
 		
 }

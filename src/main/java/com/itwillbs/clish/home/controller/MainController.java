@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.home.service.MainService;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -26,11 +27,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainController {
 	private final CategoryService categoryService;
-//	private final MainService mainService;
-//	
-//	public MainController(MainService mainService) {
-//		this.mainService = mainService;
-//	}
+	private final MainService mainService;
+
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -47,6 +45,14 @@ public class MainController {
 		model.addAttribute("childCategories", childCategories);
 		
 		model.addAttribute("serverTime", formattedDate );
+		List<ClassDTO> classList = mainService.getClassList();
+		List<ClassDTO> classList2 = mainService.getClassList2();
+		List<ClassDTO> classListLongLatest = mainService.getClassListLongLatest();
+		List<ClassDTO> classListShortLatest = mainService.getClassListShortLatest();
+		model.addAttribute("classList", classList);
+		model.addAttribute("classList2", classList2);
+		model.addAttribute("classListLongLatest", classListLongLatest);
+		model.addAttribute("classListShortLatest", classListShortLatest);
 		
 //		return "home";
 		return "main";
