@@ -3,7 +3,9 @@ package com.itwillbs.clish.admin.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.itwillbs.clish.admin.dto.InquiryDTO;
+import org.apache.ibatis.annotations.Param;
+
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 
 public interface AdminCustomerMapper {
@@ -22,6 +24,10 @@ public interface AdminCustomerMapper {
 
 	SupportDTO selectFaq(String idx);
 
-	List<Map<String, Object>> selectInquiryList();
+	List<InquiryJoinUserDTO> selectInquiryList();
+
+	InquiryJoinUserDTO selectInquiry(String idx);
+
+	int updateInquiry(@Param("idx") String idx, @Param("inqueryAnswer") String inqueryAnswer);
 
 }

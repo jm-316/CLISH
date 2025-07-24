@@ -73,7 +73,10 @@
 					
 					<tr>
 						<th><label for="userBirth"><c:if test="${sessionScope.userType == 1}">생년월일</c:if><c:if test="${sessionScope.userType == 2}">설립일</c:if></label></th>
-						<td><input type="date" name="userBirth" id="userBirth" required></td>
+						<td>
+							<input type="date" name="userBirth" id="userBirth" required>
+							<span id="birthCheckResult"></span>
+						</td>
 					</tr>
 			
 					<c:if test="${sessionScope.userType == 1}">
@@ -152,7 +155,6 @@
 			<p><button type="submit" id="submitBtn">회원가입</button></p>
 		</form>
 	</div>
-	
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="module"> 

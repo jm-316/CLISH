@@ -28,9 +28,16 @@ public class CurriculumService {
 	public List<CurriculumDTO> getCurriculumList(String classIdx) {
 		return curriculumMapper.selectCurriculumList(classIdx);
 	}
-
+	
+	// 수정페이지에서 커리큘럼 내용 수정
 	public int updateCurriculumeInfo( String idx, CurriculumDTO dto) {
 		return curriculumMapper.updateCurriculum(idx, dto);
+	}
+	
+	// 클래스 삭제 시 - 커리큘럼(자식) 먼저 삭제
+	public void deleteCurriculumByClassIdx(String classIdx) {
+		curriculumMapper.deleteCurriculumByClassIdx(classIdx);
+		
 	}
 	
 	 	

@@ -241,7 +241,7 @@ public class MyPageController {
 	}
 	
 	// --------------------------------------------------------------------------------
-	// 나의문의
+	// 나의 문의
 	@GetMapping("/myQuestion")
 	public String myQuestion(HttpSession session, Model model, UserDTO user
 			, @RequestParam(defaultValue = "1") int classQuestionPageNum
@@ -250,6 +250,23 @@ public class MyPageController {
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user); // 유저 정보 조회
 		int listLimit = 5;
+		int classQCount = myPageService.getclassQCount(user);
+		if(classQCount > 0 ) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, classQCount, classQuestionPageNum, 3);
+			
+			if(classQuestionPageNum < 1 || classQuestionPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/myQuestion"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			model.addAttribute("classQPageInfo", pageInfoDTO);
+
+			List<InqueryDTO> classQDTOList = myPageService.getMyclassQ(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("classQDTOList",classQDTOList);
+			model.addAttribute("user", user);
+
+		}
+		// 사이트문의
 		int inqueryCount = myPageService.getInqueryCount(user);
 		if(inqueryCount > 0 ) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inqueryCount, inqueryPageNum, 3);
@@ -278,9 +295,13 @@ public class MyPageController {
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user); // 유저 정보 조회
 		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
-		
+		if(inqueryDTO.getInqueryType() == 1) {
+			model.addAttribute("inqueryDTO", inqueryDTO);
+		} else {
+			inqueryDTO = myPageService.getclassQInfo(inqueryDTO);
+			model.addAttribute("inqueryDTO", inqueryDTO);
+		}
 		model.addAttribute("user",user);
-		model.addAttribute("inqueryDTO", inqueryDTO);
 		return "/clish/myPage/myPage_question_inqueryForm";
 	}
 	

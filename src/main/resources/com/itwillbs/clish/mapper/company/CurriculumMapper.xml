@@ -3,11 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.clish.course.mapper.CurriculumMapper">
-	<!-- 커리큘럼 등록 -->
+	<!-- 커리큘럼 등록 - 클래스 개설 페이지  -->
 	<insert id="insertCurriculum">
 		INSERT INTO CURRICULUM 
 	    VALUES (
-	        #{curriculumIdx},
+	    	#{curriculumIdx},
 	        #{classIdx},
 	        #{curriculumTitle},
 	        #{curriculumRuntime}
@@ -21,6 +21,7 @@
 		WHERE class_idx = #{classIdx}
 	</select>
 	
+	<!-- 수정페이지에서 커리큘럼 내용 수정 -->
 	<update id="updateCurriculum">
 		UPDATE
 			CURRICULUM
@@ -32,5 +33,24 @@
 		AND 
 			curriculum_idx = #{curriculumInfo.curriculumIdx}
 	</update>
+	
+	<!-- 기존 커리큘럼 삭제 -->
+    <delete id="deleteCurriculumByClassIdx">
+        DELETE
+		FROM CURRICULUM
+		WHERE
+			class_idx = #{classIdx}
+    </delete>
+    
+    <!-- 수정 중 새 커리큘럼 삽입 -->
+    <insert id="insertCurriculumModify">
+        INSERT INTO CURRICULUM
+        VALUES (
+            #{curriculumIdx},
+            #{classIdx},
+            #{curriculumTitle},
+            #{curriculumRuntime}
+        )
+    </insert>
 	
 </mapper>

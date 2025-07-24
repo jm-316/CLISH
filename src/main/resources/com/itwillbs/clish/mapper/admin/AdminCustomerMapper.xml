@@ -67,17 +67,79 @@
 	</select>
 	
 	<!-- 문의 리스트 -->
-	<select id="selectInquiryList" resultType="map">
+	<resultMap id="inquiryJoinUserMap" type="com.itwillbs.clish.admin.dto.InquiryJoinUserDTO">
+		<id property="inquiry.inqueryIdx" column="inquery_idx"/>
+		<result property="classIdx" column="class_idx"/>
+		<result property="inqueryType" column="inquery_type"/>
+		<result property="userName" column="user_name"/>
+		<association property="inquiry" javaType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+			<id property="inqueryIdx" column="inquery_idx"/>
+			<result property="userIdx" column="user_idx"/>
+			<result property="inqueryTitle" column="inquery_title"/>
+			<result property="inqueryDetail" column="inquery_detail"/>
+			<result property="inqueryAnswer" column="inquery_answer"/>
+			<result property="inqueryDatetime" column="inquery_datetime"/>
+			<result property="inqueryAnswerDatetime" column="inquery_answer_datetime"/>
+			<result property="inqueryModifyDatetime" column="inquery_modify_datetime"/>
+			<result property="inqueryStatus" column="inquery_status"/>
+		</association>
+	</resultMap>
+	<select id="selectInquiryList" resultMap="inquiryJoinUserMap">
 		SELECT 
-			i.*
+			i.inquery_idx
+			, i.user_idx
+			, i.inquery_title
+			, i.inquery_datetime
+			, i.inquery_answer_datetime
+    		, i.inquery_modify_datetime
+			, i.inquery_status
+			, i.inquery_type
+			, i.class_idx
 			, u.user_name
 		FROM 
 			INQUERY i
-		JOIN
+		LEFT JOIN
 			USER u
 		ON
-			i.user_idx = u.user_idx;
+			i.user_idx = u.user_idx
 	</select>
+	
+	<!-- 문의 상세 -->
+	<select id="selectInquiry" resultMap="inquiryJoinUserMap">
+		SELECT 
+			i.inquery_idx
+			, i.user_idx
+			, i.inquery_title
+			, i.inquery_detail
+			, i.inquery_datetime
+			, i.inquery_answer
+			, i.inquery_answer_datetime
+    		, i.inquery_modify_datetime
+			, i.inquery_status
+			, i.inquery_type
+			, i.class_idx
+			, u.user_name
+		FROM 
+			INQUERY i
+		LEFT JOIN
+			USER u
+		ON
+			i.user_idx = u.user_idx
+		WHERE
+			i.inquery_idx = #{idx}
+	</select>
+	
+	<!-- 문의 답변 -->
+	<update id="updateInquiry">
+		UPDATE
+			INQUERY
+		SET
+			inquery_answer = #{inqueryAnswer}
+			, inquery_answer_datetime = now()
+			, inquery_status = 2
+		WHERE
+			inquery_idx = #{idx}
+	</update>
 </mapper>  
   
   

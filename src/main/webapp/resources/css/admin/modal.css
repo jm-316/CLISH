@@ -16,20 +16,36 @@
 .modal_body {
 	position: absolute;
 	top: 40%;
-	left: 40%;
+	left: 55%;
 	
-	width: 400px;
+	width: 500px;
 	height: 600px;
 	
 	padding: 40px;
 	
 	text-align: center;
-       background-color: rgb(255,255,255);
-       border-radius:10px;
-       box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
-       transform:translateY(-50%);
+	background-color: rgb(255,255,255);
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform: translate(-50%, -50%);
 }
 
 .modal.on {
 	display: block;
+}
+
+#modal-form {
+	border: none;
+	padding: 0;
+	width: 400px;
+}
+
+#modal-form table {
+	width: 400px;
+	height: 400px;
+	margin-left: auto;
+}
+
+#modal-form table th {
+	background-color: #F3F6F9;
 }

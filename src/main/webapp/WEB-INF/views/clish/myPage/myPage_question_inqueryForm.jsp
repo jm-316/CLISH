@@ -25,6 +25,12 @@
 				<th>문의시각</th>
 				<td>${inqueryDTO.inqueryDatetime }</td>
 			</tr>
+			<c:if test="${!empty inqueryDTO.classTitle }">
+				<tr>
+					<th>강의명</th>
+					<td colspan="3"> <input type="text" value="${inqueryDTO.classTitle }"></td>
+				</tr>
+			</c:if>
         	<tr>
         		<th>제목</th>
         		<td colspan="3"> <input type="text" name="inqueryTitle" value="${inqueryDTO.inqueryTitle }"></td>

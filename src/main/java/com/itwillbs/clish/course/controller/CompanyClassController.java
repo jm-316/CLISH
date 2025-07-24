@@ -197,18 +197,33 @@ public class CompanyClassController {
 			@RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
 		
 		List<CurriculumDTO> curriculumList = new ArrayList<>();
-	    for (int i = 0; i < curriculumIdxList.size(); i++) {
-	        CurriculumDTO dto = new CurriculumDTO();
-	        dto.setCurriculumIdx(curriculumIdxList.get(i));
-	        dto.setCurriculumTitle(curriculumTitleList.get(i));
-	        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
-	        dto.setClassIdx(classIdx);
-	        curriculumList.add(dto);
-	    }
-	    
+		
+		if (curriculumIdxList != null && curriculumTitleList != null && curriculumRuntimeList != null &&
+			    curriculumIdxList.size() == curriculumTitleList.size() &&
+			    curriculumIdxList.size() == curriculumRuntimeList.size()) {
+
+		    for (int i = 0; i < curriculumIdxList.size(); i++) {
+		        CurriculumDTO dto = new CurriculumDTO();
+		        
+		        if (!"0".equals(curriculumIdxList.get(i))) {
+		            // 기존 커리큘럼 → PK 유지
+		            dto.setCurriculumIdx(curriculumIdxList.get(i));
+		        } else {
+		            // 새 커리큘럼 → UUID로 고유 PK 생성
+		            dto.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
+		        }
+		        
+//		        dto.setCurriculumIdx(curriculumIdxList.get(i));
+		        dto.setCurriculumTitle(curriculumTitleList.get(i));
+		        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
+		        dto.setClassIdx(classIdx);
+		        curriculumList.add(dto);
+		    }
+		}
+
 	    classInfo.setClassDays(classDays);
 		
-		int count = adminClassService.modifyClassInfo(classIdx, classInfo, curriculumList);	
+		int count = companyClassService.modifyClassInfo(classIdx, classInfo, curriculumList);	
 		
 		if (count > 0) {
 			model.addAttribute("msg", "강좌 정보를 수정했습니다.");
@@ -218,8 +233,19 @@ public class CompanyClassController {
 			return "commons/fail";
 		}
 		
-		
 		return "commons/result_process";
 	}
 	
+	// 클래스 삭제
+	@GetMapping("/myPage/deleteClass")
+	public String deleteClass(@RequestParam String classIdx) {
+	    // 커리큘럼 먼저 삭제 (자식 테이블)
+	    curriculumService.deleteCurriculumByClassIdx(classIdx);
+
+	    // 클래스 삭제 (부모 테이블)
+	    companyClassService.deleteClass(classIdx);
+
+	    // 삭제 후 다시 클래스 관리 페이지로 이동
+	    return "redirect:/company/myPage/classManage";
+	}
 }

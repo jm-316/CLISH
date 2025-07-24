@@ -15,6 +15,7 @@ import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
+import com.itwillbs.clish.course.mapper.CurriculumMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,7 @@ public class CompanyClassService {
 	private final CompanyClassMapper companyClassMapper;
 	private final CurriculumService curriculumService;
 	private final NotificationService notificationService;
+	private final CurriculumMapper curriculumMapper;
 	
 	// 강의 등록
 	public int registerClass(ClassDTO companyClass) {
@@ -70,26 +72,35 @@ public class CompanyClassService {
 	}
 	
 	// 클래스 수정
-//	@Transactional
-//	public int modifyClassInfo(String idx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) {
-//		int update = companyClassMapper.updateClassInfo(idx, classInfo);
-//		int updateCurriculume = 0;
-//		
-//		for (CurriculumDTO dto : curriculumList) {
-//			updateCurriculume = curriculumService.updateCurriculumeInfo(idx, dto);
-//		}
-//		
-//		if (update > 0 || updateCurriculume > 0) {
-//			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");
-//			return update;
-//		}
-//		return 0;
-//	}
+	@Transactional
+	public int modifyClassInfo(String classIdx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) {
+		 // 1. 클래스 정보 수정
+	    int result = companyClassMapper.updateClassInfo(classIdx, classInfo);
+	    
+	    // 2. 기존 커리큘럼 전부 삭제
+	    curriculumMapper.deleteCurriculumByClassIdx(classIdx);
+	    
+	    // 3. 현재 form에서 온 커리큘럼들을 다시 insert
+	    for (CurriculumDTO dto : curriculumList) {
+	        if (dto.getCurriculumTitle() != null && !dto.getCurriculumTitle().trim().isEmpty()) {
+	            dto.setClassIdx(classIdx); // 커리큘럼이 어떤 클래스 소속인지 꼭 지정
+	            curriculumMapper.insertCurriculumModify(dto);
+	        }
+	    }
+	    
+		return result;
+	}
+	
+	// 클래스 삭제
+	public void deleteClass(String classIdx) {
+		companyClassMapper.deleteClass(classIdx);
+		
+	}
 	
 	
 	
 }	
 	
-	
+	 	
 	
 	
