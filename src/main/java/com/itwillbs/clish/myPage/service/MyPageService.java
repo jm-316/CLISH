@@ -1,14 +1,21 @@
 package com.itwillbs.clish.myPage.service;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.clish.common.dto.FileDTO;
+import com.itwillbs.clish.common.mapper.FileMapper;
+import com.itwillbs.clish.common.utils.FileUtils;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
@@ -22,6 +29,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MyPageService {
 	private final MyPageMapper myPageMapper;
+	private final FileMapper fileMapper;
+	@Autowired
+	private HttpSession session;
 	//-----------------------------------------------------
 	public UserDTO getUserInfo(UserDTO user) {
 		return myPageMapper.selectUserInfo(user);
@@ -94,8 +104,13 @@ public class MyPageService {
 		return myPageMapper.selectCountInquery(user);
 	}
 	
-	public void modifyInquery(InqueryDTO inqueryDTO) {
+	public void modifyInquery(InqueryDTO inqueryDTO) throws IOException {
 		myPageMapper.updateInquery(inqueryDTO);
+		List<FileDTO> fileList = FileUtils.uploadFile(inqueryDTO, session);
+		
+		if(!fileList.isEmpty()) {
+			fileMapper.insertFiles(fileList);
+		}
 	}
 
 	public int getclassQCount(UserDTO user) {
@@ -111,6 +126,14 @@ public class MyPageService {
 	public InqueryDTO getclassQInfo(InqueryDTO inqueryDTO) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectOneClassQ(inqueryDTO);
+	}
+
+	public void removeFile(FileDTO fileDTO) {
+		// TODO Auto-generated method stub
+		fileDTO = fileMapper.selectFile(fileDTO);
+		FileUtils.deleteFile(fileDTO, session);
+		
+		fileMapper.deleteFile(fileDTO);
 	}
 	
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.clish.common.dto.FileDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
@@ -57,6 +58,11 @@ public interface MyPageMapper {
 	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
 
 	InqueryDTO selectOneClassQ(InqueryDTO inqueryDTO);
+
+	FileDTO selectFile(FileDTO fileDTO);
+
+	void deleteFile(FileDTO fileDTO);
+
 
 
 

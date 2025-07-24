@@ -1,6 +1,7 @@
 package com.itwillbs.clish.myPage.controller;
 
 import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itwillbs.clish.common.DTO.PageInfoDTO;
+import com.itwillbs.clish.common.dto.FileDTO;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
@@ -306,7 +308,7 @@ public class MyPageController {
 	}
 	
 	@PostMapping("/myQuestion/inquery/modify")
-	public String inqueryModify(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) {
+	public String inqueryModify(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) throws IOException {
 		String id = (String)session.getAttribute("sId");
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user); // 유저 정보 조회
@@ -333,6 +335,14 @@ public class MyPageController {
 		myPageService.inqueryDelete(inqueryDTO);
 		
 		return "redirect:/myPage/myQuestion";
+	}
+	
+	@GetMapping("/myQuestion/fileDelete")
+	public String deleteFile(InqueryDTO inqueryDTO, FileDTO fileDTO) {
+		
+		myPageService.removeFile(fileDTO);
+		
+		return "redirect:/myPage/myQuestion/inquery/modify?inqueryIdx="+ inqueryDTO.getInqueryIdx();
 	}
 	
 }

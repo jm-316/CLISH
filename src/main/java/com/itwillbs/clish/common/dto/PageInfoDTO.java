@@ -1,4 +1,4 @@
-package com.itwillbs.clish.common.DTO;
+package com.itwillbs.clish.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

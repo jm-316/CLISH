@@ -1,6 +1,6 @@
 package com.itwillbs.clish.common.utils;
 
-import com.itwillbs.clish.common.DTO.PageInfoDTO;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
 
 public class PageUtil {
 	// listLimit, listCount, pageNum, pageListLimit을 받아서 pageInfoDTO 생성 후 리턴

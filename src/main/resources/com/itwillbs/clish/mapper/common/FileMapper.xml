@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.clish.common.mapper.FileMapper">
+	                                   
+	<select id="selectFile" resultType="com.itwillbs.clish.common.dto.FileDTO">
+		SELECT *
+		FROM FILE
+		WHERE file_id = #{fileId}
+	</select>
+	
+	<delete id="deleteFile">
+		DELETE
+		FROM FILE
+		WHERE file_id = #{fileId}
+	</delete>
+	
+	<insert id="insertFiles">
+		INSERT
+		INTO FILE(
+			idx,
+			original_file_name,
+			real_file_name, 
+			sub_dir, 
+			file_size, 
+			content_type, 
+			upload_date	)
+		VALUES
+		<foreach collection="list" item="file" separator=",">
+			(
+				#{file.idx}
+				, #{file.originalFileName}
+				, #{file.realFileName}
+				, #{file.subDir}
+				, #{file.fileSize}
+				, #{file.contentType}
+				, now()
+			)
+		</foreach>
+	</insert>
+	
+</mapper>
