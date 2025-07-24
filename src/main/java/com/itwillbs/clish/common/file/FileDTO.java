@@ -1,4 +1,4 @@
-package com.itwillbs.clish.common.dto;
+package com.itwillbs.clish.common.file;
 
 import java.sql.Timestamp;
 

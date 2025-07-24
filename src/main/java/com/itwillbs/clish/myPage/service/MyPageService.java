@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itwillbs.clish.common.dto.FileDTO;
-import com.itwillbs.clish.common.mapper.FileMapper;
-import com.itwillbs.clish.common.utils.FileUtils;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileMapper;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
@@ -90,9 +90,15 @@ public class MyPageService {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectAllInquery(startRow, listLimit, user);
 	}
-
+	@Transactional
 	public void inqueryDelete(InqueryDTO inqueryDTO) {
-		myPageMapper.deleteInquery(inqueryDTO);
+		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
+		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
+		
+		fileMapper.deleteAllFile(inqueryDTO.getInqueryIdx()); // FILE 테이블 내용 삭제
+		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제
+		
+		
 		
 	}
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itwillbs.clish.common.dto.FileDTO;
-import com.itwillbs.clish.common.utils.FileUtils.FileUploadHelpper;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileUtils.FileUploadHelpper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
