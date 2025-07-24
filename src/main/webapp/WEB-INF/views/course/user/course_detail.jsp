@@ -91,6 +91,10 @@
 		        </div>
 		</section>
 		
+		<div>
+			
+		</div>
+		
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 	</div>
 </body>

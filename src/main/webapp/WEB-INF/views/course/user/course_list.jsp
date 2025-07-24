@@ -103,6 +103,9 @@
 											<c:when test="${classItem.classStatus == 2 and user.userType eq 1}">
 												오픈 <button onclick="location.href='/course/user/courseReservation?classIdx=${classItem.classIdx}'">예약</button>
 											</c:when>
+											<c:when test="${user.userType eq 3}">
+												관리자
+											</c:when>
 											<c:otherwise>
 												마감 <button disabled>예약</button>
 											</c:otherwise>
