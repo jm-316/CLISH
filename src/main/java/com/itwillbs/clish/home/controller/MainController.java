@@ -103,7 +103,7 @@ public class MainController {
 		
 		return "clish/myPage/myPage_main";
 	}
-	@GetMapping("user/joinForm")
+	@GetMapping("/user/joinForm")
 	public String userJoin() {
 		
 		return "user/join_form";
