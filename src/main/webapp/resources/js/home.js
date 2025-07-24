@@ -307,11 +307,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Optional: Keyboard navigation per carousel (if desired)
-        // carousel.addEventListener("keydown", (e) => {
-        //     if (e.key === "ArrowLeft") goToCard(currentIndex - 1);
-        //     else if (e.key === "ArrowRight") goToCard(currentIndex + 1);
-        // });
+//         Optional: Keyboard navigation per carousel (if desired)
+         carousel.addEventListener("keydown", (e) => {
+             if (e.key === "ArrowLeft") goToCard(currentIndex - 1);
+             else if (e.key === "ArrowRight") goToCard(currentIndex + 1);
+         });
 
         // Touch support per carousel
         let touchStartX = 0;

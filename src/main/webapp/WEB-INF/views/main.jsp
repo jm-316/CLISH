@@ -21,14 +21,14 @@
 	</header>
 <!-- 	<h1>Main.jsp</h1> -->
 	
-	<div id="event">
-<!-- 		<img src="/resources/images/event.png" alt="event banner"> -->
-	</div>
-	<div id="h2-flexbox">
+		<div id="event" onclick="location.href='/event/eventHome'"></div>
+	<div class="h2-flexbox">
 		<h2>추천 정기 강의</h2>
 		<div id="class-filter-wrapper">
-			<div id="class-filter">
-				<button>최신순</button><button>높은 가격</button><button>낮은 가격</button>
+			<div class="class-filter">
+				<button onclick="location.href='/course/user/classList?classType=0'">필터</button>
+				
+<!-- 				<button>높은 가격</button><button>낮은 가격</button> -->
 			</div>
 		</div>
 	</div>
@@ -36,7 +36,7 @@
 	<div class="carousel">
 	<div class="carousel-track">
 		<c:forEach var="course" items="${classList2}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${classItem.classType}&categoryIdx=${course.categoryIdx}'">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
 						<h3 class="content-text">${course.classTitle}</h3>
@@ -111,14 +111,17 @@
 	
 		<div class="dots-container"></div>
 	</div>
-	
-	
-	<h2>추천 단기 강의</h2>
+	<div class="h2-flexbox">
+		<h2>추천 단기 강의</h2>
+		<div class="class-filter">
+				<button onclick="location.href='/course/user/classList?classType=1'">필터</button>			
+		</div>
+	</div>
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->
 	<div class="carousel">
 	<div class="carousel-track">
 		<c:forEach var="course" items="${classList}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${classItem.classType}&categoryIdx=${course.categoryIdx}'">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
 						<h3 class="content-text">${course.classTitle}</h3>
@@ -200,7 +203,7 @@
 	<div class="carousel">
 	<div class="carousel-track">
 		<c:forEach var="course" items="${classListLongLatest}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${classItem.classType}&categoryIdx=${course.categoryIdx}'">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
 						<h3 class="content-text">${course.classTitle}</h3>
@@ -282,7 +285,7 @@
 	<div class="carousel">
 	<div class="carousel-track">
 		<c:forEach var="course" items="${classListShortLatest}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${classItem.classType}&categoryIdx=${course.categoryIdx}'">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
 						<h3 class="content-text">${course.classTitle}</h3>

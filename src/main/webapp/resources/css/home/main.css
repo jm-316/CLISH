@@ -9,7 +9,7 @@ h3 {
 	height: 2.5rem;
 	clear: both;
 }
-#class-filter > button {
+.class-filter > button {
 	display: inline-block;
 	margin-right: 30px;
 	margin-top: 50px;
@@ -18,13 +18,13 @@ h3 {
 	width: 6rem;
 	height: 2.5rem;
 }
-#class-filter {
+.class-filter {
 	display: inline-block;
 /* 	float: right; */
 /* 	flex-direction: row; */
 
 }
-#h2-flexbox {
+.h2-flexbox {
 	display: flex;
 	justify-content: space-between;
 }
