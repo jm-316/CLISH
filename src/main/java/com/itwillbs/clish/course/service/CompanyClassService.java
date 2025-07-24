@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.core.appender.FileManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +15,9 @@ import com.itwillbs.clish.admin.mapper.AdminClassMapper;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileMapper;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
@@ -28,6 +35,10 @@ public class CompanyClassService {
 	private final CurriculumService curriculumService;
 	private final NotificationService notificationService;
 	private final CurriculumMapper curriculumMapper;
+	private final FileMapper fileMapper;
+	
+	@Autowired
+	private HttpSession session;
 	
 	// 강의 등록
 	public int registerClass(ClassDTO companyClass) {
@@ -94,6 +105,15 @@ public class CompanyClassService {
 	// 클래스 삭제
 	public void deleteClass(String classIdx) {
 		companyClassMapper.deleteClass(classIdx);
+		
+	}
+
+	// 파일 삭제
+	public void removeFile(FileDTO fileDTO) {
+		fileDTO = fileMapper.selectFile(fileDTO);
+		FileUtils.deleteFile(fileDTO, session);
+		
+		fileMapper.deleteFile(fileDTO);
 		
 	}
 	

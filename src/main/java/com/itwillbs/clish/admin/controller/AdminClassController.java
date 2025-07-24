@@ -1,5 +1,6 @@
 package com.itwillbs.clish.admin.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -134,6 +136,7 @@ public class AdminClassController {
 	public String classInfo(@PathVariable("idx") String idx, Model model) {
 		ClassDTO classInfo = classService.getClassInfo(idx);
 		
+		System.out.println("정보정보" + classInfo);
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
 		
@@ -161,38 +164,32 @@ public class AdminClassController {
 	public String classInfoModify(@PathVariable("idx") String idx, Model model, 
 			@ModelAttribute ClassDTO classInfo,  @RequestParam("curriculumIdx") List<String> curriculumIdxList,
             @RequestParam("curriculumTitle") List<String> curriculumTitleList,
-            @RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
+            @RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) throws IllegalStateException, IOException {
 		
-	    List<CurriculumDTO> curriculumList = new ArrayList<>();
-	    
-	    if (curriculumIdxList != null && curriculumTitleList != null && curriculumRuntimeList != null &&
-			    curriculumIdxList.size() == curriculumTitleList.size() &&
-			    curriculumIdxList.size() == curriculumRuntimeList.size()) {
-
-		    for (int i = 0; i < curriculumIdxList.size(); i++) {
-		        CurriculumDTO dto = new CurriculumDTO();
-		        
-		        if (!"0".equals(curriculumIdxList.get(i))) {
-		            dto.setCurriculumIdx(curriculumIdxList.get(i));
-		        } else {
-		            dto.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
-		        }
-		        
-		        dto.setCurriculumTitle(curriculumTitleList.get(i));
-		        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
-		        dto.setClassIdx(idx);
-		        curriculumList.add(dto);
-		    }
-		}
-		int count = adminClassService.modifyClassInfo(idx, classInfo, curriculumList);	
+			List<CurriculumDTO> curriculumList = new ArrayList<>();
 		
-		if (count > 0) {
-			model.addAttribute("msg", "강좌 정보를 수정했습니다.");
-			model.addAttribute("targetURL", "/admin/class/" + idx);
-		} else {
-			model.addAttribute("msg", "다시 시도해주세요!");
-			return "commons/fail";
-		}
+			    for (int i = 0; i < curriculumIdxList.size(); i++) {
+			        CurriculumDTO dto = new CurriculumDTO();
+			        
+			        if (!"0".equals(curriculumIdxList.get(i))) {
+			        	 dto.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
+			        } 
+			        
+			        dto.setCurriculumTitle(curriculumTitleList.get(i));
+			        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
+			        dto.setClassIdx(idx);
+			        curriculumList.add(dto);
+			    }
+			
+			int count = adminClassService.modifyClassInfo(idx, classInfo, curriculumList);	
+			
+			if (count > 0) {
+				model.addAttribute("msg", "강좌 정보를 수정했습니다.");
+				model.addAttribute("targetURL", "/admin/class/" + idx);
+			} else {
+				model.addAttribute("msg", "다시 시도해주세요!");
+				return "commons/fail";
+			}
 		
 		
 		return "commons/result_process";
@@ -225,5 +222,13 @@ public class AdminClassController {
 		model.addAttribute("targetURL", "/admin/classList");
 	
 		return "commons/result_process";
+	}
+	
+	// 파일 삭제
+	@GetMapping("/class/fileDelete")
+	public String deleteFile(ClassDTO classDTO, FileDTO fileDTO) {
+		classService.removeFile(fileDTO);
+		
+		return "redirect:/admin/class/" +classDTO.getClassIdx();
 	}
 }

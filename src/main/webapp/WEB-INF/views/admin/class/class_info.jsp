@@ -47,12 +47,12 @@
 					<div>
 						<h3 class="section-title">강좌 수정</h3>
 					</div>
-					<form id="classForm" style="border: none; padding: 10px;">
+					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
 						<div>
 							<div style="display: flex; flex: 1 1 auto;  align-items: center; justify-content: space-between; margin-left: 30px; margin-right: 30px">
 								<div style="display: flex; flex-direction: column;">
-									<div style="width: 500px; ">
+									<div style="width: 950px;">
 										<label>강의명</label> 
 										<input type="text" value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
 									</div>
@@ -66,8 +66,22 @@
 									</div>
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
-									<img src="${classInfo.classPic1}" width="350px" height="300px"/>
-									<input type="file" name="classPic1" value="https://images.pexels.com/photos/32262510/pexels-photo-32262510.jpeg"/>
+									<c:forEach var="fileDTO" items="${classInfo.fileList}">
+										<img src="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" width="300px" height="300px"/>
+										<div>
+											${fileDTO.originalFileName}
+											<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+												<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+											</a>
+					
+											<a href="javascript:deleteFile(${fileDTO.fileId})">
+												<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
+											</a>
+										</div>
+									</c:forEach>
+									<c:if test="${empty classInfo.fileList}">
+										<input type="file"  name="files" multiple>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -130,7 +144,7 @@
 								<input type="hidden" name="classDays" id="classDays" />
 							</div>
 						</div>
-						<div style="margin-left: 30px; margin-right: 30px;">
+						<div style="margin-left: 30px; margin-right: 30px; width: 950px">
 							<label for="location">수업장소</label> 
 							<input type="text" value="${classInfo.location}" name="location" id="location" />
 						</div>
@@ -188,7 +202,7 @@
 							</div>
 						</div>
 						<div class="button-wrapper">
-							<button type="button" onclick="history.back();">닫기</button>
+							<button type="button" onclick="back()">닫기</button>
 							<c:choose>
 								<c:when test="${classInfo.classStatus == 1}">
 									<button type="submit" name="action" value="approval"
@@ -199,7 +213,8 @@
 								<c:otherwise>
 									<button type="submit" name="action" value="update"
 										formaction="/admin/class/${classInfo.classIdx}/update"
-										formmethod="post">수정</button>
+										formmethod="post"
+										>수정</button>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -231,17 +246,26 @@
 			calculateClassDays();
 		});
 		
-		// ✅ 커리큘럼 추가 함수
 		function addCurriculum() {
 			const container = document.getElementById("curriculumContainer");
 			const template = document.getElementById("curriculumTemplate").innerHTML;
 			container.insertAdjacentHTML("beforeend", template);
 		}
 	
-		// ✅ 커리큘럼 삭제 함수
 		function removeCurriculum(button) {
 			const box = button.parentElement;
 			box.remove();
+		}
+		
+		function deleteFile(fileId) {
+
+			if(confirm("첨부파일을 삭제하시겠습니까?")) {
+				location.href = "/admin/class/fileDelete?fileId=" + fileId + "&classIdx=${classInfo.classIdx}";
+			}
+		}
+		
+		function back() {
+			location.href="/admin/classList"
 		}
 	</script>
 </body>

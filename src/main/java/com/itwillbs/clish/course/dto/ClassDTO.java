@@ -12,12 +12,15 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileUtils.FileUploadHelpper;
+
 import lombok.Getter;
 
 @Getter
 @Setter
 @ToString
-public class ClassDTO {
+public class ClassDTO implements FileUploadHelpper{
 	private String classIdx;
 	private String classTitle;
 	private String categoryIdx;
@@ -39,5 +42,16 @@ public class ClassDTO {
 	private String classIntro; // 소개글
 	private String classContent; // 상세내용
 	private String classPic1; // 썸네일
+	private List<FileDTO> fileList;
+	private MultipartFile[] files;
 	
+	@Override
+	public MultipartFile[] getFiles() {
+		return files;
+	}
+	
+	@Override
+	public String getIdx() {
+		return classIdx;
+	}
 }
