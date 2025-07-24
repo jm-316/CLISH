@@ -53,9 +53,6 @@ public class UserClassController {
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		
-		System.out.println(parentCategories);
-		System.out.println(childCategories);
-		
 		model.addAttribute("parentCategories", parentCategories);
 		model.addAttribute("childCategories", childCategories);  
 		model.addAttribute("classList", classList);
@@ -66,12 +63,21 @@ public class UserClassController {
 	
 	// 클래스 상세 페이지
 	@GetMapping("user/classDetail")
-	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session) {
+	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session,
+			@RequestParam int classType,
+			@RequestParam(required = false)String categoryIdx) {
 		
 		String userId = (String)session.getAttribute("sId");
 		UserDTO user = userService.selectUserId(userId);
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		
+		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
+		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
+		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		
+		model.addAttribute("parentCategories", parentCategories);
+		model.addAttribute("childCategories", childCategories);  
+		model.addAttribute("classList", classList);
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("user", user);
 		
@@ -81,16 +87,25 @@ public class UserClassController {
 	// 예약정보 입력 페이지
 	@GetMapping("user/courseReservation")
 	public String classReservation(@RequestParam String classIdx, Model model, HttpSession session, 
-			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO) {
+			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO,
+			@RequestParam int classType,
+			@RequestParam(required = false)String categoryIdx) {
 		
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userClassService.getUserIdx(userId); 
 		String userIdx = userInfo.getUserIdx(); // userIdx
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // classIdx
 		
+		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
+		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
+		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		
 		reservationDTO.setClassIdx(classIdx);
 		reservationDTO.setUserIdx(userIdx);
-
+		
+		model.addAttribute("parentCategories", parentCategories);
+		model.addAttribute("childCategories", childCategories);  
+		model.addAttribute("classList", classList);
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
 		

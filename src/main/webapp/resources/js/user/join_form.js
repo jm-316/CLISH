@@ -1,4 +1,5 @@
 export function initJoinForm() {
+	console.log('initJoinForm 실행됨');
 	// const값 모음
 	const nicknameInput = document.getElementById('userRepName');
 	const resultSpan = document.getElementById('nicknameCheckResult');
@@ -8,9 +9,22 @@ export function initJoinForm() {
 	const pwConf = document.getElementById("userPasswordConfirm");
 	const phoneInput = document.getElementById("userPhoneNumber");
 	const agreeChk = document.getElementById("agreeTerms");
-	const disabledFields = document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button');
 	const submitBtn = document.getElementById("submitBtn");
+	const addressBtn = document.getElementById("btnSearchAddress");
+	const postcodeInput = document.getElementById("userPostcode");
+	const address1Input = document.getElementById("userAddress1");
+	const address2Input = document.getElementById("userAddress2");
 	const birthInput = document.getElementById("userBirth");
+	const disabledFields = document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button');
+	
+	let isNicknameOk = false;
+	let isBirthOk = false;
+	let isIdOk = false;
+	let isPwOk = false;
+	let isPwMatchOk = false;
+	let isPhoneOk = false;
+	let isAddressOk = false;
+	let isAgreeChkOk = false;
 
 	
 	// 이메일 인증전 disabled 처리 
@@ -19,7 +33,7 @@ export function initJoinForm() {
 	});
 	
 	// 서브밋 비활성화
-	if (submitBtn) submitBtn.disabled = true;
+	if(submitBtn) submitBtn.disabled = true;
 	
 	// 1. 닉네임 중복체크
 	let timerDelay = null;
@@ -28,7 +42,7 @@ export function initJoinForm() {
 	    clearTimeout(timerDelay);
 	    const nickname = this.value.trim();
 
-	    if (nickname.length < 2) {
+	    if(nickname.length < 2) {
 	        resultSpan.innerText = '닉네임은 2글자 이상 입력';
 	        resultSpan.style.color = 'gray';
 	        return;
@@ -38,19 +52,26 @@ export function initJoinForm() {
 	        fetch(`/user/checkNname?nickname=${encodeURIComponent(nickname)}`)
 	            .then(res => res.json())
 	            .then(data => {
-	                if (data.exists) {
+					console.log("nicknameInput:", nicknameInput);
+	                if(data.exists) {
 	                    resultSpan.innerText = '이미 사용 중인 닉네임입니다';
 	                    resultSpan.style.color = 'red';
-	                } else {
+						isNicknameOk = false;
+	                } else{
 	                    resultSpan.innerText = '사용 가능한 닉네임입니다!';
 	                    resultSpan.style.color = 'green';
+						isNicknameOk = true;
 	                }
+					updateSubmitButton();
 	            }).catch(_err => {
 	                resultSpan.innerText = '중복 확인 실패';
 	                resultSpan.style.color = 'gray';
+					isNicknameOk = false;
+					updateSubmitButton();
 	            });
-	    }, 600); // 0.6초
-	});
+			
+		    }, 600); // 0.6초
+		});
 	
 	
 	
@@ -60,16 +81,17 @@ export function initJoinForm() {
 	    const resultSpan = document.getElementById('birthCheckResult');
 	
 	    const pattern = /^\d{4}-\d{2}-\d{2}$/;
-	    if (!pattern.test(birth)) {
+	    if(!pattern.test(birth)) {
 	        resultSpan.innerText = '생년월일 형식은 ****-**-**입니다.';
 	        resultSpan.style.color = 'red';
-	    } else {
+			isBirthOk = false;
+	    } else{
 	        resultSpan.innerText = '올바른 전화번호 형식입니다!';
 	        resultSpan.style.color = 'green';
+			isBirthOk = true;
 	    }
+		updateSubmitButton();
 	});
-	
-	
 	
 	
 	// 3. 아이디 중복 & 정규표현식 체크
@@ -79,7 +101,7 @@ export function initJoinForm() {
 	    clearTimeout(idTimerDelay);
 	    const userId = this.value.replace(/\s+/g, "");
 
-	    if (userId.length < 4) {
+	    if(userId.length < 4) {
 	        idResultSpan.innerText = '아이디는 4글자 이상 입력';
 	        idResultSpan.style.color = 'gray';
 	        return;
@@ -89,19 +111,23 @@ export function initJoinForm() {
 	        fetch(`/user/checkId?userId=${encodeURIComponent(userId)}`)
 	            .then(res => res.json())
 	            .then(data => {
-	                if (data.exists) {
+	                if(data.exists) {
 	                    idResultSpan.innerText = '이미 사용 중인 아이디입니다';
 	                    idResultSpan.style.color = 'red';
-	                } else {
+						isIdOk = false;
+	                } else{
 	                    idResultSpan.innerText = '사용 가능한 아이디입니다!';
 	                    idResultSpan.style.color = 'green';
+						isIdOk = true;
 	                }
 	            }).catch(_err => {
 	                idResultSpan.innerText = '중복 확인 실패';
 	                idResultSpan.style.color = 'gray';
+					isIdOk = false;
 	            });
-		}, 600);
-	});
+				updateSubmitButton();
+			}, 600);
+		});
 	
 	
 	// 4. 비밀번호1 안전도검사
@@ -114,10 +140,13 @@ export function initJoinForm() {
 			if(!pattern.test(pwd)) {
 				result.innerText = "영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!";
 				result.style.color = "red";
-			} else {
+				isPwOk = false;
+			} else{
 				result.innerText = pwd.length >= 12 ? "안전" : (pwd.length >= 10 ? "보통" : "위험");
 				result.style.color = pwd.length >= 12 ? "green" : (pwd.length >= 10 ? "orange" : "red");
+				isPwOk = true;
 			}
+			updateSubmitButton();
 		};
 	}
 
@@ -131,43 +160,116 @@ export function initJoinForm() {
 			if(pwd === pwd2) {
 				result.innerText = "비밀번호 확인 완료!";
 				result.style.color = "green";
-			} else {
+				isPwMatchOk = true;
+			} else{
 				result.innerText = "비밀번호 다름!";
 				result.style.color = "red";
+				isPwMatchOk = false;
 			}
+			updateSubmitButton();
 		};
 	}
 	
-	// 6. 전화번호 중복 & 정규표현식 체크(->데이터 암호화)
+	// 6. 전화번호 중복 & 정규표현식 체크
 	phoneInput.addEventListener('blur', function() {
 	    const phone = this.value.replace(/\s+/g, "");
 	    const resultSpan = document.getElementById('phoneCheckResult');
-	
 	    const pattern = /^\d{3}-\d{4}-\d{4}$/;
+	
+	    // 1차: 정규표현식 체크
 	    if (!pattern.test(phone)) {
 	        resultSpan.innerText = '전화번호 형식은 ***-****-**** 입니다.';
 	        resultSpan.style.color = 'red';
-	    } else {
-	        resultSpan.innerText = '올바른 전화번호 형식입니다!';
-	        resultSpan.style.color = 'green';
+	        isPhoneOk = false;
+	        updateSubmitButton();
+	        return;
 	    }
+	
+	    // 2차: 서버에 중복체크 요청
+	    fetch(`/user/checkPhone?userPhone=${encodeURIComponent(phone)}`)
+	        .then(res => res.json())
+	        .then(data => {
+	            if (data.exists) {
+	                resultSpan.innerText = '이미 등록된 전화번호입니다.';
+	                resultSpan.style.color = 'red';
+	                isPhoneOk = false;
+	            } else {
+	                resultSpan.innerText = '사용 가능한 전화번호입니다!';
+	                resultSpan.style.color = 'green';
+	                isPhoneOk = true;
+	            }
+	            updateSubmitButton();
+	        })
+	        .catch(_err => {
+	            resultSpan.innerText = '중복 확인 실패';
+	            resultSpan.style.color = 'gray';
+	            isPhoneOk = false;
+	            updateSubmitButton();
+	        });
 	});
 	
 	// 7. 주소 검색 API
-	const btn = document.getElementById("btnSearchAddress");
-	if(btn) {
-		btn.onclick = function () {
-			new daum.Postcode({
-				oncomplete: function (data) {
-					const address = data.buildingName
-						? `${data.address} (${data.buildingName})`
-						: data.address;
-
-					document.getElementById("userPostcode").value = data.zonecode;
-					document.getElementById("userAddress1").value = address;
-					document.getElementById("userAddress2").focus();
-				}
-			}).open();
-		};
+	
+	if(addressBtn) {
+	    addressBtn.onclick = function () {
+	        new daum.Postcode({
+	            oncomplete: function (data) {
+	                const address = data.buildingName
+	                    ? `${data.address} (${data.buildingName})`
+	                    : data.address;
+	                postcodeInput.value = data.zonecode;
+	                address1Input.value = address;
+	                address2Input.focus();
+	                checkAddressFields();
+	            }
+	        }).open();
+	    };
 	}
+	
+	function checkAddressFields() {
+	    if (
+	        postcodeInput.value.trim() &&
+	        address1Input.value.trim() &&
+	        address2Input.value.trim()
+	    ) {
+	        isAddressOk = true;
+	    } else {
+	        isAddressOk = false;
+	    }
+	    updateSubmitButton();
+	}
+	
+	[postcodeInput, address1Input, address2Input].forEach(input => {
+	    input.addEventListener('input', checkAddressFields);
+	});
+	
+	// 8. 약관동의
+	if(agreeChk) {
+    agreeChk.addEventListener('change', function() {
+	        isAgreeChkOk = this.checked;
+	        updateSubmitButton();
+	    });
+	}
+	
+	// 9. 전체 입력 확인 체크
+	function updateSubmitButton() {
+		 console.log({
+	        isNicknameOk,
+	        isBirthOk,
+	        isIdOk,
+	        isPwOk,
+	        isPwMatchOk,
+	        isPhoneOk,
+	        isAddressOk,
+	        isAgreeChkOk,
+	        isEmailVerified: window.isEmailVerified
+	    });
+	    if(isNicknameOk && isBirthOk && isIdOk && isPwOk && isPwMatchOk && 
+					isPhoneOk && window.isEmailVerified && isAddressOk && isAgreeChkOk) {
+	        submitBtn.disabled = false;
+	    } else{
+	        submitBtn.disabled = true;
+	    }
+	}
+	
 }

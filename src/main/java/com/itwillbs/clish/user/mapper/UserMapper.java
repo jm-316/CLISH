@@ -19,4 +19,6 @@ public interface UserMapper {
 
 	int countByUserId(@Param("userId") String userId);
 
+	int countByUserPhoneMatch(@Param("userPhone") String userPhone);
+
 }

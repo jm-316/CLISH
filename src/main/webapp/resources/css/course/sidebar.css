@@ -1,25 +1,32 @@
-@charset "UTF-8";
-
-/* 전체 레이아웃 */
-.page-container {
-  display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+.sidebar {
+  width: 200px;
+  background-color: #2c3e50;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
+  transition: width 0.3s;
+  overflow-y: auto;
 }
 
-/* 사이드바 */
-.sidebar {
-  position: fixed;         /* ← 여기 추가 */
-  top: 100px;              /* 원하는 위치 조정 (헤더 아래로) */
-  left: 0;
+.sidebar.open {
   width: 200px;
-  height: calc(100vh - 100px); /* 화면 높이에서 top만큼 제외 */
-  background-color: #fafafa;
-  border-right: 1px solid #ccc;
-  padding: 15px;
-  overflow-y: auto;        /* 사이드바 길어지면 스크롤 가능 */
-  z-index: 1000;           /* 다른 요소보다 위에 보이게 */
+}
+
+.sidebar-toggle {
+  background: #1abc9c;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sidebar-title {
+  padding: 10px 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #444;
 }
 
 .category-list {
@@ -28,20 +35,26 @@
   margin: 0;
 }
 
-.category-list li {
-  margin-bottom: 10px;
+.parent-category > span {
+  display: block;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-.category-list li a {
-  color: #6a1b9a;
+.child-category {
+  display: none;
+  list-style: none;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.child-category li a {
+  display: block;
+  padding: 8px 20px;
+  color: #ecf0f1;
   text-decoration: none;
 }
 
-.category-list li a:hover {
-  text-decoration: underline;
-}
-
-/* 메인 콘텐츠 */
-.main-content {
-  flex: 1;
+.child-category li a:hover {
+  background-color: #34495e;
 }

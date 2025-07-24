@@ -66,11 +66,11 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 						
 						document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
 								.forEach(el => el.disabled = false);
-						const submitBtn = document.getElementById("submitBtn");
-						if(submitBtn) submitBtn.disabled = false;
+								
+						window.isEmailVerified = true; 
+						if(typeof window.updateSubmitButton === "function") updateSubmitButton();
 					}
-				})
-				.catch(err => console.error("인증 상태 확인 실패", err));
+				}).catch(err => console.error("인증 상태 확인 실패", err));
 		}, 3000);
 	}
 }

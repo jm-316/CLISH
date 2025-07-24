@@ -6,13 +6,49 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+
+<style type="text/css">
+
+/* ✅ 추가 스타일 (본문용) */
+
+.main {
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+}
+
+.sidebar.open ~ .main {
+  margin-left: 220px;
+}
+
+.box {
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border: 1px solid #ccc; /* 테이블 안에 줄 */
+  text-align: center;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+</style>
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
+		<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
 	</header>
 	<main>
 		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
@@ -57,7 +93,7 @@
 		</section>
 	</main>
 	<footer>
-		<jsp:include page="/WEB-INF/views/admin/bottom.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 	</footer>
 
 </body>

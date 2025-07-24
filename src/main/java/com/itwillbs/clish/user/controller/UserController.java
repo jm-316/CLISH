@@ -165,7 +165,7 @@ public class UserController {
 	public Map<String, Boolean> checkNickname(@RequestParam String nickname) {
 	    boolean nickExists = userService.isNickExists(nickname);
 	    Map<String, Boolean> result = new HashMap<>();
-	    result.put("nickExists", nickExists);
+	    result.put("exists", nickExists);
 	    return result;
 	}
 	
@@ -178,4 +178,12 @@ public class UserController {
 	    return result;
 	}
 	
+	@GetMapping("/checkPhone")
+	@ResponseBody
+	public Map<String, Boolean> checkPhone(@RequestParam String userPhone) {
+	    boolean phoneExists = userService.isUserPhoneExists(userPhone);
+	    Map<String, Boolean> result = new HashMap<>();
+	    result.put("exists", phoneExists);
+	    return result;
+	}
 }
