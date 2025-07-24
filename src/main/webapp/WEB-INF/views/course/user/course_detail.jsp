@@ -46,11 +46,10 @@
 </style>
 </head>
 <body>
-	<header>
+	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
+	<div class="main">
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
-		<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
-	</header>
-	<main>
+		
 		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
 				<h1>클래스 상세 페이지</h1>
 				<h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
@@ -91,10 +90,8 @@
 		            </c:if>
 		        </div>
 		</section>
-	</main>
-	<footer>
+		
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
-	</footer>
-
+	</div>
 </body>
 </html>

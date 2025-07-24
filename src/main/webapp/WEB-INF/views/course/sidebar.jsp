@@ -22,11 +22,8 @@
 		</c:choose>
 	
 		<ul class="category-list">
-			<li class="sidebar-title">카테고리 선택</li>
-			
-			
 			<c:if test="${param.classType eq 0 or param.classType eq 1}">
-				<li>
+				<li class="sidebar-title">
 					<a href="/course/user/classList?classType=${param.classType}">
 						<strong>${classType}</strong>
 					</a>
@@ -51,15 +48,5 @@
 			</c:if>
 		</ul>
 	</div>
-	<script type="text/javascript">
-		function toggleSidebar() {
-		  document.getElementById("sidebar").classList.toggle("open");
-		}
-
-		function toggleSubmenu(element) {
-		  const submenu = element.nextElementSibling;
-		  submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-		}
-  	</script>
 </body>
 </html>
