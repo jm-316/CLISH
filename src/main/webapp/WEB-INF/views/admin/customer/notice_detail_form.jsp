@@ -27,6 +27,7 @@
 					<div>
 						<form action="/admin/notice/modify" method="post">
 							<input type="hidden" name="supportIdx"  id="supportIdx" value="${support.supportIdx}"/>
+							<input type="hidden" name="supportCategory"  id="supportCategory" value="${support.supportCategory}"/>
 							<table>
 								<colgroup>
 									<col width="20%">

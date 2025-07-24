@@ -21,7 +21,7 @@
 			 <form action="/company/myPage/modifyClass" method="post">
 			<table class="table-with-side-borders" style="width: 90%;">
 				<input type="hidden" name="classIdx" value="${classInfo.classIdx}" />
-				<input type="hidden" name="userIdx" value="${classInfo.userIdx}">
+				<input type="hidden" name="userIdx" value="${classInfo.userIdx}" />
 				<tr>
 					<th>강의명</th>
 					<td><input type="text" name="classTitle" value="${classInfo.classTitle}"></td>
@@ -53,12 +53,12 @@
 				<tr>
 					<th>상태</th>
 					<td>
-					<select name="classStatus" required>
-			            <option value="1" ${classInfo.classStatus == 1 ? "selected" : ""}>임시저장</option>
-			            <option value="2" ${classInfo.classStatus == 2 ? "selected" : ""}>공개</option>
-			            <option value="3" ${classInfo.classStatus == 3 ? "selected" : ""}>마감</option>
+						<select name="classStatus" required>
+				            <option value="1" ${classInfo.classStatus == 1 ? "selected" : ""}>임시저장</option>
+				            <option value="2" ${classInfo.classStatus == 2 ? "selected" : ""}>공개</option>
+				            <option value="3" ${classInfo.classStatus == 3 ? "selected" : ""}>마감</option>
+		       			</select><br>
 		            </td>
-		        </select><br>
 		        </tr>
 		        <tr>
 					<th>수강료</th>
@@ -120,7 +120,7 @@
 <!-- 			</div> -->
 			<!-- ================================================================================================= -->
 			<!-- 기존 커리큘럼을 출력하는 영역 (처음에 보여지는 것들) -->
-			<<div id="curriculumContainer">
+			<div id="curriculumContainer">
 				<c:forEach var="curri" items="${curriculumList}">
 					<div class="curriculum-box">
 						<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}" />
