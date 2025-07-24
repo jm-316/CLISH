@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>기업 정보 수정 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 	<style type="text/css">
 		/* 큰 전체 박스 */
 		.main-container {

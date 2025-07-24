@@ -7,11 +7,13 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.mapper.AdminClassMapper;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.course.service.CurriculumService;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
@@ -90,12 +92,23 @@ public class CompanyClassService {
 	    
 		return result;
 	}
-	
+		
 	// 클래스 삭제
 	public void deleteClass(String classIdx) {
 		companyClassMapper.deleteClass(classIdx);
 		
 	}
+	
+	// 클래스 문의 페이지 - 문의 리스트
+	public List<InquiryJoinUserDTO> getClassInquiryList(String userIdx) {
+		return companyClassMapper.selectClassInquiryList(userIdx);
+	}
+	
+	// 클래스 문의 페이지 - 문의 상세
+	public InquiryJoinUserDTO getClassInquiryDetail(String idx) {
+		return companyClassMapper.selectClassInquiryDetail(idx);
+	}
+	
 	
 	
 	

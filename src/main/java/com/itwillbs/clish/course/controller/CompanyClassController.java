@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
@@ -33,6 +35,7 @@ import com.itwillbs.clish.course.service.CompanyClassService;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -248,4 +251,36 @@ public class CompanyClassController {
 	    // 삭제 후 다시 클래스 관리 페이지로 이동
 	    return "redirect:/company/myPage/classManage";
 	}
+	
+	// ----------------------------------------------------------------------------------------------
+	// 클래스 문의 페이지 - 문의 리스트
+	@GetMapping("/myPage/classInquiry")
+	public String classInquiry(HttpSession session, Model model) {
+		
+		 String userIdx = (String) session.getAttribute("sId");
+
+	    // 클래스 문의 리스트 (조인된 정보 포함)
+	    List<InquiryJoinUserDTO> classInquiryList = companyClassService.getClassInquiryList(userIdx);
+	    System.out.println("userIdx = " + userIdx);
+	    System.out.println("classInquiryList = " + classInquiryList);
+	    
+	    model.addAttribute("classInquiryList", classInquiryList);
+	    
+		return "/company/companyClass/classInquiry";
+	}
+	
+	// 클래스 문의 페이지 - 문의 상세
+	@GetMapping("/inquiry/detail/{idx}")
+	@ResponseBody
+	public InquiryJoinUserDTO getClassInquiryDetail(@PathVariable("idx") String idx) {
+		
+		System.out.println(">>> 문의 상세 요청 idx: " + idx); // 요청 확인
+
+	    InquiryJoinUserDTO result = companyClassService.getClassInquiryDetail(idx);
+	    System.out.println(">>> 반환된 객체: " + result); // 응답 확인
+
+	    return result;
+//	    return companyClassService.getClassInquiryDetail(idx);
+	}
+
 }

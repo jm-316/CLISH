@@ -7,10 +7,11 @@
 <meta charset="UTF-8">
 <title>클래스 상세 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<main>
 		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
@@ -69,8 +70,8 @@
 		</section>
 	</main>
 	<footer>
-		<jsp:include page="/WEB-INF/views/admin/bottom.jsp"></jsp:include>
-	</footer>
+        <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
+    </footer>
 
 </body>
 </html>
