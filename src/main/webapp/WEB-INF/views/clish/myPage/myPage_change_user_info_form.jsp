@@ -43,20 +43,23 @@
 			</tr>
 			<tr>
 				<th><label for="userName">회원이름</label></th>
-				<td><input type="text" name="userName" id="userName" value="${user.userName }"></td>
+				<td><input type="text" name="userName" id="userName" readonly value="${user.userName }"></td>
 			</tr>
 	
 			<tr>
-				<th><label for="userRepName"><c:if test="${sessionScope.userType == 1}">닉네임</c:if><c:if test="${sessionScope.userType == 2}">대표관리자명</c:if></label></th>
+				<th><label for="userRepName">닉네임</label></th>
 				<td>
 					<input type="text" name="userRepName" id="userRepName" value="${user.userRepName }">
-					<input type="button" id="checkNickname" value="중복확인">
+					<span id="checkRepNameResult"></span>
+<!-- 					<input type="button" value="중복확인" id="checkRepName" -->
+<%-- 						onclick="repNameCheck(document.getElementById('userRepName').value,'${user.userIdx }')"> --%>
 				</td>
 			</tr>
 	
 			<tr>
 				<th><label for="userBirth">생년월일</label></th>
 				<td><input type="date" name="userBirth" id="userBirth" value="${user.userBirth }"></td>
+				<span id="birthCheckResult"></span>
 			</tr>
 	
 			<c:if test="${sessionScope.userType == 1}">
@@ -96,8 +99,11 @@
 			</tr>
 			
 			<tr>
-				<th><label for="userPhoneNumber"><c:if test="${sessionScope.userType == 1}">휴대폰번호</c:if><c:if test="${sessionScope.userType == 2}">기업전화번호</c:if></label></th>
-				<td><input type="text" name="userPhoneNumber" id="userPhoneNumber" value="${user.userPhoneNumber }" required></td>
+				<th><label for="userPhoneNumber">휴대폰번호</label></th>
+				<td>
+				<input type="text" name="userPhoneNumber" id="userPhoneNumber" value="${user.userPhoneNumber }" required>
+				<span id="phoneCheckResult"></span>
+				</td>
 			</tr>
 	
 			<tr>
@@ -116,37 +122,44 @@
 			</tr>
 		</table>
 		<input type="hidden" name="userType" value="${sessionScope.userType}"/>
-		<p><button type="submit">정보변경</button></p>
+		<p><button type="submit" id="submitBtn"> 정보변경</button></p>
 		</form>
 	
 	</div>
 	
 	</main>
-	
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
-</body>
-</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="module">
 	import { initEmailAuth } from '/resources/js/email/email_auth.js';
-	import { initJoinForm } from '/resources/js/user/join_form.js';
-
-	window.addEventListener("DOMContentLoaded", () => {
-		initJoinForm();
-		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
-	});
+	initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
 </script>
 <script type="text/javascript">
+	window.isEmailVerified = true;
+	
 	document.addEventListener("DOMContentLoaded", function() {
 	    const emailInput = document.getElementById("userEmail");
 	    const changeBtn = document.getElementById("changeEmail");
 	    const verifyBtn = document.getElementById("emailVerifyBtn");
 	    const authResult = document.getElementById("email-auth-result");
-	
+		const userRepNameInput = document.getElementById('userRepName');
+		const initialRepName = userRepNameInput.value.trim();
+		const userIdx = '${user.userIdx}';
+		const pwInput = document.getElementById("userPassword");
+		const pwConf = document.getElementById("userPasswordConfirm");
+		const phoneInput = document.getElementById("userPhoneNumber");
+		const submitBtn = document.getElementById("submitBtn");
+
+		var isPwOk = true;
+		var isPwMatchOk = true;
+		var isRepNameOk = true;
+		var isPhoneOk = true;
+		
+		updateSubmitButton();
+		
 	    changeBtn.addEventListener("click", function() {
-	        // 이메일 입력창 수정 가능
+	    	window.isEmailVerified = false;
+	    	// 이메일 입력창 수정 가능
 	        emailInput.removeAttribute("readonly");
 	        emailInput.focus();
 	
@@ -156,6 +169,153 @@
 	
 	        // "이메일변경" 버튼 숨김 (또는 비활성화 해도 됨)
 	        changeBtn.style.display = "none";
-    });
-});
+	    });
+	    
+		// 닉네임 중복체크
+		userRepNameInput.addEventListener('blur', () => {
+		    let currentRepName = userRepNameInput.value.trim();
+		    if (currentRepName.length > 0) {
+		    	isRepNameOk = false;
+		        repNameCheck(currentRepName, userIdx);
+		    } else {
+		        document.getElementById('checkRepNameResult').innerText = '';
+		    }
+		});
+		
+		if(pwInput) {
+			pwInput.onblur = function () {
+				const pwd = this.value;
+				const result = document.getElementById("checkPasswdResult");
+				
+				if(pwd.length > 0 ){					
+					const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{8,16}$/;
+					if(!pattern.test(pwd)) {
+						result.innerText = "영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!";
+						result.style.color = "red";
+						isPwOk = false;
+					} else{
+						result.innerText = pwd.length >= 12 ? "안전" : (pwd.length >= 10 ? "보통" : "위험");
+						result.style.color = pwd.length >= 12 ? "green" : (pwd.length >= 10 ? "orange" : "red");
+						isPwOk = true;
+					}
+				} else {
+					isPwOk = true;
+					result.innerText = "";
+				}
+				updateSubmitButton();
+			};
+		}
+	
+		// 5. 비밀번호2 1과의 동일한 값 확인
+		if(pwInput && pwConf) {
+			pwConf.onblur = function () {
+				const pwd = pwInput.value;
+				const pwd2 = this.value;
+				const result = document.getElementById("checkPasswd2Result");
+				if(pwd.length > 0 || pwd2.length > 0){
+					if(pwd === pwd2) {
+						result.innerText = "비밀번호 확인 완료!";
+						result.style.color = "green";
+						isPwMatchOk = true;
+					} else{
+						result.innerText = "비밀번호 다름!";
+						result.style.color = "red";
+						isPwMatchOk = false;
+					}
+				} else {
+					isPwMatchOk = true;
+					result.innerText = "";
+				}
+				updateSubmitButton();
+			};
+		}
+		// 닉네임 중복체크 함수
+		function repNameCheck(userRepName, userIdx) {
+			$.ajax({
+				type: "GET",
+				url: "/myPage/check/repName",
+				data: {
+					userIdx: userIdx,
+					userRepName: userRepName
+				},
+				dataType: "json" // 응답 데이터를 무조건 JSON 객체로 취급(= 실제 데이터 타입 자동 판별)
+			}).done(function(response) {
+				// 버튼 클릭할 때마다 테이블 새로 생성
+				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
+				$("#checkRepNameResult").html(msg);
+				if(response.status == 'fail'){
+					isRepNameOk = false;
+				} else {
+					userRepNameInput.value = response.repName;
+					isRepNameOk = true;
+				}
+					updateSubmitButton();
+			}).fail(function(response){
+				alert("잠시후 다시 시도하세요");	
+				isRepNameOk = false;
+				updateSubmitButton();
+			})
+		}
+		// 6. 전화번호 중복 & 정규표현식 체크
+		phoneInput.addEventListener('blur', function() {
+		    const phone = this.value.replace(/\s+/g, "");
+		    const resultSpan = document.getElementById('phoneCheckResult');
+		    const pattern = /^\d{3}-\d{4}-\d{4}$/;
+		    const currentUserPhoneNumber = phoneInput.value.trim();
+		    // 1차: 정규표현식 체크
+		    if (!pattern.test(phone)) {
+		        resultSpan.innerText = '전화번호 형식은 ***-****-**** 입니다.';
+		        resultSpan.style.color = 'red';
+		        isPhoneOk = false;
+		        updateSubmitButton();
+		        return;
+		    } else {
+		    	resultSpan.innerText = '';
+		    }
+		
+		    // 2차: 서버에 중복체크 요청
+			$.ajax({
+				type: "GET",
+				url: "/myPage/check/userPhoneNumber",
+				data: {
+					userIdx: userIdx,
+					userPhoneNumber: currentUserPhoneNumber
+				},
+				dataType: "json" // 응답 데이터를 무조건 JSON 객체로 취급(= 실제 데이터 타입 자동 판별)
+			}).done(function(response) {
+				// 버튼 클릭할 때마다 테이블 새로 생성
+				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
+				$("#phoneCheckResult").html(msg);
+				if(response.status == 'fail'){
+					isPhoneOk = false;
+				} else {
+					isPhoneOk = true;
+				}
+			}).fail(function(response){
+				alert("잠시후 다시 시도하세요");	
+			})
+			updateSubmitButton();
+		});
+		
+		function updateSubmitButton() {
+			 console.log({
+				isRepNameOk,
+		        isPwOk,
+		        isPwMatchOk,
+		        isPhoneOk,
+		        isEmailVerified: window.isEmailVerified
+		    });
+		    if(isRepNameOk && isPwOk && isPwMatchOk &&  isPhoneOk && window.isEmailVerified) {
+		        submitBtn.disabled = false;
+		    } else{
+		        submitBtn.disabled = true;
+		    }
+		}
+	});
 </script>
+	
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
+	</footer>
+</body>
+</html>

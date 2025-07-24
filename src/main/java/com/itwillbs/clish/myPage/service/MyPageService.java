@@ -22,6 +22,7 @@ import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.myPage.mapper.MyPageMapper;
 import com.itwillbs.clish.user.dto.UserDTO;
+import com.itwillbs.clish.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class MyPageService {
 	private final MyPageMapper myPageMapper;
 	private final FileMapper fileMapper;
+	private final UserService userService;
 	@Autowired
 	private HttpSession session;
 	//-----------------------------------------------------
@@ -140,6 +142,15 @@ public class MyPageService {
 		FileUtils.deleteFile(fileDTO, session);
 		
 		fileMapper.deleteFile(fileDTO);
+	}
+
+	public UserDTO checkRepName(UserDTO userDTO) {
+		return myPageMapper.checkRepName(userDTO);
+	}
+
+	public UserDTO checkPhoneNumber(UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.checkPhoneNumber(userDTO);
 	}
 	
 

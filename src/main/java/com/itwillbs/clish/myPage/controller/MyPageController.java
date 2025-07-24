@@ -3,11 +3,13 @@ package com.itwillbs.clish.myPage.controller;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +73,55 @@ public class MyPageController {
 
 		
 
+	}
+	
+	@GetMapping("/check/repName")
+	public ResponseEntity<Map<String, String>> checkRepName(UserDTO userDTO) {
+		Map<String, String> response = new HashMap<>();
+		
+		UserDTO user = myPageService.checkRepName(userDTO);
+		if(userService.isNickExists(userDTO.getUserRepName())) {
+			
+			if(user.getUserIdx().equals(userDTO.getUserIdx())) {
+				System.out.println("idx일치");
+				response.put("msg", "사용가능 닉네임");
+				response.put("status", "success");
+				response.put("repName", userDTO.getUserRepName());
+				return ResponseEntity.ok(response);
+			}
+			
+			response.put("msg", "사용불가능 닉네임");
+			response.put("status", "fail");
+			return ResponseEntity.ok(response);
+		} else {
+			response.put("msg", "사용가능 닉네임");
+			response.put("status", "success");
+			response.put("repName", userDTO.getUserRepName());
+			return ResponseEntity.ok(response);
+		}
+	}
+	@GetMapping("/check/userPhoneNumber")
+	public ResponseEntity<Map<String, String>> checkPhoneNumber(UserDTO userDTO) {
+		Map<String, String> response = new HashMap<>();
+		
+		UserDTO user = myPageService.checkPhoneNumber(userDTO);
+		if(userService.isUserPhoneExists(userDTO.getUserPhoneNumber())) {
+			
+			if(user.getUserIdx().equals(userDTO.getUserIdx())) {
+				System.out.println("idx일치");
+				response.put("msg", "사용가능 번호");
+				response.put("status", "success");
+				return ResponseEntity.ok(response);
+			}
+			
+			response.put("msg", "사용불가능 번호");
+			response.put("status", "fail");
+			return ResponseEntity.ok(response);
+		} else {
+			response.put("msg", "사용가능 번호");
+			response.put("status", "success");
+			return ResponseEntity.ok(response);
+		}
 	}
 	
 	// 수정정보 UPDATE문 으로 반영후 정보변경 메인페이지로 이동

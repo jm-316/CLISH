@@ -63,6 +63,10 @@ public interface MyPageMapper {
 
 	void deleteFile(FileDTO fileDTO);
 
+	UserDTO checkRepName(UserDTO userDTO);
+
+	UserDTO checkPhoneNumber(UserDTO userDTO);
+
 
 
 

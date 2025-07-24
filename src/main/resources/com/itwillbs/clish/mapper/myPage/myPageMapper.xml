@@ -13,15 +13,29 @@
 		WHERE user_id = #{userId}
 	</select>
 	
+	<select id="checkRepName" resultType="com.itwillbs.clish.user.dto.UserDTO">
+		SELECT *
+		FROM USER
+		WHERE user_rep_name = #{userRepName}
+	</select>
+	
+	<select id="checkPhoneNumber" resultType="com.itwillbs.clish.user.dto.UserDTO">
+		SELECT *
+		FROM USER
+		WHERE user_phone_number = #{userPhoneNumber}
+	</select>
+	
 	<!--  유저정보 수정 -->
 	<update id="updateUserInfo">
 		UPDATE USER
 		SET
 			user_name = #{userName},
 			user_password = #{userPassword},
+			user_rep_name = #{userRepName},
 			<if test="newEmail != null and newEmail != ''">
 			user_email = #{newEmail},
 			</if>
+			user_gender = #{userGender},
 			user_phone_number = #{userPhoneNumber},
 			user_postcode = #{userPostcode},
 			user_address1 = #{userAddress1},
