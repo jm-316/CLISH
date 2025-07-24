@@ -29,11 +29,11 @@
 	</insert>
 	
 	<!-- 등록한 강의 조회 -->
-	<select id="selectClassByIdx" resultType="com.itwillbs.clish.course.dto.ClassDTO">
-		SELECT *
-		FROM CLASS
-		WHERE class_idx = #{classIdx}
-	</select>
+<!-- 	<select id="selectClassByIdx" resultType="com.itwillbs.clish.course.dto.ClassDTO"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM CLASS -->
+<!-- 		WHERE class_idx = #{classIdx} -->
+<!-- 	</select> -->
 	
 	<!-- 전체강의 조회 -->
 	<select id="selectAllClassList" resultType="map">
@@ -93,5 +93,122 @@
 	    WHERE
 			class_idx = #{classIdx}
 	</delete>
+
+	<!-- 클래스 문의 페이지 - 문의 리스트 -->
+	<resultMap id="inquiryJoinUserMap" type="com.itwillbs.clish.admin.dto.InquiryJoinUserDTO">
+		<id property="inquiry.inqueryIdx" column="inquery_idx"/>
+		<result property="classIdx" column="class_idx"/>
+		<result property="inqueryType" column="inquery_type"/>
+		<result property="userName" column="user_name"/>
+		<association property="inquiry" javaType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+			<id property="inqueryIdx" column="inquery_idx"/>
+			<result property="userIdx" column="user_idx"/>
+			<result property="inqueryTitle" column="inquery_title"/>
+			<result property="inqueryDetail" column="inquery_detail"/>
+			<result property="inqueryAnswer" column="inquery_answer"/>
+			<result property="inqueryDatetime" column="inquery_datetime"/>
+			<result property="inqueryAnswerDatetime" column="inquery_answer_datetime"/>
+			<result property="inqueryModifyDatetime" column="inquery_modify_datetime"/>
+			<result property="inqueryStatus" column="inquery_status"/>
+		</association>
+	</resultMap>
+	<select id="selectClassInquiryList" resultMap="inquiryJoinUserMap">
+		SELECT 
+		    i.inquery_idx,
+		    i.user_idx,
+		    i.inquery_title,
+		    i.inquery_detail,
+		    i.inquery_answer,
+		    i.inquery_datetime,
+		    i.inquery_answer_datetime,
+		    i.inquery_modify_datetime,
+		    i.inquery_status,
+		    i.inquery_type,
+		    i.class_idx,
+		    u.user_name
+		FROM INQUERY i
+		JOIN CLASS c ON i.class_idx = c.class_idx
+		LEFT JOIN USER u ON i.user_idx = u.user_idx
+		WHERE c.user_idx = (SELECT user_idx FROM USER WHERE user_id = 'hong')
+		AND i.inquery_type = 2
+		ORDER BY i.inquery_datetime DESC
+	</select>
+	
+	<select id="selectClassInquiryDetail" resultMap="inquiryJoinUserMap">
+		SELECT 
+	        i.inquery_idx,
+	        i.user_idx,
+	        i.inquery_title,
+	        i.inquery_detail,
+	        i.inquery_datetime,
+	        i.inquery_answer,
+	        i.inquery_answer_datetime,
+	        i.inquery_modify_datetime,
+	        i.inquery_status,
+	        i.inquery_type,
+	        i.class_idx,
+	        u.user_name
+	    FROM INQUERY i
+	    LEFT JOIN USER u ON i.user_idx = u.user_idx
+	    WHERE i.inquery_idx = #{idx}
+	</select>
+	
+	
+	<!-- 강의 사진 첨부 추가 -->
+	<resultMap id="ClassDTOWithBoardFileDTOListResultMap" type="com.itwillbs.clish.course.dto.ClassDTO" >
+		<id property="classIdx" column="class_idx"/>
+		<result property="classTitle" column="class_title" />
+		<result property="categoryIdx" column="category_idx" />
+		<result property="classStatus" column="class_status" />
+		<result property="classPrice" column="class_price" />
+		<result property="classMember" column="class_member" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="classDays" column="class_days" />
+		<result property="location" column="location" />
+		<result property="userIdx" column="user_idx" />
+		<result property="classType" column="class_type" />
+		<result property="classIntro" column="class_intro" />
+		<result property="classContent" column="class_content" />
+		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO">
+			<id property="fileId" column="file_id"/>
+			<result property="idx" column="idx" />
+			<result property="originalFileName"  column="original_file_name"/>
+			<result property="realFileName"  column="real_file_name"/>
+			<result property="subDir"  column="sub_dir"/>
+			<result property="fileSize"  column="file_size"/>
+			<result property="contentType"  column="content_type"/>
+		</collection>
+	</resultMap>
+	<select id="selectClassByIdx" resultMap="ClassDTOWithBoardFileDTOListResultMap">
+		SELECT 
+			c.class_idx
+			, c.class_title
+			, c.category_idx
+			, c.class_status
+			, c.class_price
+			, c.class_member
+			, c.start_date
+			, c.end_date
+			, c.class_days
+			, c.location
+			, c.user_idx
+			, c.class_type
+			, c.class_intro
+			, c.class_content
+		    , f.file_id
+		    , f.original_file_name
+		    , f.real_file_name
+		    , f.sub_dir
+		    , f.file_size
+		    , f.content_type
+		FROM
+			CLASS c
+		LEFT JOIN FILE f
+		ON c.class_idx = f.idx
+		WHERE c.class_idx = #{classIdx}
+	</select>
+	
+	
 	
 </mapper>

@@ -11,4 +11,7 @@ public interface MainMapper {
 	
 
 	List<ClassDTO> selectClassInfo();
+	List<ClassDTO> selectClassInfo2();
+	List<ClassDTO> selectClassLongLatest();
+	List<ClassDTO> selectClassInfoShortLatest();
 }

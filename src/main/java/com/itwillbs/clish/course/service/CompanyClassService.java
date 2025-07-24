@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.core.appender.FileManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.mapper.AdminClassMapper;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileMapper;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.service.CurriculumService;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
@@ -28,6 +37,10 @@ public class CompanyClassService {
 	private final CurriculumService curriculumService;
 	private final NotificationService notificationService;
 	private final CurriculumMapper curriculumMapper;
+	private final FileMapper fileMapper;
+	
+	@Autowired
+	private HttpSession session;
 	
 	// 강의 등록
 	public int registerClass(ClassDTO companyClass) {
@@ -90,12 +103,32 @@ public class CompanyClassService {
 	    
 		return result;
 	}
-	
+		
 	// 클래스 삭제
 	public void deleteClass(String classIdx) {
 		companyClassMapper.deleteClass(classIdx);
 		
 	}
+
+	// 파일 삭제
+	public void removeFile(FileDTO fileDTO) {
+		fileDTO = fileMapper.selectFile(fileDTO);
+		FileUtils.deleteFile(fileDTO, session);
+		
+		fileMapper.deleteFile(fileDTO);
+		
+	}
+	
+	// 클래스 문의 페이지 - 문의 리스트
+	public List<InquiryJoinUserDTO> getClassInquiryList(String userIdx) {
+		return companyClassMapper.selectClassInquiryList(userIdx);
+	}
+	
+	// 클래스 문의 페이지 - 문의 상세
+	public InquiryJoinUserDTO getClassInquiryDetail(String idx) {
+		return companyClassMapper.selectClassInquiryDetail(idx);
+	}
+	
 	
 	
 	

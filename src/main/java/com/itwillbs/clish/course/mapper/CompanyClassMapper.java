@@ -6,11 +6,14 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 
 @Mapper
 public interface CompanyClassMapper {
+
 
 	// 클래스 등록
 	int insertCompanyClass(ClassDTO companyClass);
@@ -29,6 +32,12 @@ public interface CompanyClassMapper {
 	
 	// 클래스 삭제
 	void deleteClass(String classIdx);
+	
+	// 클래스 문의 페이지 - 문의 리스트
+	List<InquiryJoinUserDTO> selectClassInquiryList(String userIdx);
+	
+	// 클래스 문의 페이지 - 문의 상세 
+	InquiryJoinUserDTO selectClassInquiryDetail(String idx);
 	
 	
 

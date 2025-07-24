@@ -43,6 +43,17 @@
 			class_status = 1
 	</select>
 	
+	<select id="selectUnAnsweredInquiryCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM 
+			INQUERY
+		WHERE
+			inquery_status = 1
+		AND
+			inquery_type = 1
+	</select>
+	
 	<!-- 일별 매출 -->
 	<select id="selectDailyRevenue" resultType="com.itwillbs.clish.admin.dto.RevenueDTO">
 		SELECT
