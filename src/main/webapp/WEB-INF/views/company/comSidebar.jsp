@@ -91,7 +91,7 @@
 			    </div>
 			</div>
 	        <!-- 밑에꺼는 현재 매핑 안함 -->
-	        <h3><a href=""><b>나의 문의</b></a></h3>
+	        <h3><a href="${pageContext.request.contextPath}/company/myPage/myInquiry"><b>나의 문의</b></a></h3>
 	        <h3><a href=""><b>나의 알림</b></a></h3>
 	        <h3><a href=""><b>회원 탈퇴</b></a></h3>
 	    </div>

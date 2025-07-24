@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
@@ -274,13 +275,33 @@ public class CompanyClassController {
 	@ResponseBody
 	public InquiryJoinUserDTO getClassInquiryDetail(@PathVariable("idx") String idx) {
 		
-		System.out.println(">>> 문의 상세 요청 idx: " + idx); // 요청 확인
+//		System.out.println(">>> 문의 상세 요청 idx: " + idx); // 요청 확인
 
 	    InquiryJoinUserDTO result = companyClassService.getClassInquiryDetail(idx);
-	    System.out.println(">>> 반환된 객체: " + result); // 응답 확인
+//	    System.out.println(">>> 반환된 객체: " + result); // 응답 확인
 
 	    return result;
 //	    return companyClassService.getClassInquiryDetail(idx);
 	}
+	
+	// 클래스 문의 페이지 - 문의 답변
+	@PostMapping("/inquiry/answer")
+	public String writeOrUpdateAnswer(@RequestParam("inqueryIdx") String idx,
+			 @RequestParam("inqueryAnswer") String inqueryAnswer, @RequestParam("userIdx") String userIdx,  RedirectAttributes rttr) {
+	    int result = companyClassService.updateClassInquiry(idx, userIdx, inqueryAnswer);
 
+	    if (result > 0) {
+	        rttr.addFlashAttribute("msg", "답변이 등록되었습니다.");
+	    } else {
+	        rttr.addFlashAttribute("msg", "답변 등록에 실패했습니다.");
+	        return "commons/fail";
+	    }
+	    
+	    System.out.println("**idx: " + idx);
+	    System.out.println("**userIdx: " + userIdx);
+	    System.out.println("**inqueryAnswer: " + inqueryAnswer);
+	    
+	    return "redirect:/company/myPage/classInquiry";
+	}
+	
 }

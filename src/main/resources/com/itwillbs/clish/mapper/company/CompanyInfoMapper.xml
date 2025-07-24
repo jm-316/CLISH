@@ -43,4 +43,35 @@
 		  WHERE
 			user_idx = #{userIdx}
 	</update>
+	
+	<!-- 기업 - 문의 작성/수정 폼 열기 -->
+	<select id="selectInqueryByIdx" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+		SELECT * FROM INQUERY
+   		WHERE inquery_idx = #{inqueryIdx}
+	</select>
+	
+	<!-- 나의 문의 신규 등록 -->
+<!-- 	<insert id="insertInquiry "> -->
+<!-- 		INSERT INTO INQUERY ( -->
+<!-- 	        inquery_idx, user_idx, inquery_title, inquery_detail, -->
+<!-- 	        inquery_type, inquery_status, inquery_datetime -->
+<!-- 	    ) -->
+<!-- 	    VALUES ( -->
+<!-- 	        #{inqueryIdx}, #{userIdx}, #{inqueryTitle}, #{inqueryDetail}, -->
+<!-- 	        #{inqueryType}, 1, NOW() -->
+<!-- 	    ) -->
+<!-- 	</insert> -->
+	
+<!-- 	<update id="updateInquiry"> -->
+<!-- 		UPDATE INQUERY -->
+<!-- 	    SET inquery_title = #{inqueryTitle}, -->
+<!-- 	        inquery_detail = #{inqueryDetail}, -->
+<!-- 	        inquery_modify_datetime = NOW() -->
+<!-- 	    WHERE inquery_idx = #{inqueryIdx} -->
+<!-- 	</update>	 -->
+		
 </mapper>
+
+
+
+

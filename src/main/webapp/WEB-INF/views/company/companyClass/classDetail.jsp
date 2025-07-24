@@ -19,6 +19,10 @@
 				<h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
 				
 				<table class="table-with-side-borders" style="width: 90%;">
+				<colgroup>
+					<col style="width: 180px;">  <%-- th (제목) 너비 넓힘 --%>
+					<col style="width: auto;">   <%-- td (내용) 자동 너비 --%>
+				</colgroup>
 					<tr>
 						<th>강의명</th> <td>${classInfo.classTitle}</td>
 					</tr>

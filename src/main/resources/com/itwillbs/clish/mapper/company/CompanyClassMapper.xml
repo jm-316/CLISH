@@ -209,6 +209,17 @@
 		WHERE c.class_idx = #{classIdx}
 	</select>
 	
+	<!-- 클래스 문의 페이지 - 문의 답변 -->
+	<update id="updateClassInquiry">
+		UPDATE
+			INQUERY
+		SET
+			inquery_answer = #{inqueryAnswer}
+			, inquery_answer_datetime = now()
+			, inquery_status = 2
+		WHERE
+			inquery_idx = #{idx}
+	</update>
 	
 	
 </mapper>
