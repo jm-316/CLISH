@@ -37,8 +37,6 @@
 			AND
 			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
 			</if>
-			
-		
 	</select>
 
 </mapper>
