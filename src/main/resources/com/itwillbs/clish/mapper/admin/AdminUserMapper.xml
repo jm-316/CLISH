@@ -32,6 +32,7 @@
 			, user_id
 			, user_birth
 			, user_phone_number
+			, user_phone_number_sub
 			, user_email
 			, user_gender
 			, user_postcode
@@ -87,9 +88,12 @@
 		SELECT
 			user_idx
 			, user_name
+			, user_rep_name
+			, user_birth
 			, user_id
 			, user_email
 			, user_phone_number
+			, user_phone_number_sub
 			, user_postcode
 			, user_address1
 			, user_address2
@@ -142,6 +146,14 @@
 			, 2
 		)
 	</insert>
+	
+	<select id="selectCompanyBizReg" resultType="com.itwillbs.clish.user.dto.CompanyDTO">
+		SELECT *
+		FROM
+			REGISTRATION
+		WHERE
+			user_idx = #{idx}
+	</select>
 </mapper>  
   
   

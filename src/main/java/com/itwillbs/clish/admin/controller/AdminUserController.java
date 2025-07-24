@@ -18,6 +18,7 @@ import com.itwillbs.clish.admin.dto.DashboardSummaryDTO;
 import com.itwillbs.clish.admin.dto.RevenueDTO;
 import com.itwillbs.clish.admin.service.AdminDashboardService;
 import com.itwillbs.clish.admin.service.AdminUserService;
+import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -77,26 +78,43 @@ public class AdminUserController {
 	@GetMapping("/user/{idx}")
 	public String userInfo(@PathVariable("idx") String idx, Model model) {
 		UserDTO userInfo = adminService.getuserInfo(idx);
+		String phone = masktedPhone(userInfo.getUserPhoneNumber());
+		String phoneSub = masktedPhone(userInfo.getUserPhoneNumberSub());
 		
 		model.addAttribute("user", userInfo);
+		model.addAttribute("phone", phone);
+		model.addAttribute("phoneSub", phoneSub);
 		return "/admin/user/user_info";
 	}
 	
-	// 일반 회원 정보 수정
-	@PostMapping("/user/{idx}/update")
-	public String userInfoModify(@PathVariable("idx") String idx, Model model, @ModelAttribute UserDTO user) {		
-		int count = adminService.modifyUserInfo(idx, user);
-		
-		if (count > 0) {
-			model.addAttribute("msg", "회원 정보를 수정했습니다.");
-			model.addAttribute("targetURL", "/admin/user");
+	private String masktedPhone(String phone) {
+		String maskedPhone = "";
+		if (phone != null && phone.length() == 11) {
+		    maskedPhone = phone.substring(0, 3) + "-" +
+		                  phone.substring(3, 7) + "-" +
+		                  "****";
 		} else {
-			model.addAttribute("msg", "다시 시도해주세요!");
-			return "commons/fail";
+		    maskedPhone = "잘못된 번호";
 		}
 		
-		return "commons/result_process";
+		return maskedPhone;
 	}
+	
+	// 일반 회원 정보 수정
+//	@PostMapping("/user/{idx}/update")
+//	public String userInfoModify(@PathVariable("idx") String idx, Model model, @ModelAttribute UserDTO user) {		
+//		int count = adminService.modifyUserInfo(idx, user);
+//		
+//		if (count > 0) {
+//			model.addAttribute("msg", "회원 정보를 수정했습니다.");
+//			model.addAttribute("targetURL", "/admin/user");
+//		} else {
+//			model.addAttribute("msg", "다시 시도해주세요!");
+//			return "commons/fail";
+//		}
+//		
+//		return "commons/result_process";
+//	}
 	
 	
 	// 일반 회원 탈퇴처리
@@ -130,7 +148,16 @@ public class AdminUserController {
 	@GetMapping("/company/{idx}")
 	public String companyInfo(@PathVariable("idx") String idx, Model model) {
 		UserDTO companyInfo = adminService.getcompanyInfo(idx);
+		CompanyDTO comDto = adminService.getCompanyBizReg(idx);
+		
+		String phone = masktedPhone(companyInfo.getUserPhoneNumber());
+		String phoneSub = masktedPhone(companyInfo.getUserPhoneNumberSub());
+		
 		model.addAttribute("company", companyInfo);
+		model.addAttribute("phone", phone);
+		model.addAttribute("phoneSub", phoneSub);
+		model.addAttribute("comDto", comDto);
+		
 		return "/admin/user/company_info";
 	}
 	
