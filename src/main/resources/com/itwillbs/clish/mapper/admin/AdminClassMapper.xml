@@ -43,6 +43,8 @@
 			CLASS
 		SET
 			class_title = #{classInfo.classTitle}
+			, class_intro = #{classInfo.classIntro}
+			, class_content = #{classInfo.classContent}
 			, category_idx = #{classInfo.categoryIdx}
 			, class_status = #{classInfo.classStatus}
 			, class_price = #{classInfo.classPrice}
@@ -52,6 +54,7 @@
 			, class_days = #{classInfo.classDays}
 			, location = #{classInfo.location}
 			, updated_at = now()
+			, class_pic1 = #{classInfo.classPic1}
 		WHERE
 			class_idx = #{idx}
 	</update>
