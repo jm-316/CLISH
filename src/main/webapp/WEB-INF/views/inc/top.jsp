@@ -66,7 +66,7 @@
 				<c:otherwise>
 					 
 					<c:if test="${sessionScope.userType == 3}">
-						 <a class="header-button button" href="/admin/">마이페이지</a>
+						 <a class="header-button button" href="/admin/main">마이페이지</a>
 					</c:if>
 					<c:if test="${sessionScope.userType == 2}">
 						 <a class="header-button button" href="/company/main">마이페이지</a>
