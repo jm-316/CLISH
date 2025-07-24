@@ -13,15 +13,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <style type="text/css">
 	#login-form {
-	width: 50%;
-	margin: 200px auto 0;
-	
+		width: 50%;
+		margin: 200px auto 0;
 	}
 	#login-form > form {
-	border: none;
+		border: none;
 	}
 	#login-form > input[type="submit"] {
-	margin: 0 auto;
+		margin: 0 auto;
 	}
 </style>
 </head>

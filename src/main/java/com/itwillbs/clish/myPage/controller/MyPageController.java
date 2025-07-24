@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -27,6 +28,7 @@ import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.myPage.service.MyPageService;
 import com.itwillbs.clish.user.dto.UserDTO;
+import com.itwillbs.clish.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import retrofit2.http.GET;
@@ -36,6 +38,7 @@ import retrofit2.http.GET;
 @RequestMapping("/myPage")
 public class MyPageController {
 	private final MyPageService myPageService;
+	private final UserService userService;
 	
 	// 마이페이지 메인
 	@GetMapping("/main")
@@ -57,14 +60,17 @@ public class MyPageController {
 		user.setUserId((String)session.getAttribute("sId"));
 		user = myPageService.getUserInfo(user);
 		
-		if(user.getUserPassword().equals(inputPw)) {
-			model.addAttribute("user", user);
-			return "clish/myPage/myPage_change_user_info_form"; //비밀번호 일치시 이동페이지
-		}
+		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) {
+			model.addAttribute("msg","비밀번호가 틀렸습니다.");
+			model.addAttribute("targetUrl","myPage/change_user_info_form");
+			return "commons/result_process";
+	    }
+
+		model.addAttribute("user", user);
+		return "clish/myPage/myPage_change_user_info_form"; //비밀번호 일치시 이동페이지
+
 		
-		model.addAttribute("msg","비밀번호가 틀렸습니다.");
-		model.addAttribute("targetUrl","myPage/change_user_info_form");
-		return "commons/result_process";
+
 	}
 	
 	// 수정정보 UPDATE문 으로 반영후 정보변경 메인페이지로 이동
@@ -80,7 +86,7 @@ public class MyPageController {
 		}
 		
 		if(!new_password.isEmpty()) { // 새비밀번호가 있다면 비밀번호 새로지정
-			user.setUserPassword(new_password);
+			user.setUserPassword(userService.encodePassword(new_password));
 		}else { // 아니면 기존 비밀번호 유지
 			user.setUserPassword(user1.getUserPassword());
 		}
@@ -320,12 +326,8 @@ public class MyPageController {
 			model.addAttribute("targetURL","/myPage/myQuestion");
 			return "commons/result_process";
 		}
-//		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
-		
-//		model.addAttribute("user",user);
-//		model.addAttribute("inqueryDTO", inqueryDTO);
+
 		return "redirect:/myPage/myQuestion";
-//		return "";
 	}
 	
 	// 삭제
