@@ -14,6 +14,8 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
 	<!-- SQL 로그 메세지 출력을 위해 log4jdbc 라이브러리 관련 DBCP  -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<!-- log4jdbc 사용 시 드라이버 클래스 변경 => log4jdbc 라이브러리의 DriverSpy 클래스로 변경 -->
