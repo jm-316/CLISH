@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itwillbs.clish.common.dto.FileDTO;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;

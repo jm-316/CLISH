@@ -190,7 +190,7 @@
 				ofType="1개의 row 가 저장될 타입">
 		</collection>
 		-->
-		<collection property="fileList" ofType="com.itwillbs.clish.common.dto.FileDTO">
+		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO">
 			<id property="fileId" column="file_id" />
 			<result property="idx" column="idx" />
 			<result property="originalFileName" column="original_file_name" />

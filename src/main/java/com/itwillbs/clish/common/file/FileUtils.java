@@ -1,4 +1,4 @@
-package com.itwillbs.clish.common.utils;
+package com.itwillbs.clish.common.file;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itwillbs.clish.common.dto.FileDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 public class FileUtils {
