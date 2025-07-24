@@ -23,11 +23,13 @@ public class AdminDashboardService {
 		int companyCount = adminDashboardMapper.selectCompanyCount();
 		int pendingCompanyCount = adminDashboardMapper.selectPendingCompanyCount();
 		int pendingClassCount = adminDashboardMapper.selectPendingClassCount();
+		int unAnsweredInquiryCount = adminDashboardMapper.selectUnAnsweredInquiryCount();
 		
 		summaryDTO.setUserCount(userCount);
 		summaryDTO.setCompanyCount(companyCount);
 		summaryDTO.setPendingCompanyCount(pendingCompanyCount);
 		summaryDTO.setPendingClassCount(pendingClassCount);
+		summaryDTO.setUnAnsweredInquiryCount(unAnsweredInquiryCount);
 	}
 
 	public List<RevenueDTO> getDailyRevenue() {

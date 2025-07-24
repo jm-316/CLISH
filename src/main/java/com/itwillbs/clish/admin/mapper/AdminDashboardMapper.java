@@ -15,10 +15,13 @@ public interface AdminDashboardMapper {
 
 	int selectPendingCompanyCount();
 
+	int selectUnAnsweredInquiryCount();
+	
 	List<RevenueDTO> selectDailyRevenue();
 
 	List<RevenueDTO> selectMonthlyRevenue();
 
 	List<CategoryRevenueDTO> selectCategoryRevenue();
+
 
 }
