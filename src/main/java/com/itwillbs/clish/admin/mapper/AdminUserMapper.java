@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.clish.admin.dto.NotificationDTO;
+import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 
@@ -36,5 +37,8 @@ public interface AdminUserMapper {
 
 	// 알림 추가
 	int insertNotificatoin(NotificationDTO notification);
+
+	// 기업회원 사업자번호 정보
+	CompanyDTO selectCompanyBizReg(String idx);
 
 }

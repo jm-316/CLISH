@@ -72,7 +72,7 @@
 										</td>
 										<td>
 											<button onclick="location.href='/admin/company/${company.userIdx}'" >
-												수정
+												상세보기
 											</button>
 										</td>
 									</tr>

@@ -62,7 +62,7 @@
 											<td>${user.userGender}</td>
 											<td>${user.userRegDate}</td>
 											<td>
-												<button onclick="location.href='/admin/user/${user.userIdx}'">수정</button>
+												<button onclick="location.href='/admin/user/${user.userIdx}'">상세보기</button>
 											</td>
 											<td>
 												<button type="button" onclick="event.stopPropagation(); withdraw('${user.userIdx}')">

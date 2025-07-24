@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.admin.mapper.AdminUserMapper;
+import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -83,6 +84,10 @@ public class AdminUserService {
 		}
 		
 		return 0;
+	}
+
+	public CompanyDTO getCompanyBizReg(String idx) {
+		return adminMapper.selectCompanyBizReg(idx);
 	}
 
 }

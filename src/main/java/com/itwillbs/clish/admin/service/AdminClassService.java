@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwillbs.clish.admin.mapper.AdminClassMapper;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
+import com.itwillbs.clish.course.mapper.CompanyClassMapper;
+import com.itwillbs.clish.course.mapper.CurriculumMapper;
 import com.itwillbs.clish.course.service.CurriculumService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class AdminClassService {
 	private final AdminClassMapper adminClassMapper;
+	private final CurriculumMapper curriculumMapper;
 	private final CurriculumService curriculumService;
 	private final NotificationService notificationService;
 	private final CategoryService categoryService;
@@ -46,9 +49,15 @@ public class AdminClassService {
 		int update = adminClassMapper.updateClassInfo(idx, classInfo);
 		int updateCurriculume = 0;
 		
-		for (CurriculumDTO dto : curriculumList) {
-			updateCurriculume =  curriculumService.updateCurriculumeInfo(idx, dto);
-		}
+		curriculumMapper.deleteCurriculumByClassIdx(idx);
+		
+		 for (CurriculumDTO dto : curriculumList) {
+		        if (dto.getCurriculumTitle() != null && !dto.getCurriculumTitle().trim().isEmpty()) {
+		            dto.setClassIdx(idx);
+		            curriculumMapper.insertCurriculumModify(dto);
+		            updateCurriculume = 1;
+		        }
+		    }
 		
 		if (update > 0 || updateCurriculume > 0) {
 			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");

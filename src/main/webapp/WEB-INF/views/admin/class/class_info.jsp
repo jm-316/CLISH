@@ -45,76 +45,99 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3>강좌 수정</h3>
+						<h3 class="section-title">강좌 수정</h3>
 					</div>
-					<form id="classForm">
+					<form id="classForm" style="border: none; padding: 10px;">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
 						<div>
-							<div style="display: flex;">
+							<div style="display: flex; flex: 1 1 auto;  align-items: center; justify-content: space-between; margin-left: 30px; margin-right: 30px">
 								<div style="display: flex; flex-direction: column;">
-									<div>
-										<label>강좌 이름</label> <input type="text"
-											value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
+									<div style="width: 500px; ">
+										<label>강의명</label> 
+										<input type="text" value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
 									</div>
 									<div>
-										<textarea rows="" cols="">${classInfo.classIntro}</textarea>
+										<span>강의 소개</span>
+										<textarea name="classIntro" id="classIntro">${classInfo.classIntro}</textarea>
 									</div>
 									<div>
-										<textarea rows="" cols="">${classInfo.classContent}</textarea>
+										<span>강의 상세 내용</span>
+										<textarea rows="9" cols="10" name="classContent" id="classContent">${classInfo.classContent}</textarea>
 									</div>
 								</div>
-								<div>
-									<img src="${classInfo.classPic1}"/>
-									<input type="file"/>
+								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
+									<img src="${classInfo.classPic1}" width="350px" height="300px"/>
+									<input type="file" name="classPic1" value="https://images.pexels.com/photos/32262510/pexels-photo-32262510.jpeg"/>
 								</div>
 							</div>
 						</div>
-						<div>
-							<label>정원</label> <input type="text"
-								value="${classInfo.classMember}" name="classMember"
-								id="classMember" />
+						<div style="display: flex; align-items: center; justify-content: flex-start; gap: 30px; margin-left: 30px; ">
+							<div style="width: 300px;">
+								<label for="startDate">시작날짜</label> 
+								<input type="date" value="${classInfo.startDate}" name="startDate" id="startDate" />
+							</div>
+							<div style="width: 300px;">
+								<label for="endDate">종료날짜</label> 
+								<input type="date" value="${classInfo.endDate}" name="endDate" id="endDate" />
+							</div>
+							<c:if test="${classInfo.classStatus != 1}">
+								<div style="width: 300px;">
+									<label for="classStatus">공개상태</label> 
+									<select name="classStatus" id="classStatus">
+										<option value="2"
+											<c:if test="${classInfo.classStatus == 2}">selected</c:if>>오픈</option>
+										<option value="3"
+											<c:if test="${classInfo.classStatus == 3}">selected</c:if>>마감</option>
+									</select>
+								</div>
+							</c:if>
 						</div>
-						<div>
-							<label>가격</label> <input type="text"
-								value="${classInfo.classPrice}" name="classPrice" id="classPrice" />
+						<div style="display: flex; align-items: center; justify-content: flex-start; gap: 30px; margin-left: 30px; ">
+							<div style="width: 300px;">
+								<label for="classType">강의 타입</label>
+								<select id="classType">
+									<option <c:if test="${classInfo.classType eq 0 }">selected</c:if> value="0">장기</option>
+									<option <c:if test="${classInfo.classType eq 1 }">selected</c:if> value="1">단기</option>
+								</select>
+							</div>
+							<div style="width: 300px;">
+								<label>정원</label> 
+								<input type="number" value="${classInfo.classMember}" name="classMember" id="classMember" />
+							</div>
+							<div style="width: 300px;">
+								<label>가격</label>
+								<fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0" var="formattedPrice" />
+								<input type="number" value="${classInfo.classPrice.intValue()}" name="classPrice" id="classPrice" />
+							</div>
 						</div>
-						<div>
-							<label>강좌 타입</label> 
-							<input type="text" value="${classInfo.classType}" name="classType" id="classType" />
+						<div style="display: flex; flex-direction: column;  margin-left: 30px; margin-bottom: 10px;">
+							<label >수업요일</label> 
+							<div>
+								<input type="checkbox" class="day-checkbox" value="1"
+									<c:if test="${fn:contains(classInfo.classDayNames, '월')}">checked</c:if> />월
+								<input type="checkbox" class="day-checkbox" value="2"
+									<c:if test="${fn:contains(classInfo.classDayNames, '화')}">checked</c:if> />화
+								<input type="checkbox" class="day-checkbox" value="4"
+									<c:if test="${fn:contains(classInfo.classDayNames, '수')}">checked</c:if> />수
+								<input type="checkbox" class="day-checkbox" value="8"
+									<c:if test="${fn:contains(classInfo.classDayNames, '목')}">checked</c:if> />목
+								<input type="checkbox" class="day-checkbox" value="16"
+									<c:if test="${fn:contains(classInfo.classDayNames, '금')}">checked</c:if> />금
+								<input type="checkbox" class="day-checkbox" value="32"
+									<c:if test="${fn:contains(classInfo.classDayNames, '토')}">checked</c:if> />토
+								<input type="checkbox" class="day-checkbox" value="64"
+									<c:if test="${fn:contains(classInfo.classDayNames, '일')}">checked</c:if> />일
+								<input type="hidden" name="classDays" id="classDays" />
+							</div>
 						</div>
-						<div>
-							<label>시작날짜</label> <input type="date"
-								value="${classInfo.startDate}" name="startDate" id="startDate" />
+						<div style="margin-left: 30px; margin-right: 30px;">
+							<label for="location">수업장소</label> 
+							<input type="text" value="${classInfo.location}" name="location" id="location" />
 						</div>
-						<div>
-							<label>종료날짜</label> <input type="date"
-								value="${classInfo.endDate}" name="endDate" id="endDate" />
-						</div>
-						<div>
-							<label>수업요일</label> <input type="checkbox" class="day-checkbox"
-								value="1"
-								<c:if test="${fn:contains(classInfo.classDayNames, '월')}">checked</c:if> />월
-							<input type="checkbox" class="day-checkbox" value="2"
-								<c:if test="${fn:contains(classInfo.classDayNames, '화')}">checked</c:if> />화
-							<input type="checkbox" class="day-checkbox" value="4"
-								<c:if test="${fn:contains(classInfo.classDayNames, '수')}">checked</c:if> />수
-							<input type="checkbox" class="day-checkbox" value="8"
-								<c:if test="${fn:contains(classInfo.classDayNames, '목')}">checked</c:if> />목
-							<input type="checkbox" class="day-checkbox" value="16"
-								<c:if test="${fn:contains(classInfo.classDayNames, '금')}">checked</c:if> />금
-							<input type="checkbox" class="day-checkbox" value="32"
-								<c:if test="${fn:contains(classInfo.classDayNames, '토')}">checked</c:if> />토
-							<input type="checkbox" class="day-checkbox" value="64"
-								<c:if test="${fn:contains(classInfo.classDayNames, '일')}">checked</c:if> />일
-							<input type="hidden" name="classDays" id="classDays" />
-						</div>
-						<div>
-							<label>수업장소</label> <input type="text"
-								value="${classInfo.location}" name="location" id="location" />
-						</div>
-						<div>
-							<div style="display: flex;">
-								<div>
+						<div style="margin-left: 30px;">
+							<span>카테고리</span>
+							<div style="display: flex; align-items: center; gap: 30px;">
+								<div style="width: 300px;">
 									<div>대분류</div>
 									<select>
 										<c:forEach var="category" items="${parentCategories}">
@@ -124,7 +147,7 @@
 										</c:forEach>
 									</select>
 								</div>
-								<div>
+								<div style="width: 300px;">
 									<div>소분류</div>
 									<select name="categoryIdx">
 										<c:forEach var="category" items="${childCategories}">
@@ -136,38 +159,50 @@
 								</div>
 							</div>
 						</div>
-						<c:if test="${classInfo.classStatus != 1}">
-							<div>
-								<span>공개상태</span> <select name="classStatus">
-									<option value="2"
-										<c:if test="${classInfo.classStatus == 2}">selected</c:if>>오픈</option>
-									<option value="3"
-										<c:if test="${classInfo.classStatus == 3}">selected</c:if>>마감</option>
-								</select>
+						<div style="margin-left: 30px; margin-right: 30px;">
+							<div style="display: flex; align-items: center; justify-content: space-between;">
+								<h3>📚 커리큘럼 소개</h3>
+								<button type="button" onclick="addCurriculum()">커리큘럼 추가</button>
 							</div>
-						</c:if>
-						<h3>📚 커리큘럼 소개</h3>
-						<c:forEach var="curri" items="${curriculumList}">
-							<div style="margin-bottom: 10px;">
-								<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}" />
-								<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" placeholder="제목" required>
-								<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" placeholder="시간" required>
+							<div id="curriculumContainer">
+								<c:forEach var="curri" items="${curriculumList}">
+									<div class="curriculum-box" style="display: flex; align-items: center; justify-content: space-between;">
+										<div style="display: flex; gap: 30px;">
+											<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}"/>
+											<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" style="width: 600px">
+											<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" style="width: 200px">
+										</div>
+										<button type="button" onclick="removeCurriculum(this)">삭제</button>
+									</div>
+								</c:forEach>
 							</div>
-						</c:forEach>
-						<button type="button" onclick="history.back();">닫기</button>
-						<c:choose>
-							<c:when test="${classInfo.classStatus == 1}">
-								<button type="submit" name="action" value="approval"
-									formaction="/admin/class/${classInfo.classIdx}/approve"
-									formmethod="post">승인</button>
-								<button type="button" onclick="onModal()">반려</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" name="action" value="update"
-									formaction="/admin/class/${classInfo.classIdx}/update"
-									formmethod="post">수정</button>
-							</c:otherwise>
-						</c:choose>
+							<div id="curriculumTemplate" style="display: none;">
+								<div class="curriculum-box" style="display: flex; align-items: center; justify-content: space-between;">
+									<div style="display: flex; gap: 30px;">
+										<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}"/>
+										<input type="text" name="curriculumTitle" value="${curri.curriculumTitle}" placeholder="커리큘럼 제목" style="width: 600px">
+										<input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}" placeholder="강의 시간"  style="width: 200px">
+									</div>
+									<button type="button" onclick="removeCurriculum(this)">삭제</button>
+								</div>
+							</div>
+						</div>
+						<div class="button-wrapper">
+							<button type="button" onclick="history.back();">닫기</button>
+							<c:choose>
+								<c:when test="${classInfo.classStatus == 1}">
+									<button type="submit" name="action" value="approval"
+										formaction="/admin/class/${classInfo.classIdx}/approve"
+										formmethod="post">승인</button>
+									<button type="button" onclick="onModal()">반려</button>
+								</c:when>
+								<c:otherwise>
+									<button type="submit" name="action" value="update"
+										formaction="/admin/class/${classInfo.classIdx}/update"
+										formmethod="post">수정</button>
+								</c:otherwise>
+							</c:choose>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -195,6 +230,19 @@
 		document.getElementById("classForm").addEventListener("submit", function (e) {
 			calculateClassDays();
 		});
+		
+		// ✅ 커리큘럼 추가 함수
+		function addCurriculum() {
+			const container = document.getElementById("curriculumContainer");
+			const template = document.getElementById("curriculumTemplate").innerHTML;
+			container.insertAdjacentHTML("beforeend", template);
+		}
+	
+		// ✅ 커리큘럼 삭제 함수
+		function removeCurriculum(button) {
+			const box = button.parentElement;
+			box.remove();
+		}
 	</script>
 </body>
 </html>

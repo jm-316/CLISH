@@ -102,6 +102,8 @@
 			USER u
 		ON
 			i.user_idx = u.user_idx
+		WHERE
+			i.inquery_type = 1
 	</select>
 	
 	<!-- 문의 상세 -->
@@ -127,6 +129,8 @@
 			i.user_idx = u.user_idx
 		WHERE
 			i.inquery_idx = #{idx}
+		AND 
+			i.inquery_type = 1
 	</select>
 	
 	<!-- 문의 답변 -->

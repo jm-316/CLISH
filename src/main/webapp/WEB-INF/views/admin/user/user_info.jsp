@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -21,63 +26,64 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3>회원 정보 수정</h3>
+						<h3>회원 상세 정보</h3>
 					</div>
-					<form action="/admin/user/${user.userIdx}/update" method="post">
+					<form>
+						<table border="1" style="width: 100%; text-align: left;">
+							<tr>
+								<th><label for="userName">회원이름</label></th>
+								<td><input type="text" value="${user.userName}" readonly></td>
+							</tr>
+
+							<tr>
+								<th><label for="userRepName">닉네임</label></th>
+								<td><input type="text" value="${user.userRepName}" readonly></td>
+							</tr>
+
+							<tr>
+								<th><label for="userBirth">생년월일</label></th>
+								<td><input type="date" value="${user.userBirth}" readonly></td>
+							</tr>
+							<tr>
+								<th><label for="userGender">성별</label></th>
+								<td><select disabled>
+										<option value="M"
+											<c:if test="${user.userGender eq 'M' }">selected</c:if>>남자</option>
+										<option value="F"
+											<c:if test="${user.userGender eq 'F' }">selected</c:if>>여자</option>
+								</select></td>
+							</tr>
+							<tr>
+								<th><label for="userId">아이디</label></th>
+								<td><input type="text" value="${user.userId}" readonly></td>
+							</tr>
+							<tr>
+								<th><label for="userPhoneNumber">휴대폰번호</label></th>
+								<td><input type="text" value="${phone}" readonly></td>
+
+							</tr>
+							<tr>
+								<th><label for="userEmail">이메일</label></th>
+								<td><input type="text" value="${user.userEmail}" readonly></td>
+							</tr>
+							<tr>
+								<th><label for="userPhoneNumberSub">비상연락망</label></th>
+								<td><input type="text" value="${phoneSub}" readonly></td>
+							</tr>
+
+							<tr>
+								<th>주소</th>
+								<td>
+									<input type="text" value="${user.userPostcode}" readonly style="width: 150px;"> 
+									<input type="button" value="주소검색" disabled><br>
+									<input type="text" value="${user.userAddress1}" readonly style="width: 70%;"><br>
+									<input type="text" value="${user.userAddress2}" readonly style="width: 70%;">
+								</td>
+							</tr>
+						</table>
 						<div>
-							<label>이름</label>
-							<input type="text" value="${user.userName}" name="userName" id="userName" />
+							<button type="button" onclick="location.href='/admin/user'">닫기</button>
 						</div>
-						<div>
-							<label>닉네임</label>
-							<input type="text" value="${user.userRepName}" name="userRepName" id="userRepName" />
-						</div>
-						<div>
-							<label>아이디</label>
-							<input type="text" value="${user.userId}" name="userId" id="userId" />
-						</div>
-						<div>
-							<label>생년원일</label>
-							<input type="text" value="${user.userBirth}" name="userBirth" id="userBirth" />
-						</div>
-						<div>
-							<label>전화번호</label>
-							<input type="text" value="${user.userPhoneNumber}" name="userPhoneNumber" id="userPhoneNumber" />
-						</div>
-						<div>
-							<label>이메일</label>
-							<input type="text" value="${user.userEmail}" name="userEmail" id="userEmail" />
-						</div>
-						<div>
-						    <label>성별</label><br/>
-						
-						    <input type="radio" name="userGender" id="genderM" value="M"
-						        <c:if test="${fn :contains(user.userGender, 'M')}">checked</c:if> disabled/>
-						    <label for="genderM">남자</label>
-						
-						    <input type="radio" name="userGender" id="genderF" value="F"
-						        <c:if test="${fn :contains(user.userGender, 'F')}">checked</c:if> disabled/>
-						    <label for="genderF">여자</label>
-						
-						    <input type="radio" name="userGender" id="genderN" value="N"
-						        <c:if test="${fn :contains(user.userGender, 'N')}">checked</c:if> disabled/>
-						    <label for="genderN">선택안함</label>
-						</div>
-			
-						<div>
-							<label>우편번호</label>
-							<input type="text" value="${user.userPostcode}" name="userPostcode" id="userPostcode" />
-						</div>
-						<div>
-							<label>기본 주소</label>
-							<input type="text" value="${user.userAddress1}" name="userAddress1" id="userAddress1" />
-						</div>
-						<div>
-							<label>상세 주소</label>
-							<input type="text" value="${user.userAddress2}" name="userAddress2" id="userAddress2" />
-						</div>
-						<button type="button" onclick="history.back();">닫기</button>
-						<button type="submit" name="action" value="update">수정</button>
 					</form>
 				</div>
 			</div>

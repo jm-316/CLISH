@@ -3,6 +3,7 @@ package com.itwillbs.clish.admin.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -163,15 +164,26 @@ public class AdminClassController {
             @RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
 		
 	    List<CurriculumDTO> curriculumList = new ArrayList<>();
-	    for (int i = 0; i < curriculumIdxList.size(); i++) {
-	        CurriculumDTO dto = new CurriculumDTO();
-	        dto.setCurriculumIdx(curriculumIdxList.get(i));
-	        dto.setCurriculumTitle(curriculumTitleList.get(i));
-	        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
-	        dto.setClassIdx(idx);
-	        curriculumList.add(dto);
-	    }
-		
+	    
+	    if (curriculumIdxList != null && curriculumTitleList != null && curriculumRuntimeList != null &&
+			    curriculumIdxList.size() == curriculumTitleList.size() &&
+			    curriculumIdxList.size() == curriculumRuntimeList.size()) {
+
+		    for (int i = 0; i < curriculumIdxList.size(); i++) {
+		        CurriculumDTO dto = new CurriculumDTO();
+		        
+		        if (!"0".equals(curriculumIdxList.get(i))) {
+		            dto.setCurriculumIdx(curriculumIdxList.get(i));
+		        } else {
+		            dto.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
+		        }
+		        
+		        dto.setCurriculumTitle(curriculumTitleList.get(i));
+		        dto.setCurriculumRuntime(curriculumRuntimeList.get(i));
+		        dto.setClassIdx(idx);
+		        curriculumList.add(dto);
+		    }
+		}
 		int count = adminClassService.modifyClassInfo(idx, classInfo, curriculumList);	
 		
 		if (count > 0) {

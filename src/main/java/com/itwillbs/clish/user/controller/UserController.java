@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -124,7 +125,7 @@ public class UserController {
 	    
 	    UserDTO dbUser = userService.selectUserId(userDTO.getUserId());
 	    
-	    if(dbUser == null || !dbUser.getUserPassword().equals(userDTO.getUserPassword())) {
+	    if (dbUser == null || !userService.matchesPassword(userDTO.getUserPassword(), dbUser.getUserPassword())) {
 	        redirect.addFlashAttribute("errorMsg", "비밀번호 불일치");
 	        return "redirect:/user/login";
 	    }

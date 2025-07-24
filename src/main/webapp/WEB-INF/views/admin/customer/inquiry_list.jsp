@@ -73,11 +73,6 @@
 						<div class="flex">
 							<h5 class="section-title">문의관리</h5>
 						</div>
-					<div class="sort-buttons">
-						<button class="sort-button" data-value="all">전체</button>
-					    <button class="sort-button" data-value="personal">1:1문의</button>
-					    <button class="sort-button" data-value="course">강의문의</button>
-					</div>
 					</div>
 					<div>
 						<div>
@@ -97,14 +92,7 @@
 									<c:forEach var="inquiry" items="${inquiryList}" varStatus="status" >
 										<tr onclick="onModal('${inquiry.inquiry.inqueryIdx}')">
 											<td>${status.index + 1}</td>
-											<c:choose>
-												<c:when test="${inquiry.inqueryType eq 1}">
-													<td>1:1문의</td>
-												</c:when>
-												<c:otherwise>
-													<td>강의문의</td>
-												</c:otherwise>
-											</c:choose>
+											<td>1:1문의</td>
 											<td>${inquiry.inquiry.inqueryTitle}</td>
 											<td>${inquiry.userName}</td>
 											<td><fmt:formatDate value="${inquiry.inquiry.inqueryDatetime}" pattern="yyyy-MM-dd" /></td>
@@ -137,7 +125,7 @@
 		       	 document.querySelector("#user-idx").value = data.inquiry.userIdx;
 		       	 document.querySelector("#inquiry-user").innerText = data.userName;
 		       	 document.querySelector("#inquiry-date").innerText = formattedDate(data.inquiry.inqueryDatetime);
-		       	 document.querySelector("#inquiry-type").innerText = data.inqueryType === 1 ? "1:1문의" : "강의문의";
+		       	 document.querySelector("#inquiry-type").innerText = data.inqueryType === 1 && "1:1문의";
 		         document.querySelector("#inquiry-detail").innerText = data.inquiry.inqueryDetail;
 		         document.querySelector("#inquiry-answer").value = data.inquiry.inqueryAnswer || "";
 		         document.querySelector("#btn").textContent = data.inquiry.inqueryAnswer ? "수정" : "등록";
