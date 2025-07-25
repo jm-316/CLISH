@@ -100,22 +100,6 @@ public class AdminUserController {
 		return maskedPhone;
 	}
 	
-	// 일반 회원 정보 수정
-//	@PostMapping("/user/{idx}/update")
-//	public String userInfoModify(@PathVariable("idx") String idx, Model model, @ModelAttribute UserDTO user) {		
-//		int count = adminService.modifyUserInfo(idx, user);
-//		
-//		if (count > 0) {
-//			model.addAttribute("msg", "회원 정보를 수정했습니다.");
-//			model.addAttribute("targetURL", "/admin/user");
-//		} else {
-//			model.addAttribute("msg", "다시 시도해주세요!");
-//			return "commons/fail";
-//		}
-//		
-//		return "commons/result_process";
-//	}
-	
 	
 	// 일반 회원 탈퇴처리
 	@PostMapping("/user/{idx}/withdraw")
@@ -184,22 +168,6 @@ public class AdminUserController {
 		
 		if (success > 0) {
 			model.addAttribute("msg", "승인 취소 되었습니다.");
-			model.addAttribute("targetURL", "/admin/company");
-		} else {
-			model.addAttribute("msg", "다시 시도해주세요!");
-			return "commons/fail";
-		}
-		
-		return "commons/result_process";
-	}
-	
-	// 기업 정보수정
-	@PostMapping("/company/{idx}/update")
-	public String companyInfoModify(@PathVariable("idx") String idx, Model model, @ModelAttribute UserDTO company) {
-		int count = adminService.modifycompanyInfo(idx, company);
-		
-		if (count > 0) {
-			model.addAttribute("msg", "회원 정보를 수정했습니다.");
 			model.addAttribute("targetURL", "/admin/company");
 		} else {
 			model.addAttribute("msg", "다시 시도해주세요!");

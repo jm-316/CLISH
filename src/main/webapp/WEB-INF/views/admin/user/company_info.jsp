@@ -46,8 +46,16 @@
 								<th>사업자등록증</th>
 								<td>
 									<div style="display: flex;">
-										<input type="file" name="bizFile" accept=".jpg,.jpeg,.png,.pdf"  style="border: none;">
-										<button type="button">[파일 다운로드]</button>
+										<div>
+											<c:forEach var="fileDTO" items="${comDto.fileList}">
+												<div>
+													${fileDTO.originalFileName}
+													<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+													</a>
+												</div>
+											</c:forEach>
+										</div>
 									</div>
 								</td>
 							</tr>

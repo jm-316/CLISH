@@ -63,12 +63,12 @@
 
 							</tr>
 							<tr>
-								<th><label for="userEmail">이메일</label></th>
-								<td><input type="text" value="${user.userEmail}" readonly></td>
-							</tr>
-							<tr>
 								<th><label for="userPhoneNumberSub">비상연락망</label></th>
 								<td><input type="text" value="${phoneSub}" readonly></td>
+							</tr>
+							<tr>
+								<th><label for="userEmail">이메일</label></th>
+								<td><input type="text" value="${user.userEmail}" readonly></td>
 							</tr>
 
 							<tr>
