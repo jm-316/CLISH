@@ -163,6 +163,17 @@ public class MyPageService {
 		
 		return myPageMapper.selectCountNotification(user);
 	}
+
+	public int getUncompleteReviewCount(UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectUncompleteReviewCount(user);
+	}
+
+	public List<Map<String, Object>> getUncompleteReview(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllUncompleteReview(startRow, listLimit, user);
+	}
+
 	
 
 

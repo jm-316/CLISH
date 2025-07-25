@@ -167,7 +167,7 @@ public class MyPageController {
 			
 			if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
 			model.addAttribute("reservationPageInfo", pageInfoDTO);
@@ -181,7 +181,7 @@ public class MyPageController {
 			
 			if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
@@ -316,7 +316,7 @@ public class MyPageController {
 			
 			if(classQuestionPageNum < 1 || classQuestionPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/myPage/myQuestion"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/myQuestion");
 				return "commons/result_process";
 			}
 			model.addAttribute("classQPageInfo", pageInfoDTO);
@@ -333,7 +333,7 @@ public class MyPageController {
 			
 			if(inqueryPageNum < 1 || inqueryPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/myPage/myQuestion"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/myQuestion"); 
 				return "commons/result_process";
 			}
 			model.addAttribute("inqueryPageInfo", pageInfoDTO);
@@ -414,7 +414,7 @@ public class MyPageController {
 			
 			if(notificationPageNum < 1 || notificationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
 			
@@ -428,7 +428,35 @@ public class MyPageController {
 	// ------------------------------------------------------------------------------------------------------------
 	// 후기 관리
 	@GetMapping("/myReview")
-	public String myReview() {
+	public String myReview(Model model,HttpSession session, UserDTO user,
+			@RequestParam(defaultValue = "0") int reviewCom,
+			@RequestParam(defaultValue = "1") int reviewPageNum) {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user);
+		int listLimit = 5;
+		if(reviewCom == 0) {
+			int reviewListCount = myPageService.getUncompleteReviewCount(user);
+			if(reviewListCount > 0) {
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+				
+				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					return "commons/result_process";
+				}
+				
+				model.addAttribute("pageInfo",pageInfoDTO);
+				
+				List<Map<String, Object>> uncompleteReviewList = myPageService.getUncompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
+				model.addAttribute("reviewInfo",uncompleteReviewList);
+				
+				System.out.println("페이지인포 : " + pageInfoDTO);
+				System.out.println("리뷰인포 : " + uncompleteReviewList);
+			}
+		}
+		
+		
 		
 		return "/clish/myPage/myPage_myReview";
 	}

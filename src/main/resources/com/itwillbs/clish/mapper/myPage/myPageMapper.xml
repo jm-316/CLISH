@@ -312,6 +312,29 @@
 			, #{listLimit}
 	</select>
 	
+	<select id="selectUncompleteReviewCount" resultType="int">
+		SELECT count(*)
+		FROM RESERVATION
+		WHERE user_idx = #{userIdx}
+			AND reservation_status = 2
+			AND CURDATE() >= reservation_class_date -- 예약한 날짜가 오늘이거나 과거일때 
+	</select>
+	
+	<select id="selectAllUncompleteReview" resultType="map">
+		SELECT r.*,
+				c.class_title,
+				c.category_idx,
+				c.class_type
+		FROM RESERVATION r
+		LEFT JOIN CLASS c
+			ON r.class_idx = c.class_idx
+		WHERE r.user_idx = #{user.userIdx}
+			AND r.reservation_status = 2
+			AND CURDATE() >= r.reservation_class_date
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
 	
 </mapper>
 

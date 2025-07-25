@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>수강 후기 관리</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
@@ -48,25 +48,58 @@
 	<div id="main">
 		<h1>${sessionScope.sId}님 수강 후기 관리</h1>
 		<div class="reviewbar-container">
-		<input type="button" class="reviewbar" value="작성 가능 수강후기">
-		<input type="button" class="reviewbar" value="작성 한 수강후기">
+		<input type="button" class="reviewbar" value="작성 가능 수강후기"
+		onclick="location.href='/myPage/myReview?reviewCom=0'">
+		<input type="button" class="reviewbar" value="작성 한 수강후기"
+		onclick="location.href='/myPage/myReview?reviewCom=1'">
 		</div>
 		<div>
+		<h1>${param.reviewCom }</h1>
 			<table>
-				<tr>
-					<th rowspan="2">이미지</th>
-					<th>수강 강의</th>
-					<th>수강일</th>
-					<td rowspan="2">
-						<input type="button" value="강의 상세 페이지"><br><br>
-						<input type="button" value="수강후기쓰러가기">
-					</td>
-				</tr>
-				<tr>
-					<td>너무하기싫네요</td>
-					<td>2025.07.11</td>
-				</tr>
+				<c:forEach items="${reviewInfo}" var="review">
+					<tr>
+						<th rowspan="2">이미지</th>
+						<th>수강 강의</th>
+						<th>수강일</th>
+						<td rowspan="2">
+							<input type="button" value="강의 상세 페이지" 
+							onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
+							
+							<br><br>
+							<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
+							<input type="button" value="수강후기쓰러가기">
+						</td>
+					</tr>
+					<tr>
+						<td>${review.class_title }</td>
+						<td>${review.reservation_class_date }</td>
+					</tr>
+				</c:forEach>
 			</table>
+			<section id="reviewPageList">
+				<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
+					<input type="button" value="이전" 
+						onclick="location.href='/myPage/myReview?reviewPageNum=${pageInfo.pageNum - 1}'" 
+						<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>
+					>
+					
+					<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq pageInfo.pageNum}">
+								<strong>${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="/myPage/myReview?reviewPageNum=${i}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					<input type="button" value="다음" 
+						onclick="location.href='/myPage/myReview?reviewPageNum=${pageInfo.pageNum + 1}'" 
+						<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>
+					>
+				</c:if>
+			</section>
 		</div>
 	</div>
 	</main>

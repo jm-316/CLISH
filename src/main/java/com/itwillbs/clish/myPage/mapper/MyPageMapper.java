@@ -72,6 +72,10 @@ public interface MyPageMapper {
 
 	int selectCountNotification(UserDTO user);
 
+	int selectUncompleteReviewCount(UserDTO user);
+
+	List<Map<String, Object>> selectAllUncompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+
 
 
 
