@@ -328,13 +328,50 @@
 		FROM RESERVATION r
 		LEFT JOIN CLASS c
 			ON r.class_idx = c.class_idx
+		LEFT JOIN REVIEW rev 
+			ON r.reservation_idx = rev.reservation_idx
 		WHERE r.user_idx = #{user.userIdx}
 			AND r.reservation_status = 2
 			AND CURDATE() >= r.reservation_class_date
+			AND rev.reservation_idx IS NULL
 		LIMIT
 			#{startRow}
 			, #{listLimit}
 	</select>
+	
+	<select id="selectOneReservationClassInfo" resultType="map">
+		SELECT r.*,
+			   c.class_title
+		FROM RESERVATION r
+		LEFT JOIN CLASS c
+			ON r.class_idx = c.class_idx
+		WHERE
+			r.reservation_idx = #{reservationIdx}
+	</select>
+	
+	<insert id="insertReview">
+	INSERT INTO REVIEW (
+	    review_idx,
+	    reservation_idx,
+	    user_idx,
+	    class_idx,
+	    review_title,
+	    review_detail,
+	    review_score,
+	    review_created_at,
+	    review_reported_count
+	  ) VALUES (
+	  	#{reviewIdx},
+	    #{reservationIdx},
+	    #{userIdx},
+	    #{classIdx},
+	    #{reviewTitle},
+	    #{reviewDetail},
+	    #{reviewScore},
+	    NOW(),
+	    DEFAULT
+	    )
+	</insert>
 	
 </mapper>
 

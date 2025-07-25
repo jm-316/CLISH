@@ -29,6 +29,7 @@ import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.myPage.service.MyPageService;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
@@ -459,6 +460,26 @@ public class MyPageController {
 		
 		
 		return "/clish/myPage/myPage_myReview";
+	}
+	
+	@GetMapping("/myReview/writeReviewForm")
+	public String writeReviewForm(ReservationDTO reservationDTO, HttpSession session, UserDTO user, Model model) {
+		
+		Map<String, Object> reservationClassInfo = myPageService.getReservationClassInfo(reservationDTO);
+		
+		model.addAttribute("rservationClassInfo",reservationClassInfo);
+		return "/clish/myPage/myPage_myReview_writeReviewForm";
+	}
+	
+	@PostMapping("/myReview/writeReview")
+	public String writeReview(ReviewDTO review, HttpSession session, UserDTO user) throws IOException {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user);
+		
+		myPageService.writeReview(review, user);
+
+		return "redirect:/myPage/myReview";
 	}
 }
 

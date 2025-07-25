@@ -12,6 +12,7 @@ import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 
@@ -75,6 +76,10 @@ public interface MyPageMapper {
 	int selectUncompleteReviewCount(UserDTO user);
 
 	List<Map<String, Object>> selectAllUncompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+
+	Map<String, Object> selectOneReservationClassInfo(ReservationDTO reservationDTO);
+
+	void insertReview(ReviewDTO review);
 
 
 

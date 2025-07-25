@@ -67,7 +67,8 @@
 							
 							<br><br>
 							<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
-							<input type="button" value="수강후기쓰러가기">
+							<input type="button" value="수강후기쓰러가기"
+							onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
 						</td>
 					</tr>
 					<tr>

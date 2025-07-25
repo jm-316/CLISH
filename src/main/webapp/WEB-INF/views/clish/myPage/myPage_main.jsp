@@ -21,13 +21,13 @@
 	
 	<main id="container">
 	
-	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
-	
-	<div id="main">
-	
-		<h1>${sessionScope.sId}의 페이지</h1>
-	
-	</div>
+		<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
+		
+		<div id="main">
+		
+			<h1>${sessionScope.sId}의 페이지</h1>
+		
+		</div>
 	
 	</main>
 	

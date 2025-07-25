@@ -3,6 +3,8 @@ package com.itwillbs.clish.myPage.service;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.myPage.mapper.MyPageMapper;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
@@ -93,16 +96,14 @@ public class MyPageService {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectAllInquery(startRow, listLimit, user);
 	}
+	
 	@Transactional
 	public void inqueryDelete(InqueryDTO inqueryDTO) {
 		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
 		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
 		
 		fileMapper.deleteAllFile(inqueryDTO.getInqueryIdx()); // FILE 테이블 내용 삭제
-		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제
-		
-		
-		
+		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제	
 	}
 
 	public InqueryDTO getInqueryInfo(InqueryDTO inqueryDTO) {
@@ -172,6 +173,26 @@ public class MyPageService {
 	public List<Map<String, Object>> getUncompleteReview(int startRow, int listLimit, UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectAllUncompleteReview(startRow, listLimit, user);
+	}
+
+	public Map<String, Object> getReservationClassInfo(ReservationDTO reservationDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectOneReservationClassInfo(reservationDTO);
+	}
+	
+	@Transactional
+	public void writeReview(ReviewDTO review, UserDTO user) throws IOException {
+		String userIdx = user.getUserIdx();
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+		review.setReviewIdx("rev_" + userIdx + "_" + now);
+		
+		myPageMapper.insertReview(review);
+		
+		List<FileDTO> fileList = FileUtils.uploadFile(review, session);
+		
+		if(!fileList.isEmpty()) {
+			fileMapper.insertFiles(fileList);
+		}
 	}
 
 	
