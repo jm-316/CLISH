@@ -39,6 +39,9 @@ public interface CompanyClassMapper {
 	// 클래스 문의 페이지 - 문의 상세 
 	InquiryJoinUserDTO selectClassInquiryDetail(String idx);
 	
+	// 클래스 문의 페이지 - 문의 답변
+	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
+	
 	
 
 }

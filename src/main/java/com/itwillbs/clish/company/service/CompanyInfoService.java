@@ -3,6 +3,7 @@ package com.itwillbs.clish.company.service;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.clish.company.mapper.CompanyInfoMapper;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -30,5 +31,20 @@ public class CompanyInfoService {
 		
 	}
 	
+	// 기업 - 문의 작성/수정 폼 열기
+	public InqueryDTO getInqueryByIdx(String inqueryIdx) {
+		return companyInfoMapper.selectInqueryByIdx(inqueryIdx);
+	}
+	
+	// 나의 문의 신규 등록
+//	public void insertInquiry(InqueryDTO inqueryDTO) {
+//		companyInfoMapper.insertInquiry(inqueryDTO);
+//	}
+//	
+//	// 나의 문의 수정
+//	public void updateInquiry(InqueryDTO inqueryDTO) {
+//		 companyInfoMapper.updateInquiry(inqueryDTO);
+//	}
+
 	
 }

@@ -1,15 +1,21 @@
 package com.itwillbs.clish.company.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.clish.company.service.CompanyInfoService;
+import com.itwillbs.clish.course.service.CompanyClassService;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -21,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class CompanyInfoController {
 	private final CompanyInfoService companyInfoService;
 	
+	// 정보 수정 전 비밀번호 확인페이지
 	@GetMapping("/myPage/companyCheckPw")
 	public String companyCheckPwForm(HttpSession session) {
 		return "company/companyCheckPw";
@@ -74,5 +81,36 @@ public class CompanyInfoController {
 		return "redirect:/company";
 	}
 	
+	// 기업 - 문의 작성/수정 폼 열기
+	@GetMapping("/myPage/inquiry/modify")
+	public String showInquiryForm(@RequestParam(value = "inqueryIdx", required = false) String inqueryIdx,
+	                              HttpSession session, Model model) {
+
+//	    String userIdx = (String) session.getAttribute("userIdx");
+//
+//	    if (inqueryIdx != null && !inqueryIdx.isEmpty()) {
+//	        InqueryDTO inqueryDTO = companyInfoService.getInqueryByIdx(inqueryIdx);
+//	        model.addAttribute("inqueryDTO", inqueryDTO);
+//	    }
+
+	    return "/company/companyMyQuestionInqueryForm";
+	}
 	
+	// 작성 또는 수정 처리 == > 기능 구현 안됨
+	@PostMapping("/myPage/inquiry/modify")
+	public String submitInquiry(@ModelAttribute InqueryDTO inqueryDTO,
+	                            HttpSession session, Model model) {
+
+//	    String userIdx = (String) session.getAttribute("userIdx");
+//	    inqueryDTO.setUserIdx(userIdx);
+//	    inqueryDTO.setInqueryType(1); // 사이트 문의 고정
+//
+//	    if (inqueryDTO.getInqueryIdx() == null || inqueryDTO.getInqueryIdx().isEmpty()) {
+//	        companyInfoService.insertInquiry(inqueryDTO); // 신규 등록
+//	    } else {
+//	        companyInfoService.updateInquiry(inqueryDTO); // 수정
+//	    }
+
+	    return "redirect:/company/myPage/inquiry";
+	}
 }

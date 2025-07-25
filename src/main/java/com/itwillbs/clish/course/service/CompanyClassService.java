@@ -128,6 +128,17 @@ public class CompanyClassService {
 	public InquiryJoinUserDTO getClassInquiryDetail(String idx) {
 		return companyClassMapper.selectClassInquiryDetail(idx);
 	}
+
+	// 클래스 문의 페이지 - 문의 답변
+	@Transactional
+	public int updateClassInquiry(String idx, String userIdx, String inqueryAnswer) {
+		int result = companyClassMapper.updateClassInquiry(idx, userIdx, inqueryAnswer);
+		
+		// 알림 서비스 없이 바로 return
+		return result;
+	}
+	
+	
 	
 	
 	
