@@ -1,4 +1,43 @@
 @charset "UTF-8";
+/* admin 헤더 */
+.admin-menu {
+	position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.admin-name {
+    font-weight: bold;
+    padding: 8px 12px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px; /* admin-name 아래로 표시 */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    min-width: 120px;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
 
 .container {
 	display: flex;
