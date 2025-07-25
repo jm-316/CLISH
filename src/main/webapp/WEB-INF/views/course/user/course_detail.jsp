@@ -52,14 +52,24 @@
 						<span class="stars"><i class="fa-solid fa-star"></i> 2.0</span> <span
 							class="teacher"><i class="fa-solid fa-user"></i> 강감찬</span> <span
 							class="duration"><i class="fa-regular fa-hourglass-half"></i>
-							총 4강 (200분)</span>
+							${classInfo.classDays}
+							<i class=""></i></span>
 					</div>
 				</div>
 			</div>
 					
 		</section>
 		
-		<section class="section-container">
+		<ul class="tabnav">
+			<li><a href="#">클래스 소개</a></li>
+			<li><a href="#">커리큘럼</a></li>
+			<li><a href="#">수강평(1)</a></li>
+			<li><a class="tab" href="CourseSupportList?class_id=2&codetype=CATE01">
+			문의(0)
+			</a></li>
+		</ul>
+		
+		<div class="section-container">
 		    <h1>클래스 상세 페이지</h1>
 		    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
 			
@@ -73,7 +83,7 @@
 		            예약정보 입력</button>
 		        </c:if>
 		    </div>
-		</section>
+		</div>
 		
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 		

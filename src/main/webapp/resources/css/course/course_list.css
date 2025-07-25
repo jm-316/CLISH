@@ -47,6 +47,7 @@ body {
 /* main-content는 폭만 제한, 중앙 정렬! transform 등 X */
 .main-content {
 	width:				100%;
+	margin: 0 auto;
 	max-width:			1100px;
 }
 
@@ -220,4 +221,28 @@ body {
 .btn-wishlist {
   background-color: #fce4ec;
   color: #d81b60;
+}
+
+ul.tabnav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.tabnav li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+ul.tabnav li {
+  flex: 1;
+  min-width: 100px;
+  font-size: 14px;
 }
