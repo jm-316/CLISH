@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -113,7 +114,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String showLoginForm() {
+	public String showLoginForm(HttpServletRequest request, HttpSession session) {
+		String lastAddress =  request.getHeader("Referer");
+		System.out.println(lastAddress);
+		session.setAttribute("lastAddress", lastAddress);
+		System.out.println(session.getAttribute("lastAddress"));
+		
 	    return "user/login_form";
 	}
 	
