@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.clish.company.mapper.CompanyInfoMapper">
+
 	<!-- 로그인한 기업회원 정보 조회 -->
 	<select id="selectUserInfo" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT *
@@ -44,32 +45,71 @@
 			user_idx = #{userIdx}
 	</update>
 	
-	<!-- 기업 - 문의 작성/수정 폼 열기 -->
-	<select id="selectInqueryByIdx" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
-		SELECT * FROM INQUERY
-   		WHERE inquery_idx = #{inqueryIdx}
+	<!-- 전체 문의목록 조회용 resultMap -->
+	<resultMap id="InquiryJoinUserResultMap" type="com.itwillbs.clish.admin.dto.InquiryJoinUserDTO">
+	    <!-- InquiryJoinUserDTO의 userName 필드 -->
+	    <result property="userName" column="user_name"/>
+	    
+	    <!-- InquiryJoinUserDTO 안에 있는 inquiry 객체의 필드들 직접 명시 -->
+	    <result property="inquiry.inqueryIdx" column="inquery_idx"/>
+	    <result property="inquiry.userIdx" column="user_idx"/>
+	    <result property="inquiry.inqueryTitle" column="inquery_title"/>
+	    <result property="inquiry.inqueryDetail" column="inquery_detail"/>
+	    <result property="inquiry.inqueryAnswer" column="inquery_answer"/>
+	    <result property="inquiry.inqueryDatetime" column="inquery_datetime"/>
+	    <result property="inquiry.inqueryAnswerDatetime" column="inquery_answer_datetime"/>
+	    <result property="inquiry.inqueryStatus" column="inquery_status"/>
+	    <result property="inquiry.inqueryType" column="inquery_type"/>
+	    <result property="inquiry.classIdx" column="class_idx"/>
+	    <result property="inquiry.inqueryModifyDatetime" column="inquery_modify_datetime"/>
+	</resultMap>
+	
+	
+	<!-- 기업 - 나의 문의 목록(리스트) 조회 -->
+	<select id="selectInquiriesByUserIdx" resultMap="InquiryJoinUserResultMap">
+		SELECT 
+	        i.inquery_idx,
+	        i.user_idx,
+	        i.inquery_title,
+	        i.inquery_detail,
+	        i.inquery_answer,
+	        i.inquery_datetime,
+	        i.inquery_answer_datetime,
+	        i.inquery_status,
+	        i.inquery_type,
+	        i.class_idx,
+	        i.inquery_modify_datetime,
+	        u.user_name
+	    FROM INQUERY i
+	    JOIN USER u ON i.user_idx = u.user_idx
+	    WHERE i.user_idx = #{userIdx}
+	    ORDER BY i.inquery_datetime DESC
 	</select>
 	
-	<!-- 나의 문의 신규 등록 -->
-<!-- 	<insert id="insertInquiry "> -->
-<!-- 		INSERT INTO INQUERY ( -->
-<!-- 	        inquery_idx, user_idx, inquery_title, inquery_detail, -->
-<!-- 	        inquery_type, inquery_status, inquery_datetime -->
-<!-- 	    ) -->
-<!-- 	    VALUES ( -->
-<!-- 	        #{inqueryIdx}, #{userIdx}, #{inqueryTitle}, #{inqueryDetail}, -->
-<!-- 	        #{inqueryType}, 1, NOW() -->
-<!-- 	    ) -->
-<!-- 	</insert> -->
+	<!-- 문의 등록버튼 로직 -->
+	<insert id="insertInquery">
+		INSERT INTO INQUERY (
+	        inquery_idx,
+	        user_idx,
+	        inquery_type,
+	        inquery_title,
+	        inquery_detail,
+	        inquery_status,
+	        inquery_datetime
+	    ) VALUES (
+	        #{inqueryIdx},
+	        #{userIdx},
+	        #{inqueryType},
+	        #{inqueryTitle},
+	        #{inqueryDetail},
+	        1,
+	        NOW()
+	    )
+	</insert>
 	
-<!-- 	<update id="updateInquiry"> -->
-<!-- 		UPDATE INQUERY -->
-<!-- 	    SET inquery_title = #{inqueryTitle}, -->
-<!-- 	        inquery_detail = #{inqueryDetail}, -->
-<!-- 	        inquery_modify_datetime = NOW() -->
-<!-- 	    WHERE inquery_idx = #{inqueryIdx} -->
-<!-- 	</update>	 -->
-		
+	<select id="selectUserIdxByUserId">
+		SELECT user_idx FROM USER WHERE user_id = #{userId}
+	</select>
 </mapper>
 
 

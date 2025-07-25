@@ -1,6 +1,9 @@
 package com.itwillbs.clish.company.controller;
 
 import java.util.List;
+import java.text.SimpleDateFormat;  // ← 날짜 포맷용
+import java.util.Date;              // ← 시간 객체
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.company.service.CompanyInfoService;
 import com.itwillbs.clish.course.service.CompanyClassService;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
@@ -80,37 +84,55 @@ public class CompanyInfoController {
 		
 		return "redirect:/company";
 	}
+	// ------------------------------------------------------------------------------------------------------------------
 	
-	// 기업 - 문의 작성/수정 폼 열기
-	@GetMapping("/myPage/inquiry/modify")
-	public String showInquiryForm(@RequestParam(value = "inqueryIdx", required = false) String inqueryIdx,
-	                              HttpSession session, Model model) {
+	// 기업 - 나의 문의 목록(리스트) 조회
+	@GetMapping("/myPage/myQuestion")
+	public String showInquiryForm(HttpSession session, Model model) {
+		String userId = (String) session.getAttribute("sId"); 
+        
+		// ① userId가 "hong"일 경우, user_idx로 변환하는 작업이 필요
+		String userIdx = companyInfoService.getUserIdxByUserId(userId); 
+	    List<InquiryJoinUserDTO> inquiryList = companyInfoService.getInquiriesByUserIdx(userIdx);
+	    model.addAttribute("test", inquiryList);
+//	    model.addAttribute("inquiryList1", inquiryList);
+	    
+	    System.out.println("inquiryList = " + inquiryList);
 
-//	    String userIdx = (String) session.getAttribute("userIdx");
-//
-//	    if (inqueryIdx != null && !inqueryIdx.isEmpty()) {
-//	        InqueryDTO inqueryDTO = companyInfoService.getInqueryByIdx(inqueryIdx);
-//	        model.addAttribute("inqueryDTO", inqueryDTO);
-//	    }
-
-	    return "/company/companyMyQuestionInqueryForm";
+        return "company/companyMyQuestion"; 
+    }
+	
+	
+	// 문의 등록 폼
+	@GetMapping("/myPage/writeInquery")
+	public String goWriteInquery(Model model) {
+	    // 등록 폼이니까 비어있는 inqueryDTO 넘겨도 됨
+	    model.addAttribute("inqueryDTO", null); 
+	    return "/company/companyMyQuestionForm";
 	}
 	
-	// 작성 또는 수정 처리 == > 기능 구현 안됨
-	@PostMapping("/myPage/inquiry/modify")
-	public String submitInquiry(@ModelAttribute InqueryDTO inqueryDTO,
-	                            HttpSession session, Model model) {
-
-//	    String userIdx = (String) session.getAttribute("userIdx");
-//	    inqueryDTO.setUserIdx(userIdx);
-//	    inqueryDTO.setInqueryType(1); // 사이트 문의 고정
-//
-//	    if (inqueryDTO.getInqueryIdx() == null || inqueryDTO.getInqueryIdx().isEmpty()) {
-//	        companyInfoService.insertInquiry(inqueryDTO); // 신규 등록
-//	    } else {
-//	        companyInfoService.updateInquiry(inqueryDTO); // 수정
-//	    }
-
-	    return "redirect:/company/myPage/inquiry";
+	// 문의 등록버튼 로직
+	@PostMapping("/myPage/insertInquery")
+	public String insertInquery(HttpSession session, InqueryDTO dto) {
+		// 1. 로그인 세션에서 user_id(hong)를 가져옴
+	    String userId = (String) session.getAttribute("sId");
+	    System.out.println("세션 userId: " + userId);
+		
+	    // 2. user_id로 실제 user_idx 조회
+	    String userIdx = companyInfoService.getUserIdxByUserId(userId);
+	    System.out.println("조회한 userIdx: " + userIdx);
+	    
+	    // 3. DTO에 user_idx 세팅
+	    dto.setUserIdx(userIdx);
+	    
+		// inquery_idx 생성
+		String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int random = new Random().nextInt(1000); // 0~999
+		String inqueryIdx = String.format("INQ%s%03d", timestamp, random);
+		dto.setInqueryIdx(inqueryIdx); // 직접 세팅
+		
+		
+		companyInfoService.insertInquery(dto);
+		return "redirect:/company/myPage/myQuestion";
 	}
 }

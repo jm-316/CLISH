@@ -1,7 +1,10 @@
 package com.itwillbs.clish.company.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.company.mapper.CompanyInfoMapper;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.user.dto.CompanyDTO;
@@ -31,20 +34,22 @@ public class CompanyInfoService {
 		
 	}
 	
-	// 기업 - 문의 작성/수정 폼 열기
-	public InqueryDTO getInqueryByIdx(String inqueryIdx) {
-		return companyInfoMapper.selectInqueryByIdx(inqueryIdx);
+	// 기업 - 나의 문의 목록(리스트) 조회
+	public List<InquiryJoinUserDTO> getInquiriesByUserIdx(String userIdx) {
+		return companyInfoMapper.selectInquiriesByUserIdx(userIdx);
 	}
 	
-	// 나의 문의 신규 등록
-//	public void insertInquiry(InqueryDTO inqueryDTO) {
-//		companyInfoMapper.insertInquiry(inqueryDTO);
-//	}
-//	
-//	// 나의 문의 수정
-//	public void updateInquiry(InqueryDTO inqueryDTO) {
-//		 companyInfoMapper.updateInquiry(inqueryDTO);
-//	}
+	// 문의 등록버튼 로직
+	public void insertInquery(InqueryDTO dto) {
+		companyInfoMapper.insertInquery(dto); 
+	}
+	
+	// user_id로 실제 user_idx 조회
+	public String getUserIdxByUserId(String userId) {
+		return companyInfoMapper.selectUserIdxByUserId(userId);
+	}
+
+	
 
 	
 }
