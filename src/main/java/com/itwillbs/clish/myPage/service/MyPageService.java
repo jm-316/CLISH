@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
@@ -151,6 +152,16 @@ public class MyPageService {
 	public UserDTO checkPhoneNumber(UserDTO userDTO) {
 		// TODO Auto-generated method stub
 		return myPageMapper.checkPhoneNumber(userDTO);
+	}
+
+	public List<NotificationDTO> selectNotification(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllNotification(startRow, listLimit, user);
+	}
+
+	public int getnotificationCount(UserDTO user) {
+		
+		return myPageMapper.selectCountNotification(user);
 	}
 	
 

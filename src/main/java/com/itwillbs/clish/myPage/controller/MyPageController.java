@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
@@ -398,6 +399,32 @@ public class MyPageController {
 		return "redirect:/myPage/myQuestion/inquery/modify?inqueryIdx="+ inqueryDTO.getInqueryIdx();
 	}
 	
+	// 알림전체보기
+	@GetMapping("/notification")
+	public String notification(HttpSession session, UserDTO user, Model model
+			, @RequestParam(defaultValue = "1") int notificationPageNum) {
+		String id = (String)session.getAttribute("sId");
+		user.setUserId(id);
+		user = myPageService.getUserInfo(user);
+		int listLimit = 10;
+		int notificationListCount = myPageService.getnotificationCount(user);
+		if(notificationListCount > 0) {
+		
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, notificationListCount, notificationPageNum, 3);
+			
+			if(notificationPageNum < 1 || notificationPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/payment_info"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("notificationPageInfo", pageInfoDTO);
+
+			List<NotificationDTO> notificationList = myPageService.selectNotification(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("notificationList",notificationList);
+		}
+		return "/clish/myPage/myPage_notification";
+	}
 }
 
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
@@ -66,6 +67,10 @@ public interface MyPageMapper {
 	UserDTO checkRepName(UserDTO userDTO);
 
 	UserDTO checkPhoneNumber(UserDTO userDTO);
+
+	List<NotificationDTO> selectAllNotification(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+
+	int selectCountNotification(UserDTO user);
 
 
 

@@ -196,14 +196,6 @@
 		<result property="inqueryStatus" column="inquery_status" />
 		<result property="classTitle" column="class_title" />
 		
-		<!-- 
-		LEFT JOIN 을 통해 조회되는 첨부파일 정보가 복수개의 row 로 조회될 수 있으므로
-		해당 row 들을 List<BoardFileDTO> 객체 형태로 저장될 수 있도록 <collection> 태그 필요!
-		<collection 
-				property="바깥의 resultMap 에서 지정한 객체에서 파일목록 저장할 필드명" 
-				ofType="1개의 row 가 저장될 타입">
-		</collection>
-		-->
 		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO">
 			<id property="fileId" column="file_id" />
 			<result property="idx" column="idx" />
@@ -303,6 +295,21 @@
 		LEFT JOIN FILE f
 		ON i.inquery_idx = f.idx
 		WHERE i.inquery_idx = #{inqueryIdx}
+	</select>
+	
+	<select id="selectCountNotification" resultType="int">
+		SELECT count(*)
+		FROM NOTIFICATION
+		WHERE user_idx = #{userIdx}
+	</select>
+	
+	<select id="selectAllNotification" resultType="com.itwillbs.clish.admin.dto.NotificationDTO">
+		SELECT *
+		FROM NOTIFICATION
+		WHERE user_idx = #{user.userIdx}
+		LIMIT
+			#{startRow}
+			, #{listLimit}
 	</select>
 	
 	
