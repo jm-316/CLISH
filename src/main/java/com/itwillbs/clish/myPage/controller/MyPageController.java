@@ -438,6 +438,7 @@ public class MyPageController {
 		int listLimit = 5;
 		if(reviewCom == 0) {
 			int reviewListCount = myPageService.getUncompleteReviewCount(user);
+			
 			if(reviewListCount > 0) {
 				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
 				
@@ -450,11 +451,29 @@ public class MyPageController {
 				model.addAttribute("pageInfo",pageInfoDTO);
 				
 				List<Map<String, Object>> uncompleteReviewList = myPageService.getUncompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
+				
 				model.addAttribute("reviewInfo",uncompleteReviewList);
 				
-				System.out.println("페이지인포 : " + pageInfoDTO);
-				System.out.println("리뷰인포 : " + uncompleteReviewList);
-			}
+			} 
+		} else {
+			int reviewListCount = myPageService.getCompleteReviewCount(user);
+			
+			if(reviewListCount > 0) {
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+				
+				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					return "commons/result_process";
+				}
+				
+				model.addAttribute("pageInfo",pageInfoDTO);
+				
+				List<Map<String, Object>> completeReviewList = myPageService.getCompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
+				
+				model.addAttribute("reviewInfo",completeReviewList);
+
+			} 
 		}
 		
 		
@@ -462,6 +481,7 @@ public class MyPageController {
 		return "/clish/myPage/myPage_myReview";
 	}
 	
+	//수강후기 작성페이지
 	@GetMapping("/myReview/writeReviewForm")
 	public String writeReviewForm(ReservationDTO reservationDTO, HttpSession session, UserDTO user, Model model) {
 		
@@ -471,6 +491,7 @@ public class MyPageController {
 		return "/clish/myPage/myPage_myReview_writeReviewForm";
 	}
 	
+	// 수강후기 작성완료
 	@PostMapping("/myReview/writeReview")
 	public String writeReview(ReviewDTO review, HttpSession session, UserDTO user) throws IOException {
 		String id = (String)session.getAttribute("sId");

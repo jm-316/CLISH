@@ -180,6 +180,16 @@ public class MyPageService {
 		return myPageMapper.selectOneReservationClassInfo(reservationDTO);
 	}
 	
+	public int getCompleteReviewCount(UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectCompleteReviewCount(user);
+	}
+	
+	public List<Map<String, Object>> getCompleteReview(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllCompleteReview(startRow, listLimit, user);
+	}
+
 	@Transactional
 	public void writeReview(ReviewDTO review, UserDTO user) throws IOException {
 		String userIdx = user.getUserIdx();
@@ -194,9 +204,5 @@ public class MyPageService {
 			fileMapper.insertFiles(fileList);
 		}
 	}
-
-	
-
-
 
 }

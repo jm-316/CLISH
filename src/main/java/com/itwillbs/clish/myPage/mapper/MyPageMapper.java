@@ -79,7 +79,12 @@ public interface MyPageMapper {
 
 	Map<String, Object> selectOneReservationClassInfo(ReservationDTO reservationDTO);
 
+	int selectCompleteReviewCount(UserDTO user);
+	
+	List<Map<String, Object>> selectAllCompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+
 	void insertReview(ReviewDTO review);
+
 
 
 

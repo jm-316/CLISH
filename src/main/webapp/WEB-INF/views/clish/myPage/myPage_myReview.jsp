@@ -61,15 +61,30 @@
 						<th rowspan="2">이미지</th>
 						<th>수강 강의</th>
 						<th>수강일</th>
-						<td rowspan="2">
-							<input type="button" value="강의 상세 페이지" 
-							onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
-							
-							<br><br>
-							<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
-							<input type="button" value="수강후기쓰러가기"
-							onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
-						</td>
+						<c:choose>
+							<c:when test="${param.reviewCom eq 0 }" >
+								<td rowspan="2">
+									<input type="button" value="강의 상세 페이지" 
+									onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
+									
+									<br><br>
+									<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
+									<input type="button" value="수강후기쓰러가기"
+									onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td rowspan="2">
+									<input type="button" value="작성 후기 보러 가기" 
+									onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
+									
+									<br><br>
+									<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
+									<input type="button" value="작성 후기 수정"
+									onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
+								</td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					<tr>
 						<td>${review.class_title }</td>
