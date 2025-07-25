@@ -23,8 +23,8 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 	</header>
-	<div class="layout-container">
 		<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
+		
 		<div class="main">
 			<div class="main-content">
 				<div class="box">
@@ -98,7 +98,6 @@
 				</table>
 			</div>
 		</div>
-	</div>
 	<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 </body>
 </html>

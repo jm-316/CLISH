@@ -9,10 +9,6 @@ body {
 	box-sizing:			border-box;
 }
 
-.layout-container {
-	display: flex;
-}
-
 #sidebar {
 	position: fixed;
 	top: var(--header-height);   /* header 아래 */
@@ -39,6 +35,7 @@ body {
 	background:			#fff;
 	min-height:			calc(100vh - var(--header-height));
 	display:			flex;
+	justify-content: center;
 	flex-direction:		column;
 	align-items:		center;                    /* 중앙정렬 (진짜 핵심) */
 	box-sizing:			border-box;
@@ -58,7 +55,8 @@ body {
 }
 
 .table {
-	width:					100%;
+	width:					90%;
+	margin: 0 auto;
 	border-collapse:		collapse;
 	margin-top:				16px;
 	background:				#faf8fc;
