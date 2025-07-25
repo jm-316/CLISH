@@ -253,17 +253,6 @@ export function initJoinForm() {
 	
 	// 9. 전체 입력 확인 체크
 	function updateSubmitButton() {
-		 console.log({
-	        isNicknameOk,
-	        isBirthOk,
-	        isIdOk,
-	        isPwOk,
-	        isPwMatchOk,
-	        isPhoneOk,
-	        isAddressOk,
-	        isAgreeChkOk,
-	        isEmailVerified: window.isEmailVerified
-	    });
 	    if(isNicknameOk && isBirthOk && isIdOk && isPwOk && isPwMatchOk && 
 					isPhoneOk && window.isEmailVerified && isAddressOk && isAgreeChkOk) {
 	        submitBtn.disabled = false;

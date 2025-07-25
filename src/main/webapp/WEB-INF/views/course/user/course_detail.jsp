@@ -19,7 +19,6 @@
 </script>
 </head>
 <body>
-<!-- 111111 -->
 	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
 	
 	<div class="main">
