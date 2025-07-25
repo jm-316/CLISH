@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.admin.mapper.AdminUserMapper;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -43,33 +45,6 @@ public class AdminUserService {
 	public int setUserStatus(String idx, int status) {
 		return adminMapper.updateUserStatus(idx, status);
 	}
-	
-	// 일반 유저 정보 수정
-	@Transactional
-	public int modifyUserInfo(String idx, UserDTO user) {
-		int update = adminMapper.updateUserInfo(idx, user);
-		
-		if (update > 0) {
-			notificationService.send(idx, 5, "회원 정보가 수정되었습니다.");
-			return update;
-		}
-		
-		return 0;
-	}
-	
-	// 기업 정보 수정
-	@Transactional
-	public int modifycompanyInfo(String idx, UserDTO company) {
-		int update = adminMapper.updateCompanyInfo(idx, company);
-		
-		if (update > 0) {
-			notificationService.send(idx, 5, "회원 정보가 수정되었습니다.");
-			return update;
-		}
-		
-		return 0;
-	}
-	
 
 	// 승인 또는 탈퇴 로직
 	@Transactional

@@ -11,7 +11,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
-
+<script>
+	function filterByCategory() {
+		const selected = document.getElementById('categorySelect').value;
+		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
+	}
+</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
@@ -57,12 +62,12 @@
 				<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
 				<input type="hidden" id="classType" name="classType" value="${classInfo.classType}"><br>
 				
+				<c:if test="${not empty param.classType}">
+		           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		           	클래스 목록</button>
+				</c:if>
 	            <button type="submit" class="orange-button">예약 확정</button>
 		</form>
-		<c:if test="${not empty param.classType}">
-           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-           	클래스 목록</button>
-		</c:if>
 	</div>
 		<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
 </body>

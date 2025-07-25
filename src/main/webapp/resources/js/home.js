@@ -43,14 +43,7 @@ window.onload = () => {
 		timer = setInterval(updateCountdown, 1000);
 		updateCountdown();
 		});
-		const listItems = document.querySelectorAll('#sub-nav');
-
-		listItems.forEach(item => {
-		  item.addEventListener('mouseenter', () => {
-		    document.querySelector('#flex-item2').style.width = '80vw';
 		
-		  });
-		});
 //		item.addEventListener('mouseleave', () => {
 //	
 //		});

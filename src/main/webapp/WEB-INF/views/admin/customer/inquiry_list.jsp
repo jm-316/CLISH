@@ -63,10 +63,7 @@
 			</div>
 		</div>
 		<div class="main">
-			<div class="navbar-expand">
-				<h4 class="pageSubject">CLISH 관리자 대시보드</h4>
-				<div>관리자</div>
-			</div>
+			<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
