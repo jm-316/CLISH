@@ -398,7 +398,7 @@ public class MyPageController {
 		
 		return "redirect:/myPage/myQuestion/inquery/modify?inqueryIdx="+ inqueryDTO.getInqueryIdx();
 	}
-	
+	//------------------------------------------------------------------------------------------------------------------
 	// 알림전체보기
 	@GetMapping("/notification")
 	public String notification(HttpSession session, UserDTO user, Model model
@@ -424,6 +424,13 @@ public class MyPageController {
 			model.addAttribute("notificationList",notificationList);
 		}
 		return "/clish/myPage/myPage_notification";
+	}
+	// ------------------------------------------------------------------------------------------------------------
+	// 후기 관리
+	@GetMapping("/myReview")
+	public String myReview() {
+		
+		return "/clish/myPage/myPage_myReview";
 	}
 }
 
