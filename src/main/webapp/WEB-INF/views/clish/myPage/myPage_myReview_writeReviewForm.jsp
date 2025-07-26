@@ -38,46 +38,47 @@
 		
 			<div id="main">
 				<form action="/myPage/myReview/writeReview" method="post" enctype="multipart/form-data">
-				<h1>${message }</h1>
-				<table>
-					<tr>
-						<th>강의 명</th>
-						<td><input type="text" value="${rservationClassInfo.class_title }" name="classTitle" readonly></td>
-					</tr><tr>
-						<th>수업 일</th>
-						<td><input type="text" value="${rservationClassInfo.reservation_class_date}" name="reservationClassDate" readonly></td>
-					</tr><tr>
-						<th>주문 번호</th>
-						<td><input type="text" value="${rservationClassInfo.reservation_idx}"name="reservationIdx" readonly></td>
-					</tr><tr>
-						<th>평가 점수</th>
-						<td>
-		<!-- 					<input type="text" placeholder="0점 ~ 5점" name="reviewScore" > -->
-								<div class="star-rating">
-									<span class="star">&#9733;</span>
-									<span class="star">&#9733;</span>
-									<span class="star">&#9733;</span>
-									<span class="star">&#9733;</span>
-									<span class="star">&#9733;</span>
-									<input type="hidden" id="score" name="reviewScore" value="0" />
-								</div>
-						</td>
-					</tr><tr>
-					</tr><tr>
-						<th>리뷰 제목</th>
-						<td><input type="text" placeholder="제목을 작성해 주세요" name="reviewTitle" ></td>
-					</tr><tr>
-						<th>리뷰 내용</th>
-						<td><textarea rows="15" cols="50" placeholder="리뷰 입력" name="reviewDetail"></textarea></td> 
-					</tr>
-				</table>
-				<label for="file">첨부파일</label>
-					
-				<input type="file" class="custom-file-input" name="files" multiple>
-		
-				<input type="submit" value="리뷰등록" >
-				<input type="reset" value="초기화">
-				<input type="button" value="취소" onclick="history.back()">
+					<input type="text" value=${reservationClassInfo.class_idx } name="classIdx" hidden>
+					<input type="text" value=${reservationClassInfo.user_idx } name="userIdx" hidden>
+					<table>
+						<tr>
+							<th>강의 명</th>
+							<td><input type="text" value="${reservationClassInfo.class_title }" name="classTitle" readonly></td>
+						</tr><tr>
+							<th>수업 일</th>
+							<td><input type="text" value="${reservationClassInfo.reservation_class_date}" name="reservationClassDate" readonly></td>
+						</tr><tr>
+							<th>주문 번호</th>
+							<td><input type="text" value="${reservationClassInfo.reservation_idx}"name="reservationIdx" readonly></td>
+						</tr><tr>
+							<th>평가 점수</th>
+							<td>
+			<!-- 					<input type="text" placeholder="0점 ~ 5점" name="reviewScore" > -->
+									<div class="star-rating">
+										<span class="star">&#9733;</span>
+										<span class="star">&#9733;</span>
+										<span class="star">&#9733;</span>
+										<span class="star">&#9733;</span>
+										<span class="star">&#9733;</span>
+										<input type="hidden" id="score" name="reviewScore" value="0" />
+									</div>
+							</td>
+						</tr><tr>
+						</tr><tr>
+							<th>리뷰 제목</th>
+							<td><input type="text" placeholder="제목을 작성해 주세요" name="reviewTitle" ></td>
+						</tr><tr>
+							<th>리뷰 내용</th>
+							<td><textarea rows="15" cols="50" placeholder="리뷰 입력" name="reviewDetail"></textarea></td> 
+						</tr>
+					</table>
+					<label for="file">첨부파일</label>
+						
+					<input type="file" class="custom-file-input" name="files" multiple>
+			
+					<input type="submit" value="리뷰등록" >
+					<input type="reset" value="초기화">
+					<input type="button" value="취소" onclick="history.back()">
 		 		</form>
 	 		</div>
 	

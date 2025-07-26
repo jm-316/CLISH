@@ -56,13 +56,13 @@
 		<div>
 		<h1>${param.reviewCom }</h1>
 			<table>
-				<c:forEach items="${reviewInfo}" var="review">
-					<tr>
-						<th rowspan="2">이미지</th>
-						<th>수강 강의</th>
-						<th>수강일</th>
-						<c:choose>
-							<c:when test="${param.reviewCom eq 0 }" >
+				<c:choose>
+					<c:when test="${param.reviewCom eq 0 }" >
+						<c:forEach items="${reviewInfo}" var="review" varStatus="status">
+							<tr>
+								<th rowspan="2">이미지</th>
+								<th>수강 강의</th>
+								<th>수강일</th>
 								<td rowspan="2">
 									<input type="button" value="강의 상세 페이지" 
 									onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
@@ -72,25 +72,29 @@
 									<input type="button" value="수강후기쓰러가기"
 									onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
 								</td>
-							</c:when>
-							<c:otherwise>
-								<td rowspan="2">
-									<input type="button" value="작성 후기 보러 가기" 
-									onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
-									
-									<br><br>
-									<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
-									<input type="button" value="작성 후기 수정"
-									onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
-								</td>
-							</c:otherwise>
-						</c:choose>
-					</tr>
-					<tr>
-						<td>${review.class_title }</td>
-						<td>${review.reservation_class_date }</td>
-					</tr>
-				</c:forEach>
+							</tr>
+							<tr>
+								<td>${review.class_title }</td>
+								<td>${review.reservation_class_date }</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${reviewInfo}" var="review" varStatus="status">
+							<tr>
+								<th rowspan="2">이미지</th>
+								<th>수강 강의</th>
+								<th>수강일</th>
+								<th>리뷰작성일</th>
+							</tr>
+							<tr>
+								<td>${review.class_title }</td>
+								<td>${review.reservation_class_date }</td>
+								<td>${review.review_created_at }</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			</table>
 			<section id="reviewPageList">
 				<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">

@@ -18,8 +18,8 @@ import lombok.ToString;
 public class ReviewDTO implements FileUploadHelpper{
 	private String reviewIdx;             
     private String reservationIdx;         
-    private int userIdx;                   
-    private int classIdx;                  
+    private String userIdx;                   
+    private String classIdx;                  
     private String reviewTitle;            
     private String reviewDetail;           
     private int reviewScore;               

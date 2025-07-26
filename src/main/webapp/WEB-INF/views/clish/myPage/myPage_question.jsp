@@ -24,10 +24,10 @@
 	.btn-wrap form {
 	  margin: 0;
 	  padding: 0;
-	  border: none;         /* 폼 기본 테두리 제거 */
-	  background: none;     /* 배경도 없앰 */
-	  box-shadow: none;     /* 박스 그림자 효과도 제거 */
-	  display: inline;      /* 불필요한 block 배치 없애기 */
+	  border: none;        
+	  background: none;     
+	  box-shadow: none;     
+	  display: inline;      
 	}
 	.btn-wrap button:hover {
 	  background: #ff9c34;
@@ -224,7 +224,6 @@
 	    $(".inquery-toggle").click(function () {
 	      const detailRow = $(this).next(".inquery-detail");
 	
-	      // 모든 detail 닫고, 클릭 대상이 닫혀있던 거면 열기
 	      $(".inquery-detail").not(detailRow).slideUp(200);
 	
 	      if (!detailRow.is(":visible")) {

@@ -364,18 +364,17 @@
 	</select>
 	
 	<select id="selectAllCompleteReview" resultType="map">
-		SELECT r.*,
+		SELECT rev.*,
 				c.class_title,
 				c.category_idx,
-				c.class_type
-		FROM RESERVATION r
+				c.class_type,
+				r.reservation_class_date
+		FROM REVIEW rev
 		LEFT JOIN CLASS c
-			ON r.class_idx = c.class_idx
-		INNER JOIN REVIEW rev 
-			ON r.reservation_idx = rev.reservation_idx
-		WHERE r.user_idx = #{user.userIdx}
-			AND r.reservation_status = 2
-			AND CURDATE() >= r.reservation_class_date
+			ON rev.class_idx = c.class_idx
+		LEFT JOIN RESERVATION r
+			ON rev.reservation_idx = r.reservation_idx
+		WHERE rev.user_idx = #{user.userIdx}
 		LIMIT
 			#{startRow}
 			, #{listLimit}

@@ -487,7 +487,8 @@ public class MyPageController {
 		
 		Map<String, Object> reservationClassInfo = myPageService.getReservationClassInfo(reservationDTO);
 		
-		model.addAttribute("rservationClassInfo",reservationClassInfo);
+		model.addAttribute("reservationClassInfo",reservationClassInfo);
+		System.out.println("뭐가넘어가나 : " + reservationClassInfo);
 		return "/clish/myPage/myPage_myReview_writeReviewForm";
 	}
 	
