@@ -30,4 +30,8 @@ public interface AdminCustomerMapper {
 
 	int updateInquiry(@Param("idx") String idx, @Param("inqueryAnswer") String inqueryAnswer);
 
+	int selectCountAnnouncement();
+
+	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
 }
