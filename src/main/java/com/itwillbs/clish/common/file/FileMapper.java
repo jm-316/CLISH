@@ -16,7 +16,7 @@ public interface FileMapper {
 
 	List<FileDTO> selectAllFile(String idx);
 
-	void deleteAllFile(String inqueryIdx);
+	void deleteAllFile(String idx);
 
 
 }

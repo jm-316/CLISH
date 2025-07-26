@@ -27,6 +27,15 @@ public class ReviewDTO implements FileUploadHelpper{
     private LocalDateTime reviewModifiedAt;   
     private int reviewReportedCount = 0;
     
+    //DB저장없이 받아오는값들
+    private String classTitle;
+    private String categoryIdx;
+    private String classType;
+    private LocalDateTime reservationClassDate;
+    private String userId;
+    private String userName;
+    
+    
     // 파일업로드
 	private MultipartFile[] files;
 	private List<FileDTO> fileList;

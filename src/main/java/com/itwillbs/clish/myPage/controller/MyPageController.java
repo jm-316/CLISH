@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileService;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
@@ -35,7 +36,6 @@ import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import retrofit2.http.GET;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,6 +43,7 @@ import retrofit2.http.GET;
 public class MyPageController {
 	private final MyPageService myPageService;
 	private final UserService userService;
+	private final FileService fileService;
 	
 	// 마이페이지 메인
 	@GetMapping("/main")
@@ -394,9 +395,7 @@ public class MyPageController {
 	
 	@GetMapping("/myQuestion/fileDelete")
 	public String deleteFile(InqueryDTO inqueryDTO, FileDTO fileDTO) {
-		
-		myPageService.removeFile(fileDTO);
-		
+		fileService.removeFile(fileDTO);
 		return "redirect:/myPage/myQuestion/inquery/modify?inqueryIdx="+ inqueryDTO.getInqueryIdx();
 	}
 	//------------------------------------------------------------------------------------------------------------------
@@ -436,6 +435,7 @@ public class MyPageController {
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user);
 		int listLimit = 5;
+		
 		if(reviewCom == 0) {
 			int reviewListCount = myPageService.getUncompleteReviewCount(user);
 			
@@ -444,7 +444,7 @@ public class MyPageController {
 				
 				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
 					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					model.addAttribute("targetURL", "/myPage/myReview"); 
 					return "commons/result_process";
 				}
 				
@@ -459,25 +459,27 @@ public class MyPageController {
 			int reviewListCount = myPageService.getCompleteReviewCount(user);
 			
 			if(reviewListCount > 0) {
-				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
 				
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+				System.out.println("페이지정보 ㅇㅇㅇ" + pageInfoDTO );
 				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
 					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					model.addAttribute("targetURL", "/myPage/myReview"); 
 					return "commons/result_process";
 				}
 				
 				model.addAttribute("pageInfo",pageInfoDTO);
 				
-				List<Map<String, Object>> completeReviewList = myPageService.getCompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
+				List<ReviewDTO> completeReviewList = myPageService.getCompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
 				
 				model.addAttribute("reviewInfo",completeReviewList);
 
 			} 
 		}
 		
-		
-		
+	    model.addAttribute("reviewPageNum", reviewPageNum);
+	    model.addAttribute("reviewCom", reviewCom);
+	    
 		return "/clish/myPage/myPage_myReview";
 	}
 	
@@ -488,21 +490,62 @@ public class MyPageController {
 		Map<String, Object> reservationClassInfo = myPageService.getReservationClassInfo(reservationDTO);
 		
 		model.addAttribute("reservationClassInfo",reservationClassInfo);
-		System.out.println("뭐가넘어가나 : " + reservationClassInfo);
 		return "/clish/myPage/myPage_myReview_writeReviewForm";
 	}
 	
-	// 수강후기 작성완료
+	// 수강후기 작성완료처리
 	@PostMapping("/myReview/writeReview")
-	public String writeReview(ReviewDTO review, HttpSession session, UserDTO user) throws IOException {
+	public String writeReview(ReviewDTO review, HttpSession session) throws IOException {
 		String id = (String)session.getAttribute("sId");
+		UserDTO user = new UserDTO();
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user);
-		
 		myPageService.writeReview(review, user);
-
 		return "redirect:/myPage/myReview";
 	}
+	
+	// 작성된 후기 삭제
+	@ResponseBody
+	@PostMapping("/myReview/deleteReview")
+	public Map<String, Object> deleteReview(ReviewDTO reviewDTO) {
+		Map<String,Object> result = new HashMap<>();
+		
+		int delCount = myPageService.deleteReview(reviewDTO);
+		
+		if (delCount > 0) {
+			result.put("msg", "후기 삭제 완료.");
+		} else {
+			result.put("msg", "삭제 실패");
+		}
+		
+		return result;
+	}
+	
+	// 작성된 후기 수정
+	@GetMapping("/myReview/modifyReviewForm")
+	public String modifyReviewForm(ReviewDTO reviewDTO, Model model) {
+		reviewDTO = myPageService.getReviewInfo(reviewDTO);
+		
+		model.addAttribute("reviewDTO", reviewDTO);
+		System.out.println(reviewDTO);
+		return "/clish/myPage/myPage_myReview_modifyReviewForm";
+	}
+	
+	@GetMapping("myReview/removeFile")
+	public String removeFile(FileDTO fileDTO, ReviewDTO reviewDTO) {
+		fileService.removeFile(fileDTO);
+		return "redirect:/myPage/myReview/modifyReviewForm?reviewIdx="+ reviewDTO.getReviewIdx();
+	}
+	
+	@PostMapping("/myReview/modifyReview")
+	public String modifyReview(ReviewDTO reviewDTO, Model model) throws IOException {
+		
+		myPageService.modifyReview(reviewDTO);
+		
+		return "redirect:/myPage/myReview";
+	}
+	
+	
 }
 
 

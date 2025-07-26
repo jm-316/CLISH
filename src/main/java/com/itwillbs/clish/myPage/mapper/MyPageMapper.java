@@ -81,9 +81,15 @@ public interface MyPageMapper {
 
 	int selectCompleteReviewCount(UserDTO user);
 	
-	List<Map<String, Object>> selectAllCompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	List<ReviewDTO> selectAllCompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
 
 	void insertReview(ReviewDTO review);
+
+	int delteReview(ReviewDTO reviewDTO);
+
+	ReviewDTO selectOneReview(ReviewDTO reviewDTO);
+
+	void updateReview(ReviewDTO reviewDTO);
 
 
 

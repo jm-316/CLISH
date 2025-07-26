@@ -14,26 +14,63 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style type="text/css">
 	.reviewbar-container {
-	  display: flex;
-	  justify-content: flex-start;
-	  gap: 8px; /* 버튼 사이 간격 */
+		display: flex;
+		justify-content: flex-start;
+		gap: 8px; /* 버튼 사이 간격 */
 	}
+	
 	.reviewbar {
-	  background: #f6f7fb;        /* 밝은 배경 */
-	  border: none;               /* 테두리 없음 */
-	  border-radius: 10px;        /* 둥근 모서리 */
-	  padding: 12px 26px;         /* 넉넉한 여백 */
-	  font-size: 16px;
-	  font-weight: 600;
-	  margin-right: 8px;          /* 버튼 사이 간격 */
-	  color: #222;                /* 글씨 색 */
-	  box-shadow: 0 1px 3px rgba(0,0,0,.04);
-	  cursor: pointer;
-	  transition: background 0.2s, color 0.2s;
+		background: #f6f7fb;        /* 밝은 배경 */
+		border: none;               /* 테두리 없음 */
+		border-radius: 10px;        /* 둥근 모서리 */
+		padding: 12px 26px;         /* 넉넉한 여백 */
+		font-size: 16px;
+		font-weight: 600;
+		margin-right: 8px;          /* 버튼 사이 간격 */
+		color: #222;                /* 글씨 색 */
+		box-shadow: 0 1px 3px rgba(0,0,0,.04);
+		cursor: pointer;
+		transition: background 0.2s, color 0.2s;
 	}
+	
 	.reviewbar:hover, .reviewbar:focus {
-	  background: #2478ff;        /* 마우스 올렸을 때 파란색 */
-	  color: #fff;                /* 글씨 흰색 */
+		background: #2478ff;        /* 마우스 올렸을 때 파란색 */
+		color: #fff;                /* 글씨 흰색 */
+	}
+	
+	.star {
+		font-size: 30px;
+		color: #ccc; /* 비활성 별 색 */
+	}
+	
+	.star.active {
+		color: gold; /* 활성 별 색 */
+	}
+	
+	.review-detail {
+		display: none;
+	}
+	
+	table tr.review-summary {
+		display: table-row;
+	}
+	
+	.review-summary th,
+	.review-summary td,
+	.review-summary label{
+		cursor: pointer;
+	}
+	
+	input[type="checkbox"]:checked + table .review-detail {
+		display: table-row;
+	}
+	
+	.img-thumb {
+	  width: 100px;      /* 썸네일 너비 */
+	  height: auto;      /* 원본 비율 유지 */
+	  cursor: pointer;   /* 마우스 올리면 손모양 */
+	  border: 1px solid #ddd;
+	  margin: 5px;
 	}
 </style>
 </head>
@@ -54,11 +91,10 @@
 		onclick="location.href='/myPage/myReview?reviewCom=1'">
 		</div>
 		<div>
-		<h1>${param.reviewCom }</h1>
-			<table>
-				<c:choose>
-					<c:when test="${param.reviewCom eq 0 }" >
-						<c:forEach items="${reviewInfo}" var="review" varStatus="status">
+			<c:choose>
+				<c:when test="${reviewCom eq 0 }" >
+					<c:forEach items="${reviewInfo}" var="review" >
+						<table style="width: 50em;">
 							<tr>
 								<th rowspan="2">이미지</th>
 								<th>수강 강의</th>
@@ -77,29 +113,75 @@
 								<td>${review.class_title }</td>
 								<td>${review.reservation_class_date }</td>
 							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<c:forEach items="${reviewInfo}" var="review" varStatus="status">
-							<tr>
-								<th rowspan="2">이미지</th>
-								<th>수강 강의</th>
-								<th>수강일</th>
-								<th>리뷰작성일</th>
-							</tr>
-							<tr>
-								<td>${review.class_title }</td>
-								<td>${review.reservation_class_date }</td>
-								<td>${review.review_created_at }</td>
-							</tr>
-						</c:forEach>
-					</c:otherwise>
-				</c:choose>
-			</table>
+						</table>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${reviewInfo}" var="review" varStatus="status">
+							
+						<form action="/myPage/myReview/modifyReviewForm" method="get">
+						<input type="hidden" value="${review.reviewIdx }" name="reviewIdx">
+						<input type="checkbox" id="rev_${status.index }" hidden>
+							<table  style="width: 50em;" data-index="${status.index }" data-reviewidx="${review.reviewIdx }">
+								<tr class="review-summary">
+									<th rowspan="2" ><label for="rev_${status.index}">이미지</label></th>
+									<th><label for="rev_${status.index}">수강 강의</label></th>
+									<th><label for="rev_${status.index}">수강일</label></th>
+									<th><label for="rev_${status.index}">리뷰작성일</label></th>
+								</tr>
+								<tr class="review-summary">
+									<td><label for="rev_${status.index}">${review.classTitle }</label></td>
+									<td><label for="rev_${status.index}">${review.reservationClassDate }</label></td>
+									<td><label for="rev_${status.index}">${review.reviewCreatedAt }</label></td>
+								</tr>
+								<tr class="review-detail">
+									<th>작성자</th>
+									<td>${review.userName }(${review.userId })</td>
+									<th>평점</th>
+									<td>
+										<div class="star-rating" data-index="${status.index }">
+											<span class="star">&#9733;</span>
+											<span class="star">&#9733;</span>
+											<span class="star">&#9733;</span>
+											<span class="star">&#9733;</span>
+											<span class="star">&#9733;</span>
+											<input type="hidden" id="score_${status.index }" name="reviewScore" value="${review.reviewScore }" />
+										</div>
+									</td>
+								</tr>
+								<tr class="review-detail">
+									<th>제목</th>
+									<td colspan="3">${review.reviewTitle }</td>								
+								</tr>
+								<tr class="review-detail">
+									<th>내용</th>
+									<td colspan="3" width="30">${review.reviewDetail }</td>
+								</tr>
+								<tr class="review-detail">
+									<th>첨부사진</th>
+									<td colspan="3" width="30">
+										<c:forEach var="file" items="${review.fileList }">
+											<img class="img-thumb"
+												src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName }" />					
+										</c:forEach>
+									</td>
+								</tr>
+								<tr class="review-detail">
+									<th colspan="4">
+										<input type="submit" value="수정">
+										<input type="button" id="btn_del_${status.index }" class="btnDelete" value="삭제" >
+									</th>
+								</tr>
+							</table>
+						</form>						
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+
 			<section id="reviewPageList">
 				<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
-						onclick="location.href='/myPage/myReview?reviewPageNum=${pageInfo.pageNum - 1}'" 
+						onclick="location.href='/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${pageInfo.pageNum - 1}'" 
 						<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>
 					>
 					
@@ -109,13 +191,13 @@
 								<strong>${i}</strong>
 							</c:when>
 							<c:otherwise>
-								<a href="/myPage/myReview?reviewPageNum=${i}">${i}</a>
+								<a href="/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${i}">${i}</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 					
 					<input type="button" value="다음" 
-						onclick="location.href='/myPage/myReview?reviewPageNum=${pageInfo.pageNum + 1}'" 
+						onclick="location.href='/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${pageInfo.pageNum + 1}'" 
 						<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>
 					>
 				</c:if>
@@ -123,10 +205,95 @@
 		</div>
 	</div>
 	</main>
-	
+	<div id="imgModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); text-align:center;">
+  		<img id="modalImg" src="" alt="원본" style="max-width:90vw; max-height:90vh; margin-top:5vh; border:3px solid #fff;" />
+	</div>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(function(){
+			//평점함수
+			$(".star-rating").each(function() {
+				var $container = $(this);
+				var index = $container.data("index");
+				var score = parseInt($("#score_" + index).val(), 10);
+				
+				$container.children(".star").each(function(i){
+			      if(i < score){
+			        $(this).addClass("active");
+			      } else {
+			        $(this).removeClass("active");
+			      }
+			    });
+			})
+			
+			
+			//이미지 크기
+			$(function(){
+			  // 썸네일 클릭 시 원본 큰 이미지 보여줌
+				$(document).on("click", ".img-thumb", function(e) {
+				    var src = $(this).attr("src");
+				    $("#modalImg").attr("src", src);
+				    $("#imgModal").fadeIn(200);
+				});
+			  
+				// 모달 바깥 클릭 or 이미지 클릭 시 닫기
+				$("#imgModal").on("click", function(){
+				    $(this).fadeOut(200);
+				    $("#modalImg").attr("src", "");
+				});
+			});
+			
+			//토글함수
+			$("table").on("click", "tr.review-summary", function(e) {
+				if ($(e.target).is("label") || $(e.target).closest("label").length > 0) {
+					return; // 기본 체크박스 토글 동작만 하도록 여기서 함수를 종료
+				}
+
+				var $table = $(this).closest("table");
+				var index = $table.data("index");
+				  
+				if (index !== undefined) {
+				    var $checkbox = $("#rev_" + index);
+
+				    if ($checkbox.length) {
+				      	// 체크박스 현재 상태 토글
+				    	var currentChecked = $checkbox.prop("checked");
+				    	$checkbox.prop("checked", !currentChecked);
+					}
+				}
+			});
+			
+			//삭제버튼
+			$(".btnDelete").click(function() {
+				var $table = $(this).closest("table");
+				var reviewIdx = $table.data("reviewidx");
+				
+				console.log("리뷰아이디엑스 : " + reviewIdx);
+				
+				if(confirm("후기는 삭제후 다시 작성 하실수 없습니다. \n정말 삭제하시겠습니까 ?")){
+					$.ajax({
+						url: "/myPage/myReview/deleteReview",
+						type: 'POST',
+						data: {	reviewIdx: reviewIdx},
+						dataType: "json",
+						success: function(response){
+							alert(response.msg);
+							window.location.reload();
+						},
+						error: function(xhr, status, error) {
+					    	alert("삭제 중 오류가 발생했습니다: " + error);
+					    }
+					});
+				}
+			});
+			
+			
+
+		});
+	</script>
 </body>
 </html>
 

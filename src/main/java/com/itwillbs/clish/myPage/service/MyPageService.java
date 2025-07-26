@@ -35,7 +35,6 @@ import lombok.RequiredArgsConstructor;
 public class MyPageService {
 	private final MyPageMapper myPageMapper;
 	private final FileMapper fileMapper;
-	private final UserService userService;
 	@Autowired
 	private HttpSession session;
 	//-----------------------------------------------------
@@ -99,11 +98,11 @@ public class MyPageService {
 	
 	@Transactional
 	public void inqueryDelete(InqueryDTO inqueryDTO) {
-		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
-		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
-		
 		fileMapper.deleteAllFile(inqueryDTO.getInqueryIdx()); // FILE 테이블 내용 삭제
 		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제	
+		
+		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
+		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
 	}
 
 	public InqueryDTO getInqueryInfo(InqueryDTO inqueryDTO) {
@@ -136,14 +135,6 @@ public class MyPageService {
 	public InqueryDTO getclassQInfo(InqueryDTO inqueryDTO) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectOneClassQ(inqueryDTO);
-	}
-
-	public void removeFile(FileDTO fileDTO) {
-		// TODO Auto-generated method stub
-		fileDTO = fileMapper.selectFile(fileDTO);
-		FileUtils.deleteFile(fileDTO, session);
-		
-		fileMapper.deleteFile(fileDTO);
 	}
 
 	public UserDTO checkRepName(UserDTO userDTO) {
@@ -185,7 +176,7 @@ public class MyPageService {
 		return myPageMapper.selectCompleteReviewCount(user);
 	}
 	
-	public List<Map<String, Object>> getCompleteReview(int startRow, int listLimit, UserDTO user) {
+	public List<ReviewDTO> getCompleteReview(int startRow, int listLimit, UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectAllCompleteReview(startRow, listLimit, user);
 	}
@@ -199,6 +190,33 @@ public class MyPageService {
 		myPageMapper.insertReview(review);
 		
 		List<FileDTO> fileList = FileUtils.uploadFile(review, session);
+		
+		if(!fileList.isEmpty()) {
+			fileMapper.insertFiles(fileList);
+		}
+	}
+	
+	@Transactional
+	public int deleteReview(ReviewDTO reviewDTO) {
+		int delCount = myPageMapper.delteReview(reviewDTO);
+		fileMapper.deleteAllFile(reviewDTO.getReviewIdx());
+		
+		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(reviewDTO.getReviewIdx());
+		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
+		
+		return delCount;
+	}
+
+	public ReviewDTO getReviewInfo(ReviewDTO reviewDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectOneReview(reviewDTO);
+	}
+	
+	@Transactional
+	public void modifyReview(ReviewDTO reviewDTO) throws IOException {
+		myPageMapper.updateReview(reviewDTO);
+		
+		List<FileDTO> fileList = FileUtils.uploadFile(reviewDTO, session);
 		
 		if(!fileList.isEmpty()) {
 			fileMapper.insertFiles(fileList);

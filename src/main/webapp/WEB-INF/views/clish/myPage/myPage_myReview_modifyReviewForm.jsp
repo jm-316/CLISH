@@ -7,7 +7,7 @@
  	 	<meta charset="UTF-8" />
     	<link rel="icon" type="image/png" href="/favicon.png" />
     	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    	<title>리뷰 쓰기페이지</title>
+    	<title>리뷰 수정</title>
     	<link rel="preconnect" href="https://fonts.googleapis.com" >
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
@@ -38,19 +38,18 @@
 			<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 		
 			<div id="main">
-				<form action="/myPage/myReview/writeReview" method="post" enctype="multipart/form-data">
-					<input type="text" value="${reservationClassInfo.class_idx }" name="classIdx" hidden>
-					<input type="text" value="${reservationClassInfo.user_idx }" name="userIdx" hidden>
+				<form action="/myPage/myReview/modifyReview" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="reviewIdx" value="${reviewDTO.reviewIdx }">
 					<table>
 						<tr>
 							<th>강의 명</th>
-							<td><input type="text" value="${reservationClassInfo.class_title }" name="classTitle" readonly></td>
+							<td><input type="text" value="${reviewDTO.classTitle }" name="classTitle" readonly></td>
 						</tr><tr>
 							<th>수업 일</th>
-							<td><input type="text" value="${reservationClassInfo.reservation_class_date}" readonly></td>
+							<td><input type="text" value="${reviewDTO.reservationClassDate}" readonly></td>
 						</tr><tr>
 							<th>주문 번호</th>
-							<td><input type="text" value="${reservationClassInfo.reservation_idx}"name="reservationIdx" readonly></td>
+							<td><input type="text" value="${reviewDTO.reservationIdx}"name="reservationIdx" readonly></td>
 						</tr><tr>
 							<th>평가 점수</th>
 							<td>
@@ -61,22 +60,35 @@
 										<span class="star">&#9733;</span>
 										<span class="star">&#9733;</span>
 										<span class="star">&#9733;</span>
-										<input type="hidden" id="score" name="reviewScore" value="0" />
+										<input type="hidden" id="score" name="reviewScore" value="${reviewDTO.reviewScore}" />
 									</div>
 							</td>
 						</tr><tr>
 						</tr><tr>
 							<th>리뷰 제목</th>
-							<td><input type="text" placeholder="제목을 작성해 주세요" name="reviewTitle" ></td>
+							<td><input type="text" placeholder="제목을 작성해 주세요" name="reviewTitle" value="${reviewDTO.reviewTitle }"></td>
 						</tr><tr>
 							<th>리뷰 내용</th>
-							<td><textarea rows="15" cols="50" placeholder="리뷰 입력" name="reviewDetail"></textarea></td> 
+							<td><textarea rows="15" cols="50" placeholder="리뷰 입력" name="reviewDetail" >${reviewDTO.reviewDetail}</textarea></td> 
 						</tr>
 					</table>
 					<label for="file">첨부파일</label>
 						
 					<input type="file" class="custom-file-input" name="files" multiple>
-			
+					
+					<c:forEach var="fileDTO" items="${reviewDTO.fileList}">
+						<div class="file_item">
+							${fileDTO.originalFileName}
+							<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+								<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+							</a>
+	
+							<a href="javascript:deleteFile(${fileDTO.fileId})">
+								<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
+							</a>
+						</div>
+					</c:forEach>
+					
 					<input type="submit" value="리뷰등록" >
 					<input type="reset" value="초기화">
 					<input type="button" value="취소" onclick="history.back()">
@@ -89,26 +101,47 @@
 			<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 		</footer>
 		<script>
+			//파일삭제
+			function deleteFile(fileId) {	
+				if(confirm("첨부파일을 삭제하시겠습니까?")) {
+					location.href = "/myPage/myReview/removeFile?fileId=" + fileId + "&reviewIdx=${reviewDTO.reviewIdx}";
+				}
+			}
+			// 처음 강의점수 보이기
+			
+			//강의점수채점
 			$(function(){
 			    let lastScore = 0;
-			  $(".star-rating .star").click(function(){
-			    const index = $(this).index();
-			    let score = index + 1;
 			    
-			    console.log(lastScore);
-			    if(score === 1 && lastScore === 1) {
-			    	score = 0;
-		    	}
-			    lastScore = score;
-			    $("#score").val(score);
-			    $(this).parent().children(".star").each(function(i){
-			      if(i < score){
-			        $(this).addClass("active");
-			      } else {
-			        $(this).removeClass("active");
-			      }
+			    let initialScore = parseInt($("#score").val()) || 0;
+			    lastScore = initialScore;
+			    
+			    $(".star-rating .star").each(function(i){
+			        if(i < initialScore){
+			            $(this).addClass("active");
+			        } else {
+			            $(this).removeClass("active");
+			        }
 			    });
-			  });
+			    
+			    $(".star-rating .star").click(function(){
+				    const index = $(this).index();
+				    let score = index + 1;
+				    
+				    console.log(lastScore);
+				    if(score === 1 && lastScore === 1) {
+				    	score = 0;
+			    	}
+				    lastScore = score;
+				    $("#score").val(score);
+				    $(this).parent().children(".star").each(function(i){
+				      if(i < score){
+				        $(this).addClass("active");
+				      } else {
+				        $(this).removeClass("active");
+				      }
+				    });
+			    });
 			});
 		</script>
 	</body>
