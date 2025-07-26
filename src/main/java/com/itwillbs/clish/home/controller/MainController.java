@@ -92,7 +92,6 @@ public class MainController {
 			
 			model.addAttribute("pageInfo", pageInfoDTO);
 			
-//			List<SupportDTO> announcementList = adminCustomerService.getNoticeList();
 			List<SupportDTO> announcementList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit);
 			model.addAttribute("announcementList", announcementList);
 		}

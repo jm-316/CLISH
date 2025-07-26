@@ -10,7 +10,7 @@ import com.itwillbs.clish.admin.dto.SupportDTO;
 
 public interface AdminCustomerMapper {
 
-	List<SupportDTO> selectNotices();
+//	List<SupportDTO> selectNotices();
 
 	void insertSupport(SupportDTO supportDTO);
 

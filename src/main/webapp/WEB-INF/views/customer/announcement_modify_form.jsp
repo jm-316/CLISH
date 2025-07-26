@@ -98,7 +98,6 @@
 				location.href = "/customer/announcement/fileDelete?fileId=" + fileId + "&supportIdx=${announcement.supportIdx}";
 			}
 		}
-	
 	</script>
 </body>
 </html>	

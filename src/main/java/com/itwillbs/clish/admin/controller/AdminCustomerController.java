@@ -1,5 +1,6 @@
 package com.itwillbs.clish.admin.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.service.AdminCustomerService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.utils.PageUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,10 +33,24 @@ public class AdminCustomerController {
 
 	// 공지사항 리스트
 	@GetMapping("/notice")
-	public String notice(Model model) {
-		List<SupportDTO> supportList = adminCustomerService.getNoticeList();
+	public String notice(Model model, @RequestParam(defaultValue = "1") int pageNum) {
+		int listLimit = 5;
+		int announcementCount = adminCustomerService.getAnnouncementCount();
 		
-		model.addAttribute("supportList", supportList);
+		if (announcementCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, announcementCount, pageNum, 3);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/customer/notice_list");
+				return "commons/result_process";
+			}
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<SupportDTO> supportList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit);
+			
+			model.addAttribute("supportList", supportList);
+		}
 		
 		return "/admin/customer/notice_list";
 	}
@@ -45,7 +63,7 @@ public class AdminCustomerController {
 	
 	// 공지사항 등록
 	@PostMapping("/notice/writeNotice")
-	public String noticeWrite(SupportDTO supportDTO) {
+	public String noticeWrite(SupportDTO supportDTO) throws IllegalStateException, IOException {
 		adminCustomerService.registSupport(supportDTO);
 		
 		return "redirect:/admin/notice";
@@ -63,7 +81,7 @@ public class AdminCustomerController {
 	
 	// 공지사항 수정
 	@PostMapping("/notice/modify")
-	public String noticeModify(SupportDTO supportDTO, Model model) {
+	public String noticeModify(SupportDTO supportDTO, Model model) throws IllegalStateException, IOException {
 		int update = adminCustomerService.modifySupport(supportDTO);
 		
 		if (update > 0) {
@@ -92,6 +110,14 @@ public class AdminCustomerController {
 		return "redirect:/admin/notice";
 	}
 	
+	// 파일 삭제
+	@GetMapping("notice/fileDelete")
+	public String deleteFile(@RequestParam("supportIdx") String idx, FileDTO fileDTO) {
+		adminCustomerService.removeFile(fileDTO);
+		
+		return "redirect:/admin/notice/detail/" + idx;
+	}
+	
 	@GetMapping("/faq")
 	public String faqList(Model model) {
 		List<SupportDTO> supportDTO = adminCustomerService.getFaqList();
@@ -107,7 +133,7 @@ public class AdminCustomerController {
 	}
 	
 	@PostMapping("/faq/writeFaq")
-	public String faqWrite(SupportDTO supportDTO) {
+	public String faqWrite(SupportDTO supportDTO) throws IllegalStateException, IOException {
 		adminCustomerService.registSupport(supportDTO);
 		
 		return "redirect:/admin/faq";
@@ -126,8 +152,8 @@ public class AdminCustomerController {
 	
 	// faq 수정
 	@PostMapping("/faq/modify")
-	public String faqModify(SupportDTO supportDTO, Model model) {
-		int update = adminCustomerService.modifySupport(supportDTO);
+	public String faqModify(SupportDTO supportDTO, Model model) throws IllegalStateException, IOException {
+		int update = adminCustomerService.modifyFaq(supportDTO);
 		
 		if (update > 0) {
 			model.addAttribute("msg", "FAQ를 수정했습니다.");

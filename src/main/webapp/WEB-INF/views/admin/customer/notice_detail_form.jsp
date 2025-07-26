@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div>
-						<form action="/admin/notice/modify" method="post">
+						<form action="/admin/notice/modify" method="post" enctype="multipart/form-data">
 							<input type="hidden" name="supportIdx"  id="supportIdx" value="${support.supportIdx}"/>
 							<input type="hidden" name="supportCategory"  id="supportCategory" value="${support.supportCategory}"/>
 							<table>
@@ -45,7 +45,21 @@
 									</tr>
 									<tr>
 										<th>파일첨부</th>
-										<td><input type="file" name="supportAttach" /></td>
+										<td>
+											<input type="file" class="custom-file-input" name="files" multiple>
+											<c:forEach var="fileDTO" items="${support.fileList}">
+												<div>
+													${fileDTO.originalFileName}
+													<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+													</a>
+							
+													<a href="javascript:deleteFile(${fileDTO.fileId})">
+														<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
+													</a>
+												</div>
+											</c:forEach>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -55,10 +69,17 @@
 							</div>
 						</form>
 					</div>
-				
 				</div>
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function deleteFile(fileId) {
+	
+			if(confirm("첨부파일을 삭제하시겠습니까?")) {
+				location.href = "/admin/notice/fileDelete?fileId=" + fileId + "&supportIdx=${support.supportIdx}";
+			}
+		}
+	</script>
 </body>
 </html>

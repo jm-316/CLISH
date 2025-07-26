@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div>
-						<form action="/admin/notice/writeNotice" method="post">
+						<form action="/admin/notice/writeNotice" method="post" enctype="multipart/form-data">
 							<table>
 								<colgroup>
 									<col width="20%">
@@ -43,7 +43,7 @@
 									</tr>
 									<tr>
 										<th>파일첨부</th>
-										<td><input type="file" name="supportAttach"/></td>
+										<td><input type="file" class="custom-file-input" name="files" multiple></td>
 									</tr>
 								</tbody>
 							</table>

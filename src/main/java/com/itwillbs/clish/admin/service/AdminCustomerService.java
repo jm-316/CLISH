@@ -31,11 +31,6 @@ public class AdminCustomerService {
 	@Autowired
 	private HttpSession session;
 
-	// 공지사항 리스트 
-	public List<SupportDTO> getNoticeList() {
-		return adminCustomerMapper.selectNotices();
-	}
-
 	// 공지사항 게시물 수 
 	public int getAnnouncementCount() {
 		return adminCustomerMapper.selectCountAnnouncement();
@@ -97,6 +92,12 @@ public class AdminCustomerService {
 	public List<SupportDTO> getFaqList() {
 		return adminCustomerMapper.selectFaqList();
 	}
+	
+	// faq 수정
+	public int modifyFaq(SupportDTO supportDTO) {
+		return adminCustomerMapper.updateSupport(supportDTO);
+	}
+	
 
 	public List<InquiryJoinUserDTO> getInquiryList() {
 		return adminCustomerMapper.selectInquiryList();
