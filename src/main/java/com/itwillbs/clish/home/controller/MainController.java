@@ -171,8 +171,12 @@ public class MainController {
 		return "redirect:/customer/announcement/modify" + idx;
 	}
 	
+	// faq 페이지
 	@GetMapping("/customer/FAQ")
-	public String faq() {
+	public String faq(Model model) {
+		List<SupportDTO> supportDTO = adminCustomerService.getFaqList();
+		
+		model.addAttribute("faqList", supportDTO);
 		
 		return "customer/FAQ";
 	}
