@@ -2,15 +2,18 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itwillbs.clish.admin.mapper.AdminCustomerMapper">
-	<!-- 공지사항 목록 -->
-	<select id="selectNotices" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+<mapper namespace="com.itwillbs.clish.admin.mapper.AdminCustomerMapper">	
+	<!-- 공지사항 리스트 -->
+	<select id="selectAnnouncements" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
 		SELECT *
 		FROM SUPPORT
 		WHERE
 			support_category = '공지사항'
 		ORDER BY
-			support_created_at ASC
+			support_created_at desc
+		LIMIT
+			#{startRow}
+			, #{listLimit}
 	</select>
 	
 	<!-- SUPPORT 테이블 내용 등록 -->
@@ -27,12 +30,44 @@
 		)
 	</insert>
 	
-	<!-- SUPPORT 테이블 상세정보 -->
-	<select id="selectSupport" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
-		SELECT *
-		FROM SUPPORT
+	<!-- SUPPORT 테이블 게시물 상세 조회  -->
+	<resultMap id="supportAndFileDTOResultMap" type="com.itwillbs.clish.admin.dto.SupportDTO">
+		<id property="supportIdx" column="support_idx"/>
+		<result property="supportTitle" column="support_title"/>
+		<result property="supportDetail" column="support_detail"/>
+		<result property="supportCreatedAt" column="support_created_at"/>
+		<result property="supportCategory" column="support_category"/>
+		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO">
+			<id property="fileId" column="file_id"/>
+			<result property="idx" column="idx" />
+			<result property="originalFileName"  column="original_file_name"/>
+			<result property="realFileName"  column="real_file_name"/>
+			<result property="subDir"  column="sub_dir"/>
+			<result property="fileSize"  column="file_size"/>
+			<result property="contentType"  column="content_type"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectSupport" resultMap="supportAndFileDTOResultMap">
+		SELECT 
+			s.support_idx
+			, s.support_title
+			, s.support_detail
+			, s.support_created_at
+			, s.support_category
+		    , f.file_id
+		    , f.original_file_name
+		    , f.real_file_name
+		    , f.sub_dir
+		    , f.file_size
+		    , f.content_type
+		FROM 
+			SUPPORT s
+		LEFT JOIN FILE f
+		ON
+			s.support_idx = f.idx
 		WHERE
-			support_idx = #{idx}
+			s.support_idx = #{idx}
 	</select>
 	
 	<!-- SUPPORT 테이블 수정 -->
@@ -144,6 +179,14 @@
 		WHERE
 			inquery_idx = #{idx}
 	</update>
+	
+	<!-- 공지사항 게시물 수 -->
+	<select id="selectCountAnnouncement" resultType="int">
+		SELECT count(*)
+		FROM SUPPORT
+		WHERE
+			support_category = '공지사항'
+	</select>
 </mapper>  
   
   

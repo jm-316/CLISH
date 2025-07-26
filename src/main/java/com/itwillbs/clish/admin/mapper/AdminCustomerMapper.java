@@ -10,7 +10,7 @@ import com.itwillbs.clish.admin.dto.SupportDTO;
 
 public interface AdminCustomerMapper {
 
-	List<SupportDTO> selectNotices();
+//	List<SupportDTO> selectNotices();
 
 	void insertSupport(SupportDTO supportDTO);
 
@@ -29,5 +29,9 @@ public interface AdminCustomerMapper {
 	InquiryJoinUserDTO selectInquiry(String idx);
 
 	int updateInquiry(@Param("idx") String idx, @Param("inqueryAnswer") String inqueryAnswer);
+
+	int selectCountAnnouncement();
+
+	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 
 }
