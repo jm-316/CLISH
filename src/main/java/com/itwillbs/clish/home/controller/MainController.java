@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
+import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.service.AdminCustomerService;
 import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.file.FileMapper;
@@ -42,6 +45,7 @@ public class MainController {
 	private final CategoryService categoryService;
 	private final MainService mainService;
 	private final AdminCustomerService adminCustomerService;
+	private final NotificationService notificationService;
 	private final UserService userService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -206,8 +210,6 @@ public class MainController {
 			model.addAttribute("inquiryList", inquiryList);
 		}
 		
-		
-		
 		return "customer/inquiry";
 	}
 	
@@ -349,6 +351,23 @@ public class MainController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
+	}
+	
+	@GetMapping("/user/notification")
+	@ResponseBody
+	public List<NotificationDTO> userNotification(HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.selectUserId(id);
+		
+		return notificationService.getNotifications(dbUser.getUserIdx());
+	}
+	
+	@PostMapping("/user/notification/{idx}/read")
+	@ResponseBody
+	public NotificationDTO markRead(@PathVariable("idx") String idx, HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.selectUserId(id);
+		return notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
 
 }

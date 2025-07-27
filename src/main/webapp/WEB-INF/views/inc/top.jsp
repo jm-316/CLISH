@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link href="${pageContext.request.contextPath}/resources/css/home/notification.css" rel="stylesheet" type="text/css">
 <section id="top-menu">
   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
   <nav>
@@ -48,15 +49,21 @@
       
 	</div> 
 	</nav>  
-      <div id="header-buttons">
+      <div id="header-buttons" style="position: relative;">
            <a id="noti" href="javascript:void(0)" onclick="notification()"><img alt="notification" src="${pageContext.request.contextPath}/resources/images/notification.png"></a>
            		<div id="notification-box">
-           			<h3>알림</h3>
-           			<ul>
-           				<li onmouseover="changeNotiColor(e)" >notification 1 <span >🔴</span></li>
-           				<li>notification 2 <span onmouseover="changeNotiColor(e)">🔴</span></li>
-           				<li>notification 3 <span onmouseover="changeNotiColor(e)">🔴</span></li>
-           			</ul>
+           			<div id="notification-header">
+	           			<h3>알림</h3>
+	           			<c:choose>
+	           				<c:when test="${userType eq 1 }">
+	           					<a href="/myPage/notification">전체보기</a>
+	           				</c:when>
+	           				<c:otherwise>
+	           					<a href="/company/myPage">전체보기</a>
+	           				</c:otherwise>
+	           			</c:choose>
+           			</div>
+					<ul id="notification-list"></ul>
            		</div>
            <c:choose>
 				<c:when test="${empty sessionScope.sId}">
@@ -88,14 +95,82 @@
     	<script type="text/javascript">
 	    	const notiButton = document.getElementById('notification-box');
     		function notification() {
-    			notiButton.style.display = "block";
+    			notiButton.style.display = (notiButton.style.display === 'block') ? 'none' : 'block';
+    			
+    			fetch("/user/notification")
+    			  .then(res => res.json())
+    			  .then(data => {
+    				  notificationList(data);
+    			  })
+    			  .catch(err => console.log("알림 조회 실패"));
     		}
-    	
-    		notiButton.addEventListener('mouseleave', () => {
-    		    notiButton.style.display = 'none';
-    		});
+    		
     		function changeNotiColor(e) {
-    			e.target.innerText = "";
+    			e.currentTarget.style.backgroundColor = "#f0f0f0";
+    		}
+    		
+    		function notificationList(data) {
+    			const ul = document.querySelector("#notification-list");
+    			ul.innerHTML = "";
+    			
+    			if (data.length === 0) {
+    				ul.innerHTML = "<li class='no-notification'>알림이 없습니다.</li>"
+    				return
+    			}
+    			
+    			data.forEach((noti, index) => {
+    				const li = document.createElement("li");
+    				const type = getNoticeType(noti.userNoticeType);
+    				const status = getReadStatus(noti.userNoticeReadStatus);
+    				
+    				li.dataset.noticeIdx = noti.noticeIdx;
+    				li.dataset.link = noti.userNoticeLink;
+    				
+    				li.innerHTML = '[' + type + '] ' + noti.userNoticeMessage + '<span class="read-status">' + status + '</span>';
+    				li.addEventListener("mouseover", changeNotiColor);
+    				li.addEventListener("click", () => handleNotiClick(li))
+    				ul.appendChild(li);
+    			});
+    		}
+    		
+    		function handleNotiClick(li) {
+    			const noticeIdx = li.dataset.noticeIdx;
+    			const link = li.dataset.link || "/";
+    			
+    			const readSpan = li.querySelector(".read-status");
+    			if (readSpan) {
+    				readSpan.innerHTML = getReadStatus(1);
+    			}
+    			
+    			markAsRead(noticeIdx)
+    				.catch(err => console.log(err))
+    				.finally(() => {
+    					window.location.href = link;
+    				});
+    		}
+    		
+    		function markAsRead(noticeIdx) {
+    			return fetch("/user/notification/" + noticeIdx + "/read", {
+    				method : "POST"
+    			});
+    		}
+    		
+    		// 알림 타입
+    		function getNoticeType(type) {
+    			switch (type) {
+    				case 1: return "프로모션"; 
+    				case 2: return "문의"; 
+    				case 3: return "클래스"; 
+    				case 4: return "로그인"; 
+    				default: return "알림"	
+    			}
+    		}
+    		
+    		// 알림 확인
+    		function getReadStatus(status) {
+   				return status === 1 
+	   		        ? '<span class="circle read"></span>' 
+	   		        : '<span class="circle unread"></span>';
     		}
     	</script>
 </section>

@@ -109,6 +109,7 @@
 			, #{userNoticeMessage}
 			, now()
 			, 2
+			, #{userNoticeLink}
 		)
 	</insert>
 	

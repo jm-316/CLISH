@@ -140,6 +140,8 @@
 			i.user_idx = u.user_idx
 		WHERE
 			i.inquery_type = 1
+		ORDER BY
+			inquery_datetime desc
 		LIMIT
 			#{startRow}
 			, #{listLimit}

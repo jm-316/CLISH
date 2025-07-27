@@ -16,4 +16,5 @@ public class NotificationDTO {
 	private String userNoticeMessage;
 	private Timestamp userNoticeCreatedAt;
 	private int userNoticeReadStatus;
+	private String userNoticeLink;
 }
