@@ -183,10 +183,24 @@ public class AdminCustomerController {
 	
 	// 문의 리스트 
 	@GetMapping("/inquiry")
-	public String inquiryList(Model model) {
-		List<InquiryJoinUserDTO> inquiryList = adminCustomerService.getInquiryList();
+	public String inquiryList(Model model, @RequestParam(defaultValue = "1") int pageNum) {
+		int listLimit = 5;
+		int inquiryCount = adminCustomerService.getInquiryCount();
 		
-		model.addAttribute("inquiryList", inquiryList);
+		if (inquiryCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inquiryCount, pageNum, 3);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/inquiry");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<InquiryJoinUserDTO> inquiryList = adminCustomerService.getInquiryList(pageInfoDTO.getStartRow(), listLimit);
+			model.addAttribute("inquiryList", inquiryList);
+		}
 		
 		return "/admin/customer/inquiry_list";
 	}
@@ -212,4 +226,5 @@ public class AdminCustomerController {
 		
 		return "redirect:/admin/inquiry";
 	}
+
 }

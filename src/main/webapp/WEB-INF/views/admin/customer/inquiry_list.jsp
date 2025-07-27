@@ -10,6 +10,34 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
+<style type="text/css">
+.status-pending {
+    background-color: #f8d7da; 
+    color: #721c24;           
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.status-complete {
+    background-color: #d4edda; 
+    color: #155724;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.status-hold {
+    background-color: #fff3cd; 
+    color: #856404;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+</style>
 </head>
 <body>
 	<c:if test="${not empty msg}">
@@ -49,6 +77,10 @@
 								<th>문의내용</th>
 								<td><div id="inquiry-detail"></div></td>
 							</tr>
+							<tr style="border-bottom: 2px solid #d8d3d3">
+								<th>첨부파일</th>
+								<td> <div class="file-container"></div></td>
+							</tr>
 							<tr>
 								<th>답변</th>
 								<td><textarea rows="10" cols="10" id="inquiry-answer" name="inqueryAnswer"></textarea></td>
@@ -74,9 +106,15 @@
 					<div>
 						<div>
 							<table>
+								<colgroup>
+									<col width="10%">
+									<col width="45%">
+									<col width="10%">
+									<col width="20%">
+									<col width="15%">
+								</colgroup>
 								<thead>
 									<tr>
-										<th>게시판번호</th>
 										<th>문의유형</th>
 										<th>제목</th>
 										<th>작성자</th>
@@ -88,22 +126,45 @@
 								<tbody>
 									<c:forEach var="inquiry" items="${inquiryList}" varStatus="status" >
 										<tr onclick="onModal('${inquiry.inquiry.inqueryIdx}')">
-											<td>${status.index + 1}</td>
 											<td>1:1문의</td>
 											<td>${inquiry.inquiry.inqueryTitle}</td>
 											<td>${inquiry.userName}</td>
 											<td><fmt:formatDate value="${inquiry.inquiry.inqueryDatetime}" pattern="yyyy-MM-dd" /></td>
 											<td>											
 												<c:choose>
-													<c:when test="${inquiry.inquiry.inqueryStatus eq 1}">미답변</c:when>
-													<c:when test="${inquiry.inquiry.inqueryStatus eq 2}">답변완료</c:when>
-													<c:otherwise>보류</c:otherwise>
+													<c:when test="${inquiry.inquiry.inqueryStatus eq 1}"><span class="status-pending">미답변</span></c:when>
+													<c:when test="${inquiry.inquiry.inqueryStatus eq 2}"><span class="status-complete">답변완료</span></c:when>
+													<c:otherwise><span class="status-hold">보류</span></c:otherwise>
 												</c:choose>
 											</td>
 										</tr>
 									</c:forEach>									
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
+						<div>
+							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
+								<input type="button" value="이전" 
+									onclick="location.href='/admin/inquiry?pageNum=${pageInfo.pageNum - 1}'" 
+									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageInfo.pageNum}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="/admin/inquiry?pageNum=${i}">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<input type="button" value="다음" 
+									onclick="location.href='/admin/inquiry?pageNum=${pageInfo.pageNum + 1}'" 
+								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -126,8 +187,30 @@
 		         document.querySelector("#inquiry-detail").innerText = data.inquiry.inqueryDetail;
 		         document.querySelector("#inquiry-answer").value = data.inquiry.inqueryAnswer || "";
 		         document.querySelector("#btn").textContent = data.inquiry.inqueryAnswer ? "수정" : "등록";
+		         
+		         // 파일 리스트 렌더링
+		         fileList(data.inquiry.fileList)
 		    })
 		      .catch(err => console.error("문의 상세 조회 실패", err));
+		}
+		
+		function fileList(fileList) {
+			const fileContainer = document.querySelector("#inquiry-modal .file-container");
+			fileContainer.innerHTML = "";
+			
+			if (fileList && fileList.length > 0) {
+				fileList.forEach((file) => {
+					const div = document.createElement("div");
+					div.innerHTML =
+					    file.originalFileName +
+					    ' <a href="/resources/upload/' + file.subDir + '/' + file.realFileName + '" download="' + file.originalFileName + '">' +
+					    '    <img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />' +
+					    '</a>';
+		            fileContainer.appendChild(div);
+		        });
+		    } else {
+		        fileContainer.innerHTML = "<span>첨부된 파일이 없습니다.</span>";
+		    }
 		}
 
 		function formattedDate(timestamp) {

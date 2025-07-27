@@ -18,6 +18,7 @@ import com.itwillbs.clish.admin.mapper.AdminCustomerMapper;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +45,7 @@ public class AdminCustomerService {
 	// SUPPORT 테이블 등록
 	@Transactional
 	public void registSupport(SupportDTO supportDTO) throws IllegalStateException, IOException {
-		supportDTO.setSupportIdx(createIdx());
+		supportDTO.setSupportIdx(createIdx("SUP"));
 		
 		if (supportDTO.getSupportCategory() == null) {
 			supportDTO.setSupportCategory("공지사항");
@@ -67,6 +68,7 @@ public class AdminCustomerService {
 	}
 
 	// SUPPORT 테이블 수정
+	@Transactional
 	public int modifySupport(SupportDTO supportDTO) throws IllegalStateException, IOException {
 		supportDTO.setSupportCategory("공지사항");
 		List<FileDTO> fileList = FileUtils.uploadFile(supportDTO, session);
@@ -98,15 +100,16 @@ public class AdminCustomerService {
 		return adminCustomerMapper.updateSupport(supportDTO);
 	}
 	
-
-	public List<InquiryJoinUserDTO> getInquiryList() {
-		return adminCustomerMapper.selectInquiryList();
+	// 1:1 문의 게시물 수
+	public List<InquiryJoinUserDTO> getInquiryList(int startRow, int listLimit) {
+		return adminCustomerMapper.selectInquiries(startRow, listLimit);
 	}
 
 	public InquiryJoinUserDTO getInquiry(String idx) {
 		return adminCustomerMapper.selectInquiry(idx);
 	}
 	
+	// 문의 답변
 	@Transactional
 	public int writeAnswer(String idx, String userIdx, String inqueryAnswer) {
 		int update = adminCustomerMapper.updateInquiry(idx, inqueryAnswer);
@@ -127,14 +130,59 @@ public class AdminCustomerService {
 		fileMapper.deleteFile(fileDTO);
 	}
 	
+	// 1:1 문의 등록
+	@Transactional
+	public int registInquiry(InqueryDTO inqueryDTO) throws IllegalStateException, IOException {
+		inqueryDTO.setInqueryIdx(createIdx("INQ"));
+		inqueryDTO.setInqueryType(1);
+		
+		if (inqueryDTO.getFiles() != null && inqueryDTO.getFiles().length > 0) {
+			List<FileDTO> supportFileList = FileUtils.uploadFile(inqueryDTO, session);
+			
+			if (!supportFileList.isEmpty()) {
+				fileMapper.insertFiles(supportFileList);
+			}
+		}
+		
+		return adminCustomerMapper.insertInquery(inqueryDTO);
+	}
+	
+	// 1:1 문의 게시물 수
+	public int getInquiryCount() {
+		return adminCustomerMapper.selectInquiryCount();
+	}
+	
+	// 1:1 문의 수정
+	@Transactional
+	public int modifyInquiry(InqueryDTO inqueryDTO) throws IllegalStateException, IOException {
+		List<FileDTO> fileList = FileUtils.uploadFile(inqueryDTO, session);
+		
+		if(!fileList.isEmpty()) {
+			fileMapper.insertFiles(fileList);
+		}
+		
+		return adminCustomerMapper.updateUserInquiry(inqueryDTO);
+	}
+	
+	// 1:1 문의 삭제
+	public int removeInquiry(String idx) {
+		List<FileDTO> fileDTOList = fileMapper.selectAllFile(idx);
+		FileUtils.deleteFiles(fileDTOList, session);
+		
+		fileMapper.deleteAllFile(idx);
+		
+		return adminCustomerMapper.deleteInquiry(idx);
+	}
+	
 	// 아이디 생성 로직
-	private String createIdx() {
+	private String createIdx(String name) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String timestamp = LocalDateTime.now().format(formatter);
-		String idx = "SUP" + timestamp;
+		String idx = name + timestamp;
 		
 		return idx;
 	}
+
 
 
 
