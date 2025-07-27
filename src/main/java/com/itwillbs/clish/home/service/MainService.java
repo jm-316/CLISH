@@ -35,6 +35,15 @@ public class MainService {
 		
 		return mainMapper.selectClassInfoShortLatest();
 	}
+	public int getClassListCount(String searchKeyword) {
+		// TODO Auto-generated method stub
+		return mainMapper.selectClassListCount(searchKeyword);
+	}
+
+	public List<ClassDTO> getClassListSearch(int startRow, int listLimit, String searchKeyword) {
+		// TODO Auto-generated method stub
+		return mainMapper.selectClassListSearch(startRow, listLimit, searchKeyword);
+	}
 	
 		
 }

@@ -76,6 +76,53 @@ public class MainController {
 		return "main";
 		
 	}
+	@GetMapping("/search")
+	public String search(@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum, Model model) {
+		
+		
+		searchKeyword = searchKeyword.trim();
+		
+		
+		System.out.println("trimmed search keyword : " + searchKeyword);
+		
+		
+		int listLimit = 3;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = mainService.getClassListCount(searchKeyword);
+		System.out.println("list count : " + listCount);
+		
+		if(listCount > 0) {
+			int pageListLimit = 3;
+			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0); 
+			if(maxPage == 0) {
+				maxPage = 1;
+			}
+			int startPage = (pageNum -1) / pageListLimit * pageListLimit + 1;
+			
+			int endPage = startPage + pageListLimit -1;
+			if(endPage > maxPage) {
+				endPage = maxPage;
+			}
+			if(pageNum < 1 || pageNum > maxPage) {
+				model.addAttribute("msg", "error, invalid page number");
+				model.addAttribute("targetURL", "/search");
+				return "commons/result_process";
+			}
+		
+			
+			PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum, 0);
+			model.addAttribute("pageInfoDTO", pageInfoDTO);
+			
+			
+			List<ClassDTO> classList = mainService.getClassListSearch(startRow, listLimit, searchKeyword);
+			
+			model.addAttribute("classList", classList);
+			System.out.println(classList);
+		}	
+		return "course/user/search_list";
+	}
 	
 	@GetMapping("/customer/customerCenter")
 	public String notification() {

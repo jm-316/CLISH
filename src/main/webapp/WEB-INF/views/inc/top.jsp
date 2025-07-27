@@ -7,8 +7,8 @@
   <nav>
       <ul id="flex-item2">
           <li>
-              <form action="search" name="search" method="get" id="search-form">
-                  <input type="search" id="search" placeholder="검색어를 입력하세요" name="query" required>
+               <form action="/search" name="search" method="get" id="search-form">
+                  <input type="search" id="search" placeholder="검색어를 입력하세요" name="searchKeyword" value="${param.searchKeyword}" required="required">
               </form>
           </li>
           <li><a id="sub-nav-toggle" href="/course/user/classList?classType=0">정기 강의</a></li>

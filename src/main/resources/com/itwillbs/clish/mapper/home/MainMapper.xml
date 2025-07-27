@@ -92,5 +92,46 @@
 		ORDER BY created_at DESC
 		LIMIT 10
 	</select>
+	<select id="selectClassListSearch" resultType="com.itwillbs.clish.course.dto.ClassDTO">
+		SELECT *
+		FROM 
+			CLASS
+		WHERE
+			class_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			category_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			location LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			user_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			class_intro LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			class_content LIKE CONCAT('%', #{searchKeyword}, '%')
+		ORDER BY 
+			created_at DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+
+	<select id="selectClassListCount" resultType="int">
+		SELECT count(*)
+		FROM 
+			CLASS
+		WHERE
+			class_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			category_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			location LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			user_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			class_intro LIKE CONCAT('%', #{searchKeyword}, '%')
+		Or 
+			class_content LIKE CONCAT('%', #{searchKeyword}, '%')
+		
+	</select>
 	
 </mapper>
