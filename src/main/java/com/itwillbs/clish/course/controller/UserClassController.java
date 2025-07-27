@@ -20,10 +20,15 @@ import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.AdminUserService;
 import com.itwillbs.clish.admin.service.CategoryService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
+import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
+import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.course.service.UserClassService;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
 
@@ -38,6 +43,7 @@ public class UserClassController {
 	private final UserClassService userClassService;
 	private final CategoryService categoryService;
 	private final UserService userService;
+	private final CurriculumService curriculumService;
 	
 	// 클래스 리스트
 	@GetMapping("user/classList")
@@ -65,21 +71,44 @@ public class UserClassController {
 	@GetMapping("user/classDetail")
 	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session,
 			@RequestParam int classType,
-			@RequestParam(required = false)String categoryIdx) {
+			@RequestParam(required = false)String categoryIdx,
+			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
 		String userId = (String)session.getAttribute("sId");
 		UserDTO user = userService.selectUserId(userId);
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
-		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
-		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
+//		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+
+		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
+		int listLimit = 2;
+		int reviewListCount = companyClassService.getClassReviewCount(classIdx);
 		
+		if(reviewListCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+			if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/myReview"); 
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<ReviewDTO> reviewList = companyClassService.getClassReview(pageInfoDTO.getStartRow(), listLimit, classIdx);
+			
+			model.addAttribute("reviewList", reviewList);
+		}
+		
+		
+//		model.addAttribute("classList", classList);
 		model.addAttribute("parentCategories", parentCategories);
 		model.addAttribute("childCategories", childCategories);  
-		model.addAttribute("classList", classList);
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("user", user);
+
+		model.addAttribute("curriculumList", curriculumList);
 		
 		return "/course/user/course_detail";
 	}

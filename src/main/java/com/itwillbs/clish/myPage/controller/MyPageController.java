@@ -461,7 +461,6 @@ public class MyPageController {
 			if(reviewListCount > 0) {
 				
 				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
-				System.out.println("페이지정보 ㅇㅇㅇ" + pageInfoDTO );
 				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
 					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 					model.addAttribute("targetURL", "/myPage/myReview"); 

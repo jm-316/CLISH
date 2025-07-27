@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 
 
 @Mapper
@@ -41,6 +42,12 @@ public interface CompanyClassMapper {
 	
 	// 클래스 문의 페이지 - 문의 답변
 	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
+
+	List<ReviewDTO> selectAllClassReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit,@Param("classIdx")String classIdx);
+
+	int selectCountClassReview(String classIdx);
+
+
 	
 	
 

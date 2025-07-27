@@ -181,7 +181,7 @@
 			<section id="reviewPageList">
 				<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
-						onclick="location.href='/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${pageInfo.pageNum - 1}'" 
+						onclick="location.href='/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${pageInfo.pageNum - 1 }'" 
 						<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>
 					>
 					

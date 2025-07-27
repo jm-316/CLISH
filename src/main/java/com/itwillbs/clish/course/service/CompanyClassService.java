@@ -21,6 +21,7 @@ import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
@@ -137,7 +138,18 @@ public class CompanyClassService {
 		// 알림 서비스 없이 바로 return
 		return result;
 	}
-	
+
+	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
+		// TODO Auto-generated method stub
+		return companyClassMapper.selectAllClassReview(startRow, listLimit, classIdx);
+	}
+
+	public int getClassReviewCount(String classIdx) {
+		// TODO Auto-generated method stub
+		return companyClassMapper.selectCountClassReview(classIdx);
+	}
+
+
 	
 	
 	
