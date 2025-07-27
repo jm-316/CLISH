@@ -143,6 +143,7 @@ public class UserController {
 
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
+	    session.setAttribute("sIdx", dbUser.getUserIdx());
 	    session.setAttribute("userType", dbUser.getUserType());
 	    session.setAttribute("loginUser", dbUser);
 	    session.setMaxInactiveInterval(60 * 60 * 24);

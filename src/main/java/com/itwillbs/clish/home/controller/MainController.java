@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
+import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.admin.service.AdminCustomerService;
 import com.itwillbs.clish.admin.service.CategoryService;
@@ -29,7 +30,9 @@ import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.home.service.MainService;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
+import com.itwillbs.clish.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +42,7 @@ public class MainController {
 	private final CategoryService categoryService;
 	private final MainService mainService;
 	private final AdminCustomerService adminCustomerService;
+	private final UserService userService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -165,7 +169,7 @@ public class MainController {
 	
 	// 공지사항 파일 삭제
 	@GetMapping("/customer/announcement/fileDelete")
-	public String deleteFile(@RequestParam("supportIdx") String idx, FileDTO fileDTO) {
+	public String deleteAnnouncementFile(@RequestParam("supportIdx") String idx, FileDTO fileDTO) {
 		adminCustomerService.removeFile(fileDTO);
 		
 		return "redirect:/customer/announcement/modify" + idx;
@@ -180,11 +184,131 @@ public class MainController {
 		
 		return "customer/FAQ";
 	}
+	
+	//1:1 문의
 	@GetMapping("/customer/inquiry")
-	public String inquiry() {
+	public String inquiry(Model model, @RequestParam(defaultValue = "1") int pageNum) {
+		int listLimit = 5;
+		int inquiryCount = adminCustomerService.getInquiryCount();
+		
+		if (inquiryCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inquiryCount, pageNum, 3);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/customer/inquiry");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<InquiryJoinUserDTO> inquiryList = adminCustomerService.getInquiryList(pageInfoDTO.getStartRow(), listLimit);
+			model.addAttribute("inquiryList", inquiryList);
+		}
+		
+		
 		
 		return "customer/inquiry";
 	}
+	
+	// 1:1문의 상세페이지
+	@GetMapping("/customer/inquiry/detail/{idx}")
+	public String inquiryInfo(@PathVariable("idx") String idx, HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.selectUserId(id);
+	
+		InquiryJoinUserDTO inquiryJoinUserDTO = adminCustomerService.getInquiry(idx);
+		
+		model.addAttribute("inquiry", inquiryJoinUserDTO);
+		model.addAttribute("dbUser", dbUser);
+		
+		return "customer/inquiry_detail";
+	}
+	
+	// 1:1문의 등록 페이지
+	@GetMapping("/customer/inquiry/write")
+	public String writeInquiryFrom(HttpSession session) {
+		return "customer/inquiry_write_form";
+	}
+	
+	// 1:1 문의 등록
+	@PostMapping("/customer/inquiry/write")
+	public String writeInquiry(InqueryDTO inqueryDTO, RedirectAttributes rttr,  HttpSession session) throws IllegalStateException, IOException {
+		String id = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.selectUserId(id);
+		
+		if (dbUser == null) {
+			rttr.addFlashAttribute("msg", "로그인 후 작성 가능합니다.");
+			return  "redirect:/user/login";
+		}
+		
+		inqueryDTO.setUserIdx(dbUser.getUserIdx());
+		
+		int insert = adminCustomerService.registInquiry(inqueryDTO);
+		if (insert > 0) {
+			rttr.addFlashAttribute("msg", "문의를 등록했습니다.");
+		} else {
+			rttr.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		return "redirect:/customer/inquiry";
+	}
+	
+	// 1:1 문의 수정 페이지
+	@GetMapping("/customer/inquiry/modify/{idx}")
+	public String modifyInquiryFrom(@PathVariable("idx") String idx, Model model) {
+		InquiryJoinUserDTO inquiryJoinUserDTO = adminCustomerService.getInquiry(idx);
+		
+		model.addAttribute("inquiry", inquiryJoinUserDTO);
+		return "customer/inquiry_modify_form";
+	}
+	
+	// 1:1 문의 수정
+	@PostMapping("/customer/inquiry/modify/{idx}")
+	public String modifyInquiry(@PathVariable("idx") String idx, InqueryDTO inqueryDTO, Model model ) throws IllegalStateException, IOException {
+		int update = adminCustomerService.modifyInquiry(inqueryDTO);
+		
+		if (inqueryDTO.getInqueryType() == 2) {
+			model.addAttribute("msg","이 문의는 수정이 불가능한 상태입니다.");
+			model.addAttribute("targetURL","/customer/inquiry");
+			return "commons/result_process";
+		}
+		
+		if (update > 0) {
+			model.addAttribute("msg", "1:1문의를 수정했습니다.");
+			model.addAttribute("targetURL", "/customer/inquiry/detail/" + inqueryDTO.getInqueryIdx());
+		} else {
+			model.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		return "commons/result_process";
+	}
+	
+	// 1:1 문의 파일 삭제
+	@GetMapping("/customer/inquiry/fileDelete")
+	public String deleteInquiryFile(@RequestParam("inqueryIdx") String idx, FileDTO fileDTO) {
+		adminCustomerService.removeFile(fileDTO);
+		
+		return "redirect:/customer/inquiry/modify/" + idx;
+	}
+	
+	// 1:1 문의 삭제
+	@GetMapping("/customer/inquiry/delete/{idx}")
+	public String deleteInquiry(@PathVariable("idx") String idx, RedirectAttributes rttr) {
+		int delete = adminCustomerService.removeInquiry(idx);
+		
+		if (delete > 0) {
+			rttr.addFlashAttribute("msg", "문의글을 삭제했습니다.");
+		} else {
+			rttr.addAttribute("msg", "다시 시도해주세요!");
+			return "commons/fail";
+		}
+		
+		return "redirect:/customer/inquiry";
+	}
+	
 	@GetMapping("/event/eventHome")
 	public String eventHome() {
 		

@@ -42,6 +42,7 @@
     
 	<select id="selectUserId" parameterType="String" resultType="com.itwillbs.clish.user.dto.UserDTO">
 	    SELECT
+	    	user_idx,
 	        user_name,
 	        user_id,
 	        user_password,

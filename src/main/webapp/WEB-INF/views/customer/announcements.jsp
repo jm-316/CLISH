@@ -110,7 +110,7 @@
 			        <button>검색</button>
 			    </form>
 			</div>
-			<div style="height: 250px; ">
+			<div style="height: 250px;">
 				<table style="width: 100%; margin: 0">
 					<thead>
 						<tr>
@@ -153,11 +153,10 @@
 						
 						<input type="button" value="다음" 
 							onclick="location.href='/customer/announcements?pageNum=${pageInfo.pageNum + 1}'" 
-							<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>
-						>
-					</c:if>
+							<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
+						</c:if>
+					</div>
 				</div>
-			</div>
 			<c:if test="${userType == 3}">			
 				<div style="display: flex; justify-content: flex-end;">
 					<button onclick="location.href='/customer/announcements/write'">글쓰기</button>
