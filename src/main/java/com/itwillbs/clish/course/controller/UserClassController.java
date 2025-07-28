@@ -84,7 +84,7 @@ public class UserClassController {
 
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
 		int listLimit = 2;
-		int reviewListCount = companyClassService.getClassReviewCount(classIdx);
+		int reviewListCount = userClassService.getClassReviewCount(classIdx);
 		
 		if(reviewListCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
@@ -96,7 +96,7 @@ public class UserClassController {
 			
 			model.addAttribute("pageInfo", pageInfoDTO);
 			
-			List<ReviewDTO> reviewList = companyClassService.getClassReview(pageInfoDTO.getStartRow(), listLimit, classIdx);
+			List<ReviewDTO> reviewList = userClassService.getClassReview(pageInfoDTO.getStartRow(), listLimit, classIdx);
 			
 			model.addAttribute("reviewList", reviewList);
 		}

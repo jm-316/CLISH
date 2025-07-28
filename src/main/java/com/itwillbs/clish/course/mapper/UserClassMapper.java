@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 @Mapper
@@ -20,5 +21,9 @@ public interface UserClassMapper {
 	int insertReservation(ReservationDTO reservationDTO);
 
 	List<ClassDTO> selectClass(@Param("classType")int classType, @Param("categoryIdx")String categoryIdx);
+	
+	List<ReviewDTO> selectAllClassReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit,@Param("classIdx")String classIdx);
+
+	int selectCountClassReview(String classIdx);
 
 }

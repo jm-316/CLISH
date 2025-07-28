@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.mapper.UserClassMapper;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
+import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,16 @@ public class UserClassService {
 	public List<ClassDTO> getClassList(int classType, String categoryIdx) {
 		// TODO Auto-generated method stub
 		return userClassMapper.selectClass(classType, categoryIdx);
+	}
+	
+	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
+		// TODO Auto-generated method stub
+		return userClassMapper.selectAllClassReview(startRow, listLimit, classIdx);
+	}
+
+	public int getClassReviewCount(String classIdx) {
+		// TODO Auto-generated method stub
+		return userClassMapper.selectCountClassReview(classIdx);
 	}
 
 
