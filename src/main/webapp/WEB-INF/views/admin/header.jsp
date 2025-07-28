@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
+<script src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 </head>
 <body>
 	<div class="navbar-expand">
