@@ -30,6 +30,8 @@ import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -66,7 +68,13 @@ public class CompanyClassController {
 	// 클래스 관리 페이지
 	@GetMapping("/myPage/classManage")
 	// @RequestParam(required = false) String type - 쿼리스트링 type=short|regular 없으면 전체강의 조회
-    public String classManageForm(@RequestParam(required = false) String type, Model model) {
+    public String classManageForm(@RequestParam(required = false) String type, Model model, HttpSession session) {
+		 String userId = (String) session.getAttribute("sId"); // 로그인된 아이디
+	     String userIdx = companyClassService.getUserIdxByUserId(userId); // user_idx 조회
+	     
+	     System.out.println("**userIdx: " + userIdx);
+	     System.out.println("**type: " + type);
+		
 		// 클래스 개설되는지 확인용(임시) - adminClassService => companyClassService 로 잠시 변경
 //		List<Map<String , Object>> classList = companyClassService.getAllClassList();
 		// 관리자 승인 후 목록 확인이 되게 adminClassSerive 로 적음
@@ -74,13 +82,13 @@ public class CompanyClassController {
 		
 		if (type == null || type.isBlank()) {
 			// 전체
-		    classList = companyClassService.getAllClassList();
+		    classList = companyClassService.getAllClassList(userIdx);
 		} else if (type.equals("short") || type.equals("regular")) {
 			// 단기 & 정기
-		    classList = companyClassService.getClassListByType(type);
+		    classList = companyClassService.getClassListByType(userIdx, type);
 		} else {
 		    // 혹시나 잘못된 type 들어온 경우 대비
-		    classList = companyClassService.getAllClassList();
+		    classList = companyClassService.getAllClassList(userIdx);
 		}
 		
 		model.addAttribute("classList", classList);
@@ -103,7 +111,7 @@ public class CompanyClassController {
 	
 	// 클래스 개설 로직
 	@PostMapping("/myPage/registerClass")
-	public String registerClassSubmit(ClassDTO companyClass, Model model, HttpServletRequest request) {
+	public String registerClassSubmit(ClassDTO companyClass, Model model, HttpServletRequest request, HttpSession session) {
 		// 고유 번호 생성 - 등록 시점에서 class_idx를 직접 만들어 넣기 (예: CLS202507132152)
 		String classIdx = "CLS" + new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
 		companyClass.setClassIdx(classIdx);
@@ -125,9 +133,28 @@ public class CompanyClassController {
 		    }
 		}
 		companyClass.setClassDays(classDaysValue);
-		companyClass.setUserIdx("comp2025010120250711");
-		companyClass.setCategoryIdx("CT_it_backend");
+		// ------------------------------------------------------------------------------------------------------
+		// 로그인 로직
+		String userId = (String) session.getAttribute("sId");
+		String userIdx = companyClassService.getUserIdxByUserId(userId);
+		companyClass.setUserIdx(userIdx);
 	    // ------------------------------------------------------------------------------------------------------
+		try {
+	        List<FileDTO> fileList = FileUtils.uploadFile(companyClass, session);
+	        companyClass.setFileList(fileList);
+
+	        // 첫 번째 파일을 썸네일로 사용
+	        if (!fileList.isEmpty()) {
+	            FileDTO first = fileList.get(0);
+	            String thumbPath = "/resources/upload/" + first.getSubDir() + "/" + first.getRealFileName();
+	            companyClass.setClassPic1(thumbPath);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
+	        return "commons/fail";
+	    }
+		// ------------------------------------------------------------------------------------------------------
 	    // 강좌 등록
 	    int result = companyClassService.registerClass(companyClass);
 	    // ------------------------------------------------------------------------------------------------------
@@ -258,12 +285,14 @@ public class CompanyClassController {
 	@GetMapping("/myPage/classInquiry")
 	public String classInquiry(HttpSession session, Model model) {
 		
-		 String userIdx = (String) session.getAttribute("sId");
+		 String userId = (String) session.getAttribute("sId");
+		 String userIdx = companyClassService.getUserIdxByUserId(userId);
+		 
+		 System.out.println("userId = " + userId);
+		 System.out.println("userIdx = " + userIdx);
 
 	    // 클래스 문의 리스트 (조인된 정보 포함)
 	    List<InquiryJoinUserDTO> classInquiryList = companyClassService.getClassInquiryList(userIdx);
-	    System.out.println("userIdx = " + userIdx);
-	    System.out.println("classInquiryList = " + classInquiryList);
 	    
 	    model.addAttribute("classInquiryList", classInquiryList);
 	    

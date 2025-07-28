@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
-import com.itwillbs.clish.myPage.dto.ReviewDTO;
 
 
 @Mapper
@@ -21,12 +20,15 @@ public interface CompanyClassMapper {
 	
 	// 등록한 강의 상세 조회
 	ClassDTO selectClassByIdx(String classIdx);
-	
+
+	// 로그인된 userId를 기반으로 해당 회원의 고유 userIdx 반환(기업회원 식별용)
+	String selectUserIdxByUserId(String userId);
+
 	// 전체 강의 조회
-	List<Map<String, Object>> selectAllClassList();
+	List<Map<String, Object>> selectAllClassList(String userIdx);
 	
 	// 단기 & 정기강의 조회
-	List<Map<String, Object>> selectClassListByType(String type);
+	List<Map<String, Object>> selectClassListByType(@Param("userIdx") String userIdx,@Param("type") String type);
 	
 	// 클래스수정페이지 - 클래스 정보 수정
 	int updateClassInfo(@Param("classIdx") String classIdx, @Param("classInfo") ClassDTO classInfo);
@@ -42,11 +44,6 @@ public interface CompanyClassMapper {
 	
 	// 클래스 문의 페이지 - 문의 답변
 	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
-
-	List<ReviewDTO> selectAllClassReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit,@Param("classIdx")String classIdx);
-
-	int selectCountClassReview(String classIdx);
-
 
 	
 	

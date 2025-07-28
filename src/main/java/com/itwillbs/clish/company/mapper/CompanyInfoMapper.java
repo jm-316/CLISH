@@ -26,11 +26,24 @@ public interface CompanyInfoMapper {
 	// 기업 - 나의 문의 목록(리스트) 조회
 	List<InquiryJoinUserDTO> selectInquiriesByUserIdx(String userIdx);
 	
+	// ---------------------------------------------------------------
 	// 문의 등록버튼 로직
 	void insertInquery(InqueryDTO dto);
 	
-	// user_id로 실제 user_idx 조회
+	// user_id로 실제 user_idx 조회 - 문의 등록버튼
 	String selectUserIdxByUserId(String userId);
+	// ---------------------------------------------------------------
+	// inquery_idx를 기반으로 해당 문의글 1건 조회 - 문의 수정 폼
+	InqueryDTO selectInqueryByIdx(String inqueryIdx);
+	
+	// 문의 수정버튼 로직 
+	void updateInquery(InqueryDTO dto);
+	
+	// 문의 삭제버튼 로직
+	void deleteInquery(String inqueryIdx);
+	
+	// 기업 회원 탈퇴
+	int updateWithdraw(UserDTO user);
 
 	
 

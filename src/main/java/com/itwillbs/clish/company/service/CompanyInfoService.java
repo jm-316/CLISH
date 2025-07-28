@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class CompanyInfoService {
 	private final CompanyInfoMapper companyInfoMapper;
 	
+	
 	// 로그인한 기업회원 정보 조회
 	public UserDTO getUserInfo(UserDTO user) {
 		return companyInfoMapper.selectUserInfo(user);
@@ -39,14 +40,35 @@ public class CompanyInfoService {
 		return companyInfoMapper.selectInquiriesByUserIdx(userIdx);
 	}
 	
+	// ------------------------------------------------------------------------
 	// 문의 등록버튼 로직
 	public void insertInquery(InqueryDTO dto) {
 		companyInfoMapper.insertInquery(dto); 
 	}
 	
-	// user_id로 실제 user_idx 조회
+	// user_id로 실제 user_idx 조회 - 문의 등록버튼 
 	public String getUserIdxByUserId(String userId) {
 		return companyInfoMapper.selectUserIdxByUserId(userId);
+	}
+	// ------------------------------------------------------------------------
+	// inquery_idx를 기반으로 해당 문의글 1건 조회 - 문의 수정 폼
+	public InqueryDTO getInqueryByIdx(String inqueryIdx) {
+		return companyInfoMapper.selectInqueryByIdx(inqueryIdx);
+	}
+	
+	// 문의 수정버튼 로직 
+	public void updateInquery(InqueryDTO dto) {
+		companyInfoMapper.updateInquery(dto);
+	}
+	
+	// 문의 삭제버튼 로직
+	public void deleteInquery(String inqueryIdx) {
+		companyInfoMapper.deleteInquery(inqueryIdx);
+	}
+	
+	// 기업 회원 탈퇴
+	public int withdraw(UserDTO user) {
+		return companyInfoMapper.updateWithdraw(user);
 	}
 
 	

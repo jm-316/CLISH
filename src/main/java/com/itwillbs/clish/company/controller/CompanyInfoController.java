@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
@@ -112,17 +113,17 @@ public class CompanyInfoController {
 	}
 	
 	// 문의 등록버튼 로직
-	@PostMapping("/myPage/insertInquery")
-	public String insertInquery(HttpSession session, InqueryDTO dto) {
-		// 1. 로그인 세션에서 user_id(hong)를 가져옴
+	@PostMapping("/myPage/writeInquery")
+	public String writeInquery(HttpSession session, InqueryDTO dto) {
+		// 로그인 세션에서 user_id(hong)를 가져옴
 	    String userId = (String) session.getAttribute("sId");
 	    System.out.println("세션 userId: " + userId);
 		
-	    // 2. user_id로 실제 user_idx 조회
+	    // user_id로 실제 user_idx 조회
 	    String userIdx = companyInfoService.getUserIdxByUserId(userId);
 	    System.out.println("조회한 userIdx: " + userIdx);
 	    
-	    // 3. DTO에 user_idx 세팅
+	    // DTO에 user_idx 세팅
 	    dto.setUserIdx(userIdx);
 	    
 		// inquery_idx 생성
@@ -135,4 +136,86 @@ public class CompanyInfoController {
 		companyInfoService.insertInquery(dto);
 		return "redirect:/company/myPage/myQuestion";
 	}
+	
+	// 문의 수정 폼
+	@GetMapping("/myPage/modifyInquery")
+	public String modifyInqueryForm(@RequestParam("inqueryIdx") String inqueryIdx, Model model) {
+		
+		// 파라미터로 전달받은 inqueryIdx를 이용해서 해당 문의 상세 정보를 조회
+	    InqueryDTO dto = companyInfoService.getInqueryByIdx(inqueryIdx);
+	    model.addAttribute("inqueryDTO", dto);
+	    
+	    return "/company/companyMyQuestionForm";
+	}
+	
+	// 문의 수정버튼 로직
+	@PostMapping("/myPage/modifyInquery")
+	public String modifySubmit(InqueryDTO dto) {
+		// 수정된 DTO 데이터를 서비스에 넘겨 DB 업데이트 수행
+	    companyInfoService.updateInquery(dto);
+	    
+	    // 수정 후 문의 목록 페이지로 리다이렉트
+	    return "redirect:/company/myPage/myQuestion";
+	}
+	
+	// 문의 삭제 버튼 로직
+	@PostMapping("/myPage/delete")
+	public String deleteInquery(@RequestParam("inqueryIdx") String inqueryIdx) {
+	    companyInfoService.deleteInquery(inqueryIdx);
+	    return "redirect:/company/myPage/myQuestion";
+	}
+	// -----------------------------------------------------------------------------------------------------
+	// 기업 회원 탈퇴
+	@GetMapping("/myPage/withdraw")
+	public String withdrawPage() {
+	    return "/company/companyMypageWithdraw"; 
+	}
+	
+	@PostMapping("/myPage/withdraw")
+	public String withdrawForm(HttpSession session, UserDTO user, Model model) {
+	    String userIdx = (String) session.getAttribute("sId");
+	    user.setUserIdx(userIdx);
+
+	    String inputPw = user.getUserPassword();
+
+	    // DB에서 전체 유저 정보 불러오기
+	    user = companyInfoService.getUserInfo(user);
+
+	    if (user != null && user.getUserPassword().equals(inputPw)) {
+	        return "company/companyMypageWithdrawResult";
+	    } else {
+	        model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+	        return "commons/fail";
+	    }
+	    
+	}
+	
+	@PostMapping("/myPage/withdrawFinal")
+	public String withdrawFinal(HttpSession session, Model model) {
+	    String userIdx = (String) session.getAttribute("sId");
+
+	    UserDTO user = new UserDTO();
+	    user.setUserIdx(userIdx);
+
+	    int result = companyInfoService.withdraw(user);
+
+	    if (result > 0) {
+	        session.invalidate(); // 세션 만료
+	        model.addAttribute("msg", "탈퇴완료");
+	    } else {
+	    	 model.addAttribute("msg", "탈퇴실패");
+	    }
+	    
+	    return "company/companyMypageWithdrawResult";
+	}
 }
+
+
+
+
+
+
+
+
+
+

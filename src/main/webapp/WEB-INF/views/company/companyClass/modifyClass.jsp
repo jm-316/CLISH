@@ -103,7 +103,7 @@
 				</tr>
 				<tr>
 					<th>썸네일 이미지 경로</th>
-					<td><input type="hidden" name="classPic1" value="${classInfo.classPic1}"></td>
+					<td><img src="${pageContext.request.contextPath}/resources/upload/${classInfo.classPic1}" width="200"></td>
 				</tr>
 			</table>
 

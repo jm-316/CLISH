@@ -28,12 +28,12 @@
 	    )
 	</insert>
 	
-	<!-- 등록한 강의 조회 -->
-<!-- 	<select id="selectClassByIdx" resultType="com.itwillbs.clish.course.dto.ClassDTO"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM CLASS -->
-<!-- 		WHERE class_idx = #{classIdx} -->
-<!-- 	</select> -->
+	<!-- 로그인된 userId를 기반으로 해당 회원의 고유 userIdx 반환(기업회원 식별용) -->
+	<select id="selectUserIdxByUserId" parameterType="String" resultType="String">
+		SELECT USER_IDX
+		FROM USER
+		WHERE USER_ID = #{userId}
+	</select>
 	
 	<!-- 전체강의 조회 -->
 	<select id="selectAllClassList" resultType="map">
@@ -44,10 +44,11 @@
 	    FROM CLASS C
 	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
+	    WHERE C.USER_IDX = #{userIdx}
 	</select>
 	
 	<!-- 단기 & 정기강의 조회 -->
-	<select id="selectClassListByType" parameterType="String" resultType="map">
+	<select id="selectClassListByType" parameterType="map" resultType="map">
 	    SELECT 
 	        C.*, 
 	        PC.CATEGORY_NAME AS parent_category_name, 
@@ -55,16 +56,17 @@
 	    FROM CLASS C
 	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
-	    <where>
-	        <if test="type == 'short'">
-	            <![CDATA[Datediff(C.END_DATE, C.START_DATE) <= 2]]>
-	            <!-- 단기 강의: 시작일~종료일이 2일 이하 -->
-	        </if>
-	        <if test="type == 'regular'">
-	            <![CDATA[Datediff(C.END_DATE, C.START_DATE) >= 3]]>
-	            <!-- 정기 강의: 시작일~종료일이 3일 이상 -->
-	        </if>
-	    </where>
+		<where>
+			C.USER_IDX = #{userIdx}
+		  
+			<if test="type == 'short'">
+				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) <= 2]]>
+			</if>
+		 
+			<if test="type == 'regular'">
+				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) >= 3]]>
+			</if>
+		</where>
 	</select>
 	
 	<!-- 클래스 수정 -->
@@ -129,7 +131,7 @@
 		FROM INQUERY i
 		JOIN CLASS c ON i.class_idx = c.class_idx
 		LEFT JOIN USER u ON i.user_idx = u.user_idx
-		WHERE c.user_idx = (SELECT user_idx FROM USER WHERE user_id = 'hong')
+		WHERE c.user_idx = #{userIdx}
 		AND i.inquery_type = 2
 		ORDER BY i.inquery_datetime DESC
 	</select>
@@ -221,63 +223,5 @@
 			inquery_idx = #{idx}
 	</update>
 	
-	<!-- 클래스상세페이지 리뷰 카운트 -->
-	<select id="selectCountClassReview" resultType="int"> 
-		SELECT count(*)
-		FROM REVIEW
-		WHERE class_idx = #{classIdx}
-	</select>
-	
-	<!-- 클래스상세페이지 리뷰 불러오기 -->
-	<resultMap type="com.itwillbs.clish.myPage.dto.ReviewDTO" id="ReviewDTOListWithfileDTOListResultMap">
-		<id property="reviewIdx" column="review_idx" />
-		<result property="reservationIdx" column="reservation_idx" />
-		<result property="userIdx" column="user_idx" />
-		<result property="classIdx" column="class_idx" />
-		<result property="reviewTitle" column="review_title" />
-		<result property="reviewDetail" column="review_detail" />
-		<result property="reviewScore" column="review_score" />
-		<result property="reviewCreatedAt" column="review_created_at" />
-		<result property="reviewModifiedAt" column="review_modified_at" />
-		<result property="reviewReportedCount" column="review_reported_count" />
-		<result property="classTitle" column="class_title" />
-		<result property="categoryIdx" column="category_idx" />
-		<result property="classType" column="class_type" />
-		<result property="reservationClassDate" column="reservation_class_date" />
-		<result property="userId" column="user_id" />
-		<result property="userName" column="user_name" />
-		
-		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO"
-		column="review_idx" select="selectFilesByReviewIdx"/>
-	</resultMap>
-	
-	<select id="selectFilesByReviewIdx" parameterType="String" resultType="com.itwillbs.clish.common.file.FileDTO">
-		SELECT *
-		FROM FILE
-		WHERE idx = #{reviewIdx}
-	</select>
-	<select id="selectAllClassReview" resultMap="ReviewDTOListWithfileDTOListResultMap">
-		SELECT rev.*,
-				c.class_title,
-				c.category_idx,
-				c.class_type,
-				r.reservation_class_date,
-				u.user_id,
-				u.user_name
-				
-		FROM REVIEW rev
-		LEFT JOIN CLASS c
-			ON rev.class_idx = c.class_idx
-		LEFT JOIN RESERVATION r
-			ON rev.reservation_idx = r.reservation_idx
-		LEFT JOIN USER u
-			ON rev.user_idx = u.user_idx
-		WHERE rev.class_idx = #{classIdx}
-		LIMIT
-			#{startRow}
-			, #{listLimit}
-	</select>
-	
-
 	
 </mapper>

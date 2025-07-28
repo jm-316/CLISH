@@ -18,7 +18,8 @@
 	<section style="max-width: 700px; margin: 50px auto; padding: 30px;">
 	    <h2 style="text-align: center; margin-bottom: 20px;">클래스 개설 페이지</h2>
 	
-	    <form action="${pageContext.request.contextPath}/company/myPage/registerClass" method="post">
+<%-- 	    <form action="${pageContext.request.contextPath}/company/myPage/registerClass" method="post"> --%>
+		<form action="${pageContext.request.contextPath}/company/myPage/registerClass" method="post" enctype="multipart/form-data">
 	        
 	        <label><b>강의명</b></label>
 	        <input type="text" name="classTitle" required>
@@ -94,8 +95,8 @@
 	        <input type="text" name="location" size="50" required>
 	        
 			
-			<label><b>썸네일 이미지 경로</b></label>
-			<input type="text" name="classPic1" value="/resources/images/logo4-2.png" required>
+			<label><b>썸네일 업로드</b></label>
+			<input type="file" name="files" multiple accept="image/*">
 			
 	
 	        <div style="text-align: center; margin-top: 30px;">
