@@ -65,7 +65,7 @@
 							</table>
 							<div class="button-wrapper">
 								<button type="submit" >수정</button>
-								<button type="button" onclick="location.href='/admin/notice'">취소</button>
+								<button type="button" onclick="location.href='/admin/notice?pageNum=${param.pageNum}'">취소</button>
 							</div>
 						</form>
 					</div>

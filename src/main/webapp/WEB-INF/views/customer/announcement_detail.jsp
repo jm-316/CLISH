@@ -71,7 +71,7 @@
 				<button style="background-color: #f65a6e" onclick="location.href='/customer/announcement/delete/${announcement.supportIdx}'">삭제</button>
 				<button onclick="location.href='/customer/announcement/modify/${announcement.supportIdx}'">수정</button>
 			</c:if>
-			<button onclick="location.href='/customer/announcements'">목록</button>
+			<button onclick="location.href='/customer/announcements?pageNum=${param.pageNum}'">목록</button>
 		</div>
 	</div>
 </body>

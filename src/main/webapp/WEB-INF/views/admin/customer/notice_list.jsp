@@ -57,7 +57,7 @@
 											<td>${support.supportCreatedAt}</td>
 											<td>${support.supportCategory}</td>
 											<td class="flex">
-												<button onclick="location.href='/admin/notice/detail/${support.supportIdx}'">상세보기</button>
+												<button onclick="location.href='/admin/notice/detail/${support.supportIdx}?pageNum=${param.pageNum}'">상세보기</button>
 												<button onclick="location.href='/admin/notice/delete/${support.supportIdx}'">삭제</button>
 											</td>
 										</tr>
