@@ -8,6 +8,7 @@
 <title>클래스 상세 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 </head>
 <body>
 	<header>

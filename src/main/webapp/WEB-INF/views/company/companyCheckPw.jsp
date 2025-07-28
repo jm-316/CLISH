@@ -51,9 +51,9 @@
 			<h1>${sessionScope.sId} 페이지</h1>
 		</div>
 		
-		<form action="/company/myPage/companyInfo" method="post" class="form">
+		<form action="${pageContext.request.contextPath}/company/myPage/companyInfo" method="post" class="form">
 		    <h3>비밀번호를 입력하세요</h3><br>
-		    <input type="password" placeholder="pw" name="userPassword">
+		    <input type="password" name="userPassword" placeholder="pw" required>
 		    <input type="submit" value="확인">			
 		</form>
 	</div>

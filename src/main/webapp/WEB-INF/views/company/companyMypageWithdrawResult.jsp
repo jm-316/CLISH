@@ -10,6 +10,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 </head>
 <body>
+
+	<!-- 공통 헤더 -->
+	<header>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
+	</header>
+
 	<c:choose>
 		<c:when test="${msg eq '탈퇴완료'}">
 			<script>
@@ -24,5 +30,11 @@
 			</script>
 		</c:otherwise>
 	</c:choose>
+	
+	<!-- 공통 푸터 -->
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
+	</footer>
+	
 </body>
 </html>

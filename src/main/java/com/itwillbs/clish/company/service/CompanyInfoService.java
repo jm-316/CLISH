@@ -2,6 +2,7 @@ package com.itwillbs.clish.company.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
@@ -17,6 +18,11 @@ import lombok.RequiredArgsConstructor;
 public class CompanyInfoService {
 	private final CompanyInfoMapper companyInfoMapper;
 	
+	// 비밀번호 비교 메서드 
+	public boolean matchesPassword(String plainPassword, String encodedPassword) {
+		 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	     return encoder.matches(plainPassword, encodedPassword);
+	}
 	
 	// 로그인한 기업회원 정보 조회
 	public UserDTO getUserInfo(UserDTO user) {

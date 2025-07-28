@@ -42,55 +42,55 @@
   </style>
 </head>
 <body>
-  <div class="form-wrapper">
-    <h2>사이트 문의 <c:out value="${empty inqueryDTO ? '작성' : '수정'}"/></h2>
+  	<div class="form-wrapper">
+	    <h2>사이트 문의 <c:out value="${empty inqueryDTO ? '작성' : '수정'}"/></h2>
+	
+	    <!-- ✅ form action JSTL로 분기해서 변수에 저장 -->
+	    <c:choose>
+			<c:when test="${empty inqueryDTO}">
+				<c:set var="formAction" value="/company/myPage/writeInquery"/>
+			</c:when>
+		<c:otherwise>
+			<c:set var="formAction" value="/company/myPage/modifyInquery"/>
+		</c:otherwise>
+		</c:choose>
 
-    <!-- ✅ form action JSTL로 분기해서 변수에 저장 -->
-    <c:choose>
-      <c:when test="${empty inqueryDTO}">
-        <c:set var="formAction" value="/company/myPage/writeInquery"/>
-      </c:when>
-      <c:otherwise>
-        <c:set var="formAction" value="/company/myPage/modifyInquery"/>
-      </c:otherwise>
-    </c:choose>
+	    <!-- ✅ 하나의 form 태그 -->
+	    <form action="${pageContext.request.contextPath}${formAction}" method="post" enctype="multipart/form-data">
+			<!-- 고정 값 -->
+			<input type="hidden" name="inqueryType" value="2" />
+			<input type="hidden" name="userIdx" value="${sessionScope.userIdx}" />
 
-    <!-- ✅ 하나의 form 태그 -->
-    <form action="${pageContext.request.contextPath}${formAction}" method="post" enctype="multipart/form-data">
-      <!-- 고정 값 -->
-      <input type="hidden" name="inqueryType" value="2" />
-      <input type="hidden" name="userIdx" value="${sessionScope.userIdx}" />
+		<c:if test="${not empty inqueryDTO.inqueryIdx}">
+			<input type="hidden" name="inqueryIdx" value="${inqueryDTO.inqueryIdx}" />
+		</c:if>
 
-      <c:if test="${not empty inqueryDTO.inqueryIdx}">
-        <input type="hidden" name="inqueryIdx" value="${inqueryDTO.inqueryIdx}" />
-      </c:if>
+		<table>
+	        <tr>
+				<th>제목</th>
+				<td>
+					<input type="text" name="inqueryTitle" value="${inqueryDTO.inqueryTitle}" required />
+				</td>
+	        </tr>
+	        <tr>
+				<th>내용</th>
+				<td>
+					<textarea name="inqueryDetail" required>${inqueryDTO.inqueryDetail}</textarea>
+				</td>
+	        </tr>
+	        <tr>
+				<th>첨부파일</th>
+				<td>
+					<input type="file" name="files" multiple />
+				</td>
+	        </tr>
+		</table>
 
-      <table>
-        <tr>
-          <th>제목</th>
-          <td>
-            <input type="text" name="inqueryTitle" value="${inqueryDTO.inqueryTitle}" required />
-          </td>
-        </tr>
-        <tr>
-          <th>내용</th>
-          <td>
-            <textarea name="inqueryDetail" required>${inqueryDTO.inqueryDetail}</textarea>
-          </td>
-        </tr>
-        <tr>
-          <th>첨부파일</th>
-          <td>
-            <input type="file" name="files" multiple />
-          </td>
-        </tr>
-      </table>
-
-      <div class="btn-wrap">
-        <button type="submit"><c:out value="${empty inqueryDTO ? '등록' : '수정'}"/></button>
-        <button type="button" onclick="history.back()">취소</button>
-      </div>
-    </form>
-  </div>
+		<div class="btn-wrap">
+			<button type="submit"><c:out value="${empty inqueryDTO ? '등록' : '수정'}"/></button>
+			<button type="button" onclick="history.back()">취소</button>
+		</div>
+		</form>
+	</div>
 </body>
 </html>

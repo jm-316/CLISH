@@ -44,12 +44,17 @@ public class CompanyInfoController {
 		// 로그인한 기업회원 정보 조회
 		String inputPw = user.getUserPassword();
 		
+		// 세션에서 userId 설정
 	    user.setUserId((String) session.getAttribute("sId"));
+	    
+	    // DB에서 암호화된 비번 포함한 기업회원 정보 조회
 	    user = companyInfoService.getUserInfo(user);
+		
 
-	    if (user != null && user.getUserPassword().equals(inputPw)) {
+	    // 비밀번호 검증 (암호화된 비번 비교)
+	    if (user != null && companyInfoService.matchesPassword(inputPw, user.getUserPassword())) {
 	        model.addAttribute("user", user);
-	        return "company/companyInfo"; 
+	        return "company/companyInfo";
 	    }
 	    
 	    System.out.println("입력된 비번: " + inputPw);
