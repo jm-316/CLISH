@@ -78,6 +78,7 @@ public class MyPageController {
 
 	}
 	
+	//닉네임 중복확인
 	@GetMapping("/check/repName")
 	public ResponseEntity<Map<String, String>> checkRepName(UserDTO userDTO) {
 		Map<String, String> response = new HashMap<>();
@@ -186,9 +187,13 @@ public class MyPageController {
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
+			
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
 
 			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user);
+			for(PaymentInfoDTO payment : paymentList) {
+				payment.setPayTime(payment.getPayTime());
+			}
 			model.addAttribute("paymentList",paymentList);
 		}
 		model.addAttribute("user",user);

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +38,7 @@
 					<th>예약번호</th>
 					<th>예약자</th>
 					<th>클래스아이디</th>
-					<th>예약요청일</th>
+					<th>클래스예약일</th>
 					<th>예약완료일</th>
 					<th>취소</th>
 					<th>결제</th>
@@ -49,8 +51,22 @@
 			        		<td>${reserve.reservationIdx}</td>
 							<td>${user.userName}</td>
 							<td>${reserve.classIdx}</td>
-							<td>${reserve.reservationClassDate}</td>
-							<td>${reserve.reservationCom}</td>
+							<td>
+								<fmt:parseDate var="reservationClassDate" 
+									value="${reserve.reservationClassDate}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/>
+							</td>
+<%-- 							<td>${reserve.reservationClassDate}</td> --%>
+							<td>
+								<fmt:parseDate var="reservationCom" 
+									value="${reserve.reservationCom}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
+							</td>
+<%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
 		          onclick="cancelReservation(this)"></td>
 							<td><input type="button" value="결제" data-reservation-num="${reserve.reservationIdx}"
@@ -65,8 +81,22 @@
 			        		<td>${reserve.reservationIdx}</td>
 							<td>${user.userName}</td>
 							<td>${reserve.classIdx}</td>
-							<td>${reserve.reservationClassDate}</td>
-							<td>${reserve.reservationCom}</td>
+							<td>
+								<fmt:parseDate var="reservationClassDate" 
+									value="${reserve.reservationClassDate}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/>
+							</td>
+<%-- 							<td>${reserve.reservationClassDate}</td> --%>
+							<td>
+								<fmt:parseDate var="reservationCom" 
+									value="${reserve.reservationCom}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
+							</td>
+<%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td></td><td></td>
 							<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
 		          onclick="reservationInfo(this)"> </td>
@@ -109,23 +139,21 @@
 					<th>결제 상태</th>
 					<th>유저이름</th>
 					<th>클래스명</th>
-					<th>결제요청시각</th>
 					<th>결제완료시각</th>
 					<th>취소</th>
 					<th>상세보기</th>
 				</tr>
 				<c:forEach var="payment" items="${paymentList }" >
 		        	<tr>
-		        		<td>${payment.imp_uid }</td>
-		        		<td>${payment.reservation_idx}</td>
+		        		<td>${payment.impUid }</td>
+		        		<td>${payment.reservationIdx}</td>
 		        		<td>${payment.status }</td>
-						<td>${payment.user_name}</td>
-						<td>${payment.class_title}</td>
-						<td>${payment.request_time}</td>
-						<td>${payment.pay_time}</td>
-						<td><input type="button" value="결제취소" data-imp-num="${payment.imp_uid}"
+						<td>${payment.userName}</td>
+						<td>${payment.classTitle}</td>
+						<td>${payment.payTimeFormatted}</td>
+						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}"
 	          onclick="cancelPayment(this)"></td>
-						<td><input type="button" value="상세보기" data-imp-num="${payment.imp_uid}" data-status="${payment.status }"
+						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"
 	          onclick="paymentInfo(this)"> </td>
 		        	</tr>
 	       		</c:forEach>

@@ -126,7 +126,7 @@
 	</update>
 	
 	<!-- 결제정보 조회 -->
-	<select id="selectAllPaymentInfo" resultType="map"> 
+	<select id="selectAllPaymentInfo" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO"> 
 		SELECT
 			p. *
 		FROM
