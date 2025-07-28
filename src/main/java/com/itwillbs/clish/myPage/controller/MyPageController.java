@@ -280,12 +280,13 @@ public class MyPageController {
 		user.setUserId(id);
 		String inputPw = user.getUserPassword();
 		user = myPageService.getUserInfo(user);
-		if(user.getUserPassword().equals(inputPw)) {
-			
-			return "/clish/myPage/myPage_withdraw_withdrawResult";
-		}
-		model.addAttribute("msg","비밀번호 틀렸슴다");
-		return "/commons/fail";
+		
+		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) {
+			model.addAttribute("msg","비밀번호가 틀렸습니다.");
+			return "/commons/fail";
+	    }
+		
+		return "/clish/myPage/myPage_withdraw_withdrawResult";
 	}
 	
 	@PostMapping(value="/withdrawFinal", produces="application/json; charset=UTF-8")
