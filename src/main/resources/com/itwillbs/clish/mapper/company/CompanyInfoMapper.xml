@@ -107,9 +107,43 @@
 	    )
 	</insert>
 	
+	<!-- user_id로 실제 user_idx 조회 - 문의 등록버튼 -->
 	<select id="selectUserIdxByUserId">
 		SELECT user_idx FROM USER WHERE user_id = #{userId}
 	</select>
+	
+	<!-- inquery_idx를 기반으로 해당 문의글 1건 조회 - 문의 수정 -->
+	<select id="selectInqueryByIdx" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+	    SELECT * 
+	    FROM INQUERY
+	    WHERE inquery_idx = #{inqueryIdx}
+	</select>
+	
+	<!-- 문의 수정버튼 로직 -->
+	<update id="updateInquery">
+		UPDATE INQUERY
+	    SET
+	        inquery_title = #{inqueryTitle},
+	        inquery_detail = #{inqueryDetail}
+	    WHERE
+	        inquery_idx = #{inqueryIdx}
+	</update>
+	
+	<!-- 문의 삭제버튼 로직 -->
+	<delete id="deleteInquery">
+		DELETE
+		FROM INQUERY
+    	WHERE
+			inquery_idx = #{inqueryIdx}
+	</delete>
+	
+	<!-- 기업 회원 탈퇴 -->
+	<update id="updateWithdraw">
+        UPDATE USER
+        SET user_status = 0,
+            updated_at = NOW()
+        WHERE user_idx = #{userIdx}
+    </update>
 </mapper>
 
 

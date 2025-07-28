@@ -48,10 +48,10 @@
     <!-- ✅ form action JSTL로 분기해서 변수에 저장 -->
     <c:choose>
       <c:when test="${empty inqueryDTO}">
-        <c:set var="formAction" value="/company/myPage/insertInquery"/>
+        <c:set var="formAction" value="/company/myPage/writeInquery"/>
       </c:when>
       <c:otherwise>
-        <c:set var="formAction" value="/company/myPage/updateInquery"/>
+        <c:set var="formAction" value="/company/myPage/modifyInquery"/>
       </c:otherwise>
     </c:choose>
 
