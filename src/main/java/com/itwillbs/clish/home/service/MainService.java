@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 
 import com.itwillbs.clish.home.mapper.MainMapper;
@@ -43,6 +44,14 @@ public class MainService {
 	public List<ClassDTO> getClassListSearch(int startRow, int listLimit, String searchKeyword) {
 		// TODO Auto-generated method stub
 		return mainMapper.selectClassListSearch(startRow, listLimit, searchKeyword);
+	}
+	public List<SupportDTO> getAnnouncementList(int startRow, int listLimit, String searchKeyword) {
+		// TODO Auto-generated method stub
+		return mainMapper.selectAnnouncements(startRow, listLimit, searchKeyword);
+	}
+	public int getAnnouncementListCount(String searchKeyword) {
+		// TODO Auto-generated method stub
+		return mainMapper.selectAnnouncementsCount(searchKeyword);
 	}
 	
 		

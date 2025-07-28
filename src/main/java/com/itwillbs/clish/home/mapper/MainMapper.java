@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 
 @Mapper
@@ -17,5 +18,6 @@ public interface MainMapper {
 	List<ClassDTO> selectClassInfoShortLatest();
 	int selectClassListCount(@Param("searchKeyword") String searchKeyword);
 	List<ClassDTO> selectClassListSearch(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("searchKeyword") String searchKeyword);
-
+	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow,@Param("listLimit") int listLimit,@Param("searchKeyword") String searchKeyword);
+	int selectAnnouncementsCount(@Param("searchKeyword") String searchKeyword);
 }

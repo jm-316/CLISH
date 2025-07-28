@@ -133,5 +133,30 @@
 			class_content LIKE CONCAT('%', #{searchKeyword}, '%')
 		
 	</select>
+	<select id="selectAnnouncements" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+		SELECT *
+		FROM SUPPORT
+		WHERE
+			support_category LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR
+			support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR
+			support_detail LIKE CONCAT('%', #{searchKeyword}, '%')	
+		ORDER BY
+			support_created_at DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	<select id="selectAnnouncementsCount" resultType="int">
+		SELECT count(*)
+		FROM SUPPORT
+		WHERE
+			support_category LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR
+			support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR
+			support_detail LIKE CONCAT('%', #{searchKeyword}, '%')		
+	</select>
 	
 </mapper>

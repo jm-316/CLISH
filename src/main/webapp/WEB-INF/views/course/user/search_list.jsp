@@ -8,14 +8,14 @@
 <meta charset="UTF-8">
 <title>강의 목록</title>
 <style type="text/css">
-	#pageList > nav > ul  {
+	.pageList > nav > ul  {
 		display: flex;
 		flex-direction: row;
 	}
-	#pageList > nav > ul > li  {
+	.pageList > nav > ul > li  {
 	margin-right: 10px;
 	}
-	#pageList > nav {
+	.pageList > nav {
 	margin: 50px  auto;	
 	width: 200px;
 	}
@@ -86,14 +86,14 @@
 							</tr>
 						</c:if>
 					</c:forEach>
-					<c:if test="${not hasRegisteredClass}">
+					<c:if test="${listCount eq 0}">
 						<tr>
-							<td colspan="6">등록된 강의가 없습니다.</td>
+							<td colspan="6">검색된 강의가 없습니다.</td>
 						</tr>
 					</c:if>
 				</tbody>
 			</table>
-			<div id="pageList">
+			<div class="pageList">
 				<c:if test="${not empty param.searchKeyword}">
 					<c:set var="searchParams" value="searchKeyword=${param.searchKeyword}" />
 				</c:if>
@@ -114,6 +114,61 @@
 								</c:choose>
 							</c:forEach>
 								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum=${pageInfoDTO.pageNum +1}'"></li>
+							
+						</ul>
+					</nav>
+				</c:if>
+			</div>
+			
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="6">고객 센터 검색 목록</th>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<th>날짜</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					
+					<c:forEach var="supportItem" items="${supportList}">
+							<tr>
+								
+								<td onclick="location.href='/customer/announcement/detail/${supportItem.supportIdx}'" style="text-align: left; width: 60%">${supportItem.supportTitle}</td>
+								<td style="text-align: center;">${supportItem.supportCreatedAt}</td>
+							</tr>
+					</c:forEach>
+					<c:if test="${listCountAnn eq 0}">
+						<tr>
+							<td colspan="6">검색된 고객 센터 정보가 없습니다.</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+			<div class="pageList">
+				<c:if test="${not empty param.searchKeyword}">
+					<c:set var="searchParams" value="searchKeyword=${param.searchKeyword}" />
+				</c:if>
+	
+				<c:if test='${not empty pageInfoDTO2.maxPage or pageInfoDTO2.maxPage > 0}'>
+		
+					<nav>
+						<ul>
+							<li><input class="button" type="button" value="back" onclick="location.href='/search?${searchParams}&pageNum2=${pageInfoDTO2.pageNum -1}'" <c:if test="${pageInfoDTO2.pageNum eq 1}">disabled</c:if>></li>
+							<c:forEach var="i" begin="${pageInfoDTO2.startPage}" end="${pageInfoDTO2.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageInfoDTO2.pageNum}">
+										<li><strong>${i}</strong></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/search?${searchParams}&pageNum2=${i}">${i}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum2=${pageInfoDTO2.pageNum +1}'"></li>
 							
 						</ul>
 					</nav>

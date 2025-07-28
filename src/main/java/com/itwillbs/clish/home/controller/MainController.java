@@ -78,48 +78,66 @@ public class MainController {
 	}
 	@GetMapping("/search")
 	public String search(@RequestParam(defaultValue = "") String searchKeyword,
-			@RequestParam(defaultValue = "1") int pageNum, Model model) {
+			@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") int pageNum2, Model model) {
 		
 		
 		searchKeyword = searchKeyword.trim();
-		
-		
+
+
 		System.out.println("trimmed search keyword : " + searchKeyword);
 		
 		
 		int listLimit = 3;
 		int startRow = (pageNum - 1) * listLimit;
+		int startRow2 = (pageNum2 - 1) * listLimit;
 		
 		int listCount = mainService.getClassListCount(searchKeyword);
+		int listCountAnn = mainService.getAnnouncementListCount(searchKeyword);
+		model.addAttribute("listCount", listCount);
+		model.addAttribute("listCountAnn", listCountAnn);
 		System.out.println("list count : " + listCount);
+		System.out.println("list count : " + listCountAnn);
 		
-		if(listCount > 0) {
+		if(listCount > 0 || listCountAnn > 0) {
 			int pageListLimit = 3;
 			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0); 
-			if(maxPage == 0) {
+			int maxPageAnn = listCountAnn / listLimit + (listCountAnn % listLimit > 0 ? 1 : 0); 
+			if(maxPage == 0 ) {
 				maxPage = 1;
 			}
+			
+			if(maxPageAnn == 0) {
+				maxPageAnn = 1;
+			}
 			int startPage = (pageNum -1) / pageListLimit * pageListLimit + 1;
+			int startPageAnn = (pageNum2 -1) / pageListLimit * pageListLimit + 1;
 			
 			int endPage = startPage + pageListLimit -1;
+			int endPageAnn = startPageAnn + pageListLimit -1;
 			if(endPage > maxPage) {
 				endPage = maxPage;
 			}
-			if(pageNum < 1 || pageNum > maxPage) {
+			if(endPageAnn > maxPageAnn) {
+				endPageAnn = maxPageAnn;
+			}
+			if(pageNum < 1 || pageNum > maxPage ||pageNum2 > maxPageAnn || pageNum2 < 1) {
 				model.addAttribute("msg", "error, invalid page number");
 				model.addAttribute("targetURL", "/search");
 				return "commons/result_process";
 			}
-		
-			
+
 			PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum, 0);
+			PageInfoDTO pageInfoDTO2 = new PageInfoDTO(listCountAnn, pageListLimit, maxPageAnn, startPageAnn, endPageAnn, pageNum2, 0);
 			model.addAttribute("pageInfoDTO", pageInfoDTO);
+			model.addAttribute("pageInfoDTO2", pageInfoDTO2);
 			
-			
+			List<SupportDTO> supportList = mainService.getAnnouncementList(startRow2, listLimit, searchKeyword);
 			List<ClassDTO> classList = mainService.getClassListSearch(startRow, listLimit, searchKeyword);
 			
 			model.addAttribute("classList", classList);
-			System.out.println(classList);
+			model.addAttribute("supportList", supportList);
+			System.out.println("class list count : " + classList);
+			System.out.println("support list count : " +supportList);
 		}	
 		return "course/user/search_list";
 	}
