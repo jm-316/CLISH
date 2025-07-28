@@ -126,7 +126,7 @@
         </thead>
         <tbody>
           <c:choose>
-            <c:when test="${empty test}"> <!-- 컨트롤러가 문제인건지 반복문쪽이 문제인건지 문의 내역 한개만 나오고 문의번호 이름 등 위치도 수정 필요 -->
+            <c:when test="${empty test}">
               <tr><td colspan="4">아직 등록한 문의가 없습니다.</td></tr>
             </c:when>
             <c:otherwise>
@@ -158,11 +158,11 @@
 
                     <c:if test="${inq.inquiry.inqueryStatus == 1}">
                       <div class="btn-wrap">
-                        <form action="companyMyQuestionForm.jsp" method="get">
+                        <form action="${pageContext.request.contextPath}/company/myPage/modifyInquery" method="get">
                           <input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
                           <button type="submit">수정</button>
                         </form>
-                        <form action="companyMyQuestionInqueryDelete" method="post">
+                        <form action="${pageContext.request.contextPath}/company/myPage/delete" method="post">
                           <input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
                           <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
                         </form>

@@ -133,6 +133,7 @@
                 <table class="class-table">
                     <thead>
                         <tr>
+                            <th>썸네일</th>
                             <th>제목</th>
                             <th>대분류</th>
                             <th>소분류</th>
@@ -148,6 +149,20 @@
                             <c:if test="${classItem.class_status != 1}">
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
+                                	<!-- 썸네일 -->
+<!-- 	                                <td> -->
+<%-- 	                                    <c:if test="${not empty classItem.class_pic1}"> --%>
+<%-- 	                                        <img src="${classItem.class_pic1}" class="thumbnail-img"> --%>
+<%-- 	                                    </c:if> --%>
+<!-- 	                                </td> -->
+									<!-- 썸네일, 열 -->
+									<td>
+									  <c:if test="${not empty classItem.class_pic1}">
+									    <img src="${pageContext.request.contextPath}/resources/upload/${classItem.class_pic1}" 
+									         style="width: 100px; height: 80px; object-fit: cover;" 
+									         alt="썸네일">
+									  </c:if>
+									</td>
                                     <td>${classItem.class_title}</td>
                                     <td>${classItem.parent_category_name}</td>
                                     <td>${classItem.child_category_name}</td>

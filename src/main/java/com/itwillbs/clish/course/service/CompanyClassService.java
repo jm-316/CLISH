@@ -21,7 +21,6 @@ import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
-import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
@@ -75,14 +74,19 @@ public class CompanyClassService {
 	    return result;
 	}
 	
+	// 로그인된 userId를 기반으로 해당 회원의 고유 userIdx 반환(기업회원 식별용)
+	public String getUserIdxByUserId(String userId) {
+		return companyClassMapper.selectUserIdxByUserId(userId);
+	}
+	
 	// 전체 강의 조회
-	public List<Map<String, Object>> getAllClassList() {
-		return companyClassMapper.selectAllClassList();
+	public List<Map<String, Object>> getAllClassList(String userIdx) {
+		return companyClassMapper.selectAllClassList(userIdx);
 	}
 
 	// 단기 & 정기 강의 조회
-	public List<Map<String, Object>> getClassListByType(String type) {
-		return companyClassMapper.selectClassListByType(type);
+	public List<Map<String, Object>> getClassListByType(String userIdx, String type) {
+		return companyClassMapper.selectClassListByType(userIdx, type);
 	}
 	
 	// 클래스 수정
@@ -139,17 +143,8 @@ public class CompanyClassService {
 		return result;
 	}
 
-	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
-		// TODO Auto-generated method stub
-		return companyClassMapper.selectAllClassReview(startRow, listLimit, classIdx);
-	}
 
-	public int getClassReviewCount(String classIdx) {
-		// TODO Auto-generated method stub
-		return companyClassMapper.selectCountClassReview(classIdx);
-	}
-
-
+	
 	
 	
 	
