@@ -149,11 +149,16 @@
 		const pwConf = document.getElementById("userPasswordConfirm");
 		const phoneInput = document.getElementById("userPhoneNumber");
 		const submitBtn = document.getElementById("submitBtn");
+		const addressBtn = document.getElementById("btnSearchAddress");
+		const postcodeInput = document.getElementById("userPostcode");
+		const address1Input = document.getElementById("userAddress1");
+		const address2Input = document.getElementById("userAddress2");
 
 		var isPwOk = true;
 		var isPwMatchOk = true;
 		var isRepNameOk = true;
 		var isPhoneOk = true;
+		var isAddressOk = true;
 		
 		updateSubmitButton();
 		
@@ -229,6 +234,7 @@
 				updateSubmitButton();
 			};
 		}
+		
 		// 닉네임 중복체크 함수
 		function repNameCheck(userRepName, userIdx) {
 			$.ajax({
@@ -256,6 +262,7 @@
 				updateSubmitButton();
 			})
 		}
+		
 		// 6. 전화번호 중복 & 정규표현식 체크
 		phoneInput.addEventListener('blur', function() {
 		    const phone = this.value.replace(/\s+/g, "");
@@ -296,6 +303,41 @@
 			})
 			updateSubmitButton();
 		});
+		
+		// 7. 주소 검색 API
+		if(addressBtn) {
+		    addressBtn.onclick = function () {
+		        new daum.Postcode({
+		            oncomplete: function (data) {
+		                const address = data.buildingName
+		                    ? data.address + " (" + ${data.buildingName} + ")"
+		                    : data.address;
+		                postcodeInput.value = data.zonecode;
+		                address1Input.value = address;
+		                address2Input.focus();
+		                checkAddressFields();
+		            }
+		        }).open();
+		    };
+		}
+		
+		function checkAddressFields() {
+		    if (
+		        postcodeInput.value.trim() &&
+		        address1Input.value.trim() &&
+		        address2Input.value.trim()
+		    ) {
+		        isAddressOk = true;
+		    } else {
+		        isAddressOk = false;
+		    }
+		    updateSubmitButton();
+		}
+		
+		[postcodeInput, address1Input, address2Input].forEach(input => {
+		    input.addEventListener('input', checkAddressFields);
+		});
+		
 		
 		function updateSubmitButton() {
 			 console.log({

@@ -103,6 +103,7 @@ public class MyPageController {
 			return ResponseEntity.ok(response);
 		}
 	}
+	
 	@GetMapping("/check/userPhoneNumber")
 	public ResponseEntity<Map<String, String>> checkPhoneNumber(UserDTO userDTO) {
 		Map<String, String> response = new HashMap<>();
@@ -132,7 +133,6 @@ public class MyPageController {
 	public String mypage_change_user_info(UserDTO user, HttpSession session,
 			@RequestParam("newPasswordConfirm") String new_password) {
 		user.setUserId((String)session.getAttribute("sId"));
-		
 		UserDTO user1 = myPageService.getUserInfo(user); // 기존 유저 정보 불러오기
 
 		if(!user1.getUserEmail().equals(user.getUserEmail())){
