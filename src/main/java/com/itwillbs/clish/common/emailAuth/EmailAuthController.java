@@ -34,11 +34,19 @@ public class EmailAuthController {
     }
 
     @GetMapping("/verify")
-    public String verifyToken(@RequestParam("token") String token, 
-    		@RequestParam(value = "purpose", required = false) String purpose, Model model) {
-        String result = emailAuthService.verifyToken(token, purpose);
-        model.addAttribute("authResult", result);
-        return "email/verify"; 
+    public String verifyToken(
+            @RequestParam("token") String token,
+            @RequestParam(value = "purpose", required = false) String purpose,
+            Model model) {
+    	
+        // EmailAuthResultDTO 타입으로 결과 받기
+        EmailAuthResultDTO resultDTO = emailAuthService.verifyToken(token, purpose);
+
+        // 인증 메시지와 이메일 전달
+        model.addAttribute("authResult", resultDTO.getMessage());
+        model.addAttribute("verifiedEmail", resultDTO.getVerifiedEmail());
+
+        return "email/verify";
     }
     
     @GetMapping("/check")

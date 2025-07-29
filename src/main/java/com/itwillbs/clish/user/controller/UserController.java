@@ -116,9 +116,8 @@ public class UserController {
 	@GetMapping("/login")
 	public String showLoginForm(HttpServletRequest request, HttpSession session) {
 		String lastAddress =  request.getHeader("Referer");
-		System.out.println(lastAddress);
+		// 세션에 로그인 클릭한 페이지 저장
 		session.setAttribute("lastAddress", lastAddress);
-		System.out.println(session.getAttribute("lastAddress"));
 		
 	    return "user/login_form";
 	}
@@ -130,6 +129,7 @@ public class UserController {
 	        HttpServletResponse response, HttpSession session, RedirectAttributes redirect) {
 	    
 	    UserDTO dbUser = userService.selectUserId(userDTO.getUserId());
+	    String lastAddress = (String) session.getAttribute("lastAddress");
 	    
 	    if (dbUser == null || !userService.matchesPassword(userDTO.getUserPassword(), dbUser.getUserPassword())) {
 	        redirect.addFlashAttribute("errorMsg", "비밀번호 불일치");
@@ -144,7 +144,6 @@ public class UserController {
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
 	    session.setAttribute("sIdx", dbUser.getUserIdx());
-	    session.setAttribute("userType", dbUser.getUserType());
 	    session.setAttribute("loginUser", dbUser);
 	    session.setMaxInactiveInterval(60 * 60 * 24);
 
@@ -157,8 +156,10 @@ public class UserController {
 	    }
 	    response.addCookie(cookie);
 
-	    return "redirect:/";
+	    return "redirect:" + lastAddress;
 	}
+	
+	
 	
 //	@PostMapping("/saveEmailSession")
 //	public String saveEmailSession(@RequestParam("user_email") String userEmail,

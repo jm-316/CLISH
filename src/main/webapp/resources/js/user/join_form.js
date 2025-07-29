@@ -1,5 +1,5 @@
 export function initJoinForm() {
-	console.log('initJoinForm 실행됨');
+//	console.log('initJoinForm 실행됨');
 	// const값 모음
 	const nicknameInput = document.getElementById('userRepName');
 	const resultSpan = document.getElementById('nicknameCheckResult');
@@ -52,7 +52,7 @@ export function initJoinForm() {
 	        fetch(`/user/checkNname?nickname=${encodeURIComponent(nickname)}`)
 	            .then(res => res.json())
 	            .then(data => {
-					console.log("nicknameInput:", nicknameInput);
+//					console.log("nicknameInput:", nicknameInput);
 	                if(data.exists) {
 	                    resultSpan.innerText = '이미 사용 중인 닉네임입니다';
 	                    resultSpan.style.color = 'red';
@@ -82,7 +82,7 @@ export function initJoinForm() {
 	
 	    const pattern = /^\d{4}-\d{2}-\d{2}$/;
 	    if(!pattern.test(birth)) {
-	        resultSpan.innerText = '생년월일 형식은 ****-**-**입니다.';
+	        resultSpan.innerText = '생년월일 형식은 ****-**-**입니다.';z
 	        resultSpan.style.color = 'red';
 			isBirthOk = false;
 	    } else{

@@ -57,22 +57,25 @@ public class EmailAuthService {
         return null;
     }
 
-    @Transactional
-    public String verifyToken(String token, String purpose) {
+    public EmailAuthResultDTO verifyToken(String token, String purpose) {
         EmailAuthDTO auth = emailAuthMapper.selectByToken(token);
         
-        if(auth == null) return "유효하지 않은 링크입니다";
-//        if("Y".equals(auth.getUserEmailAuthYn())) return "이미 인증된 이메일 입니다";
-        if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) return "링크가 만료되었습니다.";
+        if(auth == null) {
+            return new EmailAuthResultDTO("유효하지 않은 링크입니다", null);
+        }
+        
+        if(auth.getUserEmailTokenExpire().isBefore(LocalDateTime.now())) {
+            return new EmailAuthResultDTO("링크가 만료되었습니다.", null);
+        }
         
         if("join".equals(purpose)) {
-    		if(userMapper.existsByEmail(auth.getUserEmail())) {
-    			return "이미 가입된 이메일입니다.";
-    		}
-    	}
-        
-        emailAuthMapper.updateAuthYn(auth.getUserEmail());
-        return "이메일 인증이 완료되었습니다!";
+            if(userMapper.existsByEmail(auth.getUserEmail())) {
+                return new EmailAuthResultDTO("이미 가입된 이메일입니다.", null);
+            }
+        }
+
+        emailAuthMapper.updateAuthYn(auth.getUserEmail());	
+        return new EmailAuthResultDTO("이메일 인증이 완료되었습니다!", auth.getUserEmail());
     }
 
 
