@@ -45,6 +45,13 @@
 			user_id = #{userId}
 	</update>
 	
+	<!-- 예약목록 카운트 -->
+	<select id="selectReservationCount" resultType="int">
+		SELECT COUNT(*)
+		FROM RESERVATION
+		WHERE user_idx = #{userIdx}
+	</select>
+	
 	<!-- 취소할 예약정보 선택 -->
 	<select id="selectCancel" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO"> 
 		select *
@@ -58,6 +65,7 @@
 			NOW() - INTERVAL 2 HOUR > reservation_com 
 		
 	</select>
+	
 	<!-- 예약정보 불러오기 -->
 	<select id="selectAllReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
 		SELECT *
@@ -65,14 +73,13 @@
 			RESERVATION
 		WHERE
 			user_idx = #{user.userIdx}
-			AND
-			reservation_status = 1
 		ORDER BY 
-			(reservation_status = 1) DESC, reservation_com
+			(reservation_status = 1) DESC, reservation_class_date DESC
 		LIMIT
 			#{startRow}
 			, #{listLimit}
 	</select>
+	
 	
 	<!-- 예약상세정보불러오기 -->
 	<select id="selectOneReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
@@ -141,19 +148,33 @@
 			reservation_idx = #{reservationIdx}
 	</update>
 	
+	<!-- 결제목록 카운트 -->
+	<select id="selectPaymentCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PAYMENT_INFO
+		WHERE reservation_idx IN
+			(SELECT reservation_idx
+				FROM RESERVATION
+				WHERE user_idx = #{userIdx}	)
+	</select>
 	<!-- 결제정보 조회 -->
 	<select id="selectAllPaymentInfo" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO"> 
 		SELECT
-			p. *
+			p. *,
+			r.reservation_class_date
 		FROM
 			RESERVATION r
 		JOIN
 			PAYMENT_INFO p ON r.reservation_idx = p.reservation_idx
 		WHERE
 			r.user_idx = #{user.userIdx}
+		ORDER BY
+			r.reservation_class_date DESC
 		LIMIT
 			#{startRow}
 			, #{listLimit}
+			
+			
 	</select>
 	
 	<!-- 탈퇴 조회 -->
@@ -164,22 +185,7 @@
 		WHERE
 			user_id = #{userId}
 	</update>
-	<!-- 예약목록 카운트 -->
-	<select id="selectReservationCount" resultType="int">
-		SELECT COUNT(*)
-		FROM RESERVATION
-		WHERE user_idx = #{userIdx}
-		AND reservation_status = 1
-	</select>
-	<!-- 결제목록 카운트 -->
-	<select id="selectPaymentCount" resultType="int">
-		SELECT COUNT(*)
-		FROM PAYMENT_INFO
-		WHERE reservation_idx IN
-			(SELECT reservation_idx
-				FROM RESERVATION
-				WHERE user_idx = #{userIdx}	)
-	</select>
+	
 	
 	<select id="selectCountInquery" resultType="int">
 		SELECT COUNT(*)

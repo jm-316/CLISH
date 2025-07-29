@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>마이페이지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
@@ -28,11 +28,9 @@
 	
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
-		<h3>결제내역</h3>
-<!-- 		<input type="hidden" id="parent" value="list"> -->
 		<div>
 			<h3>예약 목록</h3>
-			<table border="solid 1px">
+			<table >
 				<tr>
 					<th>결제상태</th>
 					<th>예약번호</th>
@@ -139,10 +137,13 @@
 					<th>결제 상태</th>
 					<th>유저이름</th>
 					<th>클래스명</th>
-					<th>결제완료시각</th>
+					<th>예약일</th>
+					<th>결제완료시간</th>
 					<th>취소</th>
 					<th>상세보기</th>
 				</tr>
+				<jsp:useBean id="now" class="java.util.Date" scope="page" />
+				<c:set var="nowTime" value="${now.time}" />
 				<c:forEach var="payment" items="${paymentList }" >
 		        	<tr>
 		        		<td>${payment.impUid }</td>
@@ -150,9 +151,16 @@
 		        		<td>${payment.status }</td>
 						<td>${payment.userName}</td>
 						<td>${payment.classTitle}</td>
-						<td>${payment.payTimeFormatted}</td>
+						<fmt:parseDate var="reservationClassDate" 
+									value="${payment.reservationClassDate }"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
+						<c:set var="reservationTime" value="${reservationClassDate.time}" />
+						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" />
+						<td>${payment.payTimeFormatted} ddd ${diffDays }</td>
 						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}"
-	          onclick="cancelPayment(this)"></td>
+	          onclick="cancelPayment(this)" <c:if test="${payment.status eq 'cancelled' || diffDays < 3 }">disabled</c:if>></td>
 						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"
 	          onclick="paymentInfo(this)"> </td>
 		        	</tr>

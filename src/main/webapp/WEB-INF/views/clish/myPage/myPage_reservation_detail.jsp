@@ -47,9 +47,11 @@
 				<th>예약인원</th>
 				<th>예약완료일</th>
 				<th>결제 금액</th>
-				<th>취소</th>
-				<th>수정</th>
-				<th>결제</th>
+				<c:if test="${reservationClassInfo.reservation_status eq 1 }">
+					<th>취소</th>
+					<th>수정</th>
+					<th>결제</th>
+				</c:if>
 			</tr>
         	<tr>
         		<td>${reservationClassInfo.reservation_idx}</td>
@@ -59,12 +61,14 @@
 				<td>${reservationClassInfo.reservation_members}</td>
 				<td>${reservationClassInfo.reservation_com}</td>
 				<td>${reservationClassInfo.reservation_members * reservationClassInfo.class_price}</td>
-				<td><input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
-         onclick="cancelReservation(this)"></td>
-				<td><input type="button" value="수정" data-reservation-num="${reservationClassInfo.reservation_idx}"
-         onclick="reservationChange(this)"> </td>
-				<td><input type="button" value="결제" data-reservation-num="${reservationClassInfo.reservation_idx}"
-         onclick="payReservation(this)"> </td>
+				<c:if test="${reservationClassInfo.reservation_status eq 1 }">
+					<td><input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
+	         onclick="cancelReservation(this)"></td>
+					<td><input type="button" value="수정" data-reservation-num="${reservationClassInfo.reservation_idx}"
+	         onclick="reservationChange(this)"> </td>
+					<td><input type="button" value="결제" data-reservation-num="${reservationClassInfo.reservation_idx}"
+	         onclick="payReservation(this)"> </td>
+				</c:if>
         	</tr>
 		</table>
 	

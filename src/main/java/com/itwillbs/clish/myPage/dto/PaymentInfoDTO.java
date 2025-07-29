@@ -30,6 +30,8 @@ public class PaymentInfoDTO {
     private long failTime;
     private String payTimeFormatted;
     
+    private LocalDateTime reservationClassDate;
+    
     public void setPayTime(long payTime) {
     	this.payTime = payTime;
     	this.payTimeFormatted = formatPayTime(payTime);

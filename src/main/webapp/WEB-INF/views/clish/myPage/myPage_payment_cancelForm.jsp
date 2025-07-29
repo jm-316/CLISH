@@ -13,7 +13,7 @@
     
   </head>
   <body>
-		<form action="/myPage/payment_info/cancelPayment" method="post">
+		<form action="/myPage/payment_info/cancelPayment" method="post" onsubmit="return confirm('취소하시겠습니까?');">
 		<h1>${message }</h1>
 		<table>
 			<tr>
@@ -51,6 +51,3 @@
 		</form>
   </body>
 </html>
-<script type="text/javascript">
-
-</script>

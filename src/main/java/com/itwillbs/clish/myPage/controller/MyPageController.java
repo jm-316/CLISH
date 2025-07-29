@@ -179,6 +179,7 @@ public class MyPageController {
 			model.addAttribute("reservationList",reservationList);
 
 		}
+		
 		if(paymentListCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
 			
