@@ -59,6 +59,7 @@
 			class_idx = #{idx}
 	</update>
 	
+	<!-- 카테고리 존재 여부 -->
 	<select id="existsByCategory" resultType="boolean">
 		SELECT COUNT(*) > 0
 		FROM

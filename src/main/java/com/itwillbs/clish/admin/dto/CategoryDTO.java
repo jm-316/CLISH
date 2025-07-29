@@ -11,6 +11,6 @@ public class CategoryDTO {
 	private String categoryIdx;
 	private String categoryName;
 	private int depth;
-	private String parentIdx;
+	private String parentIdx; // 부모 카테고리
 	private int sortOrder;
 }

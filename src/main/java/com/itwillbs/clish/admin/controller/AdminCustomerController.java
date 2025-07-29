@@ -118,6 +118,7 @@ public class AdminCustomerController {
 		return "redirect:/admin/notice/detail/" + idx;
 	}
 	
+	// faq 페이지 리스트
 	@GetMapping("/faq")
 	public String faqList(Model model) {
 		List<SupportDTO> supportDTO = adminCustomerService.getFaqList();
@@ -127,11 +128,13 @@ public class AdminCustomerController {
 		return "/admin/customer/faq_list";
 	}
 	
+	//faq 등록 페이지
 	@GetMapping("/faq/writeFaq")
 	public String faqWriteForm() {
 		return "/admin/customer/faq_write_form";
 	}
 	
+	// faq 등록
 	@PostMapping("/faq/writeFaq")
 	public String faqWrite(SupportDTO supportDTO) throws IllegalStateException, IOException {
 		adminCustomerService.registSupport(supportDTO);
@@ -214,7 +217,8 @@ public class AdminCustomerController {
 	
 	// 문의 등록
 	@PostMapping("/inquiry/write")
-	public String writeInquiry(@RequestParam("inqueryIdx") String idx, @RequestParam("inqueryAnswer") String inqueryAnswer, @RequestParam("userIdx") String userIdx,  RedirectAttributes rttr) {
+	public String writeInquiry(@RequestParam("inqueryIdx") String idx, @RequestParam("inqueryAnswer") String inqueryAnswer, 
+			@RequestParam("userIdx") String userIdx,  RedirectAttributes rttr) {
 		int update = adminCustomerService.writeAnswer(idx, userIdx, inqueryAnswer);
 		
 		if (update > 0) {

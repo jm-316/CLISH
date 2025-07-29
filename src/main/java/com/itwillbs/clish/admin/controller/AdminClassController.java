@@ -136,7 +136,6 @@ public class AdminClassController {
 	public String classInfo(@PathVariable("idx") String idx, Model model) {
 		ClassDTO classInfo = classService.getClassInfo(idx);
 		
-		System.out.println("정보정보" + classInfo);
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1);
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
 		
@@ -171,6 +170,7 @@ public class AdminClassController {
 			    for (int i = 0; i < curriculumIdxList.size(); i++) {
 			        CurriculumDTO dto = new CurriculumDTO();
 			        
+			        // 기존 작성된 커리큘럼 없을 경우 idx 생성 후 등록
 			        if (!"0".equals(curriculumIdxList.get(i))) {
 			        	 dto.setCurriculumIdx("CURI" + UUID.randomUUID().toString().substring(0, 8));
 			        } 

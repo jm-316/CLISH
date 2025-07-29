@@ -11,36 +11,43 @@ import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 public interface AdminCustomerMapper {
 
-//	List<SupportDTO> selectNotices();
-
+	// 공지사항 또는 faq 등록
 	void insertSupport(SupportDTO supportDTO);
 
+	// 공지사항 또는 faq 상세보기
 	SupportDTO selectSupport(String idx);
 
+	// 공지사항 또는 faq 수정
 	int updateSupport(SupportDTO supportDTO);
 
+	// 공지사항 또는 faq 삭제
 	int deleteSupport(String idx);
 
+	// faq 리스트
 	List<SupportDTO> selectFaqList();
-
-	SupportDTO selectFaq(String idx);
 
 	// 1:1 문의 리스트(페이지네이션)
 	List<InquiryJoinUserDTO> selectInquiries(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 
+	// 1:1 문의 상세
 	InquiryJoinUserDTO selectInquiry(String idx);
 
 	// 관리자 문의 답변
 	int updateInquiry(@Param("idx") String idx, @Param("inqueryAnswer") String inqueryAnswer);
 
+	// 공지사항 전체 게시물 수
 	int selectCountAnnouncement();
 
+	// 공지사항 리스트 (페이징)
 	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 
+	// 1:1 문의 등록
 	int insertInquery(InqueryDTO inqueryDTO);
 
+	// 1:1 문의 게시글 수
 	int selectInquiryCount();
 
+	// 1:1 문의 삭제
 	int deleteInquiry(String idx);
 
 	// 1:1 문의 수정

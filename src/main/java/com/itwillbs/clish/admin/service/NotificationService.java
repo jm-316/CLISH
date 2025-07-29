@@ -19,7 +19,9 @@ public class NotificationService {
 	private final AdminUserMapper adminMapper;
 	private final NotificationMapper notificationMapper;
 	
+	// 알림 등록
 	public void send(String idx, int noticeType, String message) {
+		// idx 생성 로직
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String timestamp = LocalDateTime.now().format(formatter);
 		String noticeIdx = "no" + timestamp;
@@ -55,6 +57,7 @@ public class NotificationService {
 		}
 	}
 	
+	// 기업 회원인지 일반 회원인지 확인
 	private boolean isCompany(String userIdx) {
 		return userIdx != null && userIdx.startsWith("comp");
 	}

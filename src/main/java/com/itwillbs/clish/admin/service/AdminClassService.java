@@ -39,6 +39,7 @@ public class AdminClassService {
 		return adminClassMapper.selectClassList();
 	}
 	
+	// 강좌 승인 요청
 	@Transactional
 	public int modifyStatus(String userIdx, String idx, int status) {
 		int update = adminClassMapper.updateClassStatus(idx, status);
@@ -46,9 +47,9 @@ public class AdminClassService {
 		if (update > 0) {
 		  notificationService.send(userIdx, 3, "등록 요청하신 강좌가 승인되었습니다.");
 		  return update;
-		} 
-		
-		return 0;
+		} else {
+			throw new RuntimeException("다시 시도해주세요.");
+		}
 	}
 	
 	// 강좌 정보 수정
@@ -59,6 +60,7 @@ public class AdminClassService {
 		
 		classInfo.setClassIdx(idx);
 		
+		// 강좌 파일 업로드 관련 로직
 		if (classInfo.getFiles() != null && classInfo.getFiles().length > 0) {
 			List<FileDTO> classFileList = FileUtils.uploadFile(classInfo, session);
 
@@ -69,6 +71,7 @@ public class AdminClassService {
 		
 		curriculumMapper.deleteCurriculumByClassIdx(idx);
 		
+		// 강좌 커리큘럼 관련 로직
 		 for (CurriculumDTO dto : curriculumList) {
 		        if (dto.getCurriculumTitle() != null && !dto.getCurriculumTitle().trim().isEmpty()) {
 		            dto.setClassIdx(idx);
@@ -80,8 +83,9 @@ public class AdminClassService {
 		if (update > 0 || updateCurriculume > 0) {
 			notificationService.send(classInfo.getUserIdx(), 3, "강좌 정보가 수정되었습니다.");
 			return update;
-		}
-		return 0;
+		} 
+		
+		throw new RuntimeException("수정에 실패했습니다.");
 	}
 	
 	// 카테고리 삭제

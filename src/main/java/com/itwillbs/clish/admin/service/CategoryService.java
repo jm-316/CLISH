@@ -19,6 +19,7 @@ public class CategoryService {
 		return categoryMapper.selectCategoryByDepth(depth);
 	}
 
+	// 카테고리 상세 정보
 	public CategoryDTO getCategoryByIdx(String categoryIdx) {
 		return categoryMapper.selecCategoryByIdx(categoryIdx);
 	}

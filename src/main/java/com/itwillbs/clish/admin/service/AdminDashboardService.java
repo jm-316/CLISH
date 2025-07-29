@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminDashboardService {
 	private final AdminDashboardMapper adminDashboardMapper;
 
+	// 회원, 기업, 강의, 문의 미답변 게시물 수 
 	@Transactional(readOnly = true)
 	public void getSummary(DashboardSummaryDTO summaryDTO) {
 		int userCount = adminDashboardMapper.selectUserCount();
@@ -32,6 +33,7 @@ public class AdminDashboardService {
 		summaryDTO.setUnAnsweredInquiryCount(unAnsweredInquiryCount);
 	}
 
+	// 일별 매출
 	public List<RevenueDTO> getDailyRevenue() {
 		List<RevenueDTO> list = adminDashboardMapper.selectDailyRevenue();
 		
@@ -42,6 +44,7 @@ public class AdminDashboardService {
 		return list;
 	}
 
+	// 월별 매출
 	public List<RevenueDTO> getMonthlyRevenue() {
 		List<RevenueDTO> list = adminDashboardMapper.selectMonthlyRevenue();
 		
@@ -52,6 +55,7 @@ public class AdminDashboardService {
 		return list;
 	}
 
+	// 카테고리별 매출
 	public List<CategoryRevenueDTO> getCategoryRevenue() {
 		
 		return adminDashboardMapper.selectCategoryRevenue();
