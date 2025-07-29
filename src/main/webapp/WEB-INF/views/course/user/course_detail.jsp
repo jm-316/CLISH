@@ -46,8 +46,8 @@
 		
 		<section class="breadcrumb">
             <a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-            <a href="Category?codetype=CATE01">IT/개발</a> <i class="fa-solid fa-angle-right"></i>
-            <a href="Category?codetype=CATE01&codetype_id=03">
+            <a href="classList?classType=${param.classType}">IT/개발</a> <i class="fa-solid fa-angle-right"></i>
+            <a href="classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}">
             	<span>백엔드</span>
             </a>
         </section>
@@ -103,7 +103,7 @@
 		    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
 		    <section id="classDetail">
 				${classInfo.classContent } <hr>
-				<h1>클래스상세정보 이미지 표시란</h1>
+				<h1>클래스 컨텐츠 출력칸</h1>
 				<c:forEach var="file" items="${classInfo.fileList }">
 					파일이름 : ${file.originalFileName } <br>
 					파일 서브 디렉토리 :${file.subDir} <br>
@@ -196,6 +196,7 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(function(){

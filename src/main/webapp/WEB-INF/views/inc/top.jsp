@@ -22,9 +22,8 @@
         <ul>
             <li><a href="/course/user/classList?classType=0"><b>정기 강의</b></a></li>
            	<c:forEach var="Pcat" items="${parentCategories}">
-           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx }">
-           		${Pcat.categoryName }</a></li>
-           		
+           		<li><a href="/course/user/classList?classType=0&categoryIdx=${Pcat.categoryIdx}">
+           		${Pcat.categoryName}</a></li>
            	</c:forEach>
         </ul>
         <ul>

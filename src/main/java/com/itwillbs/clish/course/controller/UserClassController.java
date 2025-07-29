@@ -38,7 +38,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("course")
 @RequiredArgsConstructor
 public class UserClassController {
-	private final AdminClassService adminClassService;
 	private final CompanyClassService companyClassService;
 	private final UserClassService userClassService;
 	private final CategoryService categoryService;
@@ -154,7 +153,7 @@ public class UserClassController {
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
 	
-		return "/clish/myPage/myPage_payment";
+		return "redirect:/clish/myPage/myPage_payment";
 	}
 	
 }
