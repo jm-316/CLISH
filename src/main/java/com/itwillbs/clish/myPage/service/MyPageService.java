@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.admin.dto.NotificationDTO;
+import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
@@ -35,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class MyPageService {
 	private final MyPageMapper myPageMapper;
 	private final FileMapper fileMapper;
+	private final NotificationService notificationService;
 	@Autowired
 	private HttpSession session;
 	//-----------------------------------------------------
@@ -48,6 +50,17 @@ public class MyPageService {
 	}
 	
 	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+		
+		List<ReservationDTO> toCancelList = myPageMapper.selectCancel(user);
+		
+		for(ReservationDTO toCancelReservation : toCancelList) {
+			int deleteCount = myPageMapper.deleteReservation(toCancelReservation);
+			if(deleteCount > 0) {
+			String userIdx = toCancelReservation.getUserIdx();
+			notificationService.send(userIdx, 3, "예약시간이 만료되어 예약이 자동으로 삭제됩니다" );
+			}
+		}
+	
 		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
 	}
 	

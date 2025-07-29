@@ -11,6 +11,7 @@ import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.admin.mapper.AdminUserMapper;
 import com.itwillbs.clish.admin.mapper.NotificationMapper;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service
