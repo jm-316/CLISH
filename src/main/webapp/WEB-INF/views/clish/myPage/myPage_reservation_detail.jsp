@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,10 +59,18 @@
         		<td>${reservationClassInfo.reservation_idx}</td>
 				<td>${user.userName}</td>
 				<td>${reservationClassInfo.class_title}</td>
-				<td>${reservationClassInfo.reservation_class_date}</td>
+				<fmt:parseDate var="reservationClassDate" 
+									value="${reservationClassInfo.reservation_class_date}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+				<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
 				<td>${reservationClassInfo.reservation_members}</td>
-				<td>${reservationClassInfo.reservation_com}</td>
-				<td>${reservationClassInfo.reservation_members * reservationClassInfo.class_price}</td>
+				<fmt:parseDate var="reservationCom" 
+									value="${reservationClassInfo.reservation_com}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+				<td><fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/></td>
+				<td><fmt:formatNumber value="${reservationClassInfo.reservation_members * reservationClassInfo.class_price}" type="number" maxFractionDigits="0" /></td>
 				<c:if test="${reservationClassInfo.reservation_status eq 1 }">
 					<td><input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
 	         onclick="cancelReservation(this)"></td>

@@ -60,12 +60,12 @@ public class MyPageController {
 	// 비밀번호 확인 일치시 수정페이지로 불일치시 비밀번호가 틀렸습니다 메시지
 	@PostMapping("/change_user_info_form")
 	public String mypage_change_user_info_form(UserDTO user, HttpSession session, Model model) {
-		String inputPw = user.getUserPassword();
+		String inputPw = user.getUserPassword(); // 입력받은 pw
 			
 		user.setUserId((String)session.getAttribute("sId"));
-		user = myPageService.getUserInfo(user);
+		user = myPageService.getUserInfo(user); // 세션id 유저 정보
 		
-		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) {
+		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) { // 비밀번호 불일치 할때
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
 			model.addAttribute("targetUrl","myPage/change_user_info_form");
 			return "commons/result_process";
@@ -80,12 +80,13 @@ public class MyPageController {
 	
 	//닉네임 중복확인
 	@GetMapping("/check/repName")
-	public ResponseEntity<Map<String, String>> checkRepName(UserDTO userDTO) {
-		Map<String, String> response = new HashMap<>();
-		
-		UserDTO user = myPageService.checkRepName(userDTO);
+	public ResponseEntity<Map<String, String>> checkRepName(UserDTO userDTO) { // userDTO에 userRepName, userIdx 주입
+		Map<String, String> response = new HashMap<>(); // 리턴할 response객체생성
+		// 입력받은 userRepName과 일치하는 user정보 받기
+		UserDTO user = myPageService.checkRepName(userDTO);  
+		// 유저서비스 닉네임 중복 있는지 카운트 체크
 		if(userService.isNickExists(userDTO.getUserRepName())) {
-			
+			// 닉네임이 중복인데 idx가 동일할 경우
 			if(user.getUserIdx().equals(userDTO.getUserIdx())) {
 				System.out.println("idx일치");
 				response.put("msg", "사용가능 닉네임");
@@ -93,7 +94,7 @@ public class MyPageController {
 				response.put("repName", userDTO.getUserRepName());
 				return ResponseEntity.ok(response);
 			}
-			
+			// 닉네임이 존재하는데 idx가 일치하지않음
 			response.put("msg", "사용불가능 닉네임");
 			response.put("status", "fail");
 			return ResponseEntity.ok(response);

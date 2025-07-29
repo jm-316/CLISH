@@ -158,7 +158,7 @@
 						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
 						<c:set var="reservationTime" value="${reservationClassDate.time}" />
 						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" />
-						<td>${payment.payTimeFormatted} ddd ${diffDays }</td>
+						<td>${payment.payTimeFormatted} </td>
 						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}"
 	          onclick="cancelPayment(this)" <c:if test="${payment.status eq 'cancelled' || diffDays < 3 }">disabled</c:if>></td>
 						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"

@@ -119,7 +119,6 @@ public class PaymentController {
 		
 		model.addAttribute("paymentInfoDTO",paymentInfoDTO);
 		model.addAttribute("payTime",payTime);
-		model.addAttribute("requestTime",requestTime);
 		
 		return "/clish/myPage/myPage_payment_cancelForm";
 	}
@@ -177,8 +176,10 @@ public class PaymentController {
 	public String cancelInfo(Model model, PaymentCancelDTO paymentCancelDTO, UserDTO user) {
 		paymentCancelDTO = paymentService.getCancelResult(paymentCancelDTO);
     	String requestTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelRequestTime()/1000L);
-    	
+    	String cancelTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelledAt()/1000L);
+
     	model.addAttribute("requestTime",requestTime);
+    	model.addAttribute("cancelTime",cancelTime);
     	model.addAttribute("paymentCancel", paymentCancelDTO);
     	model.addAttribute("message", "결제 취소가 정상 처리되었습니다.");
 		

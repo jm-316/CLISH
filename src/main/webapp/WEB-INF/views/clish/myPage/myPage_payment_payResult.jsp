@@ -20,11 +20,9 @@
 			결제 금액 : ${paymentInfoDTO.amount }<br>
 			구매 I  D : ${paymentInfoDTO.userName }<br>
 			구매 상태 : ${paymentInfoDTO.status }<br>
-			요청 시각 : ${paymentInfoDTO.requestTime}<br>
-			  변 환   : ${requestTime}<br>
-			결제 시각 : ${paymentInfoDTO.payTime}<br>
-			  변 환   : ${payTime}<br>
-			결제영수증 : ${paymentInfoDTO.receiptUrl }<br>
+			요청 시각 : ${requestTime}<br>
+			결제 시각 : ${payTime}<br>
+			결제영수증 : <a href="${paymentInfoDTO.receiptUrl }">결제영수증</a><br>
 			
 		</h3>
 		<input type="button" value="확인" onclick="window.close()">

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +42,7 @@
 						<th>이름</th>
 						<td>${user.userName }</td>
 						<th>문의시각</th>
-						<td>${inqueryDTO.inqueryDatetime }</td>
+						<td><fmt:formatDate value="${inqueryDTO.inqueryDatetime}" pattern="yy-MM-dd HH:mm:ss"/></td>
 					</tr>
 					<c:if test="${!empty inqueryDTO.classTitle }">
 						<tr>

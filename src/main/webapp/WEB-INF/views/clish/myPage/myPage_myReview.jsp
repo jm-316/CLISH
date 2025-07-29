@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,7 +100,7 @@
 								<th rowspan="2">이미지</th>
 								<th>수강 강의</th>
 								<th>수강일</th>
-								<td rowspan="2">
+								<th rowspan="2">
 									<input type="button" value="강의 상세 페이지" 
 									onclick="location.href='/course/user/classDetail?classIdx=${review.class_idx}&classType=${review.class_type }&categoryIdx=${review.category_idx }'">
 									
@@ -107,11 +108,17 @@
 									<!-- classIdx=CLC20250712154900&classType=0&categoryIdx=CT_it_backend -->
 									<input type="button" value="수강후기쓰러가기"
 									onclick="location.href='/myPage/myReview/writeReviewForm?reservationIdx=${review.reservation_idx}'">
-								</td>
+								</th>
 							</tr>
 							<tr>
 								<td>${review.class_title }</td>
-								<td>${review.reservation_class_date }</td>
+								<td>
+									<fmt:parseDate var="reviewCreatedAt" 
+										value="${review.reservation_class_date }"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+									<fmt:formatDate value="${reviewCreatedAt}" pattern="yy-MM-dd HH:mm"/>
+								</td>
 							</tr>
 						</table>
 					</c:forEach>
@@ -131,8 +138,18 @@
 								</tr>
 								<tr class="review-summary">
 									<td><label for="rev_${status.index}">${review.classTitle }</label></td>
-									<td><label for="rev_${status.index}">${review.reservationClassDate }</label></td>
-									<td><label for="rev_${status.index}">${review.reviewCreatedAt }</label></td>
+									<fmt:parseDate var="reservationClassDate" 
+									value="${review.reservationClassDate }"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+									<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
+<%-- 									<td><label for="rev_${status.index}">${review.reservationClassDate }</label></td> --%>
+									<fmt:parseDate var="reviewCreatedAt" 
+									value="${review.reviewCreatedAt }"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+									<td><fmt:formatDate value="${reviewCreatedAt}" pattern="yy-MM-dd HH:mm"/></td>
+<%-- 									<td><label for="rev_${status.index}">${review.reviewCreatedAt }</label></td> --%>
 								</tr>
 								<tr class="review-detail">
 									<th>작성자</th>
