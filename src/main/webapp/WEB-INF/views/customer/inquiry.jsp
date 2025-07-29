@@ -13,6 +13,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/main.css" >
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style type="text/css">
 .status-pending {
@@ -47,6 +48,9 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
+	<nav>
+		<jsp:include page="/WEB-INF/views/customer/sidebar.jsp" />
+	</nav>
 	<div style="display: flex;">
 		<div ></div>
 		<div style="width: calc(100vw - 440px); height: 500px; margin-left: 220px">
