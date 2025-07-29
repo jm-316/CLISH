@@ -95,6 +95,7 @@ function loadDailyRevenueChart() {
 	  fetch("/admin/revenue/daily")
 	    .then(res => res.json())
 	    .then(data => {
+	      // 5일 간격으로 날짜 보여주기
 	      const today = new Date();
 	      const day = today.getDay();
 	      const monday = new Date(today);
@@ -129,9 +130,16 @@ function loadDailyRevenueChart() {
 	        options: {
 	          responsive: false,
 	          scales: {
-	            y: { beginAtZero: true }
+	        	  yAxes: [{
+	        	      ticks: {
+	        	        beginAtZero: true,
+	        	        min: 0,
+	        	        max: 100000,   
+	        	        stepSize: 10000
+	        	      }
+	        	    }]
+	            }
 	          }
-	        }
 	      });
 	    });
 	}
