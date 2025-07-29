@@ -3,20 +3,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>나의 문의</title>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
+<meta charset="UTF-8">
+<title>나의 문의</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
     .container {
       display: flex;
       min-height: 80vh;
     }
 
-    .sidebar {
-      width: 220px;
-    }
+    /* 왼쪽 사이드바 */
+	.sidebar {
+	    width: 200px; /* 필요에 따라 조절 */
+	    background-color: #f8f8f8;
+	    padding: 20px;
+	    overflow: hidden;          /* ✅ 내부 넘치는 거 잘라냄 */
+    	white-space: nowrap;
+	}
 
     .main-content {
       flex: 1;
@@ -99,97 +105,97 @@
   </style>
 </head>
 <body>
-  <header>
-    <jsp:include page="/WEB-INF/views/inc/top.jsp" />
-  </header>
+	  <header>
+	    <jsp:include page="/WEB-INF/views/inc/top.jsp" />
+	  </header>
 
-  <div class="container">
-    <div class="sidebar">
-      <jsp:include page="/WEB-INF/views/company/comSidebar.jsp" />
-    </div>
+	<div class="container">
+		<div class="sidebar">
+			<jsp:include page="/WEB-INF/views/company/comSidebar.jsp" />
+		</div>
 
-    <div class="main-content">
-      <h1>${sessionScope.sId}님의 페이지</h1>
-      <h3>나의 문의 목록</h3>
+		<div class="main-content">
+			<h1>${sessionScope.sId}님의 페이지</h1>
+			<h3>나의 문의 목록</h3>
 
-      <div class="top-section">
-        <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/company/myPage/writeInquery'">문의 등록</button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>문의 번호</th>
-            <th>제목</th>
-            <th>이름</th>
-            <th>상태</th>
-          </tr>
-        </thead>
-        <tbody>
-          <c:choose>
-            <c:when test="${empty test}">
-              <tr><td colspan="4">아직 등록한 문의가 없습니다.</td></tr>
-            </c:when>
-            <c:otherwise>
-              <c:forEach var="inq" items="${test}">
-                <tr class="inquery-toggle">
-                  <td>${inq.inquiry.inqueryIdx}</td>
-                  <td>${inq.inquiry.inqueryTitle}</td>
-                  <td>${inq.userName}</td>
-                  <td>
-                    <c:choose>
-                      <c:when test="${inq.inquiry.inqueryStatus == 1}">답변대기</c:when>
-                      <c:when test="${inq.inquiry.inqueryStatus == 2}">답변완료</c:when>
-                      <c:when test="${inq.inquiry.inqueryStatus == 3}">검토중</c:when>
-                    </c:choose>
-                  </td>
-                </tr>
-                <tr class="inquery-detail">
-                  <td colspan="4">
-                    <strong>문의 내용:</strong><br>${inq.inquiry.inqueryDetail}<br><br>
-                    <strong>답변 내용:</strong><br>
-                    <c:choose>
-                      <c:when test="${not empty inq.inquiry.inqueryAnswer}">
-                        ${inq.inquiry.inqueryAnswer}
-                      </c:when>
-                      <c:otherwise>
-                        아직 답변이 등록되지 않았습니다.
-                      </c:otherwise>
-                    </c:choose>
+      		<div class="top-section">
+				<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/company/myPage/writeInquery'">문의 등록</button>
+      		</div>
+			<table>
+				<thead>
+					<tr>
+						<th>문의 번호</th>
+						<th>제목</th>
+						<th>이름</th>
+						<th>상태</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:choose>
+						<c:when test="${empty test}">
+							<tr><td colspan="4">아직 등록한 문의가 없습니다.</td></tr>
+            			</c:when>
+            		<c:otherwise>
+              			<c:forEach var="inq" items="${test}">
+                			<tr class="inquery-toggle">
+								<td>${inq.inquiry.inqueryIdx}</td>
+								<td>${inq.inquiry.inqueryTitle}</td>
+								<td>${inq.userName}</td>
+								<td>
+									<c:choose>
+										<c:when test="${inq.inquiry.inqueryStatus == 1}">답변대기</c:when>
+										<c:when test="${inq.inquiry.inqueryStatus == 2}">답변완료</c:when>
+										<c:when test="${inq.inquiry.inqueryStatus == 3}">검토중</c:when>
+									</c:choose>
+								</td>
+							</tr>
+                			<tr class="inquery-detail">
+                  				<td colspan="4">
+									<strong>문의 내용:</strong><br>${inq.inquiry.inqueryDetail}<br><br>
+									<strong>답변 내용:</strong><br>
+									<c:choose>
+										<c:when test="${not empty inq.inquiry.inqueryAnswer}">
+											${inq.inquiry.inqueryAnswer}
+										</c:when>
+										<c:otherwise>
+											아직 답변이 등록되지 않았습니다.
+										</c:otherwise>
+									</c:choose>
 
-                    <c:if test="${inq.inquiry.inqueryStatus == 1}">
-                      <div class="btn-wrap">
-                        <form action="${pageContext.request.contextPath}/company/myPage/modifyInquery" method="get">
-                          <input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
-                          <button type="submit">수정</button>
-                        </form>
-                        <form action="${pageContext.request.contextPath}/company/myPage/delete" method="post">
-                          <input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
-                          <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
-                        </form>
-                      </div>
-                    </c:if>
-                  </td>
-                </tr>
-              </c:forEach>
-            </c:otherwise>
-          </c:choose>
-        </tbody>
-      </table>
-    </div>
-  </div>
+									<c:if test="${inq.inquiry.inqueryStatus == 1}">
+										<div class="btn-wrap">
+											<form action="${pageContext.request.contextPath}/company/myPage/modifyInquery" method="get">
+												<input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
+												<button type="submit">수정</button>
+											</form>
+											<form action="${pageContext.request.contextPath}/company/myPage/delete" method="post">
+												<input type="hidden" name="inqueryIdx" value="${inq.inquiry.inqueryIdx}">
+												<button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+											</form>
+										</div>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</table>
+	</div>
+</div>
 
-  <footer>
-    <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
-  </footer>
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
+	</footer>
 
-  <script>
-    $(document).ready(function () {
-      $(".inquery-toggle").click(function () {
-        const detailRow = $(this).next(".inquery-detail");
-        $(".inquery-detail").not(detailRow).slideUp(200);
-        detailRow.slideToggle();
-      });
-    });
-  </script>
+	<script>
+	$(document).ready(function () {
+		$(".inquery-toggle").click(function () {
+			const detailRow = $(this).next(".inquery-detail");
+			$(".inquery-detail").not(detailRow).slideUp(200);
+			detailRow.slideToggle();
+		});
+	});
+	</script>
 </body>
 </html>
