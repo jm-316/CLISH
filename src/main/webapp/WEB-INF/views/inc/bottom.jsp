@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <hr>
-<div id="footer-area" style="padding:30px 0; background: rgba(0, 128, 157, 0.5); border-top:1px solid #ddd; position: relative;
+<div id="footer-area" style="padding:30px 0; background: #faf8fc; border-top:1px solid #ddd; position: relative;
 	z-index: 1000; ">
     <div style="display:flex; align-items:center; gap:40px;">
         <!-- Logo -->
