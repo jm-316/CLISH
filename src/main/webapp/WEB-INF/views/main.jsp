@@ -113,8 +113,10 @@
 	</div>
 	<div class="h2-flexbox">
 		<h2>추천 단기 강의</h2>
-		<div class="class-filter">
-				<button onclick="location.href='/course/user/classList?classType=1'">필터</button>			
+		<div id="class-filter-wrapper">
+			<div class="class-filter">
+					<button onclick="location.href='/course/user/classList?classType=1'">필터</button>			
+			</div>
 		</div>
 	</div>
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->

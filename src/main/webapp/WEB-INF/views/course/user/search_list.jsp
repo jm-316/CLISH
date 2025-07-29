@@ -54,7 +54,6 @@
 				<tbody>
 					<c:set var="hasRegisteredClass" value="false" />
 					<c:forEach var="classItem" items="${classList}">
-						<c:if test="${classItem.classStatus != 1}">
 							<c:set var="hasRegisteredClass" value="true" />
 							<tr>
 								<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
@@ -84,7 +83,6 @@
 									</td>
 								</c:if>
 							</tr>
-						</c:if>
 					</c:forEach>
 					<c:if test="${listCount eq 0}">
 						<tr>
@@ -113,7 +111,7 @@
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum=${pageInfoDTO.pageNum +1}'"></li>
+								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum=${pageInfoDTO.pageNum +1}'" <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>></li>
 							
 						</ul>
 					</nav>
@@ -168,7 +166,7 @@
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum2=${pageInfoDTO2.pageNum +1}'"></li>
+								<li><input class="button"  type="button" value="next" onclick="location.href='/search?${searchParams}&pageNum2=${pageInfoDTO2.pageNum +1}'" <c:if test="${pageInfoDTO2.pageNum eq pageInfoDTO2.maxPage}">disabled</c:if>></li>
 							
 						</ul>
 					</nav>

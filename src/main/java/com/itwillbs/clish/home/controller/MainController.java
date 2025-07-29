@@ -128,6 +128,7 @@ public class MainController {
 
 			PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum, 0);
 			PageInfoDTO pageInfoDTO2 = new PageInfoDTO(listCountAnn, pageListLimit, maxPageAnn, startPageAnn, endPageAnn, pageNum2, 0);
+			System.out.println("pageinfoDTO : " + pageInfoDTO);
 			model.addAttribute("pageInfoDTO", pageInfoDTO);
 			model.addAttribute("pageInfoDTO2", pageInfoDTO2);
 			

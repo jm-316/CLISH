@@ -116,22 +116,20 @@
 	</select>
 
 	<select id="selectClassListCount" resultType="int">
-		SELECT count(*)
+		SELECT COUNT(*)
 		FROM 
 			CLASS
-		WHERE
+		WHERE (
 			class_title LIKE CONCAT('%', #{searchKeyword}, '%')
 		Or 
 			category_idx LIKE CONCAT('%', #{searchKeyword}, '%')
 		Or 
 			location LIKE CONCAT('%', #{searchKeyword}, '%')
 		Or 
-			user_idx LIKE CONCAT('%', #{searchKeyword}, '%')
-		Or 
 			class_intro LIKE CONCAT('%', #{searchKeyword}, '%')
 		Or 
 			class_content LIKE CONCAT('%', #{searchKeyword}, '%')
-		
+		)
 	</select>
 	<select id="selectAnnouncements" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
 		SELECT *
