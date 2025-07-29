@@ -8,6 +8,7 @@
 <title>기업 정보 수정 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 	<style type="text/css">
 		/* 큰 전체 박스 */
 		.main-container {

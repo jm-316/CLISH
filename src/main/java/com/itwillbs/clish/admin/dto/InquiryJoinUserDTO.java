@@ -12,6 +12,6 @@ import lombok.ToString;
 public class InquiryJoinUserDTO {
 	private InqueryDTO inquiry;
 	private String classIdx;
-	private int inqueryType;
+	private int inqueryType; // 1: 1:1문의 2: 강의 문의
 	private String userName;
 }

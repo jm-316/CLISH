@@ -11,12 +11,16 @@ import com.itwillbs.clish.course.dto.ClassDTO;
 @Mapper
 public interface AdminClassMapper {
 
+	// 강의 리스트
 	List<Map<String, Object>> selectClassList();
 
+	// 강의 승인
 	int updateClassStatus(@Param("idx") String idx, @Param("status") int status);
 
+	// 강의 정보 변경
 	int updateClassInfo(@Param("idx") String idx, @Param("classInfo") ClassDTO classInfo);
 
+	// 하위 카테고리 확인
 	boolean existsByCategory(@Param("categoryIdx") String categoryIdx, @Param("depth") int depth);
 
 }

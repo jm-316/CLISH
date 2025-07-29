@@ -176,17 +176,22 @@ public class CompanyInfoController {
 	    return "/company/companyMypageWithdraw"; 
 	}
 	
+	// 회원 탈퇴 - 비밀번호 확인 일치시 수정페이지로 불일치시 비밀번호가 틀렸습니다 메시지
 	@PostMapping("/myPage/withdraw")
 	public String withdrawForm(HttpSession session, UserDTO user, Model model) {
-	    String userIdx = (String) session.getAttribute("sId");
-	    user.setUserIdx(userIdx);
+//	    String userIdx = (String) session.getAttribute("sId");
+//	    user.setUserIdx(userIdx);
 
-	    String inputPw = user.getUserPassword();
+	    String inputPw = user.getUserPassword(); // 사용자가 입력한 평문 비번
+	    
+	    // 세션에서 userId 설정
+	    user.setUserId((String) session.getAttribute("sId"));
 
-	    // DB에서 전체 유저 정보 불러오기
+	    // DB에서 암호화된 비번 포함한 유저 정보 조회
 	    user = companyInfoService.getUserInfo(user);
 
-	    if (user != null && user.getUserPassword().equals(inputPw)) {
+	    if (user != null && companyInfoService.matchesPassword(inputPw, user.getUserPassword())) {
+	    	model.addAttribute("step", "confirm");
 	        return "company/companyMypageWithdrawResult";
 	    } else {
 	        model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
@@ -195,20 +200,26 @@ public class CompanyInfoController {
 	    
 	}
 	
+	// 회원탈퇴 버튼 로직 
 	@PostMapping("/myPage/withdrawFinal")
 	public String withdrawFinal(HttpSession session, Model model) {
-	    String userIdx = (String) session.getAttribute("sId");
-
+	    String userId = (String) session.getAttribute("sId");
+	    System.out.println("*****세션에서 가져온 userIdx: " + userId);
+	    
 	    UserDTO user = new UserDTO();
-	    user.setUserIdx(userIdx);
+	    user.setUserId(userId);
 
 	    int result = companyInfoService.withdraw(user);
-
+	    
+	    // 탈퇴 성공
 	    if (result > 0) {
-	        session.invalidate(); // 세션 만료
-	        model.addAttribute("msg", "탈퇴완료");
+	        session.invalidate(); // 세션 끊기 (로그아웃)
+	        model.addAttribute("msg", "탈퇴가 완료되었습니다.");
+	        model.addAttribute("targetUrl", "/");
 	    } else {
-	    	 model.addAttribute("msg", "탈퇴실패");
+	    	// 탈퇴 실패
+	    	model.addAttribute("msg", "탈퇴에 실패했습니다. 다시 시도해주세요.");
+	        model.addAttribute("targetUrl", "/company/myPage/withdraw");  // 비밀번호 확인 페이지로 다시
 	    }
 	    
 	    return "company/companyMypageWithdrawResult";

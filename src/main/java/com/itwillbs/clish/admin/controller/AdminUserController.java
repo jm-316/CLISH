@@ -32,32 +32,31 @@ public class AdminUserController {
 	private final AdminUserService adminService;
 	private final AdminDashboardService adminDashboardService;
 	
+	// 관리자 메인 페이지
 	@GetMapping("/main")
 	public String adminIndex(DashboardSummaryDTO summaryDTO, Model model) {
 		adminDashboardService.getSummary(summaryDTO);
 		
-		List<RevenueDTO> dailyList = adminDashboardService.getDailyRevenue();
-		List<RevenueDTO> weeklyList  = adminDashboardService.getMonthlyRevenue();
-		
 		model.addAttribute("summary", summaryDTO);
-		model.addAttribute("dailyList", dailyList);
-		model.addAttribute("weeklyList", weeklyList);
 
 		return "/admin/admin_page";
 	}
 	
+	// 일별 매출
 	@GetMapping("/revenue/daily")
 	@ResponseBody
 	public List<RevenueDTO> getDailyRevenue() {
 		return adminDashboardService.getDailyRevenue();
 	}
 	
+	// 월별 매출
 	@GetMapping("/revenue/monthly")
 	@ResponseBody
 	public List<RevenueDTO> getMonthlyRevenue() {
 		return adminDashboardService.getMonthlyRevenue();
 	}
 	
+	// 카테고리별 매출
 	@GetMapping("/revenue/category")
 	@ResponseBody
 	public List<CategoryRevenueDTO> getCategoryRevenue() {

@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.clish.admin.mapper.CategoryMapper">
+	<!-- depth에 따른 카테고리 리스트 -->
 	<select id="selectCategoryByDepth" resultType="com.itwillbs.clish.admin.dto.CategoryDTO">
 		SELECT 
 			*
@@ -12,21 +13,13 @@
 			depth = #{depth}
 	</select>
 	
+	<!-- 카테고리 상세 정보 -->
 	<select id="selecCategoryByIdx" resultType="com.itwillbs.clish.admin.dto.CategoryDTO">
 		SELECT *
 		FROM
 			CATEGORY
 		WHERE 
 			category_idx = #{categoryIdx}
-	</select>
-	
-	<select id="selectCategoryNameByIdx" resultType="com.itwillbs.clish.admin.dto.CategoryDTO">
-		SELECT
-			parent_idx
-		FROM
-			CATEGORY
-		WHERE
-			parent_idx = #{parentIdx}
 	</select>
 	
 	<!-- 카테고리 추가 -->
@@ -69,6 +62,7 @@
 			category_idx = #{categoryIdx}
 	</update>
 	
+	<!--  카테고리 삭제 -->
 	<delete id="deleteCategory">
 		DELETE
 		FROM

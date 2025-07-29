@@ -61,6 +61,7 @@ public class AdminUserService {
 		return 0;
 	}
 
+	// 기업 사업자등록증 정보 조회
 	public CompanyDTO getCompanyBizReg(String idx) {
 		return adminMapper.selectCompanyBizReg(idx);
 	}

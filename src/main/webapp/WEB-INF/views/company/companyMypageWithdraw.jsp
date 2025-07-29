@@ -8,6 +8,7 @@
 <title>기업 회원 탈퇴</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
     .main-container {
       display: flex;
@@ -80,7 +81,7 @@
 			<h1>${sessionScope.sId} 탈퇴</h1>
 		</div>
 	
-		<form action="/company/myPage/withdraw" method="post" class="form">
+		<form action="${pageContext.request.contextPath}/company/myPage/withdraw" method="post" class="form">
 			  <h3>비밀번호를 입력해주세요</h3>
 			  <input type="password" placeholder="비밀번호" name="userPassword" required>
 			  <input type="submit" value="확인">

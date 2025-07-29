@@ -1,6 +1,5 @@
 package com.itwillbs.clish.admin.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -24,6 +23,7 @@ public class AdminPaymentController {
 	private final AdminPaymentService adminPaymentService;
 	private final PaymentService paymentService;
 	
+	// 결제관리 페이지
 	@GetMapping("/paymentList")
 	public String paymentList(Model model) {
 		List<PaymentInfoDTO> paymentList = adminPaymentService.getPaymentList();
@@ -33,6 +33,7 @@ public class AdminPaymentController {
 		return "/admin/payment/payment_list";
 	}
 	
+	// 결제 상세 내역
 	@GetMapping("/payment_info/paymentDetail")
 	public String paymentInfo(PaymentInfoDTO paymentInfoDTO, Model model) {
 		paymentInfoDTO = paymentService.getPayResult(paymentInfoDTO);
@@ -45,6 +46,7 @@ public class AdminPaymentController {
 		return "/clish/myPage/myPage_payment_payResult";
 	}
 	
+	// 취소 상세 내역
 	@GetMapping("/payment_info/cancelDetail")
 	public String cancelPaymentForm(PaymentCancelDTO paymentCancelDTO, Model model) {
 		paymentCancelDTO = paymentService.getCancelResult(paymentCancelDTO);

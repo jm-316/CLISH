@@ -113,6 +113,7 @@
 		)
 	</insert>
 	
+	<!-- 기업의 사업자등록증 조회 -->
 	<resultMap id="BizRegWithFileDTOListResultMap" type="com.itwillbs.clish.user.dto.CompanyDTO" >
 		<id property="userIdx" column="user_idx"/>
 		<result property="bizRegNo" column="biz_reg_no" />

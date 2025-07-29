@@ -10,6 +10,7 @@ public interface NotificationMapper {
 	// 사용자 알림 리스트
 	List<NotificationDTO> selectNotifications(String userIdx);
 
+	// 알림 확인
 	NotificationDTO updateStatus(@Param("userIdx") String userIdx, @Param("notiIdx") String notiIdx);
 
 }

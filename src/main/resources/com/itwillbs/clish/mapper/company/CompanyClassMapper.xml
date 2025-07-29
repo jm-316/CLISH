@@ -136,6 +136,7 @@
 		ORDER BY i.inquery_datetime DESC
 	</select>
 	
+	<!-- 클래스 문의 페이지 - 문의 상세 -->
 	<select id="selectClassInquiryDetail" resultMap="inquiryJoinUserMap">
 		SELECT 
 	        i.inquery_idx,

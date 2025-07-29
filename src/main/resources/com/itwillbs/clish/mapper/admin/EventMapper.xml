@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.clish.admin.mapper.AdminEventMapper">
+	<!-- 이벤트 리스트 -->
 	 <select id="selectAllEvent" resultType="com.itwillbs.clish.admin.dto.EventDTO">
 	 	SELECT *
 	 	FROM EVENT
@@ -13,6 +14,7 @@
 			, #{listLimit}
 	 </select>
 	 
+	 <!-- 이벤트 게시물 수  -->
 	 <select id="selectCountEvent" resultType="int">
 	 	SELECT COUNT(*)
 	 	FROM EVENT

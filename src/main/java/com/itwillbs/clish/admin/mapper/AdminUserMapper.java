@@ -27,7 +27,6 @@ public interface AdminUserMapper {
 
 	// 기업 상세 정보
 	UserDTO selectCompanyInfo(String idx);
-
 	
 	// 기업 정보 수정
 	int updateCompanyInfo(@Param("idx") String idx, @Param("company") UserDTO company);

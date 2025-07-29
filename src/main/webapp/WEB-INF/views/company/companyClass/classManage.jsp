@@ -10,6 +10,15 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
     <style>
+    	/* 왼쪽 사이드바 */
+		.sidebar {
+		    width: 200px; /* 필요에 따라 조절 */
+		    background-color: #f8f8f8;
+		    padding: 20px;
+		    overflow: hidden;          /* ✅ 내부 넘치는 거 잘라냄 */
+	    	white-space: nowrap;
+		}
+    	
         .classManage-container {
             display: flex;
             width: 100%;
@@ -80,8 +89,10 @@
 
     <!-- 페이지 전체 컨테이너 -->
     <div class="classManage-container">
-        <!-- 사이드바 -->
-        <jsp:include page="/WEB-INF/views/company/comSidebar.jsp" />
+        <!-- 왼쪽 사이드바 -->
+        <div class="sidebar">
+            <jsp:include page="/WEB-INF/views/company/comSidebar.jsp" />
+        </div>
 
         <!-- 본문 내용 -->
         <div class="content-area">

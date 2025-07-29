@@ -140,9 +140,9 @@
 	<!-- 기업 회원 탈퇴 -->
 	<update id="updateWithdraw">
         UPDATE USER
-        SET user_status = 0,
-            updated_at = NOW()
-        WHERE user_idx = #{userIdx}
+        SET
+			user_status = 3
+        WHERE user_id = #{userId}
     </update>
 </mapper>
 
