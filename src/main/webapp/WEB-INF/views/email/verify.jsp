@@ -1,5 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% String msg = (String) request.getAttribute("authResult"); %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<% 
+    String msg = (String) request.getAttribute("authResult");
+    String verifiedEmail = (String) request.getAttribute("verifiedEmail"); // 인증된 이메일 전달받기
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +14,8 @@
         <h2>
             <%= msg != null ? msg : "인증에 실패했거나, 링크가 만료되었습니다." %>
         </h2>
-        <% if(msg != null && msg.contains("성공") || (msg != null && msg.contains("완료"))) { %>
-			<script>
-				if(window.opener && typeof window.opener.setEmailVerified === "function") {
-				    window.opener.setEmailVerified();
-				}			
-			</script>
-        <% } %>
         <script>
-            setTimeout(() => window.close(), 1500);
+            setTimeout(() => window.close(), 15000);
         </script>
     </div>
 </body>	

@@ -13,7 +13,7 @@
 <body>
 	<div class="join-wrapper">
 		<div class="logo-area">
-	     	<a href="http://localhost:8080">
+	     	<a href="${pageContext.request.contextPath}/">
 				<img src="${pageContext.request.contextPath}/resources/images/logo_mini.png" alt="Clish" style="cursor:pointer;">
 			</a>
 	    </div>
@@ -45,6 +45,7 @@
 						<div class="email-auth-wrap">
 							<input type="email" id="userEmail" name="userEmail" />
 							<button type="button" id="emailVerifyBtn">[이메일 인증]</button>
+							<button type="button" id="checkEmailVerifiedBtn" style="display: none;">[인증 완료 확인]</button>
 						</div>
 						<span id="email-auth-result" style="color: red; margin-left: 10px;">이메일 인증 필요</span>
 					</td>
