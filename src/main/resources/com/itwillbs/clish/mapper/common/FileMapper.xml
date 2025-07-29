@@ -40,6 +40,50 @@
 		</foreach>
 	</insert>
 	
+	<!-- 파일 하나만 저장 시 사용 -->
+	<insert id="insertOneFile">
+		INSERT
+		INTO FILE(
+				idx,
+				original_file_name,
+				real_file_name, 
+				sub_dir, 
+				file_size, 
+				content_type, 
+				upload_date	)
+			VALUES(
+				#{idx}
+				, #{originalFileName}
+				, #{realFileName}
+				, #{subDir}
+				, #{fileSize}
+				, #{contentType}
+				, now()
+			)
+	</insert>
+	
+	<!-- 썸네일 저장 -->
+	<insert id="insertThumbnail">
+		INSERT
+		INTO THUMBNAILFILE(
+				idx,
+				original_file_name,
+				real_file_name, 
+				sub_dir, 
+				file_size, 
+				content_type, 
+				upload_date	)
+			VALUES(
+				#{idx}
+				, #{originalFileName}
+				, #{realFileName}
+				, #{subDir}
+				, #{fileSize}
+				, #{contentType}
+				, now()
+			)
+	</insert>
+	
 	<select id="selectAllFile" resultType="com.itwillbs.clish.common.file.FileDTO">
 		SELECT *
 		FROM FILE

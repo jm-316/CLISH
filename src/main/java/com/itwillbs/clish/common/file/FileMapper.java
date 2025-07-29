@@ -18,5 +18,11 @@ public interface FileMapper {
 
 	void deleteAllFile(String idx);
 
+	// 썸네일 저장
+	void insertThumbnail(FileDTO file);
+
+	// 파일 한개 저장
+	void insertOneFile(FileDTO file);
+
 
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.clish.admin.mapper.AdminEventMapper">
+	 <select id="selectAllEvent" resultType="com.itwillbs.clish.admin.dto.EventDTO">
+	 	SELECT *
+	 	FROM EVENT
+	 	ORDER BY
+	 		event_created_at
+	 	LIMIT
+			#{startRow}
+			, #{listLimit}
+	 </select>
+	 
+	 <select id="selectCountEvent" resultType="int">
+	 	SELECT COUNT(*)
+	 	FROM EVENT
+	 </select>
+	 
+	<!-- 이벤트 등록 -->
+	<insert id="insertEvent">
+		INSERT
+		INTO
+			EVENT
+		VALUES (
+			#{eventIdx}
+			, #{eventTitle}
+			, #{eventDescription}
+			, #{eventStartDate}
+			, #{eventEndDate}
+			, 2
+			, now()
+		)
+	</insert>
+</mapper>  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
