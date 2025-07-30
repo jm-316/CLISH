@@ -62,7 +62,7 @@
 				<span id="birthCheckResult"></span>
 			</tr>
 	
-			<c:if test="${sessionScope.userType == 1}">
+			<c:if test="${sessionScope.sUT == 1}">
 				<tr>
 					<th><label for="userGender">성별</label></th>
 					<td>
@@ -107,7 +107,7 @@
 			</tr>
 	
 			<tr>
-				<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.userType == 1}">비상연락망</c:if><c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
+				<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.sUT == 1}">비상연락망</c:if><c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
 				<td><input type="text" name="userPhoneNumberSub" id="userPhoneNumberSub" value="${user.userPhoneNumberSub }"></td>
 			</tr>
 	
@@ -121,7 +121,7 @@
 				</td>
 			</tr>
 		</table>
-		<input type="hidden" name="userType" value="${sessionScope.userType}"/>
+		<input type="hidden" name="userType" value="${sessionScope.sUT}"/>
 		<p><button type="submit" id="submitBtn"> 정보변경</button></p>
 		</form>
 	
