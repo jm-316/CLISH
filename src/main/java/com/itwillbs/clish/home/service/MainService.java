@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.clish.admin.dto.SupportDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
-
+import com.itwillbs.clish.admin.dto.EventDTO;
 import com.itwillbs.clish.home.mapper.MainMapper;
 
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +52,10 @@ public class MainService {
 	public int getAnnouncementListCount(String searchKeyword) {
 		// TODO Auto-generated method stub
 		return mainMapper.selectAnnouncementsCount(searchKeyword);
+	}
+	public List<EventDTO> getEventList() {
+		// TODO Auto-generated method stub
+		return mainMapper.selectEventList();
 	}
 	
 		
