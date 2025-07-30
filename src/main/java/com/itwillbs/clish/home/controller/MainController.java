@@ -434,8 +434,9 @@ public class MainController {
 		UserDTO dbUser = userService.selectUserId(id);
 		return notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
-	@GetMapping("/event/eventHome")
-	public String eventHome(HttpSession session, Model model) {
+	
+//	@GetMapping("/event/eventHome")
+//	public String eventHome(HttpSession session, Model model) {
 //		String id = (String)session.getAttribute("sId");
 //		UserDTO dbUser = userService.selectUserId(id);
 //		if(id == null) {
@@ -447,10 +448,10 @@ public class MainController {
 //			model.addAttribute("msg", "이벤트에는 일반 회원만 참여할 수 있습니다.");
 //			return "commons/fail";
 //		}
-		List<EventDTO> eventList = mainService.getEventList();
-		model.addAttribute("eventList", eventList);
-		
-		return "event/event_home";
-	} 
+//		List<EventDTO> eventList = mainService.getEventList();
+//		model.addAttribute("eventList", eventList);
+//		
+//		return "event/event_home";
+//	} 
 
 }

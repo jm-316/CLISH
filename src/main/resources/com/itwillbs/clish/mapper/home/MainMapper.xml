@@ -156,7 +156,8 @@
 		OR
 			support_detail LIKE CONCAT('%', #{searchKeyword}, '%')		
 	</select>
-	<select id="selectEventList" resultType="com.itwillbs.clish.home.dto.EventDTO">
+	
+	<select id="selectEventList" resultType="com.itwillbs.clish.admin.dto.EventDTO">
 		SELECT *
 		FROM 
 			EVENT
