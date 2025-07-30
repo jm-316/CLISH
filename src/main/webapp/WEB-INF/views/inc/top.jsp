@@ -87,7 +87,7 @@
 		            <a href="/user/login" class="header-button button">로그인</a>
 				</c:when>
 				<c:otherwise>
-					<a class="header-button button" href="javascript:void(0)" onclick="logout()">라그아웃</a>  
+					<a class="header-button button" href="javascript:void(0)" onclick="logout()">로그아웃</a>
 				</c:otherwise>
 			</c:choose>
     	</div>
