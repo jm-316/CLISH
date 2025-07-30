@@ -39,30 +39,52 @@ public class MyPageService {
 	private final MyPageMapper myPageMapper;
 	private final FileMapper fileMapper;
 	private final NotificationService notificationService;
+	
 	@Autowired
 	private HttpSession session;
 	//-----------------------------------------------------
+	// 유저정보 불러오기
 	public UserDTO getUserInfo(UserDTO user) {
 		return myPageMapper.selectUserInfo(user);
 	}
 	
+	// 유저정보 저장하기
 	public int setUserInfo(UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.updateUserInfo(user);
 	}
 	
+	// 예약정보리스트 불러오기
 	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+		//예약완료 후 2시간 지나면 예약 삭제
+		//삭제해야할 예약 목록 리스트
+		List<Map<String, Object>> toCancelList = myPageMapper.selectCancel(user);
 		
-		List<ReservationDTO> toCancelList = myPageMapper.selectCancel(user);
-		
-		for(ReservationDTO toCancelReservation : toCancelList) {
-			int deleteCount = myPageMapper.deleteReservation(toCancelReservation);
+		// 예약삭제, 알림 발송
+		for(Map<String, Object> cancelList: toCancelList) {
+			ReservationDTO reservationDTO = new ReservationDTO();
+			// 삭제하는데 필요한 reservationIdx를 설정
+			reservationDTO.setReservationIdx((String)cancelList.get("reservationIdx"));
+			
+			int deleteCount = myPageMapper.deleteReservation(reservationDTO);
+			// 삭제한 예약이 있다면 알림 발송
 			if(deleteCount > 0) {
-			String userIdx = toCancelReservation.getUserIdx();
-			notificationService.send(userIdx, 3, "예약시간이 만료되어 예약이 자동으로 삭제됩니다" );
+				String userIdx = (String)cancelList.get("userIdx");
+						
+				// 알림 발송 메세지 작성
+				String classTitle = (String)cancelList.get("classTitle");
+//				System.out.println("강의명 : " + classTitle);
+				String reservationMembers = cancelList.get("reservationMembers").toString();
+//				System.out.println("예약인원 : " + reservationMembers);
+				String reservationCom = ((LocalDateTime)cancelList.get("reservationCom")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//				System.out.println("예약한시간 : " + reservationCom);
+				String reservationClassDate = ((LocalDateTime)cancelList.get("reservationClassDate")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//				System.out.println("예약일 : " + reservationClassDate );
+				notificationService.send(userIdx, 3, 
+						reservationCom + "에 예약한 " + classTitle + "의 " + reservationClassDate + "수업 " + reservationMembers + "명 예약이 예약시간이 만료되어 자동으로 삭제됩니다" );
 			}
 		}
-	
+		// 삭제후 예약 목록 불러오기
 		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
 	}
 	

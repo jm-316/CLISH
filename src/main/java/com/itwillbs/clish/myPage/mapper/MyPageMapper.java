@@ -89,7 +89,7 @@ public interface MyPageMapper {
 
 	void updateReview(ReviewDTO reviewDTO);
 
-	List<ReservationDTO> selectCancel(UserDTO user);
+	List<Map<String, Object>> selectCancel(UserDTO user);
 
 
 

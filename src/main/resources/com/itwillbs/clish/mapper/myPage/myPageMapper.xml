@@ -53,16 +53,29 @@
 	</select>
 	
 	<!-- 취소할 예약정보 선택 -->
-	<select id="selectCancel" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO"> 
-		select *
+	<select id="selectCancel" resultType="Map"> 
+		SELECT
+			r.reservation_idx as reservationIdx
+			, r.user_idx as userIdx
+			, r.reservation_members as reservationMembers
+			, r.reservation_class_date as reservationClassDate
+			, r.reservation_com as reservationCom
+			, r.reservation_status as reservationStatus
+			, c.class_title as classTitle
+			, c.start_date as startDate
+			, c.end_date as endDate
+			, c.class_type as classType
 		FROM 
-			RESERVATION
+			RESERVATION r
+		LEFT JOIN
+			CLASS c
+			ON r.class_idx = c.class_idx
 		WHERE
-			user_idx = #{userIdx}
+			r.user_idx = #{userIdx}
 			AND
-			reservation_status = 1
+			r.reservation_status = 1
 			AND
-			NOW() - INTERVAL 2 HOUR > reservation_com 
+			NOW() - INTERVAL 2 HOUR > r.reservation_com 
 		
 	</select>
 	
@@ -294,17 +307,19 @@
 			, #{listLimit}
 	</select>
 	
-	
+	<!-- 알림수 확인 -->
 	<select id="selectCountNotification" resultType="int">
 		SELECT count(*)
 		FROM NOTIFICATION
 		WHERE user_idx = #{userIdx}
 	</select>
 	
+	<!-- 알림 리스트 불러오기 -->
 	<select id="selectAllNotification" resultType="com.itwillbs.clish.admin.dto.NotificationDTO">
 		SELECT *
 		FROM NOTIFICATION
 		WHERE user_idx = #{user.userIdx}
+		ORDER BY user_notice_created_at desc
 		LIMIT
 			#{startRow}
 			, #{listLimit}
