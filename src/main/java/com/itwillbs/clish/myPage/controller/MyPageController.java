@@ -98,7 +98,7 @@ public class MyPageController {
 			response.put("msg", "사용불가능 닉네임");
 			response.put("status", "fail");
 			return ResponseEntity.ok(response);
-		} else {
+		} else { // 닉네임 중복이 없는 경우
 			response.put("msg", "사용가능 닉네임");
 			response.put("status", "success");
 			response.put("repName", userDTO.getUserRepName());
@@ -106,14 +106,17 @@ public class MyPageController {
 		}
 	}
 	
+	//핸드폰중복 확인 
 	@GetMapping("/check/userPhoneNumber")
 	public ResponseEntity<Map<String, String>> checkPhoneNumber(UserDTO userDTO) {
-		Map<String, String> response = new HashMap<>();
-		
+		// 리턴받을 맵객체
+		Map<String, String> response = new HashMap<>(); 
+		// 입력받은 번호로 유저정보 검색
 		UserDTO user = myPageService.checkPhoneNumber(userDTO);
+		// 핸드폰번호 중복확인
 		if(userService.isUserPhoneExists(userDTO.getUserPhoneNumber())) {
-			
-			if(user.getUserIdx().equals(userDTO.getUserIdx())) {
+			// 중복일경우
+			if(user.getUserIdx().equals(userDTO.getUserIdx())) { // 현재 내가 사용중인 번호인 경우
 				System.out.println("idx일치");
 				response.put("msg", "사용가능 번호");
 				response.put("status", "success");
@@ -123,7 +126,7 @@ public class MyPageController {
 			response.put("msg", "사용불가능 번호");
 			response.put("status", "fail");
 			return ResponseEntity.ok(response);
-		} else {
+		} else { // 중복이 없을때
 			response.put("msg", "사용가능 번호");
 			response.put("status", "success");
 			return ResponseEntity.ok(response);
@@ -134,11 +137,13 @@ public class MyPageController {
 	@PostMapping("/change_user_info")
 	public String mypage_change_user_info(UserDTO user, HttpSession session,
 			@RequestParam("newPasswordConfirm") String new_password) {
+		
 		user.setUserId((String)session.getAttribute("sId"));
 		UserDTO user1 = myPageService.getUserInfo(user); // 기존 유저 정보 불러오기
 
+		//입력받은 이메일과 기존의 이메일이 일치한다면
 		if(!user1.getUserEmail().equals(user.getUserEmail())){
-			user.setNewEmail(user.getUserEmail());
+			user.setNewEmail(user.getUserEmail()); //새이메일에 기존이메일 정보 추가
 		}
 		
 		if(!new_password.isEmpty()) { // 새비밀번호가 있다면 비밀번호 새로지정
@@ -159,31 +164,39 @@ public class MyPageController {
 	public String payment_info(HttpSession session, Model model,UserDTO user
 			, @RequestParam(defaultValue = "1") int reservationPageNum
 			, @RequestParam(defaultValue = "1") int paymentPageNum) {
+		//세션에 저장된 sId이용 유저정보 불러오기
 		String sId = (String)session.getAttribute("sId");
 		user.setUserId(sId);
 		user = myPageService.getUserInfo(user);
+		// 페이징에 필요한 변수선언
 		int listLimit = 5;
 		int reservationListCount = myPageService.getReservationCount(user);
 		int paymentListCount = myPageService.getPaymentCount(user);
 		
+		// 예약목록이 존재한다면
 		if(reservationListCount > 0 ) {
+			// 예약페이지 정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reservationListCount, reservationPageNum, 3);
-			
+			// pageNum에 이상한 파라미터가 넘어올 때
 			if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
+			 
 			model.addAttribute("reservationPageInfo", pageInfoDTO);
-
+			
+			// 예약목록 불러오기
 			List<ReservationDTO> reservationList = myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user);
+			// 예약목록 정보 저장
 			model.addAttribute("reservationList",reservationList);
 
 		}
-		
+		// 결제목록이 존재한다면
 		if(paymentListCount > 0) {
+			//결제페이지정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
-			
+			// pageNum에 이상한 파라미터가 넘어올 때
 			if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
@@ -191,11 +204,13 @@ public class MyPageController {
 			}
 			
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
-
+			//결제 정보 불러오기
 			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user);
+			//결제시간정보 보기좋게 바꾸기
 			for(PaymentInfoDTO payment : paymentList) {
 				payment.setPayTime(payment.getPayTime());
 			}
+			
 			model.addAttribute("paymentList",paymentList);
 		}
 		model.addAttribute("user",user);

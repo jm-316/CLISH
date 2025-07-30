@@ -176,7 +176,7 @@
 	        changeBtn.style.display = "none";
 	    });
 	    
-		// 닉네임 중복체크
+		// 닉네임창 벗어나면 중복체크 실행
 		userRepNameInput.addEventListener('blur', () => {
 		    let currentRepName = userRepNameInput.value.trim();
 		    if (currentRepName.length > 0) {
@@ -187,56 +187,8 @@
 		    }
 		});
 		
-		if(pwInput) {
-			pwInput.onblur = function () {
-				const pwd = this.value;
-				const result = document.getElementById("checkPasswdResult");
-				
-				if(pwd.length > 0 ){					
-					const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{8,16}$/;
-					if(!pattern.test(pwd)) {
-						result.innerText = "영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!";
-						result.style.color = "red";
-						isPwOk = false;
-					} else{
-						result.innerText = pwd.length >= 12 ? "안전" : (pwd.length >= 10 ? "보통" : "위험");
-						result.style.color = pwd.length >= 12 ? "green" : (pwd.length >= 10 ? "orange" : "red");
-						isPwOk = true;
-					}
-				} else {
-					isPwOk = true;
-					result.innerText = "";
-				}
-				updateSubmitButton();
-			};
-		}
-	
-		// 5. 비밀번호2 1과의 동일한 값 확인
-		if(pwInput && pwConf) {
-			pwConf.onblur = function () {
-				const pwd = pwInput.value;
-				const pwd2 = this.value;
-				const result = document.getElementById("checkPasswd2Result");
-				if(pwd.length > 0 || pwd2.length > 0){
-					if(pwd === pwd2) {
-						result.innerText = "비밀번호 확인 완료!";
-						result.style.color = "green";
-						isPwMatchOk = true;
-					} else{
-						result.innerText = "비밀번호 다름!";
-						result.style.color = "red";
-						isPwMatchOk = false;
-					}
-				} else {
-					isPwMatchOk = true;
-					result.innerText = "";
-				}
-				updateSubmitButton();
-			};
-		}
-		
 		// 닉네임 중복체크 함수
-		function repNameCheck(userRepName, userIdx) {
+		function repNameCheck(userRepName, userIdx) { //사용중인 닉네임 체크 하기위해 userIdx, 입력된 userRepName 추가
 			$.ajax({
 				type: "GET",
 				url: "/myPage/check/repName",
@@ -244,16 +196,15 @@
 					userIdx: userIdx,
 					userRepName: userRepName
 				},
-				dataType: "json" // 응답 데이터를 무조건 JSON 객체로 취급(= 실제 데이터 타입 자동 판별)
+				dataType: "json"
 			}).done(function(response) {
-				// 버튼 클릭할 때마다 테이블 새로 생성
 				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
 				$("#checkRepNameResult").html(msg);
 				if(response.status == 'fail'){
-					isRepNameOk = false;
+					isRepNameOk = false; //사용불가
 				} else {
 					userRepNameInput.value = response.repName;
-					isRepNameOk = true;
+					isRepNameOk = true; // 사용가능
 				}
 					updateSubmitButton();
 			}).fail(function(response){
@@ -262,6 +213,56 @@
 				updateSubmitButton();
 			})
 		}
+		
+		// 새비밀번호 입력창 벗어날시 실행
+		if(pwInput) {
+			pwInput.onblur = function () {
+				const pwd = this.value;
+				const result = document.getElementById("checkPasswdResult");
+				
+				if(pwd.length > 0 ){	// 새비밀번호에 입력값이 있을때			
+					const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{8,16}$/;
+					if(!pattern.test(pwd)) { // 패턴불일치
+						result.innerText = "영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!";
+						result.style.color = "red";
+						isPwOk = false; // 정보수정 불가
+					} else{ // 패턴일치
+						result.innerText = pwd.length >= 12 ? "안전" : (pwd.length >= 10 ? "보통" : "위험");
+						result.style.color = pwd.length >= 12 ? "green" : (pwd.length >= 10 ? "orange" : "red");
+						isPwOk = true; // 정보수정 가능
+					}
+				} else { // 입력값이 없을떄 
+					isPwOk = true; // 정보수정 가능
+					result.innerText = "";
+				}
+				updateSubmitButton(); // 유효성검사
+			};
+		}
+	
+		// 5. 비밀번호2 1과의 동일한 값 확인
+		if(pwInput && pwConf) { 
+			pwConf.onblur = function () { //새 비밀번호 확인창에서 벗어날때 실행
+				const pwd = pwInput.value;
+				const pwd2 = this.value;
+				const result = document.getElementById("checkPasswd2Result");
+				if(pwd.length > 0 || pwd2.length > 0){ // 둘중 하나라도 입력값이 존재한다면
+					if(pwd === pwd2) {
+						result.innerText = "비밀번호 확인 완료!";
+						result.style.color = "green";
+						isPwMatchOk = true; // 정보수정 가능
+					} else{
+						result.innerText = "비밀번호 다름!";
+						result.style.color = "red";
+						isPwMatchOk = false; // 정보수정 불가
+					}
+				} else {
+					isPwMatchOk = true;  
+					result.innerText = "";
+				}
+				updateSubmitButton();
+			};
+		}
+		
 		
 		// 6. 전화번호 중복 & 정규표현식 체크
 		phoneInput.addEventListener('blur', function() {

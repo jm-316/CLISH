@@ -61,8 +61,8 @@
 								<fmt:parseDate var="reservationCom" 
 									value="${reserve.reservationCom}"
 									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
+									type="day" />
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd "/>
 							</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
@@ -80,11 +80,12 @@
 							<td>${user.userName}</td>
 							<td>${reserve.classIdx}</td>
 							<td>
-								<fmt:parseDate var="reservationClassDate" 
-									value="${reserve.reservationClassDate}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/>
+							${reserve.reservationClassDate }
+<%-- 								<fmt:parseDate var="reservationClassDate"  --%>
+<%-- 									value="${reserve.reservationClassDate}" --%>
+<%-- 									pattern="yyyy-MM-dd'T'HH:mm" --%>
+<%-- 									type="both" /> --%>
+<%-- 								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/> --%>
 							</td>
 <%-- 							<td>${reserve.reservationClassDate}</td> --%>
 							<td>
@@ -92,7 +93,7 @@
 									value="${reserve.reservationCom}"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd"/>
 							</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td></td><td></td>
@@ -151,11 +152,13 @@
 		        		<td>${payment.status }</td>
 						<td>${payment.userName}</td>
 						<td>${payment.classTitle}</td>
+<%-- 						<td>${payment.reservationClassDate }</td> --%>
 						<fmt:parseDate var="reservationClassDate" 
 									value="${payment.reservationClassDate }"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
+						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/></td>
+						<%-- 현재날짜, 예약일자 계산, 예약일이 3일 미만으로 남았을 경우 취소 불가능 --%>
 						<c:set var="reservationTime" value="${reservationClassDate.time}" />
 						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" />
 						<td>${payment.payTimeFormatted} </td>
