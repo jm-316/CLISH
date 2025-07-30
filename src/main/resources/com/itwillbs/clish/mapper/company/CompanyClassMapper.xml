@@ -35,6 +35,15 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<!-- 클래스별 예약된 인원 수 확인 -->
+	<select id="selectReservedCountByClassIdx" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			RESERVATION
+		WHERE
+			CLASS_IDX = #{classIdx}
+	</select>
+	
 	<!-- 전체강의 조회 -->
 	<select id="selectAllClassList" resultType="map">
 	    SELECT 
@@ -45,6 +54,7 @@
 	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
 	    WHERE C.USER_IDX = #{userIdx}
+	    AND C.CLASS_STATUS IN (2, 3)
 	</select>
 	
 	<!-- 단기 & 정기강의 조회 -->
@@ -58,6 +68,7 @@
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
 		<where>
 			C.USER_IDX = #{userIdx}
+			AND C.CLASS_STATUS IN (2, 3)
 		  
 			<if test="type == 'short'">
 				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) <= 2]]>
