@@ -24,6 +24,9 @@ public interface CompanyClassMapper {
 	// 로그인된 userId를 기반으로 해당 회원의 고유 userIdx 반환(기업회원 식별용)
 	String selectUserIdxByUserId(String userId);
 
+	// classIdx를 기준으로 클래스별 예약된 인원 수 확인
+	int selectReservedCountByClassIdx(String classIdx);
+	
 	// 전체 강의 조회
 	List<Map<String, Object>> selectAllClassList(String userIdx);
 	
@@ -44,6 +47,7 @@ public interface CompanyClassMapper {
 	
 	// 클래스 문의 페이지 - 문의 답변
 	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
+	
 
 	
 	

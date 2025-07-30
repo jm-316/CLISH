@@ -19,8 +19,7 @@ public class ReservationDTO {
 	private String userIdx;
 	private int reservationMembers;
 	
-//	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDate reservationClassDate;
+	private LocalDateTime reservationClassDate;
 	
 	private LocalDateTime reservationCom;
 	private String classIdx;

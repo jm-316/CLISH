@@ -78,6 +78,25 @@
             background-color: #f5f5f5;
             cursor: pointer;
         }
+        
+	   /* 예약자 버튼 (흰 배경 + 주황 테두리 + 주황 텍스트) */
+		.reserved-btn {
+		    background-color: white;
+		    border: 1px solid #FF7601;
+		    color: #FF7601;
+		    padding: 5px 12px;             /* 살짝 더 넉넉하게 */
+		    border-radius: 10px;
+		    font-weight: bold;
+		    font-size: 13px;               /* 글자가 너무 크지 않게 */
+		    min-width: 110px;               /* 버튼 너비 고정 - 이게 핵심! */
+		    text-align: center;
+		    white-space: nowrap;          /* 줄바꿈 방지 */
+		    box-sizing: border-box;
+		    cursor: pointer;
+		}
+		.reserved-btn:hover {
+			background-color: #fff3e0;
+		}
     </style>
 </head>
 <body>
@@ -145,7 +164,7 @@
                 <table class="class-table">
                     <thead>
                         <tr>
-                            <th>썸네일</th>
+                            <th>예약자 확인</th>
                             <th>제목</th>
                             <th>대분류</th>
                             <th>소분류</th>
@@ -161,19 +180,13 @@
                             <c:if test="${classItem.class_status != 1}">
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
-                                	<!-- 썸네일 -->
-<!-- 	                                <td> -->
-<%-- 	                                    <c:if test="${not empty classItem.class_pic1}"> --%>
-<%-- 	                                        <img src="${classItem.class_pic1}" class="thumbnail-img"> --%>
-<%-- 	                                    </c:if> --%>
-<!-- 	                                </td> -->
-									<!-- 썸네일, 열 -->
+									<!-- '예약자' 버튼-->
+									<!-- 버튼: 예약자 수 / 총 정원 -->
 									<td>
-									  <c:if test="${not empty classItem.class_pic1}">
-									    <img src="${pageContext.request.contextPath}/resources/upload/${classItem.class_pic1}" 
-									         style="width: 100px; height: 80px; object-fit: cover;" 
-									         alt="썸네일">
-									  </c:if>
+									  <button class="reserved-btn"
+									          onclick="event.stopPropagation(); alert('예약자 모달 예정')">
+									    예약자 ${classItem.reservedCount}/${classItem.class_member}
+									  </button>
 									</td>
                                     <td>${classItem.class_title}</td>
                                     <td>${classItem.parent_category_name}</td>

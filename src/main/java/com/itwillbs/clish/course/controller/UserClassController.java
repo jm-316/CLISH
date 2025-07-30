@@ -1,5 +1,7 @@
 package com.itwillbs.clish.course.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +38,7 @@ import com.itwillbs.clish.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("course")
+@RequestMapping("/course")
 @RequiredArgsConstructor
 public class UserClassController {
 	private final CompanyClassService companyClassService;
@@ -163,16 +166,22 @@ public class UserClassController {
 	}
 	
 	// 예약 정보 INSERT 및 myPage 이동
-	@GetMapping("user/reservationInfo")
-	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO) {
+	@GetMapping("/user/reservationInfo")
+	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO,
+			@RequestParam("reservationClassDateRe") Date date) {
 		
-		System.out.println("예약일시: " + reservationDTO.getReservationClassDate());
+		 // 2) java.sql.Date → LocalDate 변환
+	    LocalDate localDate = date.toLocalDate();
+
+	    // 3) LocalDate → LocalDateTime 변환 (시간을 00:00:00 으로 세팅)
+	    LocalDateTime localDateTime = localDate.atStartOfDay();
 		
 		// reservationIdx 생성
 		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 		String reservationIdx = "RE" + now;
 		
-		reservationDTO.setReservationIdx(reservationIdx); // reservationIdx
+		reservationDTO.setReservationClassDate(localDateTime); // 예약일자
+		reservationDTO.setReservationIdx(reservationIdx); // 예약번호
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
 	

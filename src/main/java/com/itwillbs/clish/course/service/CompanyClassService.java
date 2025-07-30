@@ -79,6 +79,11 @@ public class CompanyClassService {
 		return companyClassMapper.selectUserIdxByUserId(userId);
 	}
 	
+	// classIdx를 기준으로 클래스별 예약된 인원 수 확인
+	public int getReservedCount(String classIdx) {
+		return companyClassMapper.selectReservedCountByClassIdx(classIdx);
+	}
+	
 	// 전체 강의 조회
 	public List<Map<String, Object>> getAllClassList(String userIdx) {
 		return companyClassMapper.selectAllClassList(userIdx);

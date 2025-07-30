@@ -69,27 +69,34 @@ public class CompanyClassController {
 	@GetMapping("/myPage/classManage")
 	// @RequestParam(required = false) String type - 쿼리스트링 type=short|regular 없으면 전체강의 조회
     public String classManageForm(@RequestParam(required = false) String type, Model model, HttpSession session) {
-		 String userId = (String) session.getAttribute("sId"); // 로그인된 아이디
-	     String userIdx = companyClassService.getUserIdxByUserId(userId); // user_idx 조회
+		// 1. 로그인된 기업회원의 userIdx 조회
+		 String userId = (String) session.getAttribute("sId");
+	     String userIdx = companyClassService.getUserIdxByUserId(userId);
 	     
-	     System.out.println("**userIdx: " + userIdx);
-	     System.out.println("**type: " + type);
-		
 		// 클래스 개설되는지 확인용(임시) - adminClassService => companyClassService 로 잠시 변경
 //		List<Map<String , Object>> classList = companyClassService.getAllClassList();
 		// 관리자 승인 후 목록 확인이 되게 adminClassSerive 로 적음
-		List<Map<String , Object>> classList = adminClassService.getClassList();
-		
-		if (type == null || type.isBlank()) {
-			// 전체
-		    classList = companyClassService.getAllClassList(userIdx);
-		} else if (type.equals("short") || type.equals("regular")) {
-			// 단기 & 정기
-		    classList = companyClassService.getClassListByType(userIdx, type);
-		} else {
-		    // 혹시나 잘못된 type 들어온 경우 대비
-		    classList = companyClassService.getAllClassList(userIdx);
-		}
+	     // 2. 클래스 목록 조회 (type 유무에 따라 분기)
+	     List<Map<String, Object>> classList;
+
+	     if (type == null || type.isBlank()) {
+	         classList = companyClassService.getAllClassList(userIdx);
+	     } else if (type.equals("short") || type.equals("regular")) {
+	         classList = companyClassService.getClassListByType(userIdx, type);
+	     } else {
+	         classList = companyClassService.getAllClassList(userIdx);
+	     }
+
+	     // 3. 각 클래스에 대해 예약자 수 조회해서 Map에 넣기
+	     for (Map<String, Object> classItem : classList) {
+	         String classIdx = (String) classItem.get("class_idx");
+
+	         // 예약자 수 조회
+	         int reservedCount = companyClassService.getReservedCount(classIdx);
+
+	         // JSP에서 ${classItem.reservedCount}로 사용할 수 있도록 Map에 추가
+	         classItem.put("reservedCount", reservedCount);
+	     }
 		
 		model.addAttribute("classList", classList);
 		
