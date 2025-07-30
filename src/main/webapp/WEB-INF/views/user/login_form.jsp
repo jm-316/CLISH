@@ -20,7 +20,7 @@
 		border: none;
 	}
 	#login-form > input[type="submit"] {
-		margin: 0 auto;
+		margin: 10 auto;
 	}
 </style>
 </head>
@@ -31,11 +31,25 @@
 	<main>
 		<section id="login-form">
 			<h1>로그인</h1>
+			<c:if test="${not empty errorMsg}">
+			    <script>
+			        alert("${errorMsg}");
+			    </script>
+			</c:if>
 			<form action="${pageContext.request.contextPath}/user/login" method="post">
 				<input type="text" name="userId" value = "${cookie.rememberId.value }" placeholder="아이디"><br>
 				<input type="password" name="userPassword" placeholder="패스워드"><br>
 				<input type="checkbox" name="rememberId" <c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억하기<br>
 				<input type="submit" value="로그인">
+				<c:if test="${sessionScope.loginFailCount >= 3}">
+					<div class="captcha-area" style="margin-top: 24px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+					    <label for="captcha">자동입력방지</label><br>
+					    <img src="${pageContext.request.contextPath}/user/captcha" id="captchaImg"
+					         alt="CAPTCHA 이미지"
+					         onclick="this.src='${pageContext.request.contextPath}/user/captcha?'+Math.random();" /><br>
+					    <input type="text" id="captcha" name="captcha" placeholder="위의 문자 입력(이미지 클릭시 새로고침)" required style="width:120px;">
+					</div>
+				</c:if>
 			</form>
 		</section>
 	</main>
