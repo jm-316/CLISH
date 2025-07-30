@@ -99,7 +99,7 @@
 	    ) VALUES (
 	        #{inqueryIdx},
 	        #{userIdx},
-	        #{inqueryType},
+	        1,
 	        #{inqueryTitle},
 	        #{inqueryDetail},
 	        1,

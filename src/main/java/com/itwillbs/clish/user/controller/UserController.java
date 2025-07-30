@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
+import com.wf.captcha.SpecCaptcha;
 
 import lombok.RequiredArgsConstructor;
 
@@ -116,8 +117,13 @@ public class UserController {
 	@GetMapping("/login")
 	public String showLoginForm(HttpServletRequest request, HttpSession session) {
 		String lastAddress =  request.getHeader("Referer");
+		
 		// 세션에 로그인 클릭한 페이지 저장
-		session.setAttribute("lastAddress", lastAddress);
+		if(lastAddress != null
+	        && !lastAddress.contains("/user/login")
+	        && !lastAddress.contains("/user/join")) {
+	        session.setAttribute("lastAddress", lastAddress);
+	    }
 		
 	    return "user/login_form";
 	}
@@ -125,28 +131,48 @@ public class UserController {
 	@PostMapping("/login")
 	public String login(
 	        @ModelAttribute UserDTO userDTO,
+	        @RequestParam(value = "captcha", required = false) String inputCaptcha,
 	        @RequestParam(value = "rememberId", required = false) String rememberId,
 	        HttpServletResponse response, HttpSession session, RedirectAttributes redirect) {
-	    
+		
 	    UserDTO dbUser = userService.selectUserId(userDTO.getUserId());
 	    String lastAddress = (String) session.getAttribute("lastAddress");
+	    String sessionCaptcha = (String) session.getAttribute("captcha");
+	    Integer failCount = (Integer) session.getAttribute("loginFailCount"); // 세션에 로그인 시도 횟수
 	    
-	    if (dbUser == null || !userService.matchesPassword(userDTO.getUserPassword(), dbUser.getUserPassword())) {
-	        redirect.addFlashAttribute("errorMsg", "비밀번호 불일치");
-	        return "redirect:/user/login";
+	    if(failCount == null) failCount = 0;
+	    
+	    if(dbUser == null || !userService.matchesPassword(userDTO.getUserPassword(), dbUser.getUserPassword())) {
+	    	redirect.addFlashAttribute("errorMsg", "아이디 비밀번호를 확인해주세요");
+	    	session.setAttribute("loginFailCount", failCount + 1);
+	    	return "redirect:/user/login";
 	    }
 
 	    if(Objects.equals(dbUser.getUserStatus(), 3)) {
 	        redirect.addFlashAttribute("errorMsg", "탈퇴한 회원입니다.");
+	        session.setAttribute("loginFailCount", failCount + 1);
 	        return "redirect:/user/login";
 	    }
-
+	    
+	    if(failCount >= 3) {
+	    	// 캡차 검증
+		    if(sessionCaptcha == null || !sessionCaptcha.equals(inputCaptcha.trim().toLowerCase())) {
+		    	redirect.addFlashAttribute("errorMsg", "자동입력방지 문자가 올바르지 않습니다.");
+		    	session.setAttribute("loginFailCount", failCount + 1);
+		    	return "redirect:/user/login";
+		    }
+		    // 캡차 사용 후 값 삭제
+		    session.removeAttribute("captcha");
+	    }
+	    
+	    // 세션 값 저장
 	    session.setAttribute("sUT", dbUser.getUserType());
 	    session.setAttribute("sId", dbUser.getUserId());
 	    session.setAttribute("sIdx", dbUser.getUserIdx());
 	    session.setAttribute("loginUser", dbUser);
 	    session.setMaxInactiveInterval(60 * 60 * 24);
-
+	    
+	    // 쿠키에 아이디 기억하기
 	    Cookie cookie = new Cookie("rememberId", dbUser.getUserId());
 	    cookie.setPath("/");
 	    if(rememberId != null) {
@@ -155,12 +181,30 @@ public class UserController {
 	        cookie.setMaxAge(0);
 	    }
 	    response.addCookie(cookie);
-
+	    
+	    session.setAttribute("loginFailCount", 0); // 로그인 성공시 failCount 리셋
+	    
 	    return "redirect:" + lastAddress;
 	}
 	
-	
-	
+	 @GetMapping("/captcha")
+	 public void captcha(HttpServletResponse response, HttpSession session) throws IOException {
+	        // 1. 캡차 객체 생성 (width, height, 문자 개수)
+	        SpecCaptcha captcha = new SpecCaptcha(130, 48, 5);
+
+	        // 2. 문자값을 세션에 저장
+	        session.setAttribute("captcha", captcha.text().toLowerCase());
+
+	        // 3. 응답 헤더 설정
+	        response.setContentType("image/png");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setDateHeader("Expire", 0);
+
+	        // 4. 이미지 출력
+	        captcha.out(response.getOutputStream());
+	 }
+	 
 //	@PostMapping("/saveEmailSession")
 //	public String saveEmailSession(@RequestParam("user_email") String userEmail,
 //	                               HttpSession session, RedirectAttributes redirect) {
