@@ -23,16 +23,17 @@
 	<div class="main">
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 		
-		<form action="reservationInfo" method="get">
+		<form action="/course/user/reservationInfo" method="get">
 			<div class="section-container">
 			    <h1>클래스 예약 정보입력 페이지</h1>
 			    <h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 			    
-    			날짜: <input type="date" name="reservationClassDate" required /><br/>
+    			날짜: <input type="date" name="reservationClassDateRe" required /><br/>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br/>
 			    
 			    <input type="text" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
 			    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
+			    
 			    <section id="classDetail">
 					${classInfo.classContent } <hr>
 					<h1>클래스상세정보 이미지 표시란</h1>
