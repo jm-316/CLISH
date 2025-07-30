@@ -50,6 +50,7 @@ public class UserClassController {
 			@RequestParam int classType,
 			@RequestParam(required = false)String categoryIdx) {
 //		System.out.println("아무거나 송출 " + classType + " 다음거 " + categoryName);
+		// session 객체에 있는 userId로 userIdx를  
 		String userId = (String)session.getAttribute("sId");
 		UserDTO user = userService.selectUserId(userId);
 		
@@ -117,7 +118,8 @@ public class UserClassController {
 	public String classReservation(@RequestParam String classIdx, Model model, HttpSession session, 
 			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO,
 			@RequestParam int classType,
-			@RequestParam(required = false)String categoryIdx) {
+			@RequestParam(required = false)String categoryIdx,
+			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userClassService.getUserIdx(userId); 
@@ -127,6 +129,25 @@ public class UserClassController {
 		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
 		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
+		
+		int listLimit = 2;
+		int reviewListCount = userClassService.getClassReviewCount(classIdx);
+		
+		if(reviewListCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+			if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/myReview"); 
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<ReviewDTO> reviewList = userClassService.getClassReview(pageInfoDTO.getStartRow(), listLimit, classIdx);
+			
+			model.addAttribute("reviewList", reviewList);
+		}
 		
 		reservationDTO.setClassIdx(classIdx);
 		reservationDTO.setUserIdx(userIdx);
@@ -136,10 +157,12 @@ public class UserClassController {
 		model.addAttribute("classList", classList);
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("curriculumList", curriculumList);
 		
 		return "/course/user/course_reservation";
 	}
 	
+	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("myPage/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO) {
 		
@@ -152,8 +175,10 @@ public class UserClassController {
 		reservationDTO.setReservationIdx(reservationIdx); // reservationIdx
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
+		
+		System.out.println("reservationDTO : " + reservationDTO);
 	
-		return "redirect:/clish/myPage/myPage_payment";
+		return "redirect:/myPage/myPage_payment";
 	}
 	
 }
