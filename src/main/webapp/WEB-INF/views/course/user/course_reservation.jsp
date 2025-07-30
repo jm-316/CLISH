@@ -23,12 +23,12 @@
 	<div class="main">
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 		
-		<form action="myPage/reservationInfo" method="get">
+		<form action="reservationInfo" method="get">
 			<div class="section-container">
 			    <h1>클래스 예약 정보입력 페이지</h1>
 			    <h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 			    
-    			날짜: <input type="date" name="reservationClassDate" required /><br/>
+    			날짜: <input type="datetime-local" name="reservationClassDate" required /><br/>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br/>
 			    
 			    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
@@ -90,42 +90,16 @@
 						</tr>
 						</table>
 					</c:forEach>
-					<section id="classReviewPageList">
-						<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
-							<input type="button" value="이전" 
-								onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${pageInfo.pageNum - 1}#reView'" 
-								<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>
-							>
-							
-							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-								<c:choose>
-									<c:when test="${i eq pageInfo.pageNum}">
-										<strong>${i}</strong>
-									</c:when>
-									<c:otherwise>
-										<a href="/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${i}#reView">${i}</a>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							
-							<input type="button" value="다음" 
-								onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${pageInfo.pageNum + 1}#reView'" 
-								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>
-							>
-						</c:if>
-					</section>
 				</section>
+			</div>
 		
-		
-		</div >
-		
-		<div style="text-align: center; padding-top: 30px; display: flex;">
-			<c:if test="${not empty param.classType}">
-	           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-	           	클래스 목록</button>
-			</c:if>
-            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">예약 확정</button>
-		</div>
+			<div style="text-align: center; padding-top: 30px; display: flex;">
+				<c:if test="${not empty param.classType}">
+		           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		           	클래스 목록</button>
+				</c:if>
+	            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">예약 확정</button>
+			</div>
 		</form>
 	</div>
 

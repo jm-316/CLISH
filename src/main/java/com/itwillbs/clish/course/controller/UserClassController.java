@@ -163,7 +163,7 @@ public class UserClassController {
 	}
 	
 	// 예약 정보 INSERT 및 myPage 이동
-	@GetMapping("myPage/reservationInfo")
+	@GetMapping("user/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO) {
 		
 		System.out.println("예약일시: " + reservationDTO.getReservationClassDate());
@@ -175,10 +175,8 @@ public class UserClassController {
 		reservationDTO.setReservationIdx(reservationIdx); // reservationIdx
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
-		
-		System.out.println("reservationDTO : " + reservationDTO);
 	
-		return "redirect:/myPage/myPage_payment";
+		return "redirect:/clish/myPage/myPage_payment";
 	}
 	
 }
