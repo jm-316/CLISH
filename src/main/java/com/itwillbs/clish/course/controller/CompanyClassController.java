@@ -39,6 +39,7 @@ import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
+import com.itwillbs.clish.myPage.dto.ReservationDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -285,6 +286,18 @@ public class CompanyClassController {
 
 	    // 삭제 후 다시 클래스 관리 페이지로 이동
 	    return "redirect:/company/myPage/classManage";
+	}
+	
+	// 클래스 예약자 목록 조회
+	@PostMapping("/myPage/classReservationList")
+	public String classReservationList(@RequestParam("classIdx") String classIdx, Model model) {
+		// 서비스에서 List<Map<String, Object>>로 받음
+	    List<Map<String, Object>> reservationList = companyClassService.selectReservationList(classIdx);
+	    
+	    // 모델에 예약자 목록 담음
+	    model.addAttribute("reservationList", reservationList);
+	    
+	    return "/company/companyClass/classReservationList";
 	}
 	
 	// ----------------------------------------------------------------------------------------------

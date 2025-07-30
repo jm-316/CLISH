@@ -21,6 +21,7 @@ import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
+import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.mapper.CompanyClassMapper;
@@ -119,6 +120,11 @@ public class CompanyClassService {
 		companyClassMapper.deleteClass(classIdx);
 		
 	}
+	
+	// 클래스 예약자 목록 조회
+	public List<Map<String, Object>> selectReservationList(String classIdx) {
+		return companyClassMapper.selectReservationList(classIdx);
+	}
 
 	// 파일 삭제
 	public void removeFile(FileDTO fileDTO) {
@@ -147,6 +153,7 @@ public class CompanyClassService {
 		// 알림 서비스 없이 바로 return
 		return result;
 	}
+
 
 
 	

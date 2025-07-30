@@ -180,13 +180,12 @@
                             <c:if test="${classItem.class_status != 1}">
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
-									<!-- '예약자' 버튼-->
 									<!-- 버튼: 예약자 수 / 총 정원 -->
 									<td>
-									  <button class="reserved-btn"
-									          onclick="event.stopPropagation(); alert('예약자 모달 예정')">
-									    예약자 ${classItem.reservedCount}/${classItem.class_member}
-									  </button>
+										<button type="button" class="reserved-btn"
+										        onclick="openReservationModal('${classItem.class_idx}')">
+										  예약자 ${classItem.reservedCount}/${classItem.class_member}
+										</button>
 									</td>
                                     <td>${classItem.class_title}</td>
                                     <td>${classItem.parent_category_name}</td>
@@ -222,19 +221,55 @@
             </div>
         </div>
     </div>
-
+	
+	<!-- 예약자 모달창 -->
+	<div id="reservationModal" style="display:none; position:fixed; top:50%; left:50%;
+         transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #ccc; z-index:999;">
+		<h3>예약자 목록</h3>
+		<div id="reservationContent">로딩 중...</div>
+		<button onclick="closeReservationModal()">닫기</button>
+	</div>
+	
     <!-- 공통 푸터 -->
     <footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
     </footer>
     
 	<script>
-	  // 클래스 삭제 함수 (클래스 idx를 파라미터로 받아서 삭제 요청)
-	  function deleteClass(classIdx) {
-	    if(confirm("정말 삭제하시겠습니까?")) {
-	      location.href = '${pageContext.request.contextPath}/company/myPage/deleteClass?classIdx=' + classIdx;
-	    }
+	// 클래스 삭제 함수 (클래스 idx를 파라미터로 받아서 삭제 요청)
+	function deleteClass(classIdx) {
+	  if(confirm("정말 삭제하시겠습니까?")) {
+	    location.href = '${pageContext.request.contextPath}/company/myPage/deleteClass?classIdx=' + classIdx;
 	  }
+	}
+	  
+	// 예약자 모달 열기 함수 (AJAX)
+	function openReservationModal(classIdx) {
+	  event.stopPropagation(); // tr 클릭 막기
+	  document.getElementById('reservationModal').style.display = 'block';
+	  document.getElementById('reservationContent').innerHTML = '로딩 중...';
+	
+	  fetch('${pageContext.request.contextPath}/company/myPage/classReservationList', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/x-www-form-urlencoded' // 폼 전송 형태로 설정
+	    },
+	    body: 'classIdx=' + encodeURIComponent(classIdx) // 데이터는 body에 담아야 함
+	  })
+	  .then(response => response.text())
+	  .then(html => {
+	    document.getElementById('reservationContent').innerHTML = html;
+	  })
+	  .catch(error => {
+	    document.getElementById('reservationContent').innerHTML = '오류 발생';
+	    console.error(error);
+	  });
+	}
+	
+	// 예약자 모달 닫기 함수
+	function closeReservationModal() {
+	  document.getElementById('reservationModal').style.display = 'none';
+	}
 	</script>
 </body>
 </html>

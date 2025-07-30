@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
+import com.itwillbs.clish.myPage.dto.ReservationDTO;
 
 
 @Mapper
@@ -39,6 +40,9 @@ public interface CompanyClassMapper {
 	// 클래스 삭제
 	void deleteClass(String classIdx);
 	
+	// 클래스 예약자 목록 조회
+	List<Map<String, Object>> selectReservationList(String classIdx);
+	
 	// 클래스 문의 페이지 - 문의 리스트
 	List<InquiryJoinUserDTO> selectClassInquiryList(String userIdx);
 	
@@ -47,6 +51,7 @@ public interface CompanyClassMapper {
 	
 	// 클래스 문의 페이지 - 문의 답변
 	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
+	
 	
 
 	
