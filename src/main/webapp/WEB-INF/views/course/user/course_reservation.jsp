@@ -28,7 +28,7 @@
 			    <h1>클래스 예약 정보입력 페이지</h1>
 			    <h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 			    
-    			날짜: <input type="datetime-local" name="reservationClassDate" required /><br/>
+    			날짜: <input type="date" name="reservationClassDate" required /><br/>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br/>
 			    
 			    <input type="text" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
