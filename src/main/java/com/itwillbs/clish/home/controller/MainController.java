@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
+import com.itwillbs.clish.admin.dto.EventDTO;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
@@ -29,7 +29,6 @@ import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
-import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.home.service.MainService;
@@ -435,5 +434,23 @@ public class MainController {
 		UserDTO dbUser = userService.selectUserId(id);
 		return notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
+	@GetMapping("/event/eventHome")
+	public String eventHome(HttpSession session, Model model) {
+//		String id = (String)session.getAttribute("sId");
+//		UserDTO dbUser = userService.selectUserId(id);
+//		if(id == null) {
+//			
+//			model.addAttribute("msg", "이벤트는 회원만 참여 가능합니다");
+//			model.addAttribute("targetURL", "/user/login");
+//			return "commons/result_process";
+//		} else if(dbUser.getUserType() == 2) {
+//			model.addAttribute("msg", "이벤트에는 일반 회원만 참여할 수 있습니다.");
+//			return "commons/fail";
+//		}
+		List<EventDTO> eventList = mainService.getEventList();
+		model.addAttribute("eventList", eventList);
+		
+		return "event/event_home";
+	} 
 
 }

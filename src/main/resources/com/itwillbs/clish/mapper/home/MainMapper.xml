@@ -156,5 +156,12 @@
 		OR
 			support_detail LIKE CONCAT('%', #{searchKeyword}, '%')		
 	</select>
+	<select id="selectEventList" resultType="com.itwillbs.clish.home.dto.EventDTO">
+		SELECT *
+		FROM 
+			EVENT
+		WHERE
+			event_in_progress IN (1, 2)
+	</select>
 	
 </mapper>
