@@ -59,8 +59,6 @@ public interface MyPageMapper {
 
 	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
 
-	InqueryDTO selectOneClassQ(InqueryDTO inqueryDTO);
-
 	FileDTO selectFile(FileDTO fileDTO);
 
 	void deleteFile(FileDTO fileDTO);

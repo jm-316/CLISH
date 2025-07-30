@@ -45,6 +45,23 @@ public class MyPageController {
 	private final UserService userService;
 	private final FileService fileService;
 	
+	// 폼 submit시 DTO에 주입할 데이터 변경[SQL : DATETIME -> DTO TIMESTAMP]
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Timestamp.class, new PropertyEditorSupport() {
+            
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.trim().isEmpty()) {
+                    setValue(null);
+                } else {
+                    // "2025-07-13T12:38:10" → "2025-07-13 12:38:10"
+                    String fixed = text.replace('T', ' ');
+                    setValue(Timestamp.valueOf(fixed));
+                }
+            }
+        });
+    }
+	
 	// 마이페이지 메인
 	@GetMapping("/main")
 	public String myPage_main() {
@@ -98,7 +115,7 @@ public class MyPageController {
 			response.put("msg", "사용불가능 닉네임");
 			response.put("status", "fail");
 			return ResponseEntity.ok(response);
-		} else {
+		} else { // 닉네임 중복이 없는 경우
 			response.put("msg", "사용가능 닉네임");
 			response.put("status", "success");
 			response.put("repName", userDTO.getUserRepName());
@@ -106,14 +123,17 @@ public class MyPageController {
 		}
 	}
 	
+	//핸드폰중복 확인 
 	@GetMapping("/check/userPhoneNumber")
 	public ResponseEntity<Map<String, String>> checkPhoneNumber(UserDTO userDTO) {
-		Map<String, String> response = new HashMap<>();
-		
+		// 리턴받을 맵객체
+		Map<String, String> response = new HashMap<>(); 
+		// 입력받은 번호로 유저정보 검색
 		UserDTO user = myPageService.checkPhoneNumber(userDTO);
+		// 핸드폰번호 중복확인
 		if(userService.isUserPhoneExists(userDTO.getUserPhoneNumber())) {
-			
-			if(user.getUserIdx().equals(userDTO.getUserIdx())) {
+			// 중복일경우
+			if(user.getUserIdx().equals(userDTO.getUserIdx())) { // 현재 내가 사용중인 번호인 경우
 				System.out.println("idx일치");
 				response.put("msg", "사용가능 번호");
 				response.put("status", "success");
@@ -123,7 +143,7 @@ public class MyPageController {
 			response.put("msg", "사용불가능 번호");
 			response.put("status", "fail");
 			return ResponseEntity.ok(response);
-		} else {
+		} else { // 중복이 없을때
 			response.put("msg", "사용가능 번호");
 			response.put("status", "success");
 			return ResponseEntity.ok(response);
@@ -134,11 +154,13 @@ public class MyPageController {
 	@PostMapping("/change_user_info")
 	public String mypage_change_user_info(UserDTO user, HttpSession session,
 			@RequestParam("newPasswordConfirm") String new_password) {
+		
 		user.setUserId((String)session.getAttribute("sId"));
 		UserDTO user1 = myPageService.getUserInfo(user); // 기존 유저 정보 불러오기
 
+		//입력받은 이메일과 기존의 이메일이 일치한다면
 		if(!user1.getUserEmail().equals(user.getUserEmail())){
-			user.setNewEmail(user.getUserEmail());
+			user.setNewEmail(user.getUserEmail()); //새이메일에 기존이메일 정보 추가
 		}
 		
 		if(!new_password.isEmpty()) { // 새비밀번호가 있다면 비밀번호 새로지정
@@ -159,31 +181,40 @@ public class MyPageController {
 	public String payment_info(HttpSession session, Model model,UserDTO user
 			, @RequestParam(defaultValue = "1") int reservationPageNum
 			, @RequestParam(defaultValue = "1") int paymentPageNum) {
-		String sId = (String)session.getAttribute("sId");
-		user.setUserId(sId);
-		user = myPageService.getUserInfo(user);
+		
+		//세션에 저장된 sId이용 유저정보 불러오기
+		user = getUserFromSession(session);
+		
+		// 페이징에 필요한 변수선언
 		int listLimit = 5;
 		int reservationListCount = myPageService.getReservationCount(user);
 		int paymentListCount = myPageService.getPaymentCount(user);
 		
+		// 예약목록이 존재한다면
 		if(reservationListCount > 0 ) {
+			// 예약페이지 정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reservationListCount, reservationPageNum, 3);
-			
+			// pageNum에 이상한 파라미터가 넘어올 때
 			if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
+			 
 			model.addAttribute("reservationPageInfo", pageInfoDTO);
-
+			
+			// 예약목록 불러오기
 			List<ReservationDTO> reservationList = myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user);
+			// 예약목록 정보 저장
 			model.addAttribute("reservationList",reservationList);
 
 		}
-		
+		// 결제목록이 존재한다면
 		if(paymentListCount > 0) {
+			//결제페이지정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
 			
+			// pageNum에 이상한 파라미터가 넘어올 때
 			if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
@@ -191,11 +222,15 @@ public class MyPageController {
 			}
 			
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
-
+			
+			//결제 정보 불러오기
 			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user);
+			
+			//결제시간정보 보기좋게 바꾸기
 			for(PaymentInfoDTO payment : paymentList) {
 				payment.setPayTime(payment.getPayTime());
 			}
+			
 			model.addAttribute("paymentList",paymentList);
 		}
 		model.addAttribute("user",user);
@@ -208,38 +243,39 @@ public class MyPageController {
 	@PostMapping(value="/payment_info/cancel", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String cancelReservation(HttpSession session, ReservationDTO reservation) {
-		System.out.println("reservationIdx" + reservation.getReservationIdx());
-		String reservationIdx = reservation.getReservationIdx();
-		reservation.setReservationIdx(reservationIdx);
-		System.out.println("DTO : " + reservation.getReservationIdx());
-	    int count = myPageService.cancelReservation(reservation);
-	    if(count == 0) {
+	    
+		int count = myPageService.cancelReservation(reservation);
+	    
+		if(count == 0) {
 	    	return "예약취소 실패";
 	    }
-	    return "예약이 취소되었습니다!";
+	    
+		return "예약이 취소되었습니다!";
 	}
 	
 	
 	//예약상세보기
 	@GetMapping("/payment_info/detail")
 	public String reservationDetail(HttpSession session, Model model, ReservationDTO reservation, UserDTO user, ClassDTO claSs) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 예약자 정보
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
 		
+		// 예약정보 불러오기
 		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation); 
 		
 		model.addAttribute("user", user);
 		model.addAttribute("reservationClassInfo", reservationDetailInfo);
+		
 		return "/clish/myPage/myPage_reservation_detail";
 	}
 
 	//예약 수정페이지
 	@GetMapping("/payment_info/change")
 	public String reservationChangeForm(HttpSession session, Model model, ReservationDTO reservation, UserDTO user) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 예약자 정보
+		
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation); 
 		model.addAttribute("reservationClassInfo", reservationClassInfo);
 		model.addAttribute("user",user);
@@ -247,30 +283,14 @@ public class MyPageController {
 		return "/clish/myPage/myPage_reservation_change";
 	}
 	
-	// 폼 submit시 DTO에 주입할 데이터 변경[SQL : DATETIME -> DTO TIMESTAMP]
-	@InitBinder
-    public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Timestamp.class, new PropertyEditorSupport() {
-            
-            public void setAsText(String text) throws IllegalArgumentException {
-                if (text == null || text.trim().isEmpty()) {
-                    setValue(null);
-                } else {
-                    // "2025-07-13T12:38:10" → "2025-07-13 12:38:10"
-                    String fixed = text.replace('T', ' ');
-                    setValue(Timestamp.valueOf(fixed));
-                }
-            }
-        });
-    }
-	
+		
 	//예약 수정 폼 submit시 수행
 	@PostMapping("/payment_info/change")
 	public String resrvationChange(ReservationDTO reservation) {
 		System.out.println("수정완료페이지 : " + reservation.getReservationIdx());
 		
 		myPageService.changeReservation(reservation);
-//		return "";
+
 		return "redirect:/myPage/payment_info/detail?reservationIdx=" + reservation.getReservationIdx();
 	}
 	
@@ -281,12 +301,12 @@ public class MyPageController {
 		return "/clish/myPage/myPage_withdraw";
 	}
 	
+	// 탈퇴시 비밀번호 입력확인
 	@PostMapping("/withdraw")
 	public String withdrawForm(HttpSession session, UserDTO user, Model model) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
 		String inputPw = user.getUserPassword();
-		user = myPageService.getUserInfo(user);
 		
 		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) {
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
@@ -296,17 +316,19 @@ public class MyPageController {
 		return "/clish/myPage/myPage_withdraw_withdrawResult";
 	}
 	
+	// 회원탈퇴동의 후 최종탈퇴
 	@PostMapping(value="/withdrawFinal", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String withdrawFinal(HttpSession session, UserDTO user) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		
 		int withdrawResult = myPageService.withdraw(user);
 		if(withdrawResult >0) {
 			session.invalidate();
 			return "탈퇴완료";
 		} else {
-			return "탈퇴실패 다시할것";
+			return "탈퇴실패";
 		}
 	}
 	
@@ -316,22 +338,27 @@ public class MyPageController {
 	public String myQuestion(HttpSession session, Model model, UserDTO user
 			, @RequestParam(defaultValue = "1") int classQuestionPageNum
 			, @RequestParam(defaultValue = "1") int inqueryPageNum) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 유저 정보 조회
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		// 페이징위한 변수 저장
 		int listLimit = 5;
 		int classQCount = myPageService.getclassQCount(user);
 		if(classQCount > 0 ) {
+			// 페이지 정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, classQCount, classQuestionPageNum, 3);
 			
+			// 이상한pageNum 파라미터 대처
 			if(classQuestionPageNum < 1 || classQuestionPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/myQuestion");
 				return "commons/result_process";
 			}
+			
 			model.addAttribute("classQPageInfo", pageInfoDTO);
-
+			
+			// 강의문의 목록 불러오기 
 			List<InqueryDTO> classQDTOList = myPageService.getMyclassQ(pageInfoDTO.getStartRow(), listLimit, user);
+			
 			model.addAttribute("classQDTOList",classQDTOList);
 			model.addAttribute("user", user);
 
@@ -339,60 +366,65 @@ public class MyPageController {
 		// 사이트문의
 		int inqueryCount = myPageService.getInqueryCount(user);
 		if(inqueryCount > 0 ) {
+			// 페이지 정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inqueryCount, inqueryPageNum, 3);
 			
+			// 이상한pageNum 파라미터 대처
 			if(inqueryPageNum < 1 || inqueryPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/myQuestion"); 
 				return "commons/result_process";
 			}
+			
 			model.addAttribute("inqueryPageInfo", pageInfoDTO);
 
+			// 사이트 문의 목록 불러오기
 			List<InqueryDTO> inqueryDTOList = myPageService.getMyInquery(pageInfoDTO.getStartRow(), listLimit, user);
+			
 			model.addAttribute("inqueryDTOList",inqueryDTOList);
 			model.addAttribute("user", user);
 
 		}
 		
-		
 		return "/clish/myPage/myPage_question";
 	}
 	
-	// 수정
+	// 문의 수정폼
 	@GetMapping("/myQuestion/inquery/modify")
 	public String inqueryModifyForm(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 유저 정보 조회
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		// inqueryIdx를 이용, inquery정보 불러오기
 		inqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
-		if(inqueryDTO.getInqueryType() == 1) {
-			model.addAttribute("inqueryDTO", inqueryDTO);
-		} else {
-			inqueryDTO = myPageService.getclassQInfo(inqueryDTO);
-			model.addAttribute("inqueryDTO", inqueryDTO);
-		}
+		
+		model.addAttribute("inqueryDTO", inqueryDTO);
 		model.addAttribute("user",user);
+		
 		return "/clish/myPage/myPage_question_inqueryForm";
 	}
 	
+	// 문의수정 완료
 	@PostMapping("/myQuestion/inquery/modify")
 	public String inqueryModify(InqueryDTO inqueryDTO, Model model, HttpSession session, UserDTO user) throws IOException {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 유저 정보 조회
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		
 		InqueryDTO oriInqueryDTO = myPageService.getInqueryInfo(inqueryDTO);
-		if (oriInqueryDTO.getInqueryStatus() == 1) {
-			myPageService.modifyInquery(inqueryDTO);
-		} else {
+		
+		if (oriInqueryDTO.getInqueryStatus() == 2) { // 문의상태가 답변완료 인 경우
+			
 			model.addAttribute("msg","이 문의는 수정이 불가능한 상태입니다.");
 			model.addAttribute("targetURL","/myPage/myQuestion");
+			
 			return "commons/result_process";
-		}
+		} 
+				
+		myPageService.modifyInquery(inqueryDTO);
 
 		return "redirect:/myPage/myQuestion";
 	}
 	
-	// 삭제
+	// 문의 삭제
 	@PostMapping("/myQuestion/inquery/delete")
 	public String inqueryDelete(InqueryDTO inqueryDTO) {
 		
@@ -401,25 +433,30 @@ public class MyPageController {
 		return "redirect:/myPage/myQuestion";
 	}
 	
+	// 문의 수정중 첨부파일 삭제
 	@GetMapping("/myQuestion/fileDelete")
 	public String deleteFile(InqueryDTO inqueryDTO, FileDTO fileDTO) {
 		fileService.removeFile(fileDTO);
 		return "redirect:/myPage/myQuestion/inquery/modify?inqueryIdx="+ inqueryDTO.getInqueryIdx();
 	}
+	
 	//------------------------------------------------------------------------------------------------------------------
 	// 알림전체보기
 	@GetMapping("/notification")
 	public String notification(HttpSession session, UserDTO user, Model model
 			, @RequestParam(defaultValue = "1") int notificationPageNum) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user);
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		
+		// 페이징 변수 선언
 		int listLimit = 10;
 		int notificationListCount = myPageService.getnotificationCount(user);
+		// 알림이 존재할때
 		if(notificationListCount > 0) {
-		
+			// 페이지 정보 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, notificationListCount, notificationPageNum, 3);
 			
+			// pageNum 이상한 파라미터 대처
 			if(notificationPageNum < 1 || notificationPageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
@@ -427,23 +464,28 @@ public class MyPageController {
 			}
 			
 			model.addAttribute("notificationPageInfo", pageInfoDTO);
-
+			
+			// 알림목록 불러오기
 			List<NotificationDTO> notificationList = myPageService.selectNotification(pageInfoDTO.getStartRow(), listLimit, user);
 			model.addAttribute("notificationList",notificationList);
 		}
 		return "/clish/myPage/myPage_notification";
 	}
+	
 	// ------------------------------------------------------------------------------------------------------------
 	// 후기 관리
 	@GetMapping("/myReview")
 	public String myReview(Model model,HttpSession session, UserDTO user,
 			@RequestParam(defaultValue = "0") int reviewCom,
 			@RequestParam(defaultValue = "1") int reviewPageNum) {
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user);
+	
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		
+		// 페이징 변수 저장
 		int listLimit = 5;
 		
+		// 작성가능 리뷰(예약일 부터 수강후기 작성 가능)
 		if(reviewCom == 0) {
 			int reviewListCount = myPageService.getUncompleteReviewCount(user);
 			
@@ -464,11 +506,14 @@ public class MyPageController {
 				
 			} 
 		} else {
+			// 작성한 후기 수
 			int reviewListCount = myPageService.getCompleteReviewCount(user);
 			
+			// 작성한 후기가 1개이상일때
 			if(reviewListCount > 0) {
-				
+				// 페이지정보저장
 				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reviewListCount, reviewPageNum, 3);
+				// 이상한파라미터 대처
 				if(reviewPageNum < 1 || reviewPageNum > pageInfoDTO.getMaxPage()) {
 					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 					model.addAttribute("targetURL", "/myPage/myReview"); 
@@ -476,7 +521,7 @@ public class MyPageController {
 				}
 				
 				model.addAttribute("pageInfo",pageInfoDTO);
-				
+				// 작성완료한 후기 목록
 				List<ReviewDTO> completeReviewList = myPageService.getCompleteReview(pageInfoDTO.getStartRow(), listLimit, user);
 				
 				model.addAttribute("reviewInfo",completeReviewList);
@@ -497,17 +542,19 @@ public class MyPageController {
 		Map<String, Object> reservationClassInfo = myPageService.getReservationClassInfo(reservationDTO);
 		
 		model.addAttribute("reservationClassInfo",reservationClassInfo);
+		
 		return "/clish/myPage/myPage_myReview_writeReviewForm";
 	}
 	
 	// 수강후기 작성완료처리
 	@PostMapping("/myReview/writeReview")
 	public String writeReview(ReviewDTO review, HttpSession session) throws IOException {
-		String id = (String)session.getAttribute("sId");
 		UserDTO user = new UserDTO();
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user);
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		
 		myPageService.writeReview(review, user);
+		
 		return "redirect:/myPage/myReview";
 	}
 	
@@ -528,22 +575,26 @@ public class MyPageController {
 		return result;
 	}
 	
-	// 작성된 후기 수정
+	// 작성된 후기 수정폼
 	@GetMapping("/myReview/modifyReviewForm")
 	public String modifyReviewForm(ReviewDTO reviewDTO, Model model) {
 		reviewDTO = myPageService.getReviewInfo(reviewDTO);
 		
 		model.addAttribute("reviewDTO", reviewDTO);
-		System.out.println(reviewDTO);
+		
 		return "/clish/myPage/myPage_myReview_modifyReviewForm";
 	}
 	
+	// 수정시 첨부 파일삭제
 	@GetMapping("myReview/removeFile")
 	public String removeFile(FileDTO fileDTO, ReviewDTO reviewDTO) {
+		
 		fileService.removeFile(fileDTO);
+		
 		return "redirect:/myPage/myReview/modifyReviewForm?reviewIdx="+ reviewDTO.getReviewIdx();
 	}
 	
+	// 후기 수정 완료
 	@PostMapping("/myReview/modifyReview")
 	public String modifyReview(ReviewDTO reviewDTO, Model model) throws IOException {
 		
@@ -552,7 +603,13 @@ public class MyPageController {
 		return "redirect:/myPage/myReview";
 	}
 	
-	
+	// 세션을 이용한 유저 정보 불러오기
+	private UserDTO getUserFromSession(HttpSession session) {
+	    String id = (String) session.getAttribute("sId");
+	    UserDTO user = new UserDTO();
+	    user.setUserId(id);
+	    return myPageService.getUserInfo(user);
+	}
 }
 
 

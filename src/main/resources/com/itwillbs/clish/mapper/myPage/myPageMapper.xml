@@ -294,32 +294,6 @@
 			, #{listLimit}
 	</select>
 	
-	<select id="selectOneClassQ" resultMap="InqueryDTOWithfileDTOListResultMap"> 
-		SELECT
-			i.inquery_idx,
-			i.user_idx,
-			i.inquery_title,
-			i.inquery_detail,
-			i.inquery_answer,
-			i.class_idx,
-			i.inquery_type,
-			i.inquery_datetime,
-			i.inquery_answer_datetime,
-			i.inquery_modify_datetime,
-			i.inquery_status,
-			c.class_title,
-			f.file_id,
-			f.original_file_name,
-			f.real_file_name,
-			f.sub_dir,
-			f.file_size,
-			f.content_type
-		FROM INQUERY i
-		LEFT JOIN CLASS c ON i.class_idx = c.class_idx
-		LEFT JOIN FILE f
-		ON i.inquery_idx = f.idx
-		WHERE i.inquery_idx = #{inqueryIdx}
-	</select>
 	
 	<select id="selectCountNotification" resultType="int">
 		SELECT count(*)

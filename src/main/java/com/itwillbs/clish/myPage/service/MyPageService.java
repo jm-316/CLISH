@@ -2,6 +2,8 @@ package com.itwillbs.clish.myPage.service;
 
 import java.io.IOException;
 import java.sql.Date;
+//import java.util.Date;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -145,10 +147,6 @@ public class MyPageService {
 		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
 	}
 
-	public InqueryDTO getclassQInfo(InqueryDTO inqueryDTO) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectOneClassQ(inqueryDTO);
-	}
 
 	public UserDTO checkRepName(UserDTO userDTO) {
 		return myPageMapper.checkRepName(userDTO);
