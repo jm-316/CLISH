@@ -31,6 +31,7 @@
     			날짜: <input type="datetime-local" name="reservationClassDate" required /><br/>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br/>
 			    
+			    <input type="text" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
 			    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
 			    <section id="classDetail">
 					${classInfo.classContent } <hr>

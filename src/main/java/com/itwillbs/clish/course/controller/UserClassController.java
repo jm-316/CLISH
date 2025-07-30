@@ -176,7 +176,7 @@ public class UserClassController {
 		
 		int insertCount = userClassService.registReservation(reservationDTO);
 	
-		return "redirect:/clish/myPage/myPage_payment";
+		return "redirect:/myPage/payment_info";
 	}
 	
 }

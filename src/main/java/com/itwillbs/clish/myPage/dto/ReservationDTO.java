@@ -2,6 +2,7 @@ package com.itwillbs.clish.myPage.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,8 +19,8 @@ public class ReservationDTO {
 	private String userIdx;
 	private int reservationMembers;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime reservationClassDate;
+//	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDate reservationClassDate;
 	
 	private LocalDateTime reservationCom;
 	private String classIdx;
