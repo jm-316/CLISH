@@ -63,7 +63,7 @@
 									value="${reservationClassInfo.reservation_class_date}"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-				<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/></td>
+				<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/></td>
 				<td>${reservationClassInfo.reservation_members}</td>
 				<fmt:parseDate var="reservationCom" 
 									value="${reservationClassInfo.reservation_com}"

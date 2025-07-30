@@ -54,15 +54,15 @@
 									value="${reserve.reservationClassDate}"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/>
+								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>
 							</td>
 <%-- 							<td>${reserve.reservationClassDate}</td> --%>
 							<td>
 								<fmt:parseDate var="reservationCom" 
 									value="${reserve.reservationCom}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="day" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd "/>
+									pattern="yyyy-MM-dd'T'HH:mm:ss"
+									type="both" />
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
 							</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
@@ -80,12 +80,12 @@
 							<td>${user.userName}</td>
 							<td>${reserve.classIdx}</td>
 							<td>
-							${reserve.reservationClassDate }
-<%-- 								<fmt:parseDate var="reservationClassDate"  --%>
-<%-- 									value="${reserve.reservationClassDate}" --%>
-<%-- 									pattern="yyyy-MM-dd'T'HH:mm" --%>
-<%-- 									type="both" /> --%>
-<%-- 								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd HH:mm"/> --%>
+<%-- 							${reserve.reservationClassDate } --%>
+								<fmt:parseDate var="reservationClassDate" 
+									value="${reserve.reservationClassDate}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>
 							</td>
 <%-- 							<td>${reserve.reservationClassDate}</td> --%>
 							<td>
@@ -93,7 +93,7 @@
 									value="${reserve.reservationCom}"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd"/>
+								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
 							</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
 							<td></td><td></td>

@@ -147,10 +147,6 @@ public class MyPageService {
 		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
 	}
 
-	public InqueryDTO getclassQInfo(InqueryDTO inqueryDTO) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectOneClassQ(inqueryDTO);
-	}
 
 	public UserDTO checkRepName(UserDTO userDTO) {
 		return myPageMapper.checkRepName(userDTO);
