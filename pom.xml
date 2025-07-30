@@ -28,6 +28,14 @@
 		    <version>1.6.2</version>
 		</dependency>
 		
+		<!-- EasyCaptcha -->
+		<!-- https://mvnrepository.com/artifact/com.github.whvcse/easy-captcha -->
+		<dependency>
+		    <groupId>com.github.whvcse</groupId>
+		    <artifactId>easy-captcha</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+				
 		<!-- 카카오결제 필요 라이브러리 -->
 		<dependency>
 	        <groupId>org.springframework</groupId>

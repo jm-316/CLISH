@@ -71,13 +71,13 @@
 				</c:when>
 				<c:otherwise>
 					 
-					<c:if test="${sessionScope.userType == 3}">
+					<c:if test="${sessionScope.sUT == 3}">
 						 <a class="header-button button" href="/admin/main">마이페이지</a>
 					</c:if>
-					<c:if test="${sessionScope.userType == 2}">
+					<c:if test="${sessionScope.sUT == 2}">
 						 <a class="header-button button" href="/company/main">마이페이지</a>
 					</c:if>
-					<c:if test="${sessionScope.userType == 1}">
+					<c:if test="${sessionScope.sUT == 1}">
 		          		 <a class="button header-button" href="/clish/myPage/main">마이페이지</a>
 					</c:if>
 				</c:otherwise>
