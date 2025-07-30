@@ -48,10 +48,31 @@ public class MyPageService {
 		return myPageMapper.selectUserInfo(user);
 	}
 	
+	// 닉네임 중복 확인
+	public UserDTO checkRepName(UserDTO userDTO) {
+		return myPageMapper.checkRepName(userDTO);
+	}
+	
+	//휴대폰 중복확인
+	public UserDTO checkPhoneNumber(UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.checkPhoneNumber(userDTO);
+	}
+	
 	// 유저정보 저장하기
 	public int setUserInfo(UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.updateUserInfo(user);
+	}
+	
+	// 예약목록 수 확인
+	public int getReservationCount(UserDTO user) {
+		return myPageMapper.selectReservationCount(user);
+	}
+	
+	// 결제목록 수 확인
+	public int getPaymentCount(UserDTO user) {
+		return myPageMapper.selectPaymentCount(user);
 	}
 	
 	// 예약정보리스트 불러오기
@@ -88,68 +109,60 @@ public class MyPageService {
 		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
 	}
 	
-	public ReservationDTO getReservationInfo(ReservationDTO reservation) {
-		return myPageMapper.selectOneReservationInfo(reservation);
+	// 결제 정보 불러오기
+	public List<PaymentInfoDTO> getPaymentList(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectAllPaymentInfo(startRow, listLimit, user);
 	}
-
-	public ClassDTO getClassInfo(ReservationDTO reservation) {
-		return myPageMapper.selectOneClassInfo(reservation);
-	}
-
+	
+	// 예약 취소
 	public int cancelReservation(ReservationDTO reservation) {
 		return myPageMapper.deleteReservation(reservation);
 	}
 	
-	public ReservationDTO reservationDetail(ReservationDTO reservation) {
-		return myPageMapper.selectReservationDetail(reservation);
-	}
-	
+	// 예약상세정보 불러오기
 	public Map<String, Object> reservationDetailInfo(ReservationDTO reservation) {
 		return myPageMapper.ReservationDetailInfo(reservation);
 	}
-
+	
+	// 예약수정
 	public void changeReservation(ReservationDTO reservation) {
 		myPageMapper.updateReservationInfo(reservation);
 	}
 
-	public List<PaymentInfoDTO> getPaymentList(int startRow, int listLimit, UserDTO user) {
-		return myPageMapper.selectAllPaymentInfo(startRow, listLimit, user);
-	}
-
+	// 회원탈퇴
 	public int withdraw(UserDTO user) {
 		return myPageMapper.withdraw(user);
 	}
-
-	public int getReservationCount(UserDTO user) {
-		return myPageMapper.selectReservationCount(user);
+	
+	// 강의문의 수 확인
+	public int getclassQCount(UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectCountClassQ(user);
 	}
-
-	public int getPaymentCount(UserDTO user) {
-		return myPageMapper.selectPaymentCount(user);
+	
+	// 나의 강의 문의 리스트 불러오기
+	public List<InqueryDTO> getMyclassQ(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
 	}
-
+	
+	// 사이트문의 수 확인
+	public int getInqueryCount(UserDTO user) {
+		return myPageMapper.selectCountInquery(user);
+	}
+	
+	// 나의 사이트문의 리스트 불러오기
 	public List<InqueryDTO> getMyInquery(int startRow, int listLimit, UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectAllInquery(startRow, listLimit, user);
 	}
 	
-	@Transactional
-	public void inqueryDelete(InqueryDTO inqueryDTO) {
-		fileMapper.deleteAllFile(inqueryDTO.getInqueryIdx()); // FILE 테이블 내용 삭제
-		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제	
-		
-		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
-		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
-	}
-
+	// 나의 문의[강의, 사이트] 정보 불러오기
 	public InqueryDTO getInqueryInfo(InqueryDTO inqueryDTO) {
 		return myPageMapper.selectOneInquery(inqueryDTO);
 	}
-
-	public int getInqueryCount(UserDTO user) {
-		return myPageMapper.selectCountInquery(user);
-	}
 	
+	// 문의 수정요청
 	public void modifyInquery(InqueryDTO inqueryDTO) throws IOException {
 		myPageMapper.updateInquery(inqueryDTO);
 		List<FileDTO> fileList = FileUtils.uploadFile(inqueryDTO, session);
@@ -158,62 +171,59 @@ public class MyPageService {
 			fileMapper.insertFiles(fileList);
 		}
 	}
-
-	public int getclassQCount(UserDTO user) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectCountClassQ(user);
+	
+	// 문의 삭제 
+	@Transactional
+	public void inqueryDelete(InqueryDTO inqueryDTO) {
+		fileMapper.deleteAllFile(inqueryDTO.getInqueryIdx()); // FILE 테이블 내용 삭제
+		myPageMapper.deleteInquery(inqueryDTO); // INQUERY 테이블 내용 삭제	
+		
+		List<FileDTO> fileDTOlist = fileMapper.selectAllFile(inqueryDTO.getInqueryIdx());
+		FileUtils.deleteFiles(fileDTOlist, session); // idx와 같은 파일 다삭제
 	}
-
-	public List<InqueryDTO> getMyclassQ(int startRow, int listLimit, UserDTO user) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
-	}
-
-
-	public UserDTO checkRepName(UserDTO userDTO) {
-		return myPageMapper.checkRepName(userDTO);
-	}
-
-	public UserDTO checkPhoneNumber(UserDTO userDTO) {
-		// TODO Auto-generated method stub
-		return myPageMapper.checkPhoneNumber(userDTO);
-	}
-
-	public List<NotificationDTO> selectNotification(int startRow, int listLimit, UserDTO user) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectAllNotification(startRow, listLimit, user);
-	}
-
+	
+	// 알림 수 확인
 	public int getnotificationCount(UserDTO user) {
 		
 		return myPageMapper.selectCountNotification(user);
 	}
 
+	// 알림 리스트 불러오기
+	public List<NotificationDTO> selectNotification(int startRow, int listLimit, UserDTO user) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectAllNotification(startRow, listLimit, user);
+	}
+	
+	// 작성가능 후기 수 확인
 	public int getUncompleteReviewCount(UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectUncompleteReviewCount(user);
 	}
 
+	// 작성가능 리뷰 리스트 불러오기
 	public List<Map<String, Object>> getUncompleteReview(int startRow, int listLimit, UserDTO user) {
-		// TODO Auto-generated method stub
 		return myPageMapper.selectAllUncompleteReview(startRow, listLimit, user);
 	}
-
-	public Map<String, Object> getReservationClassInfo(ReservationDTO reservationDTO) {
-		// TODO Auto-generated method stub
-		return myPageMapper.selectOneReservationClassInfo(reservationDTO);
-	}
 	
+	// 작성완료 리뷰 수 확인
 	public int getCompleteReviewCount(UserDTO user) {
 		// TODO Auto-generated method stub
 		return myPageMapper.selectCompleteReviewCount(user);
 	}
-	
+
+	// 작성완료 리뷰목록 불러오기
 	public List<ReviewDTO> getCompleteReview(int startRow, int listLimit, UserDTO user) {
-		// TODO Auto-generated method stub
 		return myPageMapper.selectAllCompleteReview(startRow, listLimit, user);
 	}
+	
+	
+	// 예약, 클래스 정보 불러오기
+	public Map<String, Object> getReservationClassInfo(ReservationDTO reservationDTO) {
+		// TODO Auto-generated method stub
+		return myPageMapper.selectOneReservationClassInfo(reservationDTO);
+	}
 
+	// 리뷰 작성
 	@Transactional
 	public void writeReview(ReviewDTO review, UserDTO user) throws IOException {
 		String userIdx = user.getUserIdx();
@@ -229,6 +239,7 @@ public class MyPageService {
 		}
 	}
 	
+	// 리뷰 삭제
 	@Transactional
 	public int deleteReview(ReviewDTO reviewDTO) {
 		int delCount = myPageMapper.delteReview(reviewDTO);
@@ -239,12 +250,14 @@ public class MyPageService {
 		
 		return delCount;
 	}
-
+	
+	// 작성한 후기 정보
 	public ReviewDTO getReviewInfo(ReviewDTO reviewDTO) {
-		// TODO Auto-generated method stub
+		
 		return myPageMapper.selectOneReview(reviewDTO);
 	}
-	
+
+	// 작성 후기 수정
 	@Transactional
 	public void modifyReview(ReviewDTO reviewDTO) throws IOException {
 		myPageMapper.updateReview(reviewDTO);
@@ -255,5 +268,23 @@ public class MyPageService {
 			fileMapper.insertFiles(fileList);
 		}
 	}
+
+	
+	
+	
+
+
+	
+	
+
+
+
+	
+
+	
+	
+
+
+	
 
 }

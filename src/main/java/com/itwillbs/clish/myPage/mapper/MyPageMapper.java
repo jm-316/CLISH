@@ -18,22 +18,18 @@ import com.itwillbs.clish.user.dto.UserDTO;
 
 @Mapper
 public interface MyPageMapper {
-
+	
 	UserDTO selectUserInfo(UserDTO user);
 
 	int updateUserInfo(UserDTO user);
 
 	List<ReservationDTO> selectAllReservationInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit,@Param("user")UserDTO user);
 
-	ReservationDTO selectOneReservationInfo(ReservationDTO reservation);
-
 	ClassDTO selectOneClassInfo(ReservationDTO reservation);
 
 	Map<String, Object> ReservationDetailInfo(ReservationDTO reservation);
 
 	int deleteReservation(ReservationDTO reservation);
-
-	ReservationDTO selectReservationDetail(ReservationDTO reservation);
 
 	void updateReservationInfo(ReservationDTO reservation);
 

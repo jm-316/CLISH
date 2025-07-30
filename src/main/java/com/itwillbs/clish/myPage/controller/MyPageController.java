@@ -260,7 +260,7 @@ public class MyPageController {
 		// 세션을 이용한 유저 정보 불러오기
 		user = getUserFromSession(session);
 		
-		// 예약정보 불러오기
+		// 예약상세정보 불러오기
 		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation); 
 		
 		model.addAttribute("user", user);
