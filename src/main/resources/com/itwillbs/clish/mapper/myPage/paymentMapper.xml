@@ -27,12 +27,14 @@
 		SET reservation_status = 2
 		WHERE reservation_idx = #{reservationIdx}
 	</update>
+	
 	<!-- 결제정보 불러오기 -->
 	<select id="selectPayResult" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO">	
 		SELECT *
 		from PAYMENT_INFO
 		where imp_uid = #{impUid}
 	</select>
+	
 	<!-- 결제 취소 정보 삽입 -->
 	<insert id="insertCancelInfo">
 		insert into PAYMENT_CANCEL values(

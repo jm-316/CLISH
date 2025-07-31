@@ -160,7 +160,7 @@
 		CLASS c
 	ON
 		c.class_idx = r.class_idx
-	JOIN
+	LEFT JOIN
 		FILE f
 	ON
 		r.class_idx = f.idx
