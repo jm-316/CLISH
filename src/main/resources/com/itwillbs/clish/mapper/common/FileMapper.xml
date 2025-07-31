@@ -16,6 +16,13 @@
 		WHERE file_id = #{fileId}
 	</delete>
 	
+	<!-- 썸네일 파일 삭제 -->
+	<delete id="deleteThumbnailFile">
+		DELETE
+		FROM THUMBNAILFILE
+		WHERE file_id = #{fileId}
+	</delete>
+	
 	<insert id="insertFiles">
 		INSERT
 		INTO FILE(
@@ -85,6 +92,20 @@
 	</insert>
 	
 	<select id="selectAllFile" resultType="com.itwillbs.clish.common.file.FileDTO">
+		SELECT *
+		FROM FILE
+		WHERE idx = #{idx}
+	</select>
+	
+	<!-- 썸네일 파일 조회 -->
+	<select id="selectThumbnailFile" resultType="com.itwillbs.clish.common.file.FileDTO">
+		SELECT *
+		FROM THUMBNAILFILE
+		WHERE idx = #{idx}
+	</select>
+	
+	<!-- 컨텐츠 파일 조회 -->
+	<select id="selectContentFile" resultType="com.itwillbs.clish.common.file.FileDTO">
 		SELECT *
 		FROM FILE
 		WHERE idx = #{idx}

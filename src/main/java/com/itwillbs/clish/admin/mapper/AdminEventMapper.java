@@ -17,4 +17,16 @@ public interface AdminEventMapper {
 	// 이벤트 등록
 	int insertEvent(EventDTO eventDTO);
 
+	// 이벤트 상세
+	EventDTO selectEvent(String idx);
+
+	// 이벤트 수정
+	int updateEvent(EventDTO eventDTO);
+
+	// 이벤트 삭제
+	void deletedEvent(String idx);
+
+	// 이벤트 상태 업데이트
+	void updateAllEventStatus();
+
 }
