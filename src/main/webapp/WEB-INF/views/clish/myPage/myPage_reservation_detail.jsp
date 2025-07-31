@@ -23,7 +23,10 @@
 <!-- 		<input type="hidden" id="parent" value="detail"> -->
 		<table >
 			<tr>
-				<th rowspan="5">클래스이미지</th>
+				<th rowspan="5">
+				<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
+				 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
+				 </th>
 				<th>${reservationClassInfo.class_title}</th>
 			</tr>
 			<tr><th>클래스정원</th></tr>

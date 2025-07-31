@@ -14,6 +14,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style type="text/css">
+	#container {
+		text-align: center;
+	}
+	
+	.leftAlign{
+		text-align: left;
+	}
+
 	.reviewbar-container {
 		display: flex;
 		justify-content: flex-start;
@@ -97,7 +105,6 @@
 					<c:forEach items="${reviewInfo}" var="review" >
 						<table style="width: 50em;">
 							<tr>
-								<th rowspan="2">이미지</th>
 								<th>수강 강의</th>
 								<th>수강일</th>
 								<th rowspan="2">
@@ -131,13 +138,13 @@
 						<input type="checkbox" id="rev_${status.index }" hidden>
 							<table  style="width: 50em;" data-index="${status.index }" data-reviewidx="${review.reviewIdx }">
 								<tr class="review-summary">
-									<th rowspan="2" ><label for="rev_${status.index}">이미지</label></th>
-									<th><label for="rev_${status.index}">수강 강의</label></th>
+									<th colspan="2"><label for="rev_${status.index}">수강 강의</label></th>
+									
 									<th><label for="rev_${status.index}">수강일</label></th>
 									<th><label for="rev_${status.index}">리뷰작성일</label></th>
 								</tr>
 								<tr class="review-summary">
-									<td><label for="rev_${status.index}">${review.classTitle }</label></td>
+									<td colspan="2"><label for="rev_${status.index}">${review.classTitle }</label></td>
 									<fmt:parseDate var="reservationClassDate" 
 									value="${review.reservationClassDate }"
 									pattern="yyyy-MM-dd'T'HH:mm"
@@ -168,17 +175,17 @@
 								</tr>
 								<tr class="review-detail">
 									<th>제목</th>
-									<td colspan="3">${review.reviewTitle }</td>								
+									<td colspan="3" class="leftAlign">${review.reviewTitle }</td>								
 								</tr>
 								<tr class="review-detail">
 									<th>내용</th>
-									<td colspan="3" width="30">${review.reviewDetail }</td>
+									<td colspan="3" width="30" class="leftAlign">${review.reviewDetail }</td>
 								</tr>
 								<tr class="review-detail">
 									<th>첨부사진</th>
-									<td colspan="3" width="30">
+									<td colspan="3" width="30" class="leftAlign">
 										<c:forEach var="file" items="${review.fileList }">
-											<img class="img-thumb"
+											<img class="img-thumb" 
 												src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName }" />					
 										</c:forEach>
 									</td>

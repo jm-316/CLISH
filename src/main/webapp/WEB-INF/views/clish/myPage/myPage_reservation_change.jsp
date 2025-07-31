@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,9 +50,21 @@
         		<td><input type="text" value="${reservationClassInfo.reservation_idx}" name="reservationIdx"readonly></td>
 				<td>${user.userName}</td>
 				<td>${reservationClassInfo.class_title}</td>
-				<td><input type="text" value="${reservationClassInfo.reservation_class_date}" name="reservationClassDate"></td>
+				
+				<fmt:parseDate var="reservationClassDate" 
+								value="${reservationClassInfo.reservation_class_date}"
+								pattern="yyyy-MM-dd'T'HH:mm"
+								type="both" />
+				<!-- localdatetime 에서 date타입으로 변환 -->
+				<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
+				<td><input type="date" value="${classDate}" name="reservationClassDate"></td>
 				<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" ></td>
-				<td>${reservationClassInfo.reservation_com}</td>
+				<fmt:parseDate var="reservationCom" 
+									value="${reservationClassInfo.reservation_com}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+				<td><fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/></td>
+<%-- 				<td>${reservationClassInfo.reservation_com}</td> --%>
 				<td>${reservationClassInfo.class_price * reservationClassInfo.reservation_members}</td>
         	</tr>
         	<tr>

@@ -120,11 +120,15 @@
 		, c.class_member
 		, c.start_date
 		, c.end_date
+		, f.sub_dir
+		, f.real_file_name
+		, f.original_file_name
 		, r.reservation_idx
 		, r.user_idx
 		, r.reservation_class_date
 		, r.reservation_com
 		, r.reservation_members
+		, r.reservation_status
 		, (c.class_member - IFNULL(
 		  (	SELECT 
 				SUM(r2.reservation_members)
@@ -139,6 +143,10 @@
 		CLASS c
 	ON
 		c.class_idx = r.class_idx
+	JOIN
+		FILE f
+	ON
+		r.class_idx = f.idx
 	WHERE
 		r.reservation_idx = #{reservationIdx}	
 	</select>
@@ -157,6 +165,7 @@
 		set
 			reservation_class_date = #{reservationClassDate}
 			, reservation_members = #{reservationMembers}
+			, reservation_com = now()
 		WHERE
 			reservation_idx = #{reservationIdx}
 	</update>
@@ -170,6 +179,7 @@
 				FROM RESERVATION
 				WHERE user_idx = #{userIdx}	)
 	</select>
+	
 	<!-- 결제정보 조회 -->
 	<select id="selectAllPaymentInfo" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO"> 
 		SELECT
@@ -195,8 +205,9 @@
 		UPDATE USER
 		SET
 			user_status = 3
+			, user_withdraw_date = now()			
 		WHERE
-			user_id = #{userId}
+			user_idx = #{userIdx}
 	</update>
 	
 	

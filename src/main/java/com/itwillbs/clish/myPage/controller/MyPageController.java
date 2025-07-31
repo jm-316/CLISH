@@ -3,6 +3,8 @@ package com.itwillbs.clish.myPage.controller;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,19 +50,25 @@ public class MyPageController {
 	// 폼 submit시 DTO에 주입할 데이터 변경[SQL : DATETIME -> DTO TIMESTAMP]
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Timestamp.class, new PropertyEditorSupport() {
-            
-            public void setAsText(String text) throws IllegalArgumentException {
-                if (text == null || text.trim().isEmpty()) {
-                    setValue(null);
-                } else {
-                    // "2025-07-13T12:38:10" → "2025-07-13 12:38:10"
-                    String fixed = text.replace('T', ' ');
-                    setValue(Timestamp.valueOf(fixed));
-                }
-            }
-        });
-    }
+	    
+		binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+	        @Override
+	        public void setAsText(String text) throws IllegalArgumentException {
+	            if (text == null || text.trim().isEmpty()) {
+	                setValue(null);
+	            } else {
+	                String value = text.trim();
+	                if (value.length() == 10) {  // 날짜만 있는 경우
+	                    value = value + "T00:00:00";  // 기본 시간 세팅
+	                } else {
+	                    value = value.replace('T', ' ');  // "T"를 공백으로 치환
+	                }
+	                setValue(LocalDateTime.parse(value));
+	            }
+	        }
+	    });
+	}
+		
 	
 	// 마이페이지 메인
 	@GetMapping("/main")
@@ -288,6 +296,8 @@ public class MyPageController {
 	@PostMapping("/payment_info/change")
 	public String resrvationChange(ReservationDTO reservation) {
 		System.out.println("수정완료페이지 : " + reservation.getReservationIdx());
+		System.out.println(reservation.getReservationClassDate());
+		
 		
 		myPageService.changeReservation(reservation);
 
@@ -304,9 +314,11 @@ public class MyPageController {
 	// 탈퇴시 비밀번호 입력확인
 	@PostMapping("/withdraw")
 	public String withdrawForm(HttpSession session, UserDTO user, Model model) {
+		String inputPw = user.getUserPassword(); // 입력받은 비밀번호 저장
+
 		// 세션을 이용한 유저 정보 불러오기
 		user = getUserFromSession(session);
-		String inputPw = user.getUserPassword();
+		
 		
 		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) {
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
