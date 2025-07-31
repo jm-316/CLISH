@@ -55,12 +55,12 @@ public class UserClassController {
 		
 		// session 객체에 있는 userId 저장
 		String userId = (String)session.getAttribute("sId");
-		UserDTO user = userService.selectUserId(userId);
+		UserDTO userInfo = userService.selectUserId(userId);
 		
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		
 		model.addAttribute("classList", classList);
-		model.addAttribute("user", user);
+		model.addAttribute("userInfo", userInfo);
 		
 		return "/course/user/course_list";
 	}
@@ -73,7 +73,7 @@ public class UserClassController {
 			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
 		String userId = (String)session.getAttribute("sId");
-		UserDTO user = userService.selectUserId(userId);
+		UserDTO userInfo = userService.selectUserId(userId);
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
@@ -97,7 +97,7 @@ public class UserClassController {
 		}
 		
 		model.addAttribute("classInfo", classInfo);
-		model.addAttribute("user", user);
+		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("curriculumList", curriculumList);
 		
 		return "/course/user/course_detail";
@@ -112,8 +112,7 @@ public class UserClassController {
 			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
 		String userId = (String)session.getAttribute("sId");
-		UserDTO userInfo = userClassService.getUserIdx(userId); 
-		String userIdx = userInfo.getUserIdx(); // userIdx
+		UserDTO userInfo = userService.selectUserId(userId); // user정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // classIdx
 		
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
@@ -135,9 +134,6 @@ public class UserClassController {
 			
 			model.addAttribute("reviewList", reviewList);
 		}
-		
-		reservationDTO.setClassIdx(classIdx);
-		reservationDTO.setUserIdx(userIdx);
 		
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
@@ -161,8 +157,12 @@ public class UserClassController {
 	        model.addAttribute("error", "선택할 수 없는 날짜입니다.");
 	        return "reservation_form";
 	    }
-		
-	    // 가능 인원인지 검사
+	    
+	    int total = classDTO.getClassMember();
+	    int reservationMembers = userClassService.selectReservationMembers(classDTO.getClassIdx());
+	    
+	    System.out.println("total : " + total + "reservationmembers : " + reservationMembers);
+	    // 가능 인원인지 검사 reservation 테이블에서 classidx 참조해서 예약된 인원 전부 더하고 (class 테이블 총 인원)에서 빼기
 	    
 	    
 	    // LocalDate → LocalDateTime 변환 (시간을 00:00:00 으로 세팅)

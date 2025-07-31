@@ -26,4 +26,7 @@ public interface UserClassMapper {
 
 	int selectCountClassReview(String classIdx);
 
+	// 총 예약인원을 알기 위한 SELECT
+	int selectCountReservationMembers(String classIdx);
+
 }

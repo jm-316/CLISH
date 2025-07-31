@@ -121,7 +121,7 @@
 		           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		           	클래스 목록</button>
 				</c:if>
-				<c:if test="${classInfo.classStatus eq 2}">
+				<c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
 		            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">예약 확정</button>
 				</c:if>
 			</div>
