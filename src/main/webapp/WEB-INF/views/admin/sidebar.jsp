@@ -17,11 +17,11 @@
 	   	   		<a href="/admin/main">MAIN</a>
 	   	    </li>
 	       <li>
-	       		<span>강좌 관리</span>
+	       		<span>강의 관리</span>
 	       		<ul>
 	       			<li>
 	       				<a href="/admin/category">카테고리 편집</a>
-	       				<a href="/admin/classList">강좌 목록</a>
+	       				<a href="/admin/classList">강의 목록</a>
 	       			</li>
 	       		</ul>
 	       	</li>
