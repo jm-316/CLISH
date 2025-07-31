@@ -187,24 +187,51 @@ public class UserController {
 	    return "redirect:" + lastAddress;
 	}
 	
-	 @GetMapping("/captcha")
-	 public void captcha(HttpServletResponse response, HttpSession session) throws IOException {
-	        // 1. 캡차 객체 생성 (width, height, 문자 개수)
-	        SpecCaptcha captcha = new SpecCaptcha(130, 48, 5);
+	// 보안이미지
+	@GetMapping("/captcha")
+	public void captcha(HttpServletResponse response, HttpSession session) throws IOException {
+		// 1. 캡차 객체 생성 (width, height, 문자 개수)
+		SpecCaptcha captcha = new SpecCaptcha(130, 48, 5);
+		
+		// 2. 문자값을 세션에 저장
+		session.setAttribute("captcha", captcha.text().toLowerCase());
+		
+		// 3. 응답 헤더 설정
+		response.setContentType("image/png");
+		response.setHeader("Pragma", "No-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expire", 0);
+		
+		// 4. 이미지 출력
+		captcha.out(response.getOutputStream());
+	}
+	
+	// 아이디 찾기 페이지 열기
+	@GetMapping("/findLoginIdForm")
+	public String showFindLoginIdForm() {
+	    return "user/findLoginIdForm";
+	}
 
-	        // 2. 문자값을 세션에 저장
-	        session.setAttribute("captcha", captcha.text().toLowerCase());
-
-	        // 3. 응답 헤더 설정
-	        response.setContentType("image/png");
-	        response.setHeader("Pragma", "No-cache");
-	        response.setHeader("Cache-Control", "no-cache");
-	        response.setDateHeader("Expire", 0);
-
-	        // 4. 이미지 출력
-	        captcha.out(response.getOutputStream());
-	 }
-	 
+	// 아이디 찾기 AJAX 작동
+	@GetMapping("/findLoginId")
+	@ResponseBody
+	public Map<String, Object> findLoginId(@RequestParam String email) {
+		Map<String, Object> result = new HashMap<>();
+		
+		// 1. 이메일로 아이디 찾기 (서비스/DAO/Mapper 등에서 실제 구현)
+		String foundId = userService.findUserIdByEmail(email);
+		
+		// 2. 결과 반환
+		if(foundId != null && !foundId.isEmpty()) {
+			result.put("foundId", foundId);
+			System.out.println("foundId : " + foundId);
+		} else {
+			result.put("foundId", null);
+		}
+		
+		return result;
+	}
+	
 //	@PostMapping("/saveEmailSession")
 //	public String saveEmailSession(@RequestParam("user_email") String userEmail,
 //	                               HttpSession session, RedirectAttributes redirect) {
@@ -239,4 +266,5 @@ public class UserController {
 	    result.put("exists", phoneExists);
 	    return result;
 	}
+	
 }
