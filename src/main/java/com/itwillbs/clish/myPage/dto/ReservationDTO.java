@@ -18,9 +18,7 @@ public class ReservationDTO {
 	private String reservationIdx; 
 	private String userIdx;
 	private int reservationMembers;
-	
 	private LocalDateTime reservationClassDate;
-	
 	private LocalDateTime reservationCom;
 	private String classIdx;
 	private int reservationStatus;

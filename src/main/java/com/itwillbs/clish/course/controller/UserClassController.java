@@ -48,22 +48,17 @@ public class UserClassController {
 	private final CurriculumService curriculumService;
 	
 	// 클래스 리스트
-	@GetMapping("user/classList")
+	@GetMapping("/user/classList")
 	public String classListForm(Model model, HttpSession session,
 			@RequestParam int classType,
 			@RequestParam(required = false)String categoryIdx) {
-//		System.out.println("아무거나 송출 " + classType + " 다음거 " + categoryName);
-		// session 객체에 있는 userId로 userIdx를  
+		
+		// session 객체에 있는 userId 저장
 		String userId = (String)session.getAttribute("sId");
 		UserDTO user = userService.selectUserId(userId);
 		
-//		List<Map<String , Object>> classList = adminClassService.getClassList();
-		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
-		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
 		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		
-		model.addAttribute("parentCategories", parentCategories);
-		model.addAttribute("childCategories", childCategories);  
 		model.addAttribute("classList", classList);
 		model.addAttribute("user", user);
 		
@@ -71,7 +66,7 @@ public class UserClassController {
 	}
 	
 	// 클래스 상세 페이지
-	@GetMapping("user/classDetail")
+	@GetMapping("/user/classDetail")
 	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session,
 			@RequestParam int classType,
 			@RequestParam(required = false)String categoryIdx,
@@ -81,11 +76,8 @@ public class UserClassController {
 		UserDTO user = userService.selectUserId(userId);
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx);
 		
-		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
-		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2);
-//		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
-
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
+		
 		int listLimit = 2;
 		int reviewListCount = userClassService.getClassReviewCount(classIdx);
 		
@@ -104,20 +96,15 @@ public class UserClassController {
 			model.addAttribute("reviewList", reviewList);
 		}
 		
-		
-//		model.addAttribute("classList", classList);
-		model.addAttribute("parentCategories", parentCategories);
-		model.addAttribute("childCategories", childCategories);  
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("user", user);
-
 		model.addAttribute("curriculumList", curriculumList);
 		
 		return "/course/user/course_detail";
 	}
 	
 	// 예약정보 입력 페이지
-	@GetMapping("user/courseReservation")
+	@GetMapping("/user/classReservation")
 	public String classReservation(@RequestParam String classIdx, Model model, HttpSession session, 
 			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO,
 			@RequestParam int classType,
@@ -129,9 +116,6 @@ public class UserClassController {
 		String userIdx = userInfo.getUserIdx(); // userIdx
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // classIdx
 		
-		List<CategoryDTO> parentCategories = categoryService.getCategoriesByDepth(1); 
-		List<CategoryDTO> childCategories = categoryService.getCategoriesByDepth(2); 
-		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
 		
 		int listLimit = 2;
@@ -155,9 +139,6 @@ public class UserClassController {
 		reservationDTO.setClassIdx(classIdx);
 		reservationDTO.setUserIdx(userIdx);
 		
-		model.addAttribute("parentCategories", parentCategories);
-		model.addAttribute("childCategories", childCategories);  
-		model.addAttribute("classList", classList);
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("curriculumList", curriculumList);
@@ -167,14 +148,25 @@ public class UserClassController {
 	
 	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("/user/reservationInfo")
-	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO,
-			@RequestParam("reservationClassDateRe") Date date) {
+	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO, ClassDTO classDTO,
+			@RequestParam("reservationClassDateRe")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 		
-		 // 2) java.sql.Date → LocalDate 변환
-	    LocalDate localDate = date.toLocalDate();
+		// 허용된 날짜 리스트
+		classDTO = companyClassService.getClassInfo(classDTO.getClassIdx());
+	    LocalDate startDate = classDTO.getStartDate();
+	    LocalDate endDate   = classDTO.getEndDate();
 
-	    // 3) LocalDate → LocalDateTime 변환 (시간을 00:00:00 으로 세팅)
-	    LocalDateTime localDateTime = localDate.atStartOfDay();
+	    // 유효 날짜인지 검사 
+	    if (date.isBefore(startDate) || date.isAfter(endDate)) {
+	        model.addAttribute("error", "선택할 수 없는 날짜입니다.");
+	        return "reservation_form";
+	    }
+		
+	    // 가능 인원인지 검사
+	    
+	    
+	    // LocalDate → LocalDateTime 변환 (시간을 00:00:00 으로 세팅)
+	    LocalDateTime localDateTime = date.atStartOfDay();
 		
 		// reservationIdx 생성
 		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	function filterByCategory() {
@@ -35,10 +36,6 @@
 								${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
 							</option>
 						</c:forEach>
-					</select>
-					<select>
-						<option value="이전등록순">이전등록순</option>
-						<option value="최신등록순">최신등록순</option>
 					</select>
 				</div>
 				<table class="table">
@@ -98,6 +95,9 @@
 				</table>
 			</div>
 		</div>
-	<jsp:include page="/WEB-INF/views/admin/bottom.jsp" />
+		
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include> 
+	</footer>
 </body>
 </html>
