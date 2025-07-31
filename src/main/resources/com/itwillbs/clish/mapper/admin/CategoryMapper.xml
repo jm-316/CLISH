@@ -11,6 +11,8 @@
 			CATEGORY
 		WHERE 
 			depth = #{depth}
+		ORDER BY
+			sort_order 
 	</select>
 	
 	<!-- 카테고리 상세 정보 -->

@@ -20,7 +20,9 @@ import com.itwillbs.clish.admin.dto.CategoryDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -119,19 +121,45 @@ public class AdminClassController {
 		return "commons/result_process";
 	}
 	
-	// 강좌 리스트
+	// 강의 리스트
 	@GetMapping("/classList")
-	public String classList(Model model) {
+	public String classList(
+			@RequestParam(defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "") String filter,  
+			@RequestParam(defaultValue = "") String searchKeyword, 
+			Model model) {
+		searchKeyword = searchKeyword.trim();
 		
-		List<Map<String , Object>> classList = adminClassService.getClassList();
+		int listLimit = 10;
+//		int classCount = adminClassService.getClassCount();
+		int listCount = adminClassService.getClassListCount(searchKeyword);
+		if (listCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 3);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/classList");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+//			List<Map<String , Object>> classList = adminClassService.getClassList();
+			List<Map<String , Object>> classList = adminClassService.getClassList(pageInfoDTO.getStartRow(),listLimit, filter, searchKeyword);
+			List<Map<String , Object>> pendingClassList = adminClassService.getPendingClassList();
+			Boolean isPendingClass = adminClassService.isPendingClass(1);
+			
+			model.addAttribute("classList", classList);
+			model.addAttribute("isPendingClass", isPendingClass);
+			model.addAttribute("pendingClassList", pendingClassList);
+		}
 		
-		model.addAttribute("classList", classList);
 		
 		return "/admin/class/class_list";
 	}
 	
 	
-	// 강좌 상세 정보
+	// 강의 상세 정보
 	@GetMapping("/class/{idx}")
 	public String classInfo(@PathVariable("idx") String idx, Model model) {
 		ClassDTO classInfo = classService.getClassInfo(idx);
