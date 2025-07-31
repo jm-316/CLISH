@@ -18,9 +18,9 @@
 		<form action="/myPage/payment_info/cancelPayment" method="post" id="cancelRequest" onsubmit="alert('정말 취소 하시겠습니까?')">
 		<h1>${message }</h1>
 		<h1>${paymentCancelClassInfo.reservationClassDate }</h1>
-		<h1>${paymentCancelClassInfo.ableCancel }</h1>
+		<h1>${paymentCancelClassInfo.cancelAmount }</h1>
 		<fmt:formatNumber var="formattedAmount" value="${paymentCancelClassInfo.amount}" pattern="#,##0" />
-		<fmt:formatNumber var="formattedAmountCancel" value="${paymentCancelClassInfo.amount * paymentCancelClassInfo.ableCancel}" pattern="#,##0" />
+		<fmt:formatNumber var="formattedAmountCancel" value="${paymentCancelClassInfo.cancelAmount }" pattern="#,##0" />
 		<table>
 			<tr>
 				<th>결제 번호</th>
@@ -41,7 +41,11 @@
 			</tr><tr>
 			</tr><tr>
 				<th>환불 가능 금액</th>
-				<td><input type="text" value="${formattedAmountCancel }" name="amount" readonly></td>
+				<td>
+					<input type="text" value="${formattedAmountCancel }" readonly>
+					<input type="hidden" value="${paymentCancelClassInfo.cancelAmount }" name="amount">
+				</td>
+					
 			</tr><tr>
 				<th>구매 I  D</th>
 				<td><input type="text" value="${paymentCancelClassInfo.userName}"name="userName" readonly></td>
@@ -74,8 +78,6 @@
 				        return false;
 				    }
 				    
-				    amountValue = amountValue.replace(/,/g, '');
-				    $('[name="amount"]').val(amountValue);
 				});
 			});
 		</script>

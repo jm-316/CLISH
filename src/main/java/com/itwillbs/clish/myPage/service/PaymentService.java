@@ -1,5 +1,6 @@
 package com.itwillbs.clish.myPage.service;
  
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -94,17 +95,40 @@ public class PaymentService {
 		Duration remainTime = Duration.between(now, reservationClassDate);
 		
 		long remainDay = remainTime.getSeconds()/60/60/24;
-	   
-		if(remainDay > 5 ) {
-			paymentCancelClassInfo.put("ableCancel" , 1);
-		} else if(remainDay < 5 && remainDay > 3) {
-			paymentCancelClassInfo.put("ableCancel" , 0.7);
-		} else if(remainDay < 3 && remainDay > 1) {
-			paymentCancelClassInfo.put("ableCancel" , 0.5);
+		// 정기 = 0 / 단기 =1
+		int classType = (int)paymentCancelClassInfo.get("classType");
+		double ableCancel;
+		if(classType == 0) { // 정기강의 환불 규정
+			if(remainDay >= 10 ) {
+				ableCancel = 1;
+			} else if(remainDay < 10 && remainDay >= 5) {
+				ableCancel = 0.7;
+			} else if(remainDay < 5 && remainDay >= 3) {
+				ableCancel = 0.5;
+			} else if(remainDay < 3 && remainDay >= 1) {
+				ableCancel = 0.3;
+			} else {
+				ableCancel = 0;
+			}
 		} else {
-			paymentCancelClassInfo.put("ableCancel", 0);
+			if(remainDay >= 5 ) { // 단기강의 환불규정
+				ableCancel = 1;
+			} else if(remainDay < 5 && remainDay >= 3) {
+				ableCancel = 0.7;
+			} else if(remainDay < 3 && remainDay >= 1) {
+				ableCancel = 0.5;
+			} else {
+				ableCancel = 0;
+			}
 		}
+		// 환불규정에 따른 환불금액 계산
+		long amount = ((BigDecimal) paymentCancelClassInfo.get("amount")).longValue();
 		
+		double cancelAmountDouble = amount * ableCancel;
+		
+		int cancelAmount = (int)(Math.ceil(cancelAmountDouble / 10.0) * 10);
+		
+		paymentCancelClassInfo.put("cancelAmount", cancelAmount);
 		
 		return paymentCancelClassInfo;
 	}
