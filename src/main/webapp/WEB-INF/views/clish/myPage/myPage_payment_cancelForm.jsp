@@ -36,7 +36,7 @@
 				<td><input type="text" value="${paymentInfoDTO.status }" readonly></td>
 			</tr><tr>
 				<th>결제 시각</th>
-				<td><input type="text" value="${paymentInfoDTO.payTime}" readonly></td>
+				<td><input type="text" value="${payTime}" readonly></td>
 			</tr><tr>
 				<th>변 환</th>
 				<td><input type="text" value="${payTime}" readonly></td>

@@ -144,7 +144,7 @@ public class PaymentController {
 		Map<String, Object> cancelRequest = new HashMap<>();
 		cancelRequest.put("imp_uid", paymentCancelDTO.getImpUid()); // 결제 번호
 		cancelRequest.put("reason", paymentCancelDTO.getCancelReason()); // 취소 이유
-		
+//		cancelRequest.put("amount", paymentCancelDTO.getAmount());
 		// HttpHeaders 객체 생성
 		HttpHeaders headers = new HttpHeaders();
 		// 헤더에 필요정보 입력
