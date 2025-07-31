@@ -57,6 +57,11 @@ public class UserService {
 	public boolean isUserPhoneExists(String userPhone) {
 		return userMapper.countByUserPhoneMatch(userPhone) > 0;
 	}
+	
+	// 이메일로 아이디 찾기
+	public String findUserIdByEmail(String email) {
+		return userMapper.selectUserIdByEmail(email);
+	}
 
 
 }

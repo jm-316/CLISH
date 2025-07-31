@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 관리 페이지</title>
+<title>클래스 목록 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
@@ -116,7 +116,7 @@
         <!-- 본문 내용 -->
         <div class="content-area">
             <div class="class-header">
-                <h1>클래스 관리 페이지</h1>
+                <h1>클래스 목록 페이지</h1>
             </div>
 
             <!-- 클래스 개설 버튼 -->

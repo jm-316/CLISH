@@ -14,11 +14,17 @@ public interface UserMapper {
 	UserDTO selectUserId(String userId);
 	
 	boolean existsByEmail(String email);
-
+	
+	// 닉네임 중복체크
 	int countByNickname(@Param("nickname") String nickname);
-
+	
+	// 아이디 중복체크
 	int countByUserId(@Param("userId") String userId);
-
+	
+	// 핸드폰 중복체크
 	int countByUserPhoneMatch(@Param("userPhone") String userPhone);
+	
+	// 이메일로 아이디 찾기
+	String selectUserIdByEmail(String email);
 
 }

@@ -6,6 +6,7 @@ import java.sql.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
@@ -146,25 +148,9 @@ public class CompanyClassController {
 		String userId = (String) session.getAttribute("sId");
 		String userIdx = companyClassService.getUserIdxByUserId(userId);
 		companyClass.setUserIdx(userIdx);
-	    // ------------------------------------------------------------------------------------------------------
-		try {
-	        List<FileDTO> fileList = FileUtils.uploadFile(companyClass, session);
-	        companyClass.setFileList(fileList);
-
-	        // 첫 번째 파일을 썸네일로 사용
-	        if (!fileList.isEmpty()) {
-	            FileDTO first = fileList.get(0);
-	            String thumbPath = "/resources/upload/" + first.getSubDir() + "/" + first.getRealFileName();
-	            companyClass.setClassPic1(thumbPath);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
-	        return "commons/fail";
-	    }
 		// ------------------------------------------------------------------------------------------------------
 	    // 강좌 등록
-	    int result = companyClassService.registerClass(companyClass);
+		int result = companyClassService.registerClass(companyClass, session); 
 	    // ------------------------------------------------------------------------------------------------------
 	    // 커리큘럼 등록 로직 (폼에서 여러 개 받아온 값 처리)
 	    String[] titles = request.getParameterValues("curriculumTitle");
@@ -230,10 +216,10 @@ public class CompanyClassController {
 	// 클래스 수정 로직
 	@PostMapping("/myPage/modifyClass")
 	public String modifyClassSubmit(@RequestParam("classIdx") String classIdx, @RequestParam("classDays") int classDays,
-			Model model, @ModelAttribute ClassDTO classInfo,
+			Model model, @ModelAttribute ClassDTO classInfo, HttpSession session,
 			@RequestParam("curriculumIdx") List<String> curriculumIdxList,
 			@RequestParam("curriculumTitle") List<String> curriculumTitleList,
-			@RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) {
+			@RequestParam("curriculumRuntime") List<String> curriculumRuntimeList) throws IllegalStateException, IOException {
 		
 		List<CurriculumDTO> curriculumList = new ArrayList<>();
 		
@@ -262,7 +248,7 @@ public class CompanyClassController {
 
 	    classInfo.setClassDays(classDays);
 		
-		int count = companyClassService.modifyClassInfo(classIdx, classInfo, curriculumList);	
+		int count = companyClassService.modifyClassInfo(classIdx, classInfo, curriculumList, session);	
 		
 		if (count > 0) {
 			model.addAttribute("msg", "강좌 정보를 수정했습니다.");

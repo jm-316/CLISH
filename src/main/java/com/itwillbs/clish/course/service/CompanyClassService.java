@@ -1,5 +1,6 @@
 package com.itwillbs.clish.course.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,19 +44,61 @@ public class CompanyClassService {
 	@Autowired
 	private HttpSession session;
 	
-	// 강의 등록
-	public int registerClass(ClassDTO companyClass) {
-		companyClass.setClassStatus(1);
-		return companyClassMapper.insertCompanyClass(companyClass);
+	@Transactional
+	// 강의 등록 (썸네일 업로드 + 파일정보 DB 저장 포함)
+	public int registerClass(ClassDTO companyClass, HttpSession session) {
+	    try {
+	        // 1. 파일 업로드
+	        List<FileDTO> fileList = FileUtils.uploadFile(companyClass, session);
+	        companyClass.setFileList(fileList);
+
+	        // ✅ real_file_name 자르기 (50자 제한 맞추기)
+	        for (FileDTO file : fileList) {
+	            String realName = file.getRealFileName();
+	            realName = realName.replaceAll("[\\s()]", "_"); // ✅ 공백/괄호 → 언더스코어
+	            if (realName.length() > 50) {
+	                realName = realName.substring(0, 50);        // ✅ 너무 길면 잘라
+	            }
+	            file.setRealFileName(realName);
+	        }
+
+	        // 2. 대표 썸네일 설정
+	        if (!fileList.isEmpty()) {
+	            FileDTO first = fileList.get(0);
+	            String thumbPath = "/resources/upload/" + first.getSubDir() + "/" + first.getRealFileName();
+	            companyClass.setClassPic1(thumbPath);
+	        }
+
+	        // 3. 파일 정보 DB 저장
+	        if (!fileList.isEmpty()) {
+	            fileMapper.insertFiles(fileList);
+	        }
+
+	        // 4. 강의 상태 설정
+	        companyClass.setClassStatus(1);
+
+	        // 5. 클래스 등록
+	        return companyClassMapper.insertCompanyClass(companyClass);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("클래스 등록 중 오류 발생", e);
+	    }
 	}
 	
 	// 등록한 강의 상세 조회
 	public ClassDTO getClassInfo(String classIdx) {
-	    ClassDTO classdto = companyClassMapper.selectClassByIdx(classIdx);
+		ClassDTO classdto = companyClassMapper.selectClassByIdx(classIdx);
 
-	    // classDays 값을 요일 문자열로 변환해서 classDayNames에 넣기
-	    if (classdto != null && classdto.getClassDays() != null) {
-	    	classdto.setClassDayNames(convertDaysToString(classdto.getClassDays()));
+	    // ✅ 파일 목록도 함께 세팅
+	    if (classdto != null) {
+	        List<FileDTO> fileList = fileMapper.selectAllFile(classIdx);
+	        classdto.setFileList(fileList); // ← 여기에서 세팅
+
+	        // 요일 문자열 세팅
+	        if (classdto.getClassDays() != null) {
+	            classdto.setClassDayNames(convertDaysToString(classdto.getClassDays()));
+	        }
 	    }
 
 	    return classdto;
@@ -97,7 +140,7 @@ public class CompanyClassService {
 	
 	// 클래스 수정
 	@Transactional
-	public int modifyClassInfo(String classIdx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) {
+	public int modifyClassInfo(String classIdx, ClassDTO classInfo, List<CurriculumDTO> curriculumList, HttpSession session) throws IllegalStateException, IOException {
 		 // 1. 클래스 정보 수정
 	    int result = companyClassMapper.updateClassInfo(classIdx, classInfo);
 	    
@@ -109,6 +152,36 @@ public class CompanyClassService {
 	        if (dto.getCurriculumTitle() != null && !dto.getCurriculumTitle().trim().isEmpty()) {
 	            dto.setClassIdx(classIdx); // 커리큘럼이 어떤 클래스 소속인지 꼭 지정
 	            curriculumMapper.insertCurriculumModify(dto);
+	        }
+	    }
+	    
+	    // ✅ 4. 썸네일 파일 처리만 추가
+	    if (classInfo.getFiles() != null && classInfo.getFiles().length > 0 && !classInfo.getFiles()[0].isEmpty()) {
+	        // 기존 파일 삭제 (ref_table='class' AND ref_idx=classIdx 기준)
+	        fileMapper.deleteAllFile(classIdx);
+	
+	        // 새 파일 업로드
+	        List<FileDTO> fileList = FileUtils.uploadFile(classInfo, session);
+	        
+		    // 🔽 파일명이 너무 길면 자르기
+	        for (FileDTO file : fileList) {
+	            String realName = file.getRealFileName();
+	            realName = realName.replaceAll("[\\s()]", "_"); // ✅ 공백/괄호 → 언더스코어
+	            if (realName.length() > 50) {
+	                realName = realName.substring(0, 50);        // ✅ 너무 길면 잘라
+	            }
+	            file.setRealFileName(realName);
+	        }
+	        
+	        classInfo.setFileList(fileList);
+	
+	        if (!fileList.isEmpty()) {
+	            fileMapper.insertFiles(fileList);
+	
+	            // 대표 썸네일 경로 세팅
+	            FileDTO first = fileList.get(0);
+	            String thumbPath = "/resources/upload/" + first.getSubDir() + "/" + first.getRealFileName();
+	            classInfo.setClassPic1(thumbPath);
 	        }
 	    }
 	    

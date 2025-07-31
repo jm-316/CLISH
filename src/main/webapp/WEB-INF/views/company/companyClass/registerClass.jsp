@@ -97,9 +97,11 @@
 	        
 			
 			<label><b>썸네일 업로드</b></label>
-			<input type="file" name="files" multiple accept="image/*">
+			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*">
 			
-	
+			<!-- ✅ 썸네일 미리보기 영역 -->
+			<div id="preview-area" style="margin-top: 15px;"></div>
+			
 	        <div style="text-align: center; margin-top: 30px;">
 	            <input type="submit" value="강좌 개설 신청" class="orange-button big-button">
 	        </div>
@@ -115,6 +117,29 @@
 			`;
 			document.getElementById("curri-area").appendChild(div);
 		}
+		
+		// 썸네일 미리보기 기능
+		document.getElementById('thumbnailInput').addEventListener('change', function(event) {
+		    const previewArea = document.getElementById('preview-area');
+		    previewArea.innerHTML = ""; // 기존 이미지 제거
+		
+		    const files = event.target.files;
+		    for (let i = 0; i < files.length; i++) {
+		      const file = files[i];
+		
+		      if (file.type.startsWith("image/")) {
+		        const reader = new FileReader();
+		        reader.onload = function(e) {
+		          const img = document.createElement('img');
+		          img.src = e.target.result;
+		          img.style.width = "300px";
+		          img.style.marginBottom = "10px";
+		          previewArea.appendChild(img);
+		        };
+		        reader.readAsDataURL(file);
+		      }
+		    }
+		  });
 		</script>
 	</section>
 	<footer>

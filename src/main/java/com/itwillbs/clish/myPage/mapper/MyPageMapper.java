@@ -18,74 +18,69 @@ import com.itwillbs.clish.user.dto.UserDTO;
 
 @Mapper
 public interface MyPageMapper {
-	
+	// 유저 정보 불러오기
 	UserDTO selectUserInfo(UserDTO user);
-
-	int updateUserInfo(UserDTO user);
-
-	List<ReservationDTO> selectAllReservationInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit,@Param("user")UserDTO user);
-
-	ClassDTO selectOneClassInfo(ReservationDTO reservation);
-
-	Map<String, Object> ReservationDetailInfo(ReservationDTO reservation);
-
-	int deleteReservation(ReservationDTO reservation);
-
-	void updateReservationInfo(ReservationDTO reservation);
-
-	List<PaymentInfoDTO> selectAllPaymentInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
-	int withdraw(UserDTO user);
-
-	int selectReservationCount(UserDTO user);
-
-	int selectPaymentCount(UserDTO user);
-
-	List<InqueryDTO> selectAllInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
-	void deleteInquery(InqueryDTO inqueryDTO);
-
-	InqueryDTO selectOneInquery(InqueryDTO inqueryDTO);
-
-	int selectCountInquery(UserDTO user);
-
-	void updateInquery(InqueryDTO inqueryDTO);
-
-	int selectCountClassQ(UserDTO user);
-
-	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
-	FileDTO selectFile(FileDTO fileDTO);
-
-	void deleteFile(FileDTO fileDTO);
-
+	// 닉네임중복확인
 	UserDTO checkRepName(UserDTO userDTO);
-
+	// 전화번호 중복확인
 	UserDTO checkPhoneNumber(UserDTO userDTO);
-
-	List<NotificationDTO> selectAllNotification(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
+	// 유저정보 수정
+	int updateUserInfo(UserDTO user);
+	// 예약목록 수 체크
+	int selectReservationCount(UserDTO user);
+	// 결제목록 수 확인
+	int selectPaymentCount(UserDTO user);
+	// 예약시간 만료된 목록
+	List<Map<String, Object>> selectCancel(UserDTO user);
+	//예약삭제
+	int deleteReservation(ReservationDTO reservation);
+	//예약목록선택
+	List<ReservationDTO> selectAllReservationInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit,@Param("user")UserDTO user);
+	//결제목록선택
+	List<PaymentInfoDTO> selectAllPaymentInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	//예약정보, 예약된 수업정보
+	Map<String, Object> ReservationDetailInfo(ReservationDTO reservation);
+	// 예약 수정 요청
+	void updateReservationInfo(ReservationDTO reservation);
+	//회원탈퇴
+	int withdraw(UserDTO user);
+	// 내가한 강의문의수
+	int selectCountClassQ(UserDTO user);
+	// 내가한 강의문의 목록
+	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	// 내가한 사이트문의 수
+	int selectCountInquery(UserDTO user);
+	//내가한 사이트문의 목록
+	List<InqueryDTO> selectAllInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	// 내가한 문의[사이트, 강의] 상세정보 
+	InqueryDTO selectOneInquery(InqueryDTO inqueryDTO);
+	//문의 수정
+	void updateInquery(InqueryDTO inqueryDTO);
+	// 문의 삭제
+	void deleteInquery(InqueryDTO inqueryDTO);
+	// 내가받은 알림수
 	int selectCountNotification(UserDTO user);
-
+	// 내가받은 알림 목록
+	List<NotificationDTO> selectAllNotification(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	// 작성가능 수강후기 수
 	int selectUncompleteReviewCount(UserDTO user);
-
+	// 작성가능 수강후기 목록
 	List<Map<String, Object>> selectAllUncompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
-	Map<String, Object> selectOneReservationClassInfo(ReservationDTO reservationDTO);
-
+	// 작성완료한 수강후기 수
 	int selectCompleteReviewCount(UserDTO user);
-	
+	// 작성완료 수강후기 목록
 	List<ReviewDTO> selectAllCompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
-
+	// 예약한 예약,수업 상세정보 
+	Map<String, Object> selectOneReservationClassInfo(ReservationDTO reservationDTO);
+	//후기 작성
 	void insertReview(ReviewDTO review);
-
+	// 후기삭제
 	int delteReview(ReviewDTO reviewDTO);
-
+	// 후기수정폼 - 후기정보
 	ReviewDTO selectOneReview(ReviewDTO reviewDTO);
-
+	// 후기 수정요청
 	void updateReview(ReviewDTO reviewDTO);
 
-	List<Map<String, Object>> selectCancel(UserDTO user);
 
 
 

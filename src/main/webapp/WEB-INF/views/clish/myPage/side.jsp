@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
 <link href="/resources/css/myPage.css" rel="stylesheet">
   
 
 <div id="side">
 	<div class="title-fixed">
-		<h1>${sessionScope.sId}'s page</h1>
+		<h1><a href="/myPage/main">${sessionScope.sId}'s page</a></h1>
 	</div>
 	<input type="button" value="개인정보변경" class="slide_btn" onclick="location.href='/myPage/change_user_info'"><br>
 	<input type="button" value="즐겨찾기" class="slide_btn" onclick="location.href='/myPage/favoriteClass'"><br>

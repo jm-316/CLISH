@@ -80,6 +80,12 @@
 	    FROM USER 
 	    WHERE user_phone_number = #{userPhone}
 	</select>
+	
+	<select id="selectUserIdByEmail">
+		SELECT user_id 
+		FROM USER 
+		WHERE user_email = #{email}
+	</select>
 </mapper>  
   
   
