@@ -73,6 +73,14 @@ button:active .button:active {
 .blue-button {
     background-color: #00809D;
 }
+
+button.blue-button[disabled] {
+  background-color: #a0c3cc;
+  color:  #eeeeee;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .blue-button:hover {
     background-color: #006B7A;
     color: #fff;
