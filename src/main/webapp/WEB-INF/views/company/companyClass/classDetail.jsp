@@ -54,7 +54,18 @@
 					</tr>
 					<tr>
 					    <th>썸네일 이미지</th>
-					    <td><img src="${pageContext.request.contextPath}${classInfo.classPic1}" width="200"></td>
+					    <td>
+					        <c:if test="${not empty classInfo.fileList}">
+							    <c:forEach var="file" items="${classInfo.fileList}">
+							        <img src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" width="200" />
+							        <br>
+							        <span>${file.originalFileName}</span>
+							    </c:forEach>
+							</c:if>
+							<c:if test="${empty classInfo.fileList}">
+							    <span>이미지 없음</span>
+							</c:if>
+					    </td>
 					</tr>
 					
 				</table>
@@ -69,7 +80,7 @@
 				<div style="display: flex; justify-content: center; margin-top: 40px;">
 				    <button class="orange-button"
 				            onclick="location.href='${pageContext.request.contextPath}/company/myPage/classManage'">
-				        클래스 관리
+				        클래스 목록
 				    </button>
 				</div>
 		</section>

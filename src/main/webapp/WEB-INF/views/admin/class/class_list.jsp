@@ -22,7 +22,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h5 class="section-title">강좌 목록</h5>
+						<h5 class="section-title">강의 목록</h5>
 					</div>
 					<c:set var="hasRequestedClass" value="false" />
 					<c:forEach var="classItem" items="${classList}">
@@ -31,7 +31,8 @@
 						</c:if>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${not hasRequestedClass}">
+<%-- 						<c:when test="${not hasRequestedClass || param.hasRequestedClass}"> --%>
+						<c:when test="${empty pendingClassList}">
 							<div class="list-empty">등록 요청된 강의가 없습니다.</div>
 						</c:when>
 						<c:otherwise>
@@ -50,8 +51,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="classItem" items="${classList}">
-											<c:if test="${classItem.class_status == 1}">
+										<c:forEach var="classItem" items="${pendingClassList}">
 												<tr
 													onclick="location.href='/admin/class/${classItem.class_idx}'">
 													<td>${classItem.class_title}</td>
@@ -61,7 +61,6 @@
 													<td><fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd"/></td>
 													<td><button>상세보기</button></td>
 												</tr>
-											</c:if>
 										</c:forEach>
 									</tbody>
 								</table>
@@ -70,12 +69,12 @@
 					</c:choose>
 
 					<form class="filter-form">
-						<select class="filter-select">
-							<option>전체</option>
-							<option>최신등록순</option>
+						<select class="filter-select" name="filter">
+							<option value="all">전체</option>
+							<option value="latest">최신등록순</option>
 						</select>
 						<div class="search-box">
-							<input type="text" class="search-input"/>
+							<input type="text" class="search-input" name="searchKeyword"/>
 							<button class="search-button">검색</button>
 						</div>
 					</form>
@@ -96,7 +95,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:set var="hasRegisteredClass" value="false" />
 										<c:forEach var="classItem" items="${classList}">
 											<c:if test="${classItem.class_status != 1}">
 												<c:set var="hasRegisteredClass" value="true" />
@@ -117,6 +115,30 @@
 								</table>
 							</c:otherwise>
 						</c:choose>
+					</div>
+					<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
+						<div>
+							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
+								<input type="button" value="이전" 
+									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum - 1}'" 
+									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageInfo.pageNum}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="/admin/classList?pageNum=${i}">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<input type="button" value="다음" 
+									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum + 1}'" 
+								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
+							</c:if>
+						</div>
 					</div>
 				</div>
 			</div>

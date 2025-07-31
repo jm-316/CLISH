@@ -376,21 +376,8 @@ public class MainController {
 		return "redirect:/customer/inquiry";
 	}
 	
-	@GetMapping("/event/eventHome")
-	public String eventHome() {
-		
-		return "event/event_home";
-	}
-	@GetMapping("/event/earlyDiscount")
-	public String eventEarlyDiscount() {
-		
-		return "event/early_discount";
-	}
-	@GetMapping("/event/specialDiscount")
-	public String eventSpecialDiscount() {
-		
-		return "event/special_discount";
-	}
+
+
 //	@GetMapping("/admin/main")
 //	public String adminMain() {
 //		
@@ -435,23 +422,6 @@ public class MainController {
 		return notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
 	
-//	@GetMapping("/event/eventHome")
-//	public String eventHome(HttpSession session, Model model) {
-//		String id = (String)session.getAttribute("sId");
-//		UserDTO dbUser = userService.selectUserId(id);
-//		if(id == null) {
-//			
-//			model.addAttribute("msg", "이벤트는 회원만 참여 가능합니다");
-//			model.addAttribute("targetURL", "/user/login");
-//			return "commons/result_process";
-//		} else if(dbUser.getUserType() == 2) {
-//			model.addAttribute("msg", "이벤트에는 일반 회원만 참여할 수 있습니다.");
-//			return "commons/fail";
-//		}
-//		List<EventDTO> eventList = mainService.getEventList();
-//		model.addAttribute("eventList", eventList);
-//		
-//		return "event/event_home";
-//	} 
+
 
 }

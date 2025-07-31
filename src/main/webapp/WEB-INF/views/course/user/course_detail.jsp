@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	function filterByCategory() {
@@ -43,14 +44,6 @@
 	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
 	
 	<div class="main">
-		
-		<section class="breadcrumb">
-            <a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-            <a href="classList?classType=${param.classType}">IT/개발</a> <i class="fa-solid fa-angle-right"></i>
-            <a href="classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}">
-            	<span>백엔드</span>
-            </a>
-        </section>
         
 		<section class="class-details">
 			<div class="class-container">
@@ -62,26 +55,19 @@
 					<h2 class="class-title">${classInfo.classTitle}</h2>
 					<p class="class-description">${classInfo.classIntro}</p>
 					<div class="class-tags">
-						<c:forEach var="childCat" items="${childCategories}">
-							<c:if test="${childCat.categoryIdx eq classInfo.categoryIdx }">
-								<span class="tag">#${childCat.categoryName}</span>
+						<c:forEach var="child" items="${childCategories}">
+							<c:if test="${child.categoryIdx eq classInfo.categoryIdx}">
+								<span class="tag">#${child.categoryName}</span>
 							</c:if>
 						</c:forEach>
-					</div>
-					<div class="class-meta">
-						<span class="stars"><i class="fa-solid fa-star"></i> 2.0</span> <span
-							class="teacher"><i class="fa-solid fa-user"></i> 강감찬</span> <span
-							class="duration"><i class="fa-regular fa-hourglass-half"></i>
-							${classInfo.classDays}
-							<i class=""></i></span>
 					</div>
 				</div>
 			</div>
 	    <div style="text-align: center; padding-top: 30px; display: flex;">
 	        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 	        클래스 목록</button>
-	        <c:if test="${user.userType eq 2 or user.userType eq 1}">
-	            <button class="orange-button" onclick="location.href='/course/user/courseReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+	        <c:if test="${user.userType eq 2 or user.userType eq 1 and classInfo.classStatus eq 2}">
+	            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 	            예약정보 입력</button>
 	        </c:if>
 	    </div>
@@ -92,7 +78,7 @@
 			<li><a href="#classDetail">클래스 소개</a></li>
 			<li><a href="#curriCulum">커리큘럼</a></li>
 			<li><a href="#reView">수강평(1)</a></li>
-			<li><a class="tab" href="CourseSupportList?class_id=2&codetype=CATE01">
+			<li><a class="tab" href="">
 			문의(0)
 			</a></li>
 		</ul>

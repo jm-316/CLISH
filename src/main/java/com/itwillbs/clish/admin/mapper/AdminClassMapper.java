@@ -12,8 +12,23 @@ import com.itwillbs.clish.course.dto.ClassDTO;
 public interface AdminClassMapper {
 
 	// 강의 리스트
-	List<Map<String, Object>> selectClassList();
+//	List<Map<String, Object>> selectClassList();
 
+	// 강의 리스트(페이징, 필터, 검색)
+	List<Map<String, Object>> selectClassList(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("filter") String filter, @Param("searchKeyword") String searchKeyword);
+	
+	// 등록된 강의 수
+//	int selectClassCount();
+	
+	// 등록된 강의 수 (필터, 검색)
+	int selectClassCount(String searchKeyword);
+	
+	// 대기 중인 강의
+	Boolean selectPendingClass(int status);
+	
+	// 대기 중인 강의 리스트
+	List<Map<String, Object>> selectpendingClassList();
+	
 	// 강의 승인
 	int updateClassStatus(@Param("idx") String idx, @Param("status") int status);
 
@@ -22,5 +37,4 @@ public interface AdminClassMapper {
 
 	// 하위 카테고리 확인
 	boolean existsByCategory(@Param("categoryIdx") String categoryIdx, @Param("depth") int depth);
-
 }

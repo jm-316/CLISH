@@ -6,7 +6,25 @@
 	
 	<!-- 강의 등록 -->
 	<insert id="insertCompanyClass">
-	    INSERT INTO CLASS 
+	    INSERT INTO CLASS (
+	    	class_idx,
+	        class_title,
+	        category_idx,
+	        class_status,
+	        class_price,
+	        class_member,
+	        start_date,
+	        end_date,
+	        class_days,
+	        location,
+	        created_at,
+	        updated_at,
+	        user_idx,
+	        class_type,
+	        class_intro,
+	        class_content,
+	        class_pic1
+	    )
 	    VALUES (
 	        #{classIdx},
 	        #{classTitle},
@@ -178,60 +196,27 @@
 	    WHERE i.inquery_idx = #{idx}
 	</select>
 	
-	
-	<!-- 강의 사진 첨부 추가 -->
-	<resultMap id="ClassDTOWithBoardFileDTOListResultMap" type="com.itwillbs.clish.course.dto.ClassDTO" >
-		<id property="classIdx" column="class_idx"/>
-		<result property="classTitle" column="class_title" />
-		<result property="categoryIdx" column="category_idx" />
-		<result property="classStatus" column="class_status" />
-		<result property="classPrice" column="class_price" />
-		<result property="classMember" column="class_member" />
-		<result property="startDate" column="start_date" />
-		<result property="endDate" column="end_date" />
-		<result property="classDays" column="class_days" />
-		<result property="location" column="location" />
-		<result property="userIdx" column="user_idx" />
-		<result property="classType" column="class_type" />
-		<result property="classIntro" column="class_intro" />
-		<result property="classContent" column="class_content" />
-		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO">
-			<id property="fileId" column="file_id"/>
-			<result property="idx" column="idx" />
-			<result property="originalFileName"  column="original_file_name"/>
-			<result property="realFileName"  column="real_file_name"/>
-			<result property="subDir"  column="sub_dir"/>
-			<result property="fileSize"  column="file_size"/>
-			<result property="contentType"  column="content_type"/>
-		</collection>
-	</resultMap>
-	<select id="selectClassByIdx" resultMap="ClassDTOWithBoardFileDTOListResultMap">
+	<!-- 클래스 단건 조회 (파일 제외) -->
+	<select id="selectClassByIdx" resultType="com.itwillbs.clish.course.dto.ClassDTO">
 		SELECT 
-			c.class_idx
-			, c.class_title
-			, c.category_idx
-			, c.class_status
-			, c.class_price
-			, c.class_member
-			, c.start_date
-			, c.end_date
-			, c.class_days
-			, c.location
-			, c.user_idx
-			, c.class_type
-			, c.class_intro
-			, c.class_content
-		    , f.file_id
-		    , f.original_file_name
-		    , f.real_file_name
-		    , f.sub_dir
-		    , f.file_size
-		    , f.content_type
-		FROM
-			CLASS c
-		LEFT JOIN FILE f
-		ON c.class_idx = f.idx
-		WHERE c.class_idx = #{classIdx}
+			class_idx,
+			class_title,
+			category_idx,
+			class_status,
+			class_price,
+			class_member,
+			start_date,
+			end_date,
+			class_days,
+			location,
+			user_idx,
+			class_type,
+			class_intro,
+			class_content,
+			class_pic1
+		FROM CLASS
+		WHERE
+			class_idx = #{classIdx}
 	</select>
 	
 	<!-- 클래스 문의 페이지 - 문의 답변 -->

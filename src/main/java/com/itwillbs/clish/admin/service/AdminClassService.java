@@ -35,8 +35,33 @@ public class AdminClassService {
 	private HttpSession session;
 	
 	// 강좌 리스트
-	public List<Map<String, Object>> getClassList() {
-		return adminClassMapper.selectClassList();
+//	public List<Map<String, Object>> getClassList() {
+//		return adminClassMapper.selectClassList();
+//	}
+	
+	// 강의 리스트(페이징, 검색, 정렬)
+	public List<Map<String, Object>> getClassList(int startRow, int listLimit, String filter, String searchKeyword) {
+		return adminClassMapper.selectClassList(startRow,listLimit, filter, searchKeyword);
+	}
+	
+//	// 등록된 강의 수
+//	public int getClassCount() {
+//		return adminClassMapper.selectClassCount();
+//	}
+	
+	// 등록된 강의 수(검색어 포함)
+	public int getClassListCount(String searchKeyword) {
+		return adminClassMapper.selectClassCount( searchKeyword);
+	}
+	
+	// 대기 중인 강의 확인
+	public Boolean isPendingClass(int status) {
+		return adminClassMapper.selectPendingClass(status);
+	}
+	
+	// 대기 중인 강의 리스트
+	public List<Map<String, Object>> getPendingClassList() {
+		return adminClassMapper.selectpendingClassList();
 	}
 	
 	// 강좌 승인 요청
@@ -99,5 +124,4 @@ public class AdminClassService {
 			return 1;
 		}
 	}
-
 }
