@@ -20,7 +20,7 @@
 			<h1>클래스 수정 페이지</h1>
 			<h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 정보 수정 ]</h3>
 
-			 <form action="/company/myPage/modifyClass" method="post">
+			<form action="${pageContext.request.contextPath}/company/myPage/modifyClass" method="post" enctype="multipart/form-data">
 			<table class="table-with-side-borders" style="width: 90%;">
 				<input type="hidden" name="classIdx" value="${classInfo.classIdx}" />
 				<input type="hidden" name="userIdx" value="${classInfo.userIdx}">
@@ -59,8 +59,8 @@
 			            <option value="1" ${classInfo.classStatus == 1 ? "selected" : ""}>임시저장</option>
 			            <option value="2" ${classInfo.classStatus == 2 ? "selected" : ""}>공개</option>
 			            <option value="3" ${classInfo.classStatus == 3 ? "selected" : ""}>마감</option>
+		        	</select><br>
 		            </td>
-		        </select><br>
 		        </tr>
 		        <tr>
 					<th>수강료</th>
@@ -103,26 +103,31 @@
 					<td><textarea name="classContent">${classInfo.classContent}</textarea></td>
 				</tr>
 				<tr>
-					<th>썸네일 이미지 경로</th>
-					<td><img src="${pageContext.request.contextPath}/resources/upload/${classInfo.classPic1}" width="200"></td>
+					<th>썸네일 수정</th>
+					<td>
+						<c:if test="${not empty classInfo.fileList}">
+						    <c:forEach var="file" items="${classInfo.fileList}">
+						        <img src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" width="200" />
+						        <br>
+						        <span>${file.originalFileName}</span>
+						    </c:forEach>
+						</c:if>
+						<c:if test="${empty classInfo.fileList}">
+						    <span>이미지 없음</span>
+						</c:if>
+					
+						<!-- 새로 업로드할 파일 선택 -->
+						<input type="file" name="files" id="thumbnailInput" multiple accept="image/*" />
+					
+						<!-- 새로 선택 시 미리보기 -->
+						<div id="preview-area" style="margin-top: 15px;"></div>
+					</td>
 				</tr>
 			</table>
 
 			<h3>📚 커리큘럼 수정</h3>
-<%-- 			<c:forEach var="curri" items="${curriculumList}"> --%>
-<%-- 				<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}" /> --%>
-<!-- 				<p> -->
-<%-- 					<b>제목:</b> <input type="text" name="curriculumTitle" value="${curri.curriculumTitle}"> --%>
-<%-- 					<b>시간:</b> <input type="text" name="curriculumRuntime" value="${curri.curriculumRuntime}"> --%>
-<!-- 				</p> -->
-<%-- 			</c:forEach> --%>
-
-<!-- 			<div style="display: flex; justify-content: center; margin-top: 40px;"> -->
-<!-- 				<button type="submit" class="orange-button">수정 완료</button> -->
-<!-- 			</div> -->
-			<!-- ================================================================================================= -->
 			<!-- 기존 커리큘럼을 출력하는 영역 (처음에 보여지는 것들) -->
-			<<div id="curriculumContainer">
+			<div id="curriculumContainer">
 				<c:forEach var="curri" items="${curriculumList}">
 					<div class="curriculum-box">
 						<input type="hidden" name="curriculumIdx" value="${curri.curriculumIdx}" />
@@ -177,21 +182,42 @@
 	    });
 	    document.getElementById("classDays").value = total;
 	});
-	</script>
 
-	<script>
-		// ✅ 커리큘럼 추가 함수
-		function addCurriculum() {
-			const container = document.getElementById("curriculumContainer");
-			const template = document.getElementById("curriculumTemplate").innerHTML;
-			container.insertAdjacentHTML("beforeend", template);
-		}
+	// ✅ 커리큘럼 추가 함수
+	function addCurriculum() {
+		const container = document.getElementById("curriculumContainer");
+		const template = document.getElementById("curriculumTemplate").innerHTML;
+		container.insertAdjacentHTML("beforeend", template);
+	}
+
+	// ✅ 커리큘럼 삭제 함수
+	function removeCurriculum(button) {
+		const box = button.parentElement;
+		box.remove();
+	}
 	
-		// ✅ 커리큘럼 삭제 함수
-		function removeCurriculum(button) {
-			const box = button.parentElement;
-			box.remove();
-		}
+	// 썸네일 미리보기 기능
+	document.getElementById('thumbnailInput').addEventListener('change', function(event) {
+	    const previewArea = document.getElementById('preview-area');
+	    previewArea.innerHTML = ""; // 기존 이미지 제거
+	
+	    const files = event.target.files;
+	    for (let i = 0; i < files.length; i++) {
+	      const file = files[i];
+	
+	      if (file.type.startsWith("image/")) {
+	        const reader = new FileReader();
+	        reader.onload = function(e) {
+	          const img = document.createElement('img');
+	          img.src = e.target.result;
+	          img.style.width = "300px";
+	          img.style.marginBottom = "10px";
+	          previewArea.appendChild(img);
+	        };
+	        reader.readAsDataURL(file);
+	      }
+	    }
+	  });
 	</script>
 
 </body>
