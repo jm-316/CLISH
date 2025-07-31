@@ -15,7 +15,7 @@
             <%= msg != null ? msg : "인증에 실패했거나, 링크가 만료되었습니다." %>
         </h2>
         <script>
-            setTimeout(() => window.close(), 15000);
+            setTimeout(() => window.close(), 1500);
         </script>
     </div>
 </body>	

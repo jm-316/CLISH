@@ -26,5 +26,8 @@ public interface UserMapper {
 	
 	// 이메일로 아이디 찾기
 	String selectUserIdByEmail(String email);
+	
+	// 아이디와 이메일로 유저 존재 유무 검색
+	int countByIdAndEmail(@Param("userId")String userId, @Param("email")String email);
 
 }

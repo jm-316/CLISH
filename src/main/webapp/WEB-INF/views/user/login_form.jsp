@@ -131,6 +131,15 @@
 	    );
 	});
 	
+	document.getElementById("findPwLink").addEventListener("click", function(e) {
+	    e.preventDefault();
+	    window.open(
+	        '/user/findPasswdForm',
+	        'findIdPopup',
+	        'width=600,height=500,scrollbars=no,resizable=no'
+	    );
+	});
+	
 	
 </script>
 
