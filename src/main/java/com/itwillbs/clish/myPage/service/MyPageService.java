@@ -157,7 +157,7 @@ public class MyPageService {
 		return myPageMapper.selectAllInquery(startRow, listLimit, user);
 	}
 	
-	// 나의 문의[강의, 사이트] 정보 불러오기
+	// 나의 문의[강의, 사이트] 상세정보 불러오기
 	public InqueryDTO getInqueryInfo(InqueryDTO inqueryDTO) {
 		return myPageMapper.selectOneInquery(inqueryDTO);
 	}

@@ -30,52 +30,56 @@ public class PaymentService {
 	private String restApiSecret;
 	
 	private final PaymentMapper paymentMapper;
-	
+	// ------------------------------------------------------------
+	// 결제에 필요한 정보 반환
 	public IamportClient getkey() {
 		IamportClient iamportClient = new IamportClient(restApiKey, restApiSecret);
 		return iamportClient;
 	}
-	
-	public String convertUnixToDateTimeString(Long unixTime) {
-	    if (unixTime == null || unixTime == 0) return null; // 값이 없을 때 처리
-	    return Instant.ofEpochSecond(unixTime)
-	                  .atZone(ZoneId.of("Asia/Seoul")) // 한국 시간대
-	                  .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-	}
-	
+	// 결제 정보 db에 저장, 예약정보 업데이트 
 	@Transactional
 	public void putPayInfo(PaymentInfoDTO paymentInfoDTO) {
 		paymentMapper.insertPayInfo(paymentInfoDTO);
 		paymentMapper.updateReservationStatus(paymentInfoDTO);
 	}
-
+	// 결제정보 불러오기
 	public PaymentInfoDTO getPayResult(PaymentInfoDTO paymentInfoDTO) {
 		return paymentMapper.selectPayResult(paymentInfoDTO);
 	}
-
+	// 결제 취소에 필요한 Access토큰을 발급
 	public String getAccessToken() {
+		// ResetTemplate 객체 생성
 		RestTemplate restTemplate = new RestTemplate();
 		String tokenUrl = "https://api.iamport.kr/users/getToken";
-		
+		// 토큰요청 정보 저장
 		Map<String, String> tokenRequest = new HashMap<>();
 		tokenRequest.put("imp_key", restApiKey);
 		tokenRequest.put("imp_secret", restApiSecret);
-		
+		// restTemplate사용하여 tockenUrl로 tockenRequest 요청, Map 형태로 리스폰받아 tokenResponse에저장
 		ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenUrl, tokenRequest, Map.class);
+		// 리스폰받은 tokenResponse객체안의 response.access_token을 String타입으로 변환 후 리턴
 		return (String)((Map)tokenResponse.getBody().get("response")).get("access_token");
 	}
 	
+	// 취소정보입력, 결제정보업데이트
 	@Transactional
 	public void cancelComplete(PaymentCancelDTO paymentCancelDTO) {
 		paymentMapper.insertCancelInfo(paymentCancelDTO);
 		paymentMapper.updatePaymentInfo(paymentCancelDTO);
-		
 	}
-
+	
+	// 결제 취소 정보 불러오기
 	public PaymentCancelDTO getCancelResult(PaymentCancelDTO paymentCancelDTO) {
 		return paymentMapper.selectCancelResult(paymentCancelDTO);
 	}
-
+	
+	// long타입의 unix타임을 스트링 타임의 DateTime으로 변환 
+	public String convertUnixToDateTimeString(Long unixTime) {
+		if (unixTime == null || unixTime == 0) return null; // 값이 없을 때 처리
+		return Instant.ofEpochSecond(unixTime)
+				.atZone(ZoneId.of("Asia/Seoul")) // 한국 시간대
+				.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
 	
 	
 }

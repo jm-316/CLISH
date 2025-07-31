@@ -6,19 +6,18 @@
 <mapper namespace="com.itwillbs.clish.myPage.mapper.MyPageMapper">
 
 	<!-- 유저 정보 불러오기 -->
-<!-- 	<select id="selectUserInfo" resultType="UserDTO"> -->
 	<select id="selectUserInfo" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT *
 		FROM USER
 		WHERE user_id = #{userId}
 	</select>
-	
+	<!-- 닉네임 중복 체크 -->
 	<select id="checkRepName" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT *
 		FROM USER
 		WHERE user_rep_name = #{userRepName}
 	</select>
-	
+	<!-- 핸드폰 중복 체크 -->
 	<select id="checkPhoneNumber" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT *
 		FROM USER
@@ -52,7 +51,18 @@
 		WHERE user_idx = #{userIdx}
 	</select>
 	
+	<!-- 결제목록 카운트 -->
+	<select id="selectPaymentCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PAYMENT_INFO
+		WHERE reservation_idx IN
+			(SELECT reservation_idx
+				FROM RESERVATION
+				WHERE user_idx = #{userIdx}	)
+	</select>
+	
 	<!-- 취소할 예약정보 선택 -->
+	<!-- 결제되지않은 것중 예약완료후 2시간 초과된것 -->
 	<select id="selectCancel" resultType="Map"> 
 		SELECT
 			r.reservation_idx as reservationIdx
@@ -79,6 +89,14 @@
 		
 	</select>
 	
+	<!-- 예약정보 삭제 -->
+	<delete id="deleteReservation">
+	DELETE FROM
+		RESERVATION
+	WHERE
+		reservation_idx = #{reservationIdx}
+	</delete>
+	
 	<!-- 예약정보 불러오기 -->
 	<select id="selectAllReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
 		SELECT *
@@ -93,23 +111,22 @@
 			, #{listLimit}
 	</select>
 	
-	
-	<!-- 예약상세정보불러오기 -->
-	<select id="selectOneReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
-		SELECT *
+	<!-- 결제정보 조회 -->
+	<select id="selectAllPaymentInfo" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO"> 
+		SELECT
+			p. *,
+			r.reservation_class_date
 		FROM
-			RESERVATION
+			RESERVATION r
+		JOIN
+			PAYMENT_INFO p ON r.reservation_idx = p.reservation_idx
 		WHERE
-			reservation_idx = #{reservationIdx}
-	</select>
-	
-	<!-- 예약 클래스 정보 불러오기 -->
-	<select id="selectOneClassInfo" resultType="com.itwillbs.clish.course.dto.ClassDTO">
-		SELECT *
-		FROM
-			CLASS
-		WHERE
-			class_idx = #{classIdx}
+			r.user_idx = #{user.userIdx}
+		ORDER BY
+			r.reservation_class_date DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
 	</select>
 	
 	<!-- 예약상세정보 종합 불러오기 -->
@@ -151,13 +168,14 @@
 		r.reservation_idx = #{reservationIdx}	
 	</select>
 	
-	<!-- 예약정보 삭제 -->
-	<delete id="deleteReservation">
-	DELETE FROM
-		RESERVATION
-	WHERE
-		reservation_idx = #{reservationIdx}
-	</delete>
+	<!-- 예약상세정보불러오기 -->
+	<select id="selectOneReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
+		SELECT *
+		FROM
+			RESERVATION
+		WHERE
+			reservation_idx = #{reservationIdx}
+	</select>
 	
 	<!-- 예약정보 수정 -->
 	<update id="updateReservationInfo">
@@ -170,37 +188,7 @@
 			reservation_idx = #{reservationIdx}
 	</update>
 	
-	<!-- 결제목록 카운트 -->
-	<select id="selectPaymentCount" resultType="int">
-		SELECT COUNT(*)
-		FROM PAYMENT_INFO
-		WHERE reservation_idx IN
-			(SELECT reservation_idx
-				FROM RESERVATION
-				WHERE user_idx = #{userIdx}	)
-	</select>
-	
-	<!-- 결제정보 조회 -->
-	<select id="selectAllPaymentInfo" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO"> 
-		SELECT
-			p. *,
-			r.reservation_class_date
-		FROM
-			RESERVATION r
-		JOIN
-			PAYMENT_INFO p ON r.reservation_idx = p.reservation_idx
-		WHERE
-			r.user_idx = #{user.userIdx}
-		ORDER BY
-			r.reservation_class_date DESC
-		LIMIT
-			#{startRow}
-			, #{listLimit}
-			
-			
-	</select>
-	
-	<!-- 탈퇴 조회 -->
+	<!-- 탈퇴 처리 -->
 	<update id="withdraw">
 		UPDATE USER
 		SET
@@ -210,15 +198,36 @@
 			user_idx = #{userIdx}
 	</update>
 	
+	<!-- 강의문의 수 -->
+	<select id="selectCountClassQ" resultType="int">
+		SELECT COUNT(*)
+		FROM INQUERY
+		WHERE user_idx = #{userIdx}
+			AND inquery_type = 2
+	</select>
 	
+	<!-- 내가문의한 강의문의리스트 -->
+	<select id="selectAllClassQ" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
+		SELECT I.*, C.class_title
+		FROM INQUERY I
+		JOIN CLASS C ON I.class_idx = C.class_idx
+		WHERE I.user_idx = #{user.userIdx}
+			AND I.inquery_type = 2
+		ORDER BY I.inquery_status, I.inquery_datetime DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+
+	<!-- 내가한 사이트 문의 수 -->
 	<select id="selectCountInquery" resultType="int">
 		SELECT COUNT(*)
 		FROM INQUERY
 		WHERE user_idx = #{userIdx}
 			AND inquery_type = 1
-
 	</select>
 	
+	<!-- 내가한 사이트문의 목록 -->
 	<select id="selectAllInquery" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
 		SELECT *
 		FROM INQUERY
@@ -230,6 +239,7 @@
 			, #{listLimit}
 	</select>
 	
+	<!-- 문의 상세정보별 파일 정보를 가져오기위해 resultMap 작성 -->
 	<resultMap type="com.itwillbs.clish.myPage.dto.InqueryDTO" id="InqueryDTOWithfileDTOListResultMap">
 		<id property="inqueryIdx" column="inquery_idx" />
 		<result property="userIdx" column="user_idx" />
@@ -254,7 +264,7 @@
 			<result property="contentType" column="content_type" />
 		</collection>
 	</resultMap>
-	
+	<!-- 내가한 문의 상세정보 -->
 	<select id="selectOneInquery" resultMap="InqueryDTOWithfileDTOListResultMap">
 		SELECT
 			i.inquery_idx,
@@ -282,12 +292,7 @@
 		WHERE i.inquery_idx = #{inqueryIdx}
 	</select>
 	
-	<delete id="deleteInquery">
-		DELETE
-		FROM INQUERY
-		WHERE inquery_idx = #{inqueryIdx}
-	</delete>
-	
+	<!-- 문의 수정 -->
 	<update id="updateInquery">
 		UPDATE INQUERY
 		SET
@@ -296,27 +301,15 @@
 			, inquery_modify_datetime = now()
 		WHERE
 			inquery_idx = #{inqueryIdx}
-		
 	</update>
 	
-	<select id="selectCountClassQ" resultType="int">
-		SELECT COUNT(*)
+	<!-- 문의 삭제 -->
+	<delete id="deleteInquery">
+		DELETE
 		FROM INQUERY
-		WHERE user_idx = #{userIdx}
-			AND inquery_type = 2
-	</select>
+		WHERE inquery_idx = #{inqueryIdx}
+	</delete>
 	
-	<select id="selectAllClassQ" resultType="com.itwillbs.clish.myPage.dto.InqueryDTO">
-		SELECT I.*, C.class_title
-		FROM INQUERY I
-		JOIN CLASS C ON I.class_idx = C.class_idx
-		WHERE I.user_idx = #{user.userIdx}
-			AND I.inquery_type = 2
-		ORDER BY I.inquery_status, I.inquery_datetime DESC
-		LIMIT
-			#{startRow}
-			, #{listLimit}
-	</select>
 	
 	<!-- 알림수 확인 -->
 	<select id="selectCountNotification" resultType="int">
@@ -336,6 +329,7 @@
 			, #{listLimit}
 	</select>
 	
+	<!-- 작성 가능 수강후기 수 -->
 	<select id="selectUncompleteReviewCount" resultType="int">
 		SELECT count(*)
 		FROM RESERVATION r
@@ -347,7 +341,7 @@
 			AND rev.reservation_idx IS NULL 
 	</select>
 	
-		
+	<!-- 작성 가능 수강후기 목록 -->
 	<select id="selectAllUncompleteReview" resultType="map">
 		SELECT r.*,
 				c.class_title,
@@ -367,16 +361,7 @@
 			, #{listLimit}
 	</select>
 	
-	<select id="selectOneReservationClassInfo" resultType="map">
-		SELECT r.*,
-			   c.class_title
-		FROM RESERVATION r
-		LEFT JOIN CLASS c
-			ON r.class_idx = c.class_idx
-		WHERE
-			r.reservation_idx = #{reservationIdx}
-	</select>
-	
+	<!--  작성한 수강후기 수 -->
 	<select id="selectCompleteReviewCount" resultType="int">
 		SELECT count(*)
 		FROM RESERVATION r
@@ -387,6 +372,7 @@
 			AND CURDATE() >= r.reservation_class_date -- 예약한 날짜가 오늘이거나 과거일때
 	</select>
 	
+	<!-- 수강 후기별 후기사진을 보기위해 rseultMap 작성 -->
 	<resultMap type="com.itwillbs.clish.myPage.dto.ReviewDTO" id="ReviewDTOListWithfileDTOListResultMap">
 		<id property="reviewIdx" column="review_idx" />
 		<result property="reservationIdx" column="reservation_idx" />
@@ -404,17 +390,18 @@
 		<result property="reservationClassDate" column="reservation_class_date" />
 		<result property="userId" column="user_id" />
 		<result property="userName" column="user_name" />
-		
+		<!-- 수강후기를 먼저 SELECT한후 SELECT된 reviewIdx를 이용해서 각각의 file정보 불러옴 -->
 		<collection property="fileList" ofType="com.itwillbs.clish.common.file.FileDTO"
 		column="review_idx" select="selectFilesByReviewIdx"/>
 	</resultMap>
 	
+	<!-- 선택된 reviewIdx를 이요하여 각 리뷰별 파일을 찾을 SELECT문  -->
 	<select id="selectFilesByReviewIdx" parameterType="String" resultType="com.itwillbs.clish.common.file.FileDTO">
 		SELECT *
 		FROM FILE
 		WHERE idx = #{reviewIdx}
 	</select>
-	
+	<!-- 작성 완료한 수강후기 목록 -->
 	<select id="selectAllCompleteReview" resultMap="ReviewDTOListWithfileDTOListResultMap">
 		SELECT rev.*,
 				c.class_title,
@@ -437,6 +424,18 @@
 			, #{listLimit}
 	</select>
 	
+	<!-- 예약, 예약된 클래스 정보 -->
+	<select id="selectOneReservationClassInfo" resultType="map">
+		SELECT r.*,
+			   c.class_title
+		FROM RESERVATION r
+		LEFT JOIN CLASS c
+			ON r.class_idx = c.class_idx
+		WHERE
+			r.reservation_idx = #{reservationIdx}
+	</select>
+	
+	<!-- 후기 작성 -->	
 	<insert id="insertReview">
 		INSERT INTO REVIEW (
 		    review_idx,
@@ -461,6 +460,7 @@
 		    )
 	</insert>
 	
+	<!-- 후기삭제 -->
 	<delete id="delteReview">
 		DELETE
 		FROM REVIEW
@@ -468,6 +468,7 @@
 			review_idx = #{reviewIdx}
 	</delete>
 	
+	<!-- 후기수정시 첨부된 파일정보를 불러오기 우한 resultMap -->
 	<resultMap type="com.itwillbs.clish.myPage.dto.ReviewDTO" id="ReviewDTOWithfileDTOListResultMap">
 		<id property="reviewIdx" column="review_idx" />
 		<result property="reservationIdx" column="reservation_idx" />
@@ -497,6 +498,7 @@
 		</collection>
 	</resultMap>
 	
+	<!-- 수정할 후기 정보 -->
 	<select id="selectOneReview" resultMap="ReviewDTOWithfileDTOListResultMap">
 		SELECT rev.*,
 			r.reservation_class_date,
@@ -518,6 +520,7 @@
 			review_idx = #{reviewIdx}
 	</select>
 	
+	<!-- 후기 수정 요청 -->
 	<update id="updateReview">
 		UPDATE REVIEW 
 		SET

@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.itwillbs.clish.myPage.mapper.PaymentMapper">
+	<!-- 결제정보 삽입 -->
 	<insert id="insertPayInfo">
 		insert into PAYMENT_INFO values(
 			#{impUid}
@@ -20,19 +21,19 @@
 		    , #{receiptUrl}
 		); 
 	</insert>
-	
+	<!-- 예약정보 업데이트(결제완료) -->
 	<update id="updateReservationStatus">
 		UPDATE RESERVATION
 		SET reservation_status = 2
 		WHERE reservation_idx = #{reservationIdx}
 	</update>
-	
+	<!-- 결제정보 불러오기 -->
 	<select id="selectPayResult" resultType="com.itwillbs.clish.myPage.dto.PaymentInfoDTO">	
 		SELECT *
 		from PAYMENT_INFO
 		where imp_uid = #{impUid}
 	</select>
-	
+	<!-- 결제 취소 정보 삽입 -->
 	<insert id="insertCancelInfo">
 		insert into PAYMENT_CANCEL values(
 			#{impUid}
@@ -50,13 +51,13 @@
 			, #{cancelReceiptUrl}
 		)
 	</insert>
-	
+	<!-- 결제 정보 업데이트(결제취소) -->
 	<update id="updatePaymentInfo">
 		update PAYMENT_INFO
 		set status = #{status}
 		where imp_uid = #{impUid}		
 	</update>
-	
+	<!--  결제취소정보 불러오기 -->
 	<select id="selectCancelResult" resultType="com.itwillbs.clish.myPage.dto.PaymentCancelDTO">
 		select *
 		from 
