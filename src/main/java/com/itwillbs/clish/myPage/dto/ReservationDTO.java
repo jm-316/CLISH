@@ -22,5 +22,5 @@ public class ReservationDTO {
 	private LocalDateTime reservationCom;
 	private String classIdx;
 	private int reservationStatus;
-	
+	private String classTitle;
 }

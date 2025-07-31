@@ -17,11 +17,13 @@
 	<div id="main">
 	
 		<h1>예약변경</h1>
-		remain_seats: [${reservationClassInfo.remain_seats}]<br>
 		<form action="/myPage/payment_info/change" method="post" onsubmit="return validateForm();">
 		<table >
 			<tr>
-				<th rowspan="5">클래스이미지</th>
+				<th rowspan="5">
+					<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
+					 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
+				</th>
 				<th >${reservationClassInfo.class_title}</th>
 			</tr>
 			<tr>

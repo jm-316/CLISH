@@ -35,72 +35,47 @@
 					<th>결제상태</th>
 					<th>예약번호</th>
 					<th>예약자</th>
-					<th>클래스아이디</th>
+					<th>클래스</th>
 					<th>클래스예약일</th>
 					<th>예약완료일</th>
 					<th>취소</th>
 					<th>결제</th>
 					<th>상세보기</th>
 				</tr>
+				<!-- 예약  -->
 				<c:forEach var="reserve" items="${reservationList }" >
-					<c:if test="${reserve.reservationStatus == 1}">
-			        	<tr>
-			        		<td><c:if test="${reserve.reservationStatus eq 1 }">미결제</c:if></td>
-			        		<td>${reserve.reservationIdx}</td>
-							<td>${user.userName}</td>
-							<td>${reserve.classIdx}</td>
-							<td>
-								<fmt:parseDate var="reservationClassDate" 
-									value="${reserve.reservationClassDate}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>
-							</td>
+		        	<tr>
+		        		<td>
+		        			<c:if test="${reserve.reservationStatus eq 1 }">미결제</c:if>
+		        			<c:if test="${reserve.reservationStatus eq 2 }">결제완료</c:if>
+		        		</td>
+		        		<td>${reserve.reservationIdx}</td>
+						<td>${user.userName}</td>
+						<td>${reserve.classTitle}</td>
+						<td>
+							<fmt:parseDate var="reservationClassDate" 
+								value="${reserve.reservationClassDate}"
+								pattern="yyyy-MM-dd'T'HH:mm"
+								type="both" />
+							<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>
+						</td>
 <%-- 							<td>${reserve.reservationClassDate}</td> --%>
-							<td>
-								<fmt:parseDate var="reservationCom" 
-									value="${reserve.reservationCom}"
-									pattern="yyyy-MM-dd'T'HH:mm:ss"
-									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
-							</td>
+						<td>
+							<fmt:parseDate var="reservationCom" 
+								value="${reserve.reservationCom}"
+								pattern="yyyy-MM-dd'T'HH:mm:ss"
+								type="both" />
+							<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
+						</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
-							<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="cancelReservation(this)"></td>
-							<td><input type="button" value="결제" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="payReservation(this)"> </td>
-							<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="reservationInfo(this)"> </td>
-			        	</tr>
-			        </c:if>
-			        <c:if test="${reserve.reservationStatus == 2}">
-			        	<tr>
-			        		<td><c:if test="${reserve.reservationStatus eq 2 }">결제완료</c:if></td>
-			        		<td>${reserve.reservationIdx}</td>
-							<td>${user.userName}</td>
-							<td>${reserve.classIdx}</td>
-							<td>
-<%-- 							${reserve.reservationClassDate } --%>
-								<fmt:parseDate var="reservationClassDate" 
-									value="${reserve.reservationClassDate}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>
-							</td>
-<%-- 							<td>${reserve.reservationClassDate}</td> --%>
-							<td>
-								<fmt:parseDate var="reservationCom" 
-									value="${reserve.reservationCom}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
-							</td>
-<%-- 							<td>${reserve.reservationCom}</td> --%>
-							<td></td><td></td>
-							<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
-		          onclick="reservationInfo(this)"> </td>
-			        	</tr>
-			        </c:if>
+						<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
+	          onclick="cancelReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>></td>
+						<td><input type="button" value="결제" data-reservation-num="${reserve.reservationIdx}"
+	          onclick="payReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>> </td>
+						<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
+	          onclick="reservationInfo(this)"> </td>
+		        	</tr>
+
 	       		</c:forEach>
 			</table>
 			<section id="reservationPageList">

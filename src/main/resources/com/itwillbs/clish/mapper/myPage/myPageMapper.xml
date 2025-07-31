@@ -99,13 +99,18 @@
 	
 	<!-- 예약정보 불러오기 -->
 	<select id="selectAllReservationInfo" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
-		SELECT *
+		SELECT 
+			r.*
+			, c.class_title
 		FROM 
-			RESERVATION
+			RESERVATION r
+		LEFT JOIN
+			CLASS c
+		ON c.class_idx = r.class_idx
 		WHERE
-			user_idx = #{user.userIdx}
+			r.user_idx = #{user.userIdx}
 		ORDER BY 
-			(reservation_status = 1) DESC, reservation_class_date DESC
+			(r.reservation_status = 1) DESC, r.reservation_class_date DESC
 		LIMIT
 			#{startRow}
 			, #{listLimit}
