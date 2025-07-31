@@ -33,8 +33,8 @@
            		${Pcat.categoryName }</a></li>
            	</c:forEach>
         </ul>
-        <ul>
-            <li><a href="/customer/customerCenter"><b>고객 센터</b></a></li>
+        <ul >
+            <li><a href="/customer/announcements"><b>고객 센터</b></a></li>
             <li><a href="/customer/announcements">공지사항</a></li>
             <li><a href="/customer/FAQ"> FAQ</a></li> 
             <li><a href="/customer/inquiry">문의 게시판</a></li>
@@ -54,7 +54,7 @@
            			<div id="notification-header">
 	           			<h3>알림</h3>
 	           			<c:choose>
-	           				<c:when test="${userType eq 1 }">
+	           				<c:when test="${sUT eq 1 }">
 	           					<a href="/myPage/notification">전체보기</a>
 	           				</c:when>
 	           				<c:otherwise>

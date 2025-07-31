@@ -63,5 +63,9 @@ public class UserService {
 		return userMapper.selectUserIdByEmail(email);
 	}
 
+	public boolean foundByIdEmail(String userId, String email) {
+		return userMapper.countByIdAndEmail(userId, email) > 0;
+	}
+
 
 }

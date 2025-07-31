@@ -232,6 +232,21 @@ public class UserController {
 		return result;
 	}
 	
+	// 아이디 찾기 페이지 열기
+	@GetMapping("/findPasswdForm")
+	public String showFindPasswdForm() {
+	    return "user/findPasswdForm";
+	}
+	
+	@GetMapping("/foundByIdEmail")
+	@ResponseBody
+	public Map<String, Object> foundByIdEmail(@RequestParam String email, @RequestParam String userId) {
+		Map<String, Object> result = new HashMap<>();
+		boolean exists = userService.foundByIdEmail(userId, email);
+		result.put("exists", exists);
+		return result;
+	}
+	
 //	@PostMapping("/saveEmailSession")
 //	public String saveEmailSession(@RequestParam("user_email") String userEmail,
 //	                               HttpSession session, RedirectAttributes redirect) {

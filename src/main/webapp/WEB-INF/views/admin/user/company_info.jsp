@@ -95,7 +95,7 @@
 							</tr>
 						</table>
 						<div class="button-wrapper">
-							<button type="button" onclick="location.href='/admin/company'">닫기</button>
+							<button type="button" onclick="location.href='/admin/company?pageNum=${param.pageNum}'">닫기</button>
 							<c:choose>
 								<c:when test="${company.userStatus != 1}">
 									<button type="submit" name="action" value="approval" 

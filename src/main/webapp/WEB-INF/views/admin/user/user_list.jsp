@@ -21,14 +21,13 @@
 							<h5 class="section-title">일반 회원 목록</h5>
 						</div>
 						<form class="filter-form">
-							<select class="filter-select">
-								<option>전체</option>
-								<option>최신가입순</option>
-								<option>오래된가입순</option>
-								<option>신고</option>
+							<select class="filter-select" name="filter">
+								<option value="all" <c:if test="${param.filter eq 'all' }">selected</c:if>>전체</option>
+								<option value="latest" <c:if test="${param.filter eq 'latest' }">selected</c:if>>최신가입순</option>
+								<option value="oldest" <c:if test="${param.filter eq 'oldest' }">selected</c:if>>오래된가입순</option>
 							</select>
 							<div class="search-box">
-								<input type="text" class="search-input"/>
+								<input type="text" class="search-input" name="searchKeyword"/>
 								<button class="search-button">검색</button>
 							</div>
 						</form>
@@ -59,7 +58,7 @@
 											<td>${user.userGender}</td>
 											<td>${user.userRegDate}</td>
 											<td>
-												<button onclick="location.href='/admin/user/${user.userIdx}'">상세보기</button>
+												<button onclick="location.href='/admin/user/${user.userIdx}?pageNum=${pageInfo.pageNum}'">상세보기</button>
 											</td>
 											<td>
 												<button type="button" onclick="event.stopPropagation(); withdraw('${user.userIdx}')">
@@ -70,6 +69,30 @@
 									</c:forEach>
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
+						<div>
+							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
+								<input type="button" value="이전" 
+									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum - 1}&filter=${param.filter}'" 
+									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageInfo.pageNum}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="/admin/user?pageNum=${i}&filter=${param.filter}">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<input type="button" value="다음" 
+									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum + 1}&filter=${param.filter}'" 
+								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
+							</c:if>
 						</div>
 					</div>
 				</div>

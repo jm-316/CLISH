@@ -86,6 +86,13 @@
 		FROM USER 
 		WHERE user_email = #{email}
 	</select>
+	
+	<select id="countByIdAndEmail" resultType="int">
+	    SELECT COUNT(*)
+	    FROM USER
+	    WHERE user_id = #{userId}
+	      AND user_email = #{email}
+	</select>
 </mapper>  
   
   

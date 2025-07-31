@@ -14,46 +14,60 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	
 	// 이메일 인증
 	verifyBtn.addEventListener("click", () => {
-		
-		// 이메일 미입력시
-		const email = emailInput.value.trim();
-		if(!email) {
-			alert("이메일을 입력하세요!");
-			emailInput.focus();
-			return;
-		}
-		
-		// purpose값이 존재하면 추가
-		var bodyData = { userEmail: email };
-		if(purpose) {
-			bodyData.purpose = purpose;
-		}
-		
-		fetch("/email/send", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(bodyData)
-		})
-		.then(res => res.text())
-		.then(token => {
-			if(token) {
-				alert("이메일이 전송되었습니다. 받은 메일에서 인증 링크를 클릭하세요.");
-				
-				resultSpan.innerText = "이메일 인증 중...";
-				resultSpan.style.color = "orange";
-				checkBtn.style.display = "inline-block";
-				sendMail = email;
+	    const email = emailInput.value.trim();
 
-//				startEmailPolling(email);
+	    if(!email) {
+	        alert("이메일을 입력하세요!");
+	        emailInput.focus();
+	        return;
+	    }
+
+	    var bodyData = { userEmail: email };
+
+	    if(purpose) bodyData.purpose = purpose;
 				
-				
-			} else {
-				alert("이메일 전송 실패!");
-			}
-		})
-		.catch(() => {
-			alert("서버 오류로 메일 전송 실패!");
-		});
+	    // changePasswd일 때만, 아이디+이메일 체크
+	    if(options.purpose === "changePasswd") {
+			const userIdValue = document.getElementById("userId").value.trim();
+			
+			if(!userIdValue) {
+		        alert("아이디를 입력하세요!");
+		        return;
+		    }
+
+	        startCheckingUseIdAndEmail(userIdValue, email, function(isOk) {
+			    if(!isOk) return;
+			    sendEmailRequest();
+			});
+			return;
+	    }
+
+		// 일반 실행 경로
+		sendEmailRequest();
+		
+		function sendEmailRequest() {
+	        fetch("/email/send", {
+	            method: "POST",
+	            headers: { "Content-Type": "application/json" },
+	            body: JSON.stringify(bodyData)
+	        })
+	        .then(res => res.text())
+	        .then(token => {
+	            if(token) {
+	                alert("이메일이 전송되었습니다. 받은 메일에서 인증 링크를 클릭하세요.");
+	                resultSpan.innerText = "이메일 인증 중...";
+	                resultSpan.style.color = "orange";
+	                checkBtn.style.display = "inline-block";
+	                sendMail = email;
+	            } else {
+	                alert("이메일 전송 실패!");
+	            }
+	        })
+	        .catch(() => {
+	            alert("서버 오류로 메일 전송 실패!");
+	        });
+	    }
+		
 	});
 	
 	// 로직 변경로 주석처리
@@ -86,9 +100,9 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	// 인증 완료 버튼
 	checkBtn.addEventListener("click", () => {
 		const email = emailInput.value.trim().toLowerCase();
-		console.log("email : " + email)
-		console.log("sendMail : " + sendMail)
-		console.log("options : " + options.purpose);
+//		console.log("email : " + email)
+//		console.log("sendMail : " + sendMail)
+//		console.log("options : " + options.purpose);
 		
 		if(!email) {
 			alert("이메일을 입력하세요!");
@@ -102,7 +116,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	    }
 
 		if(options.purpose === "findLoginId") {
-			console.log("testing");
+//			console.log("testing");
 			startFindLoginId(email);
 		}
 		
@@ -117,6 +131,12 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 				verifyBtn.disabled = true;
 				checkBtn.disabled = true;
 				checkBtn.style.display = "none";
+				
+				if(options.purpose === "changePasswd") {
+	                if(typeof onEmailAuthSuccess === "function") {
+	                    onEmailAuthSuccess();
+	                }
+	            }
 				
 				// 모든 버튼 활성화
 				document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
@@ -134,7 +154,7 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	
 	// findLoginId AJAX
 	function startFindLoginId(email) {
-		console.log("testing2");
+//		console.log("testing2");
 	    fetch("/user/findLoginId?email=" + encodeURIComponent(email))
 	        .then(res => res.json())
 	        .then(data => {
@@ -147,6 +167,26 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	        .catch(() => {
 	            alert("아이디 조회 중 오류 발생");
 	        });
+	}
+	
+	function startCheckingUseIdAndEmail(userId, email, callback) {
+	    let url = "/user/foundByIdEmail?email=" + encodeURIComponent(email) + "&userId=" + encodeURIComponent(userId);
+	    fetch(url)
+	        .then(res => res.json())
+	        .then(data => {
+	            if (!data.exists) {
+	                resultSpan.innerText = "아이디와 이메일을 체크해주세요.";
+	                resultSpan.style.color = "red";
+	                callback(false); // 실패
+	                return;
+	            }
+	            callback(true); // 성공
+	        })
+	        .catch(() => {
+	            resultSpan.innerText = "서버 오류로 아이디/이메일 확인 실패!";
+	            resultSpan.style.color = "red";
+	            callback(false); // 실패
+	        });	
 	}
 }
 

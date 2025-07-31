@@ -131,7 +131,6 @@ public class AdminClassController {
 		searchKeyword = searchKeyword.trim();
 		
 		int listLimit = 10;
-//		int classCount = adminClassService.getClassCount();
 		int listCount = adminClassService.getClassListCount(searchKeyword);
 		if (listCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 3);
@@ -144,20 +143,14 @@ public class AdminClassController {
 			
 			model.addAttribute("pageInfo", pageInfoDTO);
 			
-//			List<Map<String , Object>> classList = adminClassService.getClassList();
 			List<Map<String , Object>> classList = adminClassService.getClassList(pageInfoDTO.getStartRow(),listLimit, filter, searchKeyword);
 			List<Map<String , Object>> pendingClassList = adminClassService.getPendingClassList();
-			Boolean isPendingClass = adminClassService.isPendingClass(1);
 			
 			model.addAttribute("classList", classList);
-			model.addAttribute("isPendingClass", isPendingClass);
 			model.addAttribute("pendingClassList", pendingClassList);
 		}
-		
-		
 		return "/admin/class/class_list";
 	}
-	
 	
 	// 강의 상세 정보
 	@GetMapping("/class/{idx}")

@@ -22,8 +22,7 @@
 	        user_idx,
 	        class_type,
 	        class_intro,
-	        class_content,
-	        class_pic1
+	        class_content
 	    )
 	    VALUES (
 	        #{classIdx},
@@ -41,8 +40,7 @@
 			#{userIdx},
 	        #{classType},
 	        #{classIntro},
-	        #{classContent},
-	        #{classPic1}
+	        #{classContent}
 	    )
 	</insert>
 	
@@ -212,8 +210,7 @@
 			user_idx,
 			class_type,
 			class_intro,
-			class_content,
-			class_pic1
+			class_content
 		FROM CLASS
 		WHERE
 			class_idx = #{classIdx}

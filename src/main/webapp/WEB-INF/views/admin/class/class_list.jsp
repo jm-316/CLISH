@@ -24,14 +24,7 @@
 					<div>
 						<h5 class="section-title">강의 목록</h5>
 					</div>
-					<c:set var="hasRequestedClass" value="false" />
-					<c:forEach var="classItem" items="${classList}">
-						<c:if test="${classItem.class_status == 1}">
-							<c:set var="hasRequestedClass" value="true" />
-						</c:if>
-					</c:forEach>
 					<c:choose>
-<%-- 						<c:when test="${not hasRequestedClass || param.hasRequestedClass}"> --%>
 						<c:when test="${empty pendingClassList}">
 							<div class="list-empty">등록 요청된 강의가 없습니다.</div>
 						</c:when>
