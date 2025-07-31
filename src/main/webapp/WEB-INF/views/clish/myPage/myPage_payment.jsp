@@ -158,12 +158,14 @@
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
 						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/></td>
+						
 						<%-- 현재날짜, 예약일자 계산, 예약일이 3일 미만으로 남았을 경우 취소 불가능 --%>
-						<c:set var="reservationTime" value="${reservationClassDate.time}" />
-						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" />
+<%-- 						<c:set var="reservationTime" value="${reservationClassDate.time}" /> --%>
+<%-- 						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" /> --%>
+<%-- 							<c:if test="${payment.status eq 'cancelled' || diffDays < 3 }">disabled</c:if> --%>
 						<td>${payment.payTimeFormatted} </td>
-						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}"
-	          onclick="cancelPayment(this)" <c:if test="${payment.status eq 'cancelled' || diffDays < 3 }">disabled</c:if>></td>
+						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" 
+							<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>></td>
 						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"
 	          onclick="paymentInfo(this)"> </td>
 		        	</tr>

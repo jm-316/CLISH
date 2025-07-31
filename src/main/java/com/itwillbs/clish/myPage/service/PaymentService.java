@@ -1,6 +1,8 @@
 package com.itwillbs.clish.myPage.service;
  
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -83,8 +85,29 @@ public class PaymentService {
 	// 취소전 필요 정보 
 	public Map<String, Object> getCancelBefore(PaymentInfoDTO paymentInfoDTO) {
 
-		return paymentMapper.selectCancelBefore(paymentInfoDTO);
+		Map<String,Object> paymentCancelClassInfo = paymentMapper.selectCancelBefore(paymentInfoDTO);
+		
+		// 받아온 예약일 정보를 현재와 비교
+		LocalDateTime reservationClassDate = (LocalDateTime)paymentCancelClassInfo.get("reservationClassDate");
+		LocalDateTime now = LocalDateTime.now();
+	    // 남은시간을 long타입으로 바꿔 일자 계산
+		Duration remainTime = Duration.between(now, reservationClassDate);
+		
+		long remainDay = remainTime.getSeconds()/60/60/24;
+	   
+		if(remainDay > 5 ) {
+			paymentCancelClassInfo.put("ableCancel" , 1);
+		} else if(remainDay < 5 && remainDay > 3) {
+			paymentCancelClassInfo.put("ableCancel" , 0.7);
+		} else if(remainDay < 3 && remainDay > 1) {
+			paymentCancelClassInfo.put("ableCancel" , 0.5);
+		} else {
+			paymentCancelClassInfo.put("ableCancel", 0);
+		}
+		
+		
+		return paymentCancelClassInfo;
 	}
-	
+
 	
 }

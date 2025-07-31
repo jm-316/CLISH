@@ -106,10 +106,8 @@ public class PaymentController {
 		paymentInfoDTO = paymentService.getPayResult(paymentInfoDTO);
 		
 		String payTime = paymentService.convertUnixToDateTimeString(paymentInfoDTO.getPayTime()/1000L);
-		String requestTime = paymentService.convertUnixToDateTimeString(paymentInfoDTO.getRequestTime()/1000L);
 		
 		model.addAttribute("paymentInfoDTO",paymentInfoDTO);
-		model.addAttribute("requestTime",requestTime);
 		model.addAttribute("payTime",payTime);
 		
 		return "/clish/myPage/myPage_payment_payResult";
@@ -122,10 +120,10 @@ public class PaymentController {
 		Map<String,Object> paymentCancelClassInfo = paymentService.getCancelBefore(paymentInfoDTO);
 		
 		System.out.println(paymentCancelClassInfo);
-		String requestTime = paymentService.convertUnixToDateTimeString(paymentInfoDTO.getRequestTime()/1000L);
+
 		String payTime = paymentService.convertUnixToDateTimeString((long)paymentCancelClassInfo.get("payTime")/1000L);
 		
-		model.addAttribute("paymentInfoDTO",paymentCancelClassInfo);
+		model.addAttribute("paymentCancelClassInfo",paymentCancelClassInfo);
 		model.addAttribute("payTime",payTime);
 		
 		return "/clish/myPage/myPage_payment_cancelForm";
@@ -145,7 +143,7 @@ public class PaymentController {
 		Map<String, Object> cancelRequest = new HashMap<>();
 		cancelRequest.put("imp_uid", paymentCancelDTO.getImpUid()); // 결제 번호
 		cancelRequest.put("reason", paymentCancelDTO.getCancelReason()); // 취소 이유
-//		cancelRequest.put("amount", paymentCancelDTO.getAmount());
+		cancelRequest.put("amount", paymentCancelDTO.getAmount());
 		// HttpHeaders 객체 생성
 		HttpHeaders headers = new HttpHeaders();
 		// 헤더에 필요정보 입력

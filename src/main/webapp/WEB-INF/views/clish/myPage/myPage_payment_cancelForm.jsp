@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html lang="ko">
   <head>
@@ -8,32 +9,45 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>포트원 결제연동 샘플</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
     <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
     
   </head>
   <body>
-		<form action="/myPage/payment_info/cancelPayment" method="post" onsubmit="return confirm('취소하시겠습니까?');">
+		<form action="/myPage/payment_info/cancelPayment" method="post" id="cancelRequest" onsubmit="alert('정말 취소 하시겠습니까?')">
 		<h1>${message }</h1>
+		<h1>${paymentCancelClassInfo.reservationClassDate }</h1>
+		<h1>${paymentCancelClassInfo.ableCancel }</h1>
+		<fmt:formatNumber var="formattedAmount" value="${paymentCancelClassInfo.amount}" pattern="#,##0" />
+		<fmt:formatNumber var="formattedAmountCancel" value="${paymentCancelClassInfo.amount * paymentCancelClassInfo.ableCancel}" pattern="#,##0" />
 		<table>
 			<tr>
 				<th>결제 번호</th>
-				<td><input type="text" value="${paymentInfoDTO.impUid }" name="impUid" readonly></td>
+				<td><input type="text" value="${paymentCancelClassInfo.impUid }" name="impUid" readonly></td>
 			</tr><tr>
 				<th>상품 이름</th>
-				<td><input type="text" value="${paymentInfoDTO.classTitle}" name="classTitle" readonly></td>
+				<td><input type="text" value="${paymentCancelClassInfo.classTitle}" name="classTitle" readonly></td>
+			</tr><tr>
+			</tr><tr>
+				<th>예약 일자</th>
+				<td><input type="text" value="${paymentCancelClassInfo.reservationClassDate }" readonly></td>
 			</tr><tr>
 				<th>주문 번호</th>
-				<td><input type="text" value="${paymentInfoDTO.reservationIdx}"name="reservationIdx" readonly></td>
+				<td><input type="text" value="${paymentCancelClassInfo.reservationIdx}"name="reservationIdx" readonly></td>
 			</tr><tr>
 				<th>결제 금액</th>
-				<td><input type="text" value="${paymentInfoDTO.amount }" name="amount" readonly></td>
+				<td><input type="text" value="${formattedAmount }" readonly></td>
+			</tr><tr>
+			</tr><tr>
+				<th>환불 가능 금액</th>
+				<td><input type="text" value="${formattedAmountCancel }" name="amount" readonly></td>
 			</tr><tr>
 				<th>구매 I  D</th>
-				<td><input type="text" value="${paymentInfoDTO.userName}"name="userName" readonly></td>
+				<td><input type="text" value="${paymentCancelClassInfo.userName}"name="userName" readonly></td>
 			</tr><tr>
 				<th>구매 상태</th>
-				<td><input type="text" value="${paymentInfoDTO.status }" readonly></td>
+				<td><input type="text" value="${paymentCancelClassInfo.status }" readonly></td>
 			</tr><tr>
 				<th>결제 시각</th>
 				<td><input type="text" value="${payTime}" readonly></td>
@@ -49,5 +63,21 @@
 		</table>
 		<input type="submit" value="결제취소신청" >
 		</form>
+		<script type="text/javascript">
+			$(function(){
+				 $('#cancelRequest').submit(function(event) {
+				    var amountValue = $('[name="amount"]').val();  // value 값 가져오기
+
+				    if (Number(amountValue) <= 0) {
+				        alert('취소할 수 없습니다. 관리자에게 문의하세요');
+				        event.preventDefault();
+				        return false;
+				    }
+				    
+				    amountValue = amountValue.replace(/,/g, '');
+				    $('[name="amount"]').val(amountValue);
+				});
+			});
+		</script>
   </body>
 </html>
