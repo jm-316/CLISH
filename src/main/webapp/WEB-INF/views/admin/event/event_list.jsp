@@ -70,8 +70,7 @@
 												</c:choose>
 											</td>
 											<td class="flex">
-												<button onclick="location.href='/admin/event/detail/${event.eventIdx}?pageNum=${param.pageNum}'">상세보기</button>
-												<button onclick="location.href='/admin/event/delete/${event.eventIdx}'">삭제</button>
+												<button onclick="location.href='/admin/event/detail/${event.eventIdx}?pageNum=${pageNum}'">상세보기</button>
 											</td>
 										</tr>
 									</c:forEach>									

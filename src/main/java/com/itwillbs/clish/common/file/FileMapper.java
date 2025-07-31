@@ -24,5 +24,14 @@ public interface FileMapper {
 	// 파일 한개 저장
 	void insertOneFile(FileDTO file);
 
+	// 썸네일 조회
+	FileDTO selectThumbnailFile(String idx);
+
+	// 컨텐츠 파일
+	FileDTO selectContentFile(String idx);
+
+	// 썸네일 파일 삭제
+	void deleteThumbnailFile(FileDTO thumbnailFile);
+
 
 }

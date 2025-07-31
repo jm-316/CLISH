@@ -26,4 +26,20 @@ public class FileService {
 		
 		fileMapper.deleteFile(fileDTO);
 	}
+	// 단일 파일 정보 조회
+	public FileDTO getFile(String idx, String type) {
+		
+		if (type.equals("thumbnail")) {
+			return fileMapper.selectThumbnailFile(idx);
+		} else {
+			return fileMapper.selectContentFile(idx);
+		}
+	}
+	
+	// 썸네이 파일 삭제
+	public void removeThumbnailFile(FileDTO thumbnailFile) {
+		FileDTO thumbnail = fileMapper.selectThumbnailFile(thumbnailFile.getIdx());
+		FileUtils.deleteFile(thumbnail, session);
+		fileMapper.deleteThumbnailFile(thumbnail);
+	}
 }

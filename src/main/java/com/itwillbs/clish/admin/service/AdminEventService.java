@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.clish.admin.dto.EventDTO;
 import com.itwillbs.clish.admin.mapper.AdminEventMapper;
@@ -67,6 +68,75 @@ public class AdminEventService {
 		return insert;
 	}
 
+	// 이벤트 상세 페이지
+	public EventDTO getEvent(String idx) {
+		return adminEventMapper.selectEvent(idx);
+	}
+	
+	// 이벤트 수정
+	@Transactional
+	public int modifyEvent(EventDTO eventDTO) throws IllegalStateException, IOException {
+		MultipartFile thumbnail = eventDTO.getThumbnailFile();
+	    MultipartFile content = eventDTO.getContentFile();
+		
+	    // 썸네일 파일 업로드
+	    if (thumbnail != null && !thumbnail.isEmpty()) {
+	    	eventDTO.setFileTypes(List.of("thumbnail"));
+	    	List<FileDTO> files = FileUtils.uploadFile(eventDTO, session);
+	    	if (!files.isEmpty()) {
+	              fileMapper.insertThumbnail(files.get(0));
+	         }
+	    }
+	    
+	    // 콘텐츠 파일 업로드
+	    if (content != null && !content.isEmpty()) {
+	        eventDTO.setFileTypes(List.of("content"));
+	        List<FileDTO> files = FileUtils.uploadFile(eventDTO, session);
+	        if (!files.isEmpty()) {
+	            fileMapper.insertOneFile(files.get(0));
+	        }
+	    }
+	    
+		return adminEventMapper.updateEvent(eventDTO);
+	}
+	
+	// 파일 삭제
+	public void removeOneFile(FileDTO fileDTO, String type) {
+		FileDTO contentFile = fileMapper.selectContentFile(fileDTO.getIdx());
+		FileDTO thumbnailFile = fileMapper.selectThumbnailFile(fileDTO.getIdx());
+		
+		if (type.equals("thumbnail")) {
+			FileUtils.deleteFile(thumbnailFile, session);
+			fileMapper.deleteThumbnailFile(thumbnailFile);
+		} else {
+			FileUtils.deleteFile(contentFile, session);
+			fileMapper.deleteFile(contentFile);
+		}
+		
+	}
+	
+	// 이벤트 삭제
+	public void removeEvent(String idx) {
+		FileDTO contentFile = fileMapper.selectContentFile(idx);
+		FileDTO thumbnailFile = fileMapper.selectThumbnailFile(idx);
+		
+		// 실제 파일 삭제
+		FileUtils.deleteFile(thumbnailFile, session);
+		FileUtils.deleteFile(contentFile, session);
+		
+		// DB 데이터 삭제
+		fileMapper.deleteThumbnailFile(thumbnailFile);
+		fileMapper.deleteFile(contentFile);
+		
+		adminEventMapper.deletedEvent(idx);
+	}
+	
+	// 이벤트 상태 업데이트
+	public void updateAllEventStatus() {
+		adminEventMapper.updateAllEventStatus();
+		
+	}
+	
 	// 아이디 생성 로직
 	private String createIdx(String name) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -75,5 +145,4 @@ public class AdminEventService {
 		
 		return idx;
 	}
-
 }
