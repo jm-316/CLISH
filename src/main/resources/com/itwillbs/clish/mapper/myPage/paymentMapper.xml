@@ -67,4 +67,29 @@
 		WHERE
 			imp_uid = #{impUid}
 	</select>
+	
+	<!-- 결제 취소폼 실행 필요 정보 -->
+	<resultMap type="map" id="beforeCancelInfo">
+		<id property="impUid" column="imp_uid" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="classTitle" column="class_title" />
+		<result property="reservationIdx" column="reservation_idx" />
+		<result property="amount" column="amount" />
+		<result property="userName" column="user_name" />
+		<result property="status" column="status" />
+		<result property="payTime" column="pay_time" />
+	</resultMap>
+	<!-- 결제정보 불러오기 -->
+	<select id="selectCancelBefore" resultMap="beforeCancelInfo">	
+		SELECT p.*,
+			c.start_date,
+			c.end_date
+		from PAYMENT_INFO p
+		JOIN RESERVATION r
+			ON p.reservation_idx = r.reservation_idx
+		JOIN CLASS c
+			ON r.class_idx = c.class_idx	
+		where imp_uid = #{impUid}
+	</select>
 </mapper>

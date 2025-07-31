@@ -80,6 +80,11 @@ public class PaymentService {
 				.atZone(ZoneId.of("Asia/Seoul")) // 한국 시간대
 				.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
+	// 취소전 필요 정보 
+	public Map<String, Object> getCancelBefore(PaymentInfoDTO paymentInfoDTO) {
+
+		return paymentMapper.selectCancelBefore(paymentInfoDTO);
+	}
 	
 	
 }

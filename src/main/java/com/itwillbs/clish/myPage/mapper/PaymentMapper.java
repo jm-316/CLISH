@@ -1,5 +1,7 @@
 package com.itwillbs.clish.myPage.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.clish.myPage.dto.PaymentCancelDTO;
@@ -20,5 +22,7 @@ public interface PaymentMapper {
 	void updatePaymentInfo(PaymentCancelDTO paymentCancelDTO);
 	// 결제취소정보 불러오기
 	PaymentCancelDTO selectCancelResult(PaymentCancelDTO paymentCancelDTO);
+	// 결제 취소 전 필요정보
+	Map<String, Object> selectCancelBefore(PaymentInfoDTO paymentInfoDTO);
 
 }

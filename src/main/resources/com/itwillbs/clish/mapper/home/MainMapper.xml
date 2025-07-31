@@ -15,7 +15,6 @@
 			, class_days
 			, location
 			, class_intro
-			, class_pic1
             , class_type
 			
 		FROM CLASS
@@ -36,7 +35,6 @@
 			, class_days
 			, location
 			, class_intro
-			, class_pic1
             , class_type
 			
 		FROM CLASS
@@ -57,7 +55,6 @@
 			, class_days
 			, location
 			, class_intro
-			, class_pic1
             , class_type
             , created_at
 			
@@ -80,7 +77,6 @@
 			, class_days
 			, location
 			, class_intro
-			, class_pic1
             , class_type
             , created_at
 			

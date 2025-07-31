@@ -54,7 +54,6 @@
 			, class_days = #{classInfo.classDays}
 			, location = #{classInfo.location}
 			, updated_at = now()
-			, class_pic1 = '1'
 		WHERE
 			class_idx = #{idx}
 	</update>

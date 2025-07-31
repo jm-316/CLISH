@@ -119,12 +119,13 @@ public class PaymentController {
 	@GetMapping("/payment_info/cancelPayment")
 	public String cancelPaymentForm(PaymentInfoDTO paymentInfoDTO, Model model) {
 		
-		paymentInfoDTO = paymentService.getPayResult(paymentInfoDTO);
+		Map<String,Object> paymentCancelClassInfo = paymentService.getCancelBefore(paymentInfoDTO);
 		
+		System.out.println(paymentCancelClassInfo);
 		String requestTime = paymentService.convertUnixToDateTimeString(paymentInfoDTO.getRequestTime()/1000L);
-		String payTime = paymentService.convertUnixToDateTimeString(paymentInfoDTO.getPayTime()/1000L);
+		String payTime = paymentService.convertUnixToDateTimeString((long)paymentCancelClassInfo.get("payTime")/1000L);
 		
-		model.addAttribute("paymentInfoDTO",paymentInfoDTO);
+		model.addAttribute("paymentInfoDTO",paymentCancelClassInfo);
 		model.addAttribute("payTime",payTime);
 		
 		return "/clish/myPage/myPage_payment_cancelForm";
