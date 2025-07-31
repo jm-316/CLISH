@@ -14,13 +14,23 @@
 <!-- 강의 사이드바 css 활용 -->
 <link rel="stylesheet" href="/resources/css/course/sidebar.css">
 <style type="text/css">
+ 	#detail { 
+		padding: 20px;
+		width: 500px;
+		height: 60px;
+ 	} 
 	.event-table {
-	width: 1200px;
+	width: 1400px;
 	margin: 200px auto;
-	
+	text-align: center;
 	}
 	main.main {
 	padding: none;
+	max-width: 80%;
+	}
+	#main {
+		margin: 0 auto;
+	
 	}
 </style>
 <script type="text/javascript" src="/resources/js/home.js"></script>
@@ -30,8 +40,10 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
+	<nav>
 		<jsp:include page="/WEB-INF/views/event/sidebar.jsp" />
-	<main class="main">
+	</nav>
+	<main id="main" class="main">
 	<div class="main">
 		<div class="main-content">
 			
@@ -51,14 +63,16 @@
 				</thead>
 				<tbody>
 					<c:forEach var="event" items="${eventList}">
-							<tr onclick="#">
-								<td >
-									<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
+							<tr>
+								<td>
+									<a href="/event/event_detail/${event.eventIdx}">
+										<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
+									</a>
 								</td>
-								<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
-									${event.eventTitle}
+								<td>
+									<a href="/event/event_detail/${event.eventIdx}">${event.eventTitle}</a>
 								</td>
-								<td>${event.eventDescription}</td>
+								<td id="detail"><a href="/event/event_detail/${event.eventIdx}">${event.eventDescription}</a></td>
 								<td>${event.eventStartDate} ~ ${event.eventEndDate}</td>
 								<td>
 									<c:choose>

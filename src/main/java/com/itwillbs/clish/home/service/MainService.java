@@ -53,10 +53,7 @@ public class MainService {
 		// TODO Auto-generated method stub
 		return mainMapper.selectAnnouncementsCount(searchKeyword);
 	}
-	public List<EventDTO> getEventList() {
-		// TODO Auto-generated method stub
-		return mainMapper.selectEventList();
-	}
+
 	
 		
 }
