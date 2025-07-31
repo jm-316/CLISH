@@ -261,8 +261,9 @@
 			}
 		}
 		
-		function back() {
-			location.href="/admin/classList"
+		function back(pageNum) {
+			console.log(pageNum);
+			location.href="/admin/classList";
 		}
 	</script>
 </body>

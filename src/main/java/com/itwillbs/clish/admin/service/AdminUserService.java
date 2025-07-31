@@ -20,10 +20,14 @@ import lombok.extern.log4j.Log4j2;
 public class AdminUserService {
 	private final AdminUserMapper adminMapper;
 	private final NotificationService notificationService;
+	// 일반 유저 리스트(필터, 검색기능, 페이징)
+	public List<UserDTO> getUserList(int startRow, int listLimit, String filter, String searchKeyword) {
+		return adminMapper.selectUserList(startRow, listLimit, filter, searchKeyword);
+	}
 	
-	// 일반 정보 리스트
-	public List<UserDTO> getUserList() {
-		return adminMapper.selectUserList();
+	// 일반 유저 수(검색 기능 포함)
+	public int getUserListCount(String searchKeyword) {
+		return adminMapper.selectUserListCount(searchKeyword);
 	}
 	
 	// 일반 유저 상세 정보
@@ -31,9 +35,14 @@ public class AdminUserService {
 		return adminMapper.selectUserInfo(idx);
 	}
 	
-	// 기업 정보 리스트
-	public List<UserDTO> getCompanyList() {
-		return adminMapper.selectCompanyList();
+	// 기업 리스트 (필터, 검색기능, 페이징)
+	public List<UserDTO> getCompanyList(int startRow, int listLimit, String filter, String searchKeyword) {
+		return adminMapper.selectCompanyList(startRow, listLimit, filter, searchKeyword);
+	}
+	
+	// 기업 회원 수 (검색 기능 포함) 
+	public int getCompanyListCount(String searchKeyword) {
+		return adminMapper.selectCompanyListCount(searchKeyword);
 	}
 
 	// 기업 상세 정보
@@ -57,7 +66,6 @@ public class AdminUserService {
 			} 
 			return update;
 		}
-		
 		return 0;
 	}
 
@@ -65,5 +73,4 @@ public class AdminUserService {
 	public CompanyDTO getCompanyBizReg(String idx) {
 		return adminMapper.selectCompanyBizReg(idx);
 	}
-
 }

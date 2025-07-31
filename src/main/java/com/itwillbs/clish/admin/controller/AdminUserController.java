@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.clish.admin.dto.CategoryRevenueDTO;
@@ -18,6 +19,8 @@ import com.itwillbs.clish.admin.dto.DashboardSummaryDTO;
 import com.itwillbs.clish.admin.dto.RevenueDTO;
 import com.itwillbs.clish.admin.service.AdminDashboardService;
 import com.itwillbs.clish.admin.service.AdminUserService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 
@@ -65,11 +68,31 @@ public class AdminUserController {
 	
 	// 일반 회원 정보 리스트
 	@GetMapping("/user")
-	public String userList(Model model) {
-		List<UserDTO> userList = adminService.getUserList();
+	public String userList(
+			@RequestParam(defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "all") String filter,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			Model model) {
 		
-		model.addAttribute("users", userList);
+		searchKeyword = searchKeyword.trim();
 		
+		int listLimit = 5;
+		int listCount = adminService.getUserListCount(searchKeyword);
+		
+		if (listCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 5);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/user");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<UserDTO> userList = adminService.getUserList(pageInfoDTO.getStartRow(), listLimit, filter, searchKeyword);
+			model.addAttribute("users", userList);
+		}
 		return "/admin/user/user_list";
 	}
 	
@@ -119,11 +142,30 @@ public class AdminUserController {
 	
 	// 기업 정보 리스트
 	@GetMapping("/company")
-	public String companyList(Model model) {
-		List<UserDTO> companyList = adminService.getCompanyList();
+	public String companyList(
+			@RequestParam(defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "all") String filter,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			Model model) {
+		searchKeyword = searchKeyword.trim();
 		
-		model.addAttribute("companys", companyList);
+		int listLimit = 5;
+		int listCount = adminService.getCompanyListCount(searchKeyword);
 		
+		if (listCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 5);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/company");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<UserDTO> companyList = adminService.getCompanyList(pageInfoDTO.getStartRow(), listLimit, filter, searchKeyword);
+			model.addAttribute("companys", companyList);
+		}
 		return "/admin/user/company_list";
 	}
 	
