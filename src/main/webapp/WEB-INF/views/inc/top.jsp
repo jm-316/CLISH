@@ -144,7 +144,8 @@
     			markAsRead(noticeIdx)
     				.catch(err => console.log(err))
     				.finally(() => {
-    					window.location.href = link;
+    					console.log("ㅁㅁㅁㅁㅁ");
+//     					window.location.href = link;
     				});
     		}
     		

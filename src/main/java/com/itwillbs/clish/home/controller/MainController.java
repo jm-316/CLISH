@@ -416,10 +416,10 @@ public class MainController {
 	
 	@PostMapping("/user/notification/{idx}/read")
 	@ResponseBody
-	public NotificationDTO markRead(@PathVariable("idx") String idx, HttpSession session) {
+	public void markRead(@PathVariable("idx") String idx, HttpSession session) {
 		String id = (String)session.getAttribute("sId");
 		UserDTO dbUser = userService.selectUserId(id);
-		return notificationService.modifyStatus(dbUser.getUserIdx(), idx);
+		notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
 	
 
