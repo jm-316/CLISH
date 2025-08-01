@@ -67,7 +67,7 @@
 				<c:forEach var="fileDTO" items="${inqueryDTO.fileList}">
 					<div class="file_item">
 						${fileDTO.originalFileName}
-						<a href="/file/${fileDTO.fileId }" ">
+						<a href="/file/${fileDTO.fileId }?type=1" >
 							<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
 						</a>
 

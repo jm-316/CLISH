@@ -156,9 +156,9 @@ public class FileUtils {
 				contentType = "application/octet-stream"; //일반적인 바이너리 타입으로 컨텐츠 타입 강제 고정
 			}
 			
-			Builder builder = ContentDisposition.builder("attachment");
+			Builder builder = ContentDisposition.builder("attachment"); //다운로드해야 할때
 			
-			if( type == 0) {
+			if( type == 0) { // 이미지태그일때 
 				builder = ContentDisposition.builder("inline");  
 				
 			}
