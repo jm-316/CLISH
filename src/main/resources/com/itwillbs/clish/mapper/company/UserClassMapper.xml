@@ -18,6 +18,15 @@
 		)
 	</insert>
 	
+	<select id="selectCountReservationMembers" resultType="int">
+		SELECT 
+			IFNULL(SUM(reservation_members), 0)
+		FROM 
+			RESERVATION
+		WHERE 
+			class_idx = #{classIdx};
+	</select>
+	
 	<select id="selectUser" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT
 			user_idx

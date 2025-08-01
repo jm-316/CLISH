@@ -29,18 +29,19 @@ public class UserClassService {
 	}
 
 	public List<ClassDTO> getClassList(int classType, String categoryIdx) {
-		// TODO Auto-generated method stub
 		return userClassMapper.selectClass(classType, categoryIdx);
 	}
 	
 	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
-		// TODO Auto-generated method stub
 		return userClassMapper.selectAllClassReview(startRow, listLimit, classIdx);
 	}
 
 	public int getClassReviewCount(String classIdx) {
-		// TODO Auto-generated method stub
 		return userClassMapper.selectCountClassReview(classIdx);
+	}
+
+	public int selectReservationMembers(String classIdx) {
+		return userClassMapper.selectCountReservationMembers(classIdx);
 	}
 
 

@@ -66,10 +66,13 @@
 	    <div style="text-align: center; padding-top: 30px; display: flex;">
 	        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 	        클래스 목록</button>
-	        <c:if test="${user.userType eq 2 or user.userType eq 1 and classInfo.classStatus eq 2}">
+	        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
 	            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 	            예약정보 입력</button>
 	        </c:if>
+	        <c:if test="${userInfo.userType eq 2}">
+				<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>
+			</c:if>
 	    </div>
 					
 		</section>
@@ -105,6 +108,24 @@
 					${curri.curriculumTitle }, ${curri.curriculumRuntime } <br>
 				
 				</c:forEach>
+			</section>
+			
+			<section id="Refund">
+			<h1>환불 규정</h1>
+				<br>
+				정기강의 일때 
+				10일 이상 100%
+				5일 이상 10일 미만 70%
+				3일 이상 5일 미만 50%
+				1일 이상 3일 미만 30%
+				1일 미만 관리자에게 문의
+				
+				단기강의 일때
+				5일 이상 100%
+				3일 이상 5일 미만 70%
+				1일 이상 3일 미만 50%
+				1일 미만 관리자에게 문의
+				<br>
 			</section>
 			
 			<section id="reView">

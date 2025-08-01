@@ -67,10 +67,10 @@
 									<td>${classItem.location}</td>
 									<td>
 										<c:choose>
-											<c:when test="${classItem.classStatus == 2 and user.userType eq 1}">
-												오픈 <button onclick="location.href='/course/user/courseReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
+											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
+												오픈 <button onclick="location.href='/course/user/classReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
 											</c:when>
-											<c:when test="${user.userType eq 3}">
+											<c:when test="${userInfo.userType eq 3}">
 												관리자
 											</c:when>
 											<c:otherwise>
@@ -78,7 +78,7 @@
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<c:if test="${user.userType eq 2}">
+									<c:if test="${userInfo.userType eq 2}">
 										<td>
 											<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>
 										</td>

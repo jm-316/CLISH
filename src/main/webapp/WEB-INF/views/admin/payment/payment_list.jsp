@@ -42,8 +42,9 @@
 											<th>결제일시</th>
 											<th>결제강의</th>
 											<th>회원이름</th>
-											<th>결제금액</th>
 											<th>결제상태</th>
+											<th>결제금액</th>
+											<th>환불요청</th>
 											<th>상세정보</th>
 										</tr>
 									</thead>
@@ -54,7 +55,6 @@
 												<td>${payment.payTimeFormatted}</td>
 												<td>${payment.classTitle}</td>
 												<td>${payment.userName}</td>
-												<td><fmt:formatNumber value="${payment.amount}" type="number" groupingUsed="true"/> 원</td>
 												<td>
 													<c:choose>
 														<c:when test="${payment.status eq 'paid'}">
@@ -64,8 +64,12 @@
 															<span class="status-cancelled">결제취소</span>
 														</c:otherwise>
 													</c:choose>
+												<td><fmt:formatNumber value="${payment.amount}" type="number" groupingUsed="true"/> 원</td>
 												</td>
-<%-- 												<td>${payment.status}</td> --%>
+												<td>
+													<button data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" class="blue-button"
+													<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>>결제취소</button>
+												</td>
 												<td>
 													<button onclick="paymentInfo('${payment.impUid}', '${payment.status}')">상세정보</button>
 												</td>
@@ -96,6 +100,15 @@
 						`width=600,height=1500, resizable=yes, scrollbars=yes`
 				);
 			}
+		}
+		
+		function cancelPayment(btn) {
+			var impUid = btn.getAttribute('data-imp-num');
+			window.open(
+				'/admin/payment/cancel?impUid=' + encodeURIComponent(impUid),			
+				'paymentInfo',
+				`width=600,height=1500, resizable=yes, scrollbars=yes`
+			);
 		}
 	</script>
 </body>
