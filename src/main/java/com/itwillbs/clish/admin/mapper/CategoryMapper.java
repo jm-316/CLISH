@@ -3,6 +3,7 @@ package com.itwillbs.clish.admin.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
 
@@ -23,5 +24,12 @@ public interface CategoryMapper {
 
 	// 카테고리 삭제
 	int deleteCategory(String categoryIdx);
+
+	// 카테고리 이름 중복검사
+	int countCategoryName(@Param("categoryName") String categoryName, @Param("parentIdx") String parentIdx, @Param("currentIdx") String currentIdx);
+
+	// 카테고리 순서 중복검사
+	int countSortOrder(@Param("sortOrder") int sortOrder, @Param("parentIdx") String parentIdx, @Param("currentIdx") String currentIdx);
+
 
 }

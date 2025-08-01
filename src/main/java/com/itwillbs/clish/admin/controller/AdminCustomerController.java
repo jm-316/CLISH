@@ -33,9 +33,11 @@ public class AdminCustomerController {
 
 	// 공지사항 리스트
 	@GetMapping("/notice")
-	public String notice(Model model, @RequestParam(defaultValue = "1") int pageNum) {
+	public String notice(Model model, @RequestParam(defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword) {
 		int listLimit = 5;
-		int announcementCount = adminCustomerService.getAnnouncementCount();
+		int announcementCount = adminCustomerService.getAnnouncementCount(searchKeyword);
 		
 		if (announcementCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, announcementCount, pageNum, 3);
@@ -47,7 +49,7 @@ public class AdminCustomerController {
 			}
 			model.addAttribute("pageInfo", pageInfoDTO);
 			
-			List<SupportDTO> supportList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit);
+			List<SupportDTO> supportList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit, searchType, searchKeyword);
 			
 			model.addAttribute("supportList", supportList);
 		}
