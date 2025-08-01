@@ -129,7 +129,7 @@ public class CompanyInfoController {
 			companyInfoService.setCompanyInfo(company);     // UPDATE
 		}
 
-		return "redirect:/company"; // 기업 마이페이지 등으로 리다이렉트
+		return "redirect:/company/myPage"; // 기업 마이페이지 등으로 리다이렉트
 	}
 	// ------------------------------------------------------------------------------------------------------------------
 	
