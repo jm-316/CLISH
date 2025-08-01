@@ -101,10 +101,6 @@
         vertical-align: middle;
     }
 
-    button[onclick="confirmBizFileUpload()"] {
-        vertical-align: middle;
-        margin-left: 10px;
-    }
 </style>
 </head>
 <body>
@@ -123,7 +119,7 @@
 		<!-- ✅ 메인 콘텐츠 -->
 		<div class="main-content">
 			<div class="form-wrapper">
-			<h2 style="text-align:center;">기업 회원정보 수정</h2>
+			<h2 style="text-align:center;">${sessionScope.sId} 기업 회원정보 수정</h2>
 			<form action="${pageContext.request.contextPath}/company/myPage/companyInfoSubmit"
 			      method="post" enctype="multipart/form-data">
 			    <table border="1" style="width: 80%; text-align: left;">
@@ -137,21 +133,23 @@
 					<tr>
 						<th>사업자등록증 업로드</th>
 						<td>
-							<input type="file" name="bizFile" accept=".jpg,.jpeg,.png,.pdf">
-							<button type="button" onclick="confirmBizFileUpload()">[파일 등록]</button>
-							<span id="biz-file-result" style="margin-left: 10px; color: green;"></span>
-						</td>
+					        <input type="file" name="files" accept=".jpg,.jpeg,.png,.pdf">
+					        <span id="biz-file-result" style="margin-left: 10px; color: green;"><br>
+					            <c:if test="${not empty company.bizFileName}">
+					                현재 등록된 파일: ${company.bizFileName}
+					            </c:if>
+					        </span>
+					    </td>
 					</tr>
 			
 					<tr>
 						<th>이메일</th>
 						<td>
-							<div class="email-auth-wrap">
-								<input type="email" id="userEmail" name="userEmail" value="${user.userEmail}" required />
-								<button type="button" id="emailVerifyBtn">[이메일 인증]</button>
-							</div>
-			<!-- 				<span id="email-auth-result" style="color: red; margin-left: 10px;">이메일 인증 필요</span> -->
-								<span id="email-auth-result" style="display: none; color: red;">이메일 인증 필요</span>
+							<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
+							
+							<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
+							<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
+							<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
 						</td>
 					</tr>
 			
@@ -205,7 +203,7 @@
 					</tr>
 				</table>
 			
-					<input type="hidden" name="userType" value="${sessionScope.userType}" />
+					<input type="hidden" name="userType" value="${empty sessionScope.userType ? 2 : sessionScope.userType}" />
 					<input type="hidden" name="userIdx" value="${user.userIdx}" />
 					<p>
 						<button type="submit" >수정하기</button>
@@ -215,15 +213,54 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="module">
 		import { initEmailAuth } from '/resources/js/email/email_auth.js';
-		import { initJoinForm } from '/resources/js/user/join_form.js';
+		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
+	</script>
+	
+	<script type="text/javascript">
+		window.isEmailVerified = true;
+		
+		document.addEventListener("DOMContentLoaded", function() {
+		    const emailInput = document.getElementById("userEmail");
+		    const changeBtn = document.getElementById("changeEmail");
+		    const verifyBtn = document.getElementById("emailVerifyBtn");
+		    const authResult = document.getElementById("email-auth-result");
+		    
+		    changeBtn.addEventListener("click", function() {
+		    	window.isEmailVerified = false;
+		    	// 이메일 입력창 수정 가능
+		        emailInput.removeAttribute("readonly");
+		        emailInput.focus();
+		
+		        // 이메일 인증 버튼, 인증 안내 문구 모두 보이게
+		        verifyBtn.style.display = "inline-block";
+		        authResult.style.display = "inline-block";
+		
+		        // "이메일변경" 버튼 숨김 (또는 비활성화 해도 됨)
+		        changeBtn.style.display = "none";
+		    });
+		  
+			 // ✅ 주소 검색 버튼 이벤트 바인딩 (중첩 제거!)
+		    document.getElementById("btnSearchAddress").addEventListener("click", function () {
+	        new daum.Postcode({
+	            oncomplete: function (data) {
+	                let addr = '';
+	                if (data.userSelectedType === 'R') {
+	                    addr = data.roadAddress;
+	                } else {
+	                    addr = data.jibunAddress;
+	                }
 
-		window.addEventListener("DOMContentLoaded", () => {
-			initJoinForm();
-			initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result", { lockOnSuccess: true });
-		});
+	                document.getElementById("userPostcode").value = data.zonecode;
+	                document.getElementById("userAddress1").value = addr;
+	                document.getElementById("userAddress2").focus();
+	            }
+	        }).open();
+	    });
+	});	    
 	</script>
 	
 	<footer>

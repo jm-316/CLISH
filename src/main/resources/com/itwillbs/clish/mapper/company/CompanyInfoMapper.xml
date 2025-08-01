@@ -33,6 +33,21 @@
 	    WHERE user_id = #{userId}
 	</update>
 	
+	<select id="selectCompanyInfo" resultType="com.itwillbs.clish.user.dto.CompanyDTO">
+    	SELECT *
+		FROM COMPANY
+		WHERE
+			user_idx = #{userIdx}
+	</select>
+	
+	<insert id="insertCompanyInfo">
+	    INSERT INTO COMPANY (
+	        user_idx, biz_reg_no, biz_file_name, biz_file_path, upload_date
+	    ) VALUES (
+	        #{userIdx}, #{bizRegNo}, #{bizFileName}, #{bizFilePath}, NOW()
+	    )
+	</insert>
+	
 	<!-- 기업회원 사업자등록증 정보 수정 처리 -->
 	<update id="updateCompanyInfo">
 		UPDATE COMPANY
