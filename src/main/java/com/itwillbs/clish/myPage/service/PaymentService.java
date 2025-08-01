@@ -125,7 +125,7 @@ public class PaymentService {
 		long amount = ((BigDecimal) paymentCancelClassInfo.get("amount")).longValue();
 		
 		double cancelAmountDouble = amount * ableCancel;
-		
+		// 10의자리에서 올림
 		int cancelAmount = (int)(Math.ceil(cancelAmountDouble / 10.0) * 10);
 		
 		paymentCancelClassInfo.put("cancelAmount", cancelAmount);

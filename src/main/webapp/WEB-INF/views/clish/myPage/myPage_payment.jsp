@@ -63,7 +63,7 @@
 						<td>
 							<fmt:parseDate var="reservationCom" 
 								value="${reserve.reservationCom}"
-								pattern="yyyy-MM-dd'T'HH:mm:ss"
+								pattern="yyyy-MM-dd'T'HH:mm"
 								type="both" />
 							<fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/>
 						</td>
