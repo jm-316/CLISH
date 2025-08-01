@@ -45,6 +45,9 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 		// 일반 실행 경로
 		sendEmailRequest();
 		
+		// ==========================================================================
+		
+		// 메일 전송
 		function sendEmailRequest() {
 	        fetch("/email/send", {
 	            method: "POST",
@@ -156,37 +159,37 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	function startFindLoginId(email) {
 //		console.log("testing2");
 	    fetch("/user/findLoginId?email=" + encodeURIComponent(email))
-	        .then(res => res.json())
-	        .then(data => {
-	            if(data.foundId) {
-	                onFindIdSuccess(data.foundId);
-	            } else {
-	                alert("해당 이메일로 가입된 아이디를 찾을 수 없습니다.");
-	            }
-	        })
-	        .catch(() => {
-	            alert("아이디 조회 중 오류 발생");
-	        });
+        .then(res => res.json())
+        .then(data => {
+            if(data.foundId) {
+                onFindIdSuccess(data.foundId);
+            } else {
+                alert("해당 이메일로 가입된 아이디를 찾을 수 없습니다.");
+            }
+        })
+        .catch(() => {
+            alert("아이디 조회 중 오류 발생");
+        });
 	}
 	
 	function startCheckingUseIdAndEmail(userId, email, callback) {
 	    let url = "/user/foundByIdEmail?email=" + encodeURIComponent(email) + "&userId=" + encodeURIComponent(userId);
 	    fetch(url)
-	        .then(res => res.json())
-	        .then(data => {
-	            if (!data.exists) {
-	                resultSpan.innerText = "아이디와 이메일을 체크해주세요.";
-	                resultSpan.style.color = "red";
-	                callback(false); // 실패
-	                return;
-	            }
-	            callback(true); // 성공
-	        })
-	        .catch(() => {
-	            resultSpan.innerText = "서버 오류로 아이디/이메일 확인 실패!";
-	            resultSpan.style.color = "red";
-	            callback(false); // 실패
-	        });	
+        .then(res => res.json())
+        .then(data => {
+            if (!data.exists) {
+                resultSpan.innerText = "아이디와 이메일을 체크해주세요.";
+                resultSpan.style.color = "red";
+                callback(false); // 실패
+                return;
+            }
+            callback(true); // 성공
+        })
+        .catch(() => {
+            resultSpan.innerText = "서버 오류로 아이디/이메일 확인 실패!";
+            resultSpan.style.color = "red";
+            callback(false); // 실패
+        });	
 	}
 }
 

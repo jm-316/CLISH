@@ -1,5 +1,7 @@
 package com.itwillbs.clish.user.service;
 
+import java.io.IOException;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,20 @@ public class UserService {
 	public UserDTO selectUserId(String userId) {
 		return userMapper.selectUserId(userId);
 	}
+	//===========================================================================
+	
+	public boolean isValueExists(String value, String type) {
+		 switch(type) {
+	        case "nickname":
+	        	return userMapper.countByNickname(value) > 0;
+	        case "userId":
+	        	return userMapper.countByUserId(value) > 0;
+	        case "userPhone":
+	        	return userMapper.countByUserPhoneMatch(value) > 0;
+	        default:
+	            throw new IllegalArgumentException("지원하지 않는 타입: " + type);
+	    }
+	}
 	
 	// 닉네임 중복 체크
 	public boolean isNickExists(String nickname) {
@@ -58,6 +74,8 @@ public class UserService {
 		return userMapper.countByUserPhoneMatch(userPhone) > 0;
 	}
 	
+	//==========================================================================
+	
 	// 이메일로 아이디 찾기
 	public String findUserIdByEmail(String email) {
 		return userMapper.selectUserIdByEmail(email);
@@ -65,6 +83,12 @@ public class UserService {
 
 	public boolean foundByIdEmail(String userId, String email) {
 		return userMapper.countByIdAndEmail(userId, email) > 0;
+	}
+
+	public boolean chekingExists(String type, String value) {
+		
+		
+		return false;
 	}
 
 

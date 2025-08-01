@@ -15,6 +15,8 @@ public interface UserMapper {
 	
 	boolean existsByEmail(String email);
 	
+	// 중복체크 =============================================================================
+	
 	// 닉네임 중복체크
 	int countByNickname(@Param("nickname") String nickname);
 	
@@ -23,6 +25,9 @@ public interface UserMapper {
 	
 	// 핸드폰 중복체크
 	int countByUserPhoneMatch(@Param("userPhone") String userPhone);
+	
+	// ======================================================================================
+	
 	
 	// 이메일로 아이디 찾기
 	String selectUserIdByEmail(String email);

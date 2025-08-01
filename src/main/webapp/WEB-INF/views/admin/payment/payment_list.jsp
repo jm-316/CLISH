@@ -21,13 +21,15 @@
 						<div>
 							<h5 class="section-title">결제 목록</h5>
 						</div>
-						<div class="sort-buttons">
-							<button class="sort-button" data-value="all">전체</button>
-						    <button class="sort-button" data-value="recent">최신순</button>
-						    <button class="sort-button" data-value="oldest">과거순</button>
-						    <button class="sort-button" data-value="long">장기강의</button>
-						    <button class="sort-button" data-value="short">단기강의</button>
-						</div>
+						<form id="sortForm" method="get" action="/admin/paymentList" style="background-color: #F3F6F9; border: none; padding: 0;">
+						  <div class="sort-buttons">
+						    <button class="sort-button" type="submit" name="filter" value="all">전체</button>
+						    <button class="sort-button" type="submit" name="filter" value="recent">최신순</button>
+						    <button class="sort-button" type="submit" name="filter" value="oldest">과거순</button>
+						    <button class="sort-button" type="submit" name="filter" value="long">장기강의</button>
+						    <button class="sort-button" type="submit" name="filter" value="short">단기강의</button>
+						  </div>
+						</form>
 					</div>
 					<div>
 						<c:choose>
@@ -51,10 +53,10 @@
 									<tbody>
 										<c:forEach var="payment" items="${paymentList}">
 											<tr>
-												<td>${payment.impUid}</td>
-												<td>${payment.payTimeFormatted}</td>
-												<td>${payment.classTitle}</td>
-												<td>${payment.userName}</td>
+												<td>${payment.imp_uid}</td>
+												<td>${payment.formatted_pay_time}</td>
+												<td>${payment.class_title}</td>
+												<td>${payment.user_name}</td>
 												<td>
 													<c:choose>
 														<c:when test="${payment.status eq 'paid'}">
@@ -64,8 +66,8 @@
 															<span class="status-cancelled">결제취소</span>
 														</c:otherwise>
 													</c:choose>
-												<td><fmt:formatNumber value="${payment.amount}" type="number" groupingUsed="true"/> 원</td>
 												</td>
+												<td><fmt:formatNumber value="${payment.amount}" type="number" groupingUsed="true"/> 원</td>
 												<td>
 													<button data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" class="blue-button"
 													<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>>결제취소</button>
@@ -79,6 +81,30 @@
 								</table>
 							</c:otherwise>
 						</c:choose>
+					</div>
+					<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
+						<div>
+							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
+								<input type="button" value="이전" 
+									onclick="location.href='/admin/paymentList?pageNum=${pageInfo.pageNum - 1}&filter=${param.filter}'" 
+									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageInfo.pageNum}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="/admin/paymentList?pageNum=${i}&filter=${param.filter}">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<input type="button" value="다음" 
+									onclick="location.href='/admin/paymentList?pageNum=${pageInfo.pageNum + 1}&filter=${param.filter}'" 
+								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
+							</c:if>
+						</div>
 					</div>
 				</div>
 			</div>

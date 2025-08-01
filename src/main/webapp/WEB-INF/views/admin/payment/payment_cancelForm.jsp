@@ -42,8 +42,7 @@
 			</tr><tr>
 				<th>환불 가능 금액</th>
 				<td>
-					<input type="text" value="${formattedAmountCancel }" readonly>
-					<input type="hidden" value="${paymentCancelClassInfo.cancelAmount }" name="amount">
+					<input type="number" name="amount"  step="1" required/>
 				</td>
 					
 			</tr><tr>

@@ -122,16 +122,20 @@ public class CompanyClassController {
 	// 클래스 개설 로직
 	@PostMapping("/myPage/registerClass")
 	public String registerClassSubmit(ClassDTO companyClass, Model model, HttpServletRequest request, HttpSession session) {
-		// 고유 번호 생성 - 등록 시점에서 class_idx를 직접 만들어 넣기 (예: CLS202507132152)
+		// 로그인된 기업 회원의 고유번호를 조회해서 클래스 작성자 정보에 설정
+		String userId = (String) session.getAttribute("sId");
+		String userIdx = companyClassService.getUserIdxByUserId(userId);
+		companyClass.setUserIdx(userIdx);
+		
+		// 클래스 고유 번호 생성 - 등록 시점에서 class_idx를 직접 만들어 넣기 (예: CLS202507132152)
 		String classIdx = "CLS" + new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
 		companyClass.setClassIdx(classIdx);
 		
-		// -------------------------------------------------------------------
 		// 수강료 기본값 처리
 		if(companyClass.getClassPrice() == null) {
 			companyClass.setClassPrice(BigDecimal.ZERO);
 		}
-	    // ------------------------------------------------------------------------------------------------------
+		
 		// 체크박스(요일) 처리: List<String> → int
 		int classDaysValue = 0;
 		List<String> tempDays = companyClass.getClassDayNames();
@@ -143,11 +147,6 @@ public class CompanyClassController {
 		    }
 		}
 		companyClass.setClassDays(classDaysValue);
-		// ------------------------------------------------------------------------------------------------------
-		// 로그인 로직
-		String userId = (String) session.getAttribute("sId");
-		String userIdx = companyClassService.getUserIdxByUserId(userId);
-		companyClass.setUserIdx(userIdx);
 		// ------------------------------------------------------------------------------------------------------
 	    // 강좌 등록
 		int result = companyClassService.registerClass(companyClass, session); 

@@ -9,6 +9,8 @@
 		FROM NOTIFICATION
 		WHERE
 			user_idx = #{userIdx}
+		ORDER BY
+			user_notice_created_at DESC
 	</select>
 	
 	<!-- 읽음 상태 변경 -->

@@ -13,11 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.clish.admin.service.AdminPaymentService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.myPage.dto.PaymentCancelDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.service.PaymentService;
@@ -35,10 +38,29 @@ public class AdminPaymentController {
 	
 	// 결제관리 페이지
 	@GetMapping("/paymentList")
-	public String paymentList(Model model) {
-		List<PaymentInfoDTO> paymentList = adminPaymentService.getPaymentList();
+	public String paymentList(
+			@RequestParam(defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "all") String filter, 
+			Model model) {
 		
-		model.addAttribute("paymentList", paymentList);
+		int listLimit = 10;
+		int listCount = adminPaymentService.getPaymentCount(filter);
+		
+		if (listCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 5);
+			
+			if (pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/admin/paymentList");
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("pageInfo", pageInfoDTO);
+			
+			List<Map<String, Object>> paymentList = adminPaymentService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, filter);
+			
+			model.addAttribute("paymentList", paymentList);
+		}
 		
 		return "/admin/payment/payment_list";
 	}

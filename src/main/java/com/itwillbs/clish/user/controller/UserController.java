@@ -102,10 +102,10 @@ public class UserController {
 	        : userService.registerGeneralUser(userDTO);
 
 	    if(result > 0) {
-	        return "redirect:/user/join_success";
+	        return "redirect:/";
 	    } else {
 	        redirect.addFlashAttribute("errorMsg", "회원가입 실패");
-	        return "redirect:/commons/fail";
+	        return "redirect:/";
 	    }
 	}
 	
@@ -255,6 +255,8 @@ public class UserController {
 //	    return "redirect:/member/general_join";
 //	}
 	
+	//========================================================================================================
+	
 	@GetMapping("/checkNname")
 	@ResponseBody
 	public Map<String, Boolean> checkNickname(@RequestParam String nickname) {
@@ -281,5 +283,19 @@ public class UserController {
 	    result.put("exists", phoneExists);
 	    return result;
 	}
+	//========================================================================================================
+	// check 합본
 	
+	@GetMapping("/checkData")
+	@ResponseBody
+	public Map<String, Boolean> checkData(@RequestParam String type, @RequestParam String value) {
+		Map<String, Boolean> result = new HashMap<>();
+		
+		boolean exists = userService.isValueExists(type, value);
+		
+		result.put("exists", exists);
+		return result;
+	}
+	
+	//========================================================================================================
 }

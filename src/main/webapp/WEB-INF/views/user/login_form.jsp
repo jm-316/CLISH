@@ -32,7 +32,7 @@
 	    align-items: center;
 	    width: 100%;
 	    margin-bottom: 14px;
-	    gap: 5px;   /* 체크박스와 글자 사이 간격 */
+	    gap: 5px;
 	}
 	
 	#login-form .login-btn-area {
@@ -41,7 +41,7 @@
 	    align-items: center;
 	    width: 100%;
 	    margin-bottom: 14px;
-	    gap: 5px;   /* 체크박스와 글자 사이 간격 */
+	    gap: 5px;
 	}
 	
 	#login-form .info-links {
@@ -50,15 +50,16 @@
 	    align-items: center;
 	    width: 100%;
 	    margin-top: 10px;
-	    gap: 8px;  /* 링크 간격, 필요하면 조정 */
+	    margin-bottom: 10px;
+	    gap: 8px; 
 	}
 	
 	#login-form .info-links a {
-   		color: #222 !important;  /* 진한 검정 (또는 #000도 가능) */
+   		color: #222 !important;
 	}
 	
 	#login-form .info-links a:visited {
-	    color: #222 !important;  /* 방문해도 검정 고정 */
+	    color: #222 !important;
 	}
 	
 	#login-form .captcha-area {
@@ -131,6 +132,7 @@
 	    );
 	});
 	
+	// 패스워드 찾기 이벤트
 	document.getElementById("findPwLink").addEventListener("click", function(e) {
 	    e.preventDefault();
 	    window.open(
@@ -139,8 +141,6 @@
 	        'width=600,height=500,scrollbars=no,resizable=no'
 	    );
 	});
-	
-	
 </script>
 
 </html>

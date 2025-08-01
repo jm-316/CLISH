@@ -86,7 +86,7 @@ export function initJoinForm() {
 	        resultSpan.style.color = 'red';
 			isBirthOk = false;
 	    } else{
-	        resultSpan.innerText = '올바른 전화번호 형식입니다!';
+	        resultSpan.innerText = '올바른 생년월일 형식입니다!';
 	        resultSpan.style.color = 'green';
 			isBirthOk = true;
 	    }
@@ -253,9 +253,18 @@ export function initJoinForm() {
 	
 	// 9. 전체 입력 확인 체크
 	function updateSubmitButton() {
+//		console.log(isNicknameOk);
+//		console.log(isBirthOk);
+//		console.log(isIdOk);
+//		console.log(isPwOk);
+//		console.log(isPwMatchOk);
+//		console.log(isPhoneOk);
+//		console.log(isAddressOk);
+//		console.log(isAgreeChkOk);
+		
 	    if(isNicknameOk && isBirthOk && isIdOk && isPwOk && isPwMatchOk && 
-					isPhoneOk && window.isEmailVerified && isAddressOk && isAgreeChkOk) {
-	        submitBtn.disabled = false;
+					isPhoneOk && isAddressOk && isAgreeChkOk) {
+	        submitBtn.disabled = false;	
 	    } else{
 	        submitBtn.disabled = true;
 	    }

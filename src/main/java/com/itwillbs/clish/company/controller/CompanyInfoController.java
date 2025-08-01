@@ -1,9 +1,12 @@
 package com.itwillbs.clish.company.controller;
 
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;  // ← 날짜 포맷용
 import java.util.Date;              // ← 시간 객체
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -54,41 +57,79 @@ public class CompanyInfoController {
 	    // 비밀번호 검증 (암호화된 비번 비교)
 	    if (user != null && companyInfoService.matchesPassword(inputPw, user.getUserPassword())) {
 	        model.addAttribute("user", user);
+	        
+	        CompanyDTO company = companyInfoService.getCompanyInfo(user.getUserIdx());
+	        model.addAttribute("company", company);
+	        
 	        return "company/companyInfo";
 	    }
-	    
-	    System.out.println("입력된 비번: " + inputPw);
-	    System.out.println("DB에서 조회한 비번: " + user.getUserPassword());
 	    
 	    model.addAttribute("msg", "비밀번호가 틀렸습니다.");
 	    model.addAttribute("targetUrl", "/company/myPage/companyCheckPw");
 	    return "commons/result_process";
 	}
 	
-	// 수정정보 UPDATE문 으로 반영 후 메인페이지로 이동
 	@PostMapping("/myPage/companyInfoSubmit")
-	public String companyInfoSubmit(UserDTO user, CompanyDTO company,
-			HttpSession session, @RequestParam("userPasswordConfirm") String new_password) {
-		user.setUserId((String)session.getAttribute("sId"));
-		
+	// 수정정보 UPDATE문 으로 반영 후 메인페이지로 이동
+	public String companyInfoSubmit(UserDTO user, CompanyDTO company, HttpSession session,
+			@RequestParam("userPasswordConfirm") String new_password,
+			@RequestParam(value = "files", required = false) MultipartFile file) {
+
+		// 1. 세션에서 유저 ID 가져오기
+		user.setUserId((String) session.getAttribute("sId"));
 		UserDTO user1 = companyInfoService.getUserInfo(user); // 기존 유저 정보 불러오기
 
-		if(!user1.getUserEmail().equals(user.getUserEmail())){
+		// 2. 이메일 변경 여부 체크
+		if (!user1.getUserEmail().equals(user.getUserEmail())) {
 			user.setNewEmail(user.getUserEmail());
 		}
-		
-		if(!new_password.isEmpty()) { // 새비밀번호가 있다면 비밀번호 새로지정
+
+		// 3. 비밀번호 변경 여부 체크
+		if (!new_password.isEmpty()) {
 			user.setUserPassword(new_password);
-		}else { // 아니면 기존 비밀번호 유지
+		} else {
 			user.setUserPassword(user1.getUserPassword());
 		}
-		
+
+		// 4. 사업자등록증 파일 업로드 처리
+		if (file != null && !file.isEmpty()) {
+			try {
+				String uploadDirPath = "/usr/local/tomcat/webapps/resources/upload/biz";
+				File uploadDir = new File(uploadDirPath);
+				if (!uploadDir.exists()) uploadDir.mkdirs();
+
+				String originName = file.getOriginalFilename();
+				String uuid = UUID.randomUUID().toString();
+				String newFileName = uuid + "_" + originName;
+				File dest = new File(uploadDir, newFileName);
+				file.transferTo(dest);
+
+				company.setBizFileName(newFileName);
+				company.setBizFilePath("/resources/upload/biz/" + newFileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+				// 파일 업로드 실패 시 처리를 원한다면 여기서 로직 추가
+			}
+		} else {
+		    // 🔥 파일이 없는 경우 → 기존 정보 유지
+		    CompanyDTO existingCompany = companyInfoService.getCompanyInfo(user1.getUserIdx());
+		    company.setBizFileName(existingCompany.getBizFileName());
+		    company.setBizFilePath(existingCompany.getBizFilePath());
+		}
+
+		// 5. 회사 정보 업데이트 또는 삽입
 		company.setUserIdx(user1.getUserIdx());
-				
 		companyInfoService.setUserInfo(user);
-		companyInfoService.setCompanyInfo(company); 
-		
-		return "redirect:/company";
+
+		// 🔥 핵심: company 테이블에 데이터가 있는지 확인하고 분기 처리
+		CompanyDTO existingCompany = companyInfoService.getCompanyInfo(user1.getUserIdx());
+		if (existingCompany == null) {
+			companyInfoService.insertCompanyInfo(company);  // INSERT
+		} else {
+			companyInfoService.setCompanyInfo(company);     // UPDATE
+		}
+
+		return "redirect:/company"; // 기업 마이페이지 등으로 리다이렉트
 	}
 	// ------------------------------------------------------------------------------------------------------------------
 	

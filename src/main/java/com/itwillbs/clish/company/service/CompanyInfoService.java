@@ -35,18 +35,26 @@ public class CompanyInfoService {
 		
 	}
 	
+	public CompanyDTO getCompanyInfo(String userIdx) {
+		 return companyInfoMapper.selectCompanyInfo(userIdx);
+	}
+	
+	public void insertCompanyInfo(CompanyDTO company) {
+		companyInfoMapper.insertCompanyInfo(company);
+	}
+	
 	// 기업회원 사업자등록증 정보 수정 처리
 	public int setCompanyInfo(CompanyDTO company) {
 		return companyInfoMapper.updateCompanyInfo(company);
 		
 	}
 	
+	
+	// ------------------------------------------------------------------------
 	// 기업 - 나의 문의 목록(리스트) 조회
 	public List<InquiryJoinUserDTO> getInquiriesByUserIdx(String userIdx) {
 		return companyInfoMapper.selectInquiriesByUserIdx(userIdx);
 	}
-	
-	// ------------------------------------------------------------------------
 	// 문의 등록버튼 로직
 	public void insertInquery(InqueryDTO dto) {
 		companyInfoMapper.insertInquery(dto); 
@@ -76,6 +84,7 @@ public class CompanyInfoService {
 	public int withdraw(UserDTO user) {
 		return companyInfoMapper.updateWithdraw(user);
 	}
+
 
 	
 
