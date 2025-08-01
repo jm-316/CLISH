@@ -24,6 +24,16 @@
 		AND
 			notice_idx = #{notiIdx}
 	</update>
+	
+	<!-- 읽지않은 알림 목록 -->
+	<select id="selectUnreadNotifications" resultType="com.itwillbs.clish.admin.dto.NotificationDTO">
+		SELECT *
+		FROM NOTIFICATION
+		WHERE
+			user_idx = #{userIdx}
+		AND
+			user_notice_read_status = 2	
+	</select>
 </mapper>  
   
   

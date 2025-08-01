@@ -68,4 +68,18 @@ public class NotificationService {
 	public void modifyStatus(String userIdx, String notiIdx) {
 		notificationMapper.updateStatus(userIdx, notiIdx);
 	}
+	
+	public String readAll(String userIdx) {
+		//읽지않은 알림 목록
+		List<NotificationDTO>notificationList = notificationMapper.selectUnreadNotifications(userIdx);
+		//읽지않은 알림 전체 읽음처리
+		if (notificationList != null && !notificationList.isEmpty()) {
+			for(NotificationDTO notification : notificationList) {
+				notificationMapper.updateStatus(userIdx, notification.getNoticeIdx());
+			}
+			return "모든 알림을 읽음 처리했습니다";
+		}
+		
+		return "더 이상 읽을 알림이 없습니다.";
+	}
 }

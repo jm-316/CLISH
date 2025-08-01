@@ -12,5 +12,8 @@ public interface NotificationMapper {
 
 	// 알림 확인
 	void updateStatus(@Param("userIdx") String userIdx, @Param("notiIdx") String notiIdx);
+	
+	//읽지않은 알림 목록
+	List<NotificationDTO> selectUnreadNotifications(String userIdx);
 
 }
