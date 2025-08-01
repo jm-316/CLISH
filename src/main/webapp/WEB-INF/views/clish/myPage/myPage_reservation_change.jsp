@@ -35,7 +35,7 @@
 				<th>남은 자리</th>
 			</tr>
 			<tr>
-				<th>${reservationClassInfo.remainSeats}</th>
+				<th id="remainSeats">${reservationClassInfo.remainSeats}</th>
 			</tr>
 			<tr>
 				<th>${reservationClassInfo.start_date}</th>
@@ -92,64 +92,142 @@
 	</main>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$('[name="reservationMembers"]').blur(function(e){
-			const price = ${reservationClassInfo.class_price};
-			var reserveMembers =  this.value;
-			var changePrice = reserveMembers * price ;
-			// 숫자를 1000 단위 콤마 찍기
-		    var formattedPrice = Number(changePrice).toLocaleString('en-US');
-			$('[name="changePrice"]').text(formattedPrice);
+		var maxMembers = ${reservationClassInfo.remainSeats + reservationClassInfo.reservation_members};
+
+		$(function() {
+			const classIdx = "${reservationClassInfo.class_idx}"; // 강의idx 
+			const price = ${reservationClassInfo.class_price}; // 강의 가격 
+			const initialMembers = Number($('[name="reservationMembers"]').val());//예약인원 입력값
+			const originalReservationMembers = '${reservationClassInfo.reservation_members}'; //처음 예약한 인원수
+			var originalReservationDateTime = '${reservationClassInfo.reservation_class_date}';//처음예약한날
+			const normalizedOriginal = originalReservationDateTime.replace('T', ' ') + ':00';
+			var selectedReservationDateTime = originalReservationDateTime;//선택한예약날자 초기값:처음예약한날
+			const today = new Date();
+		    const yyyy = today.getFullYear();
+		    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하니 +1 필요
+		    const dd = String(today.getDate()).padStart(2, '0');
+
+		    const todayStr = yyyy + '-' + mm + '-' + dd;
+		    const $dateInput = $('input[name="reservationClassDate"]');
+			
+		 	// 기존 min 값과 비교해서 더 늦은 날짜를 최소값으로 설정 (필요시)
+		    const existingMin = $dateInput.attr('min');
+		 	
+		    if (!existingMin || existingMin < todayStr) {
+		        $dateInput.attr('min', todayStr);
+		    }
+			
+			
+			// 변경후 금액 표시
+		    updatePrice(initialMembers);
+		    
+		 	// 인원 입력란에서 값 변경되었을 때 가격 업데이트
+		    $('[name="reservationMembers"]').on('input', function() {
+		        const membersValue = Number($(this).val());
+		        updatePrice(membersValue);
+		    });
+		 	
+		 	// 예약날자 변경시 작동
+		    $('input[name="reservationClassDate"]').on('change', function() {
+		    	selectedReservationDateTime = getSelectedReservationDateTime();
+		    	
+		    	console.log('예약 날짜/시간 변경:', selectedReservationDateTime);
+		    	console.log('예약 날짜/시간 원본:', originalReservationDateTime);
+		    	
+		    	// 클래스idx, 예약일 정보를 받아서 남은자리 업데이트
+		    	fetch('/myPage/changeReservation/changeClassDate?classIdx=' 
+		                + encodeURIComponent(classIdx) 
+		                + '&reservationClassDate=' + encodeURIComponent(selectedReservationDateTime))
+		            .then(function(response) {
+		                if (!response.ok) throw new Error('네트워크 문제 발생');
+		                return response.json();
+		            })
+		            .then(function(data) {
+		                if (data.success) {
+		                    document.getElementById('remainSeats').textContent = data.remainSeats;
+		                    
+		                 	// 최대 예약 인원 계산
+		                    if (selectedReservationDateTime === normalizedOriginal) {
+		                    	maxMembers = data.remainSeats + initialMembers;
+		                    } else {
+	                        	maxMembers = data.remainSeats;
+		                    }
+		                    // 입력값 속성 조정
+		                    const $reservationMembersInput = $('[name="reservationMembers"]');
+		                    $reservationMembersInput.attr('max', maxMembers);
+		                    // 현재 입력값이 maxMembers보다 더 클때 maxMembers로 자동 조정
+		                    var currentVal = Number($reservationMembersInput.val());
+		                    if (currentVal > maxMembers) {
+		                        $reservationMembersInput.val(maxMembers);
+		                        updatePrice(maxMembers); // 인원 변경후 금액
+		                    } else {
+		                        updatePrice(currentVal); // 인원 변경후 금액
+		                    }
+		                } else {
+		                    alert('남은 좌석 정보를 가져오지 못했습니다.');
+		                }
+		            })
+		            .catch(function(error) {
+		                console.error('fetch 에러:', error);
+		                alert('서버 통신 중 오류가 발생했습니다.');
+		            });
+		    });
+		 
+		 
+		 
+		 
+		 
+			// 가격 계산 함수 (인원 수 받아서 가격 표시)
+		    function updatePrice(reserveMembers) {
+		        if (isNaN(reserveMembers) || reserveMembers < 0) {
+		            reserveMembers = 0;
+		        }
+		        const changePrice = price * reserveMembers;
+		        const formattedPrice = changePrice.toLocaleString('en-US');
+		        $('[name="changePrice"]').text(formattedPrice);
+		    }
+			
+		 	// 날짜+시간을 DATETIME 형식 문자열로 변환하는 함수
+		    function getSelectedReservationDateTime() {
+		        const dateVal = $('input[name="reservationClassDate"]').val();  // yyyy-MM-dd
+		        const timeVal = $('input[name="reservationTime"]').val();  // HH:mm
+				
+		        if (dateVal && timeVal) {
+		            return dateVal + ' ' + timeVal + ':00';// 초는 00 고정
+		        } else if (dateVal) {
+		            return dateVal + ' 00:00:00';
+		        } else {
+		            return null;// 날짜가 없으면 null 반환
+		        }
+		    }
+		 	
 		});
 
-		$(function(){
-			const price = ${reservationClassInfo.class_price};
-			var reserveMembers = $('[name="reservationMembers"]').val();
-			var changePrice = price * Number(reserveMembers);
-			var formattedPrice = changePrice.toLocaleString('en-Us');
-			
-			$('[name="changePrice"]').text(formattedPrice);
-		});
-	
-		function validateForm() {
-		    const dateInput = document.querySelector('input[name="reservationClassDate"]');
-		    const membersInput = document.querySelector('input[name="reservationMembers"]');
-		    const changePrice = document.querySelector('div[name="changePrice"]').value
-		    const dateValue = dateInput.value.trim();
-		    const membersValue = membersInput.value.trim();
-		
-		    // JSTL 값을 자바스크립트 변수로 전달
-		    const remainSeats = parseInt('${reservationClassInfo.remainSeats}');
-		    const classMember = parseInt('${reservationClassInfo.class_member}');
-		    const reservationMembers = parseInt('${reservationClassInfo.reservation_members}');
-		    const maxMembers = remainSeats + reservationMembers
-		    console.log(maxMembers + ": 맥스멤버");
-		    console.log("남은자리 : " + remainSeats);
-		    console.log("예약자리 : " + reservationMembers);
-		    
-		    if (!dateValue) {
-		        alert("예약일을 입력하세요.");
-		        dateInput.focus();
-		        return false;
-		    }
-		    
-		    if (
-		        !membersValue ||
-		        isNaN(membersValue) ||
-		        parseInt(membersValue) < 1
-		    ) {
-		        alert("예약 인원은 1명 이상이어야 합니다.");
-		        membersInput.focus();
-		        return false;
-		    }
-		    
-		    if (parseInt(membersValue) > maxMembers) {
-		        alert("예약 가능한 최대 인원은 " + maxMembers + "명입니다.");
-		        membersInput.focus();
-		        return false;
-		    }
-		    
-		    return true;
-		}
+		// 수정완료버튼클릭
+	 	function validateForm() {
+	 		const val = Number($('[name="reservationMembers"]').val());
+	 		const minMembers = 1;
+	 		
+	 		if (val < minMembers) {
+	 	        alert('예약 인원은 최소 ' + minMembers + '명 이상이어야 합니다.');
+	 	        $('[name="reservationMembers"]').focus();
+	 	        return false;
+	 	    }
+	 		
+	 		if (isNaN(val)) {
+	 	        alert('숫자만 입력 가능합니다.');
+	 	        $('[name="reservationMembers"]').focus();
+	 	        return false;
+	 	    }
+	 		
+	 		if (val > maxMembers) {
+	 	        alert('예약 인원은 최대 '+ maxMembers + '명을 초과할 수 없습니다.');
+	 	        $('[name="reservationMembers"]').focus();
+	 	        return false;
+	 	    }
+	 		
+	 		return true;
+	 	}
 	</script>
 
 </body>

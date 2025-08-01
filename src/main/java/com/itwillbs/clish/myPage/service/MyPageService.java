@@ -119,7 +119,12 @@ public class MyPageService {
 		return myPageMapper.deleteReservation(reservation);
 	}
 	
-	// 예약상세정보 불러오기
+	//예약정보 불러오기
+	public ReservationDTO getReservationDetail(ReservationDTO reservation) {
+		return myPageMapper.selectReservationDetail(reservation);
+	}
+	
+	// 예약, 예약한 강의 상세정보 불러오기
 	public Map<String, Object> reservationDetailInfo(ReservationDTO reservation) {
 		return myPageMapper.ReservationDetailInfo(reservation);
 	}
@@ -127,6 +132,11 @@ public class MyPageService {
 	// 예약수정
 	public void changeReservation(ReservationDTO reservation) {
 		myPageMapper.updateReservationInfo(reservation);
+	}
+	
+	// 예약수정남은자리 검색
+	public int getRemainSeats(ReservationDTO reservation) {
+		return myPageMapper.selectRemainSeats(reservation);
 	}
 
 	// 회원탈퇴
@@ -268,6 +278,11 @@ public class MyPageService {
 			fileMapper.insertFiles(fileList);
 		}
 	}
+	
+
+
+
+	
 
 	
 	

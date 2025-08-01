@@ -40,6 +40,8 @@ public interface MyPageMapper {
 	List<PaymentInfoDTO> selectAllPaymentInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user);
 	//예약정보, 예약된 수업정보
 	Map<String, Object> ReservationDetailInfo(ReservationDTO reservation);
+	// 남은자리검색
+	int selectRemainSeats(ReservationDTO reservation);
 	// 예약 수정 요청
 	void updateReservationInfo(ReservationDTO reservation);
 	//회원탈퇴
@@ -70,6 +72,8 @@ public interface MyPageMapper {
 	int selectCompleteReviewCount(UserDTO user);
 	// 작성완료 수강후기 목록
 	List<ReviewDTO> selectAllCompleteReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	//예약정보불러오기
+	ReservationDTO selectReservationDetail(ReservationDTO reservation);
 	// 예약한 예약,수업 상세정보 
 	Map<String, Object> selectOneReservationClassInfo(ReservationDTO reservationDTO);
 	//후기 작성

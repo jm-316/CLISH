@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +20,9 @@ public class ReservationDTO {
 	private String reservationIdx; 
 	private String userIdx;
 	private int reservationMembers;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime reservationClassDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime reservationCom;
 	private String classIdx;
 	private int reservationStatus;

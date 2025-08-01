@@ -4,6 +4,7 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -267,6 +270,8 @@ public class MyPageController {
 	public String reservationDetail(HttpSession session, Model model, ReservationDTO reservation, UserDTO user, ClassDTO claSs) {
 		// 세션을 이용한 유저 정보 불러오기
 		user = getUserFromSession(session);
+		// 남은자리 확인을 위해 예약정보 불러오기
+		reservation = myPageService.getReservationDetail(reservation);
 		
 		// 예약상세정보 불러오기
 		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation); 
@@ -283,6 +288,9 @@ public class MyPageController {
 		
 		// 세션을 이용한 유저 정보 불러오기
 		user = getUserFromSession(session);
+		// 남은자리 확인을 위해 예약정보 불러오기
+		reservation = myPageService.getReservationDetail(reservation);
+		System.out.println("asdfasdfasdfsadf" + reservation.getReservationClassDate());
 
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation); 
 		model.addAttribute("reservationClassInfo", reservationClassInfo);
@@ -291,6 +299,25 @@ public class MyPageController {
 		return "/clish/myPage/myPage_reservation_change";
 	}
 	
+	//예약 수정 날짜변경응답
+	@ResponseBody
+	@GetMapping("/changeReservation/changeClassDate")
+	public  Map<String, Object> changeReservationChangeClassDate(@RequestParam String classIdx,
+		    @RequestParam String reservationClassDate) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime formateedClassDate = LocalDateTime.parse(reservationClassDate, formatter);
+
+		ReservationDTO reservation = new ReservationDTO();
+		reservation.setClassIdx(classIdx);
+		reservation.setReservationClassDate(formateedClassDate);
+		
+		int remainSeats = myPageService.getRemainSeats(reservation);
+		Map<String, Object> result = new HashMap<>();
+		result.put("success", true);
+		result.put("remainSeats", remainSeats);
+		return result;
+	}
 		
 	//예약 수정 폼 submit시 수행
 	@PostMapping("/payment_info/change")

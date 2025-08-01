@@ -69,11 +69,11 @@
 						</td>
 <%-- 							<td>${reserve.reservationCom}</td> --%>
 						<td><input type="button" value="취소" data-reservation-num="${reserve.reservationIdx}"
-	          onclick="cancelReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>></td>
+	          				onclick="cancelReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>></td>
 						<td><input type="button" value="결제" data-reservation-num="${reserve.reservationIdx}"
-	          onclick="payReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>> </td>
+	        				onclick="payReservation(this)" <c:if test="${reserve.reservationStatus eq 2 }">disabled</c:if>> </td>
 						<td><input type="button" value="상세보기" data-reservation-num="${reserve.reservationIdx}"
-	          onclick="reservationInfo(this)"> </td>
+	        	  			onclick="reservationInfo(this)"> </td>
 		        	</tr>
 
 	       		</c:forEach>
@@ -179,9 +179,6 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
-</body>
-</html>
-
 <script type="text/javascript">
 	//취소버튼 함수
 	function cancelReservation(btn) {
@@ -214,7 +211,6 @@
 	function reservationInfo(btn) {
     	//예약번호 읽기
 	    var reservationIdx = btn.getAttribute('data-reservation-num');
-	    
 		//팝업창 열기
 	    window.open(
 	        '/myPage/payment_info/detail?reservationIdx=' + encodeURIComponent(reservationIdx),
@@ -264,3 +260,5 @@
 	
 	
 </script>
+</body>
+</html>

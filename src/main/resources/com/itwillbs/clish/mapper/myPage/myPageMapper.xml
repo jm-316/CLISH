@@ -134,10 +134,17 @@
 			, #{listLimit}
 	</select>
 	
+	<select id="selectReservationDetail" resultType="com.itwillbs.clish.myPage.dto.ReservationDTO">
+		SELECT *
+		FROM RESERVATION
+		WHERE reservation_idx = #{reservationIdx}
+	</select>
+	
 	<!-- 예약상세정보 종합 불러오기 -->
 	<select id="ReservationDetailInfo" resultType="map">
 	SELECT
-		c.class_title
+		r.class_idx
+		, c.class_title
 		, c.class_price
 		, c.class_member
 		, c.start_date
@@ -159,6 +166,8 @@
 				RESERVATION r2
 			WHERE
 				r2.class_idx = c.class_idx
+				AND
+				r2.reservation_class_date = #{reservationClassDate}				
 		  ), 0)) AS remainSeats
 	FROM
 		RESERVATION r
@@ -172,6 +181,28 @@
 		r.class_idx = f.idx
 	WHERE
 		r.reservation_idx = #{reservationIdx}	
+	</select>
+	
+	<!-- 예약수정 남은자리 불러오기 -->
+	<select id="selectRemainSeats" resultType="int">
+		SELECT DISTINCT
+		c.class_member - IFNULL((
+			SELECT 
+				SUM(r2.reservation_members)
+			FROM 
+				RESERVATION r2
+			WHERE
+				r2.class_idx = c.class_idx
+				AND
+				r2.reservation_class_date = #{reservationClassDate} ), 0) AS remainSeats
+	FROM
+		CLASS c
+	LEFT JOIN
+		RESERVATION r
+	ON
+		c.class_idx = r.class_idx
+	WHERE
+		c.class_idx = #{classIdx}	
 	</select>
 	
 	<!-- 예약상세정보불러오기 -->
