@@ -3,6 +3,7 @@ package com.itwillbs.clish.admin.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ public class NotificationService {
 		// idx 생성 로직
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String timestamp = LocalDateTime.now().format(formatter);
-		String noticeIdx = "no" + timestamp;
+		String noticeIdx = "no" + timestamp + UUID.randomUUID().toString().substring(0, 8);
 		
 		NotificationDTO notification = new NotificationDTO();
 		notification.setNoticeIdx(noticeIdx);
