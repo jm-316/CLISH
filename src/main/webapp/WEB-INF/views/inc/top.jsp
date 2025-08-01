@@ -13,7 +13,7 @@
           </li>
           <li><a id="sub-nav-toggle" href="/course/user/classList?classType=0">정기 강의</a></li>
           <li><a href="/course/user/classList?classType=1">단기 강의</a></li>
-          <li><a href="/customer/customerCenter">고객 센터</a> </li> 
+          <li><a href="/customer/announcements">고객 센터</a> </li> 
           <li><a href="/event/eventHome">이벤트</a></li>
 
       </ul>
@@ -42,8 +42,8 @@
         </ul>
         <ul>
             <li><a href="/event/eventHome"><b>이벤트</b></a></li>
-            <li><a href="/event/earlyDiscount">얼리버드 할인</a></li>
-            <li><a href="/event/specialDiscount">특별 할인</a></li> 
+<!--             <li><a href="/event/earlyDiscount">얼리버드 할인</a></li> -->
+<!--             <li><a href="/event/specialDiscount">특별 할인</a></li>  -->
         </ul>
       
 	</div> 

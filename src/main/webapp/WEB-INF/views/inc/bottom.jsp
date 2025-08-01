@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<hr>
+
 <div id="footer-area" style="padding:30px 0; background: #faf8fc; border-top:1px solid #ddd; position: relative;
-	z-index: 1000; ">
-    <div style="display:flex; align-items:center; gap:40px;">
+	z-index: 1000; margin-top: 300px;">
+    <div style="display:flex; align-items:center; justify-content: center; gap:40px;">
         <!-- Logo -->
         <img src="${pageContext.request.contextPath}/resources/images/logo4-2.png" alt="회사 로고" style="height:60px;">
 

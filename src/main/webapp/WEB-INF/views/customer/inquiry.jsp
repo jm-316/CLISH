@@ -42,6 +42,9 @@
     font-weight: bold;
     font-size: 0.9rem;
 }
+.button {
+	margin: 0 15px;
+}
 </style>
 </head>
 <body>
@@ -95,25 +98,25 @@
 						</tbody>
 					</table>
 				</div>
-				<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
-					<div>
+				<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px; ">
+					<div style="display: flex; ">
 						<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
-							<input type="button" value="이전" 
+							<input class="button" type="button" value="이전" 
 								onclick="location.href='/customer/inquiry?pageNum=${pageInfo.pageNum - 1}'" 
 								<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 							
 							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 								<c:choose>
 									<c:when test="${i eq pageInfo.pageNum}">
-										<strong>${i}</strong>
+										<strong>${i} &nbsp;</strong>
 									</c:when>
 									<c:otherwise>
-										<a href="/customer/inquiry?pageNum=${i}">${i}</a>
+										<a href="/customer/inquiry?pageNum=${i}">${i} &nbsp;</a>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							
-							<input type="button" value="다음" 
+							<input class="button" type="button" value="다음" 
 								onclick="location.href='/customer/inquiry?pageNum=${pageInfo.pageNum + 1}'" 
 							<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 						</c:if>
