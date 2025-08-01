@@ -110,6 +110,24 @@
 				</c:forEach>
 			</section>
 			
+			<section id="Refund">
+			<h1>환불 규정</h1>
+				<br>
+				정기강의 일때 
+				10일 이상 100%
+				5일 이상 10일 미만 70%
+				3일 이상 5일 미만 50%
+				1일 이상 3일 미만 30%
+				1일 미만 관리자에게 문의
+				
+				단기강의 일때
+				5일 이상 100%
+				3일 이상 5일 미만 70%
+				1일 이상 3일 미만 50%
+				1일 미만 관리자에게 문의
+				<br>
+			</section>
+			
 			<section id="reView">
 				<h1>수강후기</h1>
 				<c:forEach var="review" items="${reviewList }" varStatus="status">

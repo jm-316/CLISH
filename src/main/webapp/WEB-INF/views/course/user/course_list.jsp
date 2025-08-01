@@ -68,7 +68,7 @@
 									<td>
 										<c:choose>
 											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
-												오픈 <button onclick="location.href='/course/user/courseReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
+												오픈 <button onclick="location.href='/course/user/classReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
 											</c:when>
 											<c:when test="${userInfo.userType eq 3}">
 												관리자
