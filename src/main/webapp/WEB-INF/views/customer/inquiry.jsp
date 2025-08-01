@@ -60,7 +60,7 @@
 			<h3 style="font-size: 1.8rem; text-align: left; margin-top: 30px; margin-bottom: 30px;">1:1문의</h3>
 			<div>
 				<div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
-					<c:if test="${userType ne 3}">
+					<c:if test="${sUT ne 3}">
 						<button onclick="location.href='/customer/inquiry/write'" style="width: 100px; height: 30px; font-size: 0.85rem;">문의남기기</button>
 					</c:if>
 				</div>

@@ -72,6 +72,46 @@
 		WHERE
 			category_idx = #{categoryIdx}
 	</delete>
+	
+	<!-- 카테고리 순서 중복 검사 -->
+	<select id="countSortOrder" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			CATEGORY
+		WHERE
+			sort_order = #{sortOrder}
+		<choose>
+		  <when test="parentIdx != null and parentIdx != ''">
+		    AND parent_idx = #{parentIdx}
+		  </when>
+		  <otherwise>
+		    AND parent_idx IS NULL
+		  </otherwise>
+		</choose>
+		<if test="currentIdx != null and currentIdx != ''">
+		   AND category_idx != #{currentIdx}
+		 </if>
+	</select>
+	
+	<!-- 이름 중복검사 -->
+	<select id="countCategoryName" resultType="int">
+	  	SELECT COUNT(*)
+		FROM
+			CATEGORY
+		WHERE
+	    	category_name = #{categoryName}
+	  	<choose>
+	    	<when test="parentIdx != null and parentIdx != ''">
+	      		AND parent_idx = #{parentIdx}
+	    	</when>
+	    	<otherwise>
+	     		AND parent_idx IS NULL
+	    	</otherwise>
+	  	</choose>
+		<if test="currentIdx != null and currentIdx != ''">
+		   AND category_idx != #{currentIdx}
+		 </if>
+	</select>
 </mapper>  
   
   

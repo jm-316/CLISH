@@ -35,11 +35,6 @@
 </style>
 </head>
 <body>
-	<c:if test="${not empty msg}">
-		<script>
-	    	alert("${msg}");
-	    </script>
-	</c:if>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>

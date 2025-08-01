@@ -2,6 +2,7 @@ package com.itwillbs.clish.admin.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -92,17 +93,21 @@ public class AdminClassController {
 			category.setDepth(2);
 		}
 		
-		int count = categoryService.modifyCategory(category);
-		
-		if (count > 0) {
-			model.addAttribute("msg", "카테고리를 수정했습니다.");
-			model.addAttribute("targetURL", "/admin/category");
-		} else {
-			model.addAttribute("msg", "다시 시도해주세요!");
-			return "commons/fail";
-		}
-		
-		return "commons/result_process";
+		try {
+			int count = categoryService.modifyCategory(category);
+			if (count > 0) {
+				model.addAttribute("msg", "카테고리를 수정했습니다.");
+				model.addAttribute("targetURL", "/admin/category");
+			} else {
+				model.addAttribute("msg", "다시 시도해주세요!");
+				return "commons/fail";
+			}
+			return "commons/result_process";
+	    } catch (IllegalArgumentException e) {
+	        model.addAttribute("msg", "중복된 값입니다. 다시 입력해주세요.");
+	        model.addAttribute("category", category);
+	        return "commons/fail"; 
+	    }
 	}
 	
 	// 카테고리 삭제
@@ -119,6 +124,29 @@ public class AdminClassController {
 		}
 		
 		return "commons/result_process";
+	}
+	
+	// 카테고리 중복 검사
+	@GetMapping("/category/checkDuplicate")
+	@ResponseBody
+	public Map<String, Boolean> checkDuplicate(
+			@RequestParam String categoryName,
+	        @RequestParam int sortOrder,
+	        @RequestParam(required = false) String parentIdx,
+	        @RequestParam(required = false) String currentIdx) {
+		
+		System.out.println("currentIdx : " + currentIdx);
+		
+		// 중복 검사
+		boolean isNameDuplicate = categoryService.isCategoryNameDuplicate(categoryName, parentIdx, currentIdx);
+		boolean isOrderDuplicate = categoryService.isSortOrderDuplicate(sortOrder, parentIdx, currentIdx);
+		
+		Map<String, Boolean> result = new HashMap<>();
+		
+	    result.put("nameDuplicate", isNameDuplicate);
+	    result.put("orderDuplicate", isOrderDuplicate);
+	    
+		return result;
 	}
 	
 	// 강의 리스트

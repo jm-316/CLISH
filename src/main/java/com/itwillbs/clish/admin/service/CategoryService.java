@@ -33,7 +33,7 @@ public class CategoryService {
 			category.setParentIdx(null);
 			insert = categoryMapper.insertCategory(category);
 		} else if (category.getDepth() == 2 && category.getParentIdx() != null) {
-			String parentIdx = "CT_" + category.getParentIdx();
+			String parentIdx = category.getParentIdx();
 			category.setParentIdx(parentIdx);
 			category.setCategoryIdx(parentIdx + "_" + category.getCategoryName());
 			insert = categoryMapper.insertCategory(category);
@@ -58,8 +58,18 @@ public class CategoryService {
 		return update;
 	}
 
+	// 카테고리 삭제
 	public int removeCategory(String categoryIdx) {
 		return categoryMapper.deleteCategory(categoryIdx);
+	}
+
+	// 카테고리 순서 중복검사
+	public boolean isSortOrderDuplicate(int sortOrder, String parentIdx, String currentIdx) {
+		return categoryMapper.countSortOrder(sortOrder, parentIdx, currentIdx) > 0;
+	}
+
+	public boolean isCategoryNameDuplicate(String categoryName, String parentIdx, String currentIdx) {
+		return categoryMapper.countCategoryName(categoryName, parentIdx, currentIdx) > 0;
 	}
 
 }
