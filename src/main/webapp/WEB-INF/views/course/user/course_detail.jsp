@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
+	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
 	function filterByCategory() {
 		const selected = document.getElementById('categorySelect').value;
 		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
@@ -39,18 +40,21 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"/>
 	</header>
+	
 	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
 	
 	<div class="main">
         
 		<section class="class-details">
+			<%-- 클래스에 대한 간단한 설명 --%>
 			<div class="class-container">
+				<%-- 클래스 썸네일 --%>
 	        	<div class="cls-pic">
 	  				<img src="/resources/images/logo4-2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 	            </div>
-	
+				<%-- 제목 및 인트로, 카테고리 표시 --%>
 				<div class="cls-info-card">
 					<h2 class="class-title">${classInfo.classTitle}</h2>
 					<p class="class-description">${classInfo.classIntro}</p>
@@ -63,27 +67,30 @@
 					</div>
 				</div>
 			</div>
-	    <div style="text-align: center; padding-top: 30px; display: flex;">
-	        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-	        클래스 목록</button>
-	        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
-	            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-	            예약정보 입력</button>
-	        </c:if>
-	        <c:if test="${userInfo.userType eq 2}">
-				<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>
-			</c:if>
-	    </div>
+			
+		    <div style="text-align: center; padding-top: 30px; display: flex;">
+		    	<%-- 클래스 목록은 항상 표시 --%>
+		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		        클래스 목록</button>
+		        <%-- 신청가능한 클래스이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
+		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
+		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		            예약정보 입력</button>
+					<button onclick="location.href='/company/myPage/writeInquery'">강의 문의</button>
+		        </c:if>
+		        <%-- 정보 수정버튼은 기업 유저일 경우만 표시 --%>
+		        <c:if test="${userInfo.userType eq 2}">
+					<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">정보 수정</button>
+				</c:if>
+		    </div>
 					
 		</section>
 		
+		<%-- 상세 정보를 보기 위한 태그 버튼 --%>
 		<ul class="tabnav" style="text-align: center; padding-top: 30px; display: flex;">
 			<li><a href="#classDetail">클래스 소개</a></li>
 			<li><a href="#curriCulum">커리큘럼</a></li>
 			<li><a href="#reView">수강평(1)</a></li>
-			<li><a class="tab" href="">
-			문의(0)
-			</a></li>
 		</ul>
 		
 		<div class="section-container">
@@ -91,87 +98,86 @@
 		    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
 		    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
 		    <section id="classDetail">
-				${classInfo.classContent } <hr>
+				${classInfo.classContent} <hr>
 				<h1>클래스 컨텐츠 출력칸</h1>
-				<c:forEach var="file" items="${classInfo.fileList }">
-					파일이름 : ${file.originalFileName } <br>
+				<c:forEach var="file" items="${classInfo.fileList}">
+					파일이름 : ${file.originalFileName} <br>
 					파일 서브 디렉토리 :${file.subDir} <br>
-					진짜 파일 이름 : ${file.realFileName }<br>
+					진짜 파일 이름 : ${file.realFileName}<br>
 					<img width="100%" 
-						src="/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName }"/>
+						src="/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName}"/>
 				</c:forEach>
 		    </section>
-			
+		    
 			<section id="curriCulum">
 			<h1>커리큘럼정보</h1>
-				<c:forEach var="curri" items="${curriculumList }">
-					${curri.curriculumTitle }, ${curri.curriculumRuntime } <br>
+				<c:forEach var="curri" items="${curriculumList}">
+					${curri.curriculumTitle}, ${curri.curriculumRuntime} <br>
 				
 				</c:forEach>
 			</section>
 			
 			<section id="Refund">
-			<h1>환불 규정</h1>
-				<br>
-				정기강의 일때 
-				10일 이상 100%
-				5일 이상 10일 미만 70%
-				3일 이상 5일 미만 50%
-				1일 이상 3일 미만 30%
-				1일 미만 관리자에게 문의
-				
-				단기강의 일때
-				5일 이상 100%
-				3일 이상 5일 미만 70%
-				1일 이상 3일 미만 50%
-				1일 미만 관리자에게 문의
-				<br>
+				<h1>환불 규정</h1>
+					<br>
+					<b>정기강의 일때</b><br> 
+					10일 이상 100%<br>
+					5일 이상 10일 미만 70%<br>
+					3일 이상 5일 미만 50%<br>
+					1일 이상 3일 미만 30%<br>
+					1일 미만 관리자에게 문의<br>
+					<br>
+					<b>단기강의 일때</b><br>
+					5일 이상 100%<br>
+					3일 이상 5일 미만 70%<br>
+					1일 이상 3일 미만 50%<br>
+					1일 미만 관리자에게 문의<br>
+					<br>
 			</section>
-			
 			<section id="reView">
 				<h1>수강후기</h1>
-				<c:forEach var="review" items="${reviewList }" varStatus="status">
+				<c:forEach var="review" items="${reviewList}" varStatus="status">
 					<table>
 					<tr>
 						<th>작성자</th>
-						<td>${review.userName }(${review.userId })</td>
+						<td>${review.userName}(${review.userId})</td>
 						<th>평점</th>
 						<td>
-							<div class="star-rating" data-index="${status.index }">
+							<div class="star-rating" data-index="${status.index}">
 								<span class="star">&#9733;</span>
 								<span class="star">&#9733;</span>
 								<span class="star">&#9733;</span>
 								<span class="star">&#9733;</span>
 								<span class="star">&#9733;</span>
-								<input type="hidden" id="score_${status.index }" name="reviewScore" value="${review.reviewScore }" />
+								<input type="hidden" id="score_${status.index}" name="reviewScore" value="${review.reviewScore}" />
 							</div>
 						</td>
 					</tr>
 					<tr class="review-detail">
 						<th>제목</th>
-						<td colspan="3">${review.reviewTitle }</td>								
+						<td colspan="3">${review.reviewTitle}</td>								
 					</tr>
 					<tr class="review-detail">
 						<th>내용</th>
-						<td colspan="3" width="30">${review.reviewDetail }</td>
+						<td colspan="3" width="30">${review.reviewDetail}</td>
 					</tr>
 					<tr class="review-detail">
 						<th>첨부사진</th>
 						<td colspan="3" width="30">
-							<c:forEach var="file" items="${review.fileList }">
+							<c:forEach var="file" items="${review.fileList}">
 								<img class="img-thumb"
-									src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName }" />					
+									src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName}" />					
 							</c:forEach>
 						</td>
 					</tr>
 					</table>
 				</c:forEach>
+				<%-- 리뷰 리스트 페이징 --%>
 				<section id="classReviewPageList">
 					<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 						<input type="button" value="이전" 
-							onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${pageInfo.pageNum - 1}#reView'" 
-							<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>
-						>
+							onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}&reviewPageNum=${pageInfo.pageNum - 1}#reView'" 
+							<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 						
 						<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 							<c:choose>
@@ -179,23 +185,23 @@
 									<strong>${i}</strong>
 								</c:when>
 								<c:otherwise>
-									<a href="/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${i}#reView">${i}</a>
+									<a href="/course/user/classDetail?classIdx=${param.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}&reviewPageNum=${i}#reView">${i}</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						
 						<input type="button" value="다음" 
-							onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx }&classType=${param.classType }&categoryIdx=${param.categoryIdx }&reviewPageNum=${pageInfo.pageNum + 1}#reView'" 
-							<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>
-						>
+							onclick="location.href='/course/user/classDetail?classIdx=${param.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}&reviewPageNum=${pageInfo.pageNum + 1}#reView'" 
+							<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 					</c:if>
 				</section>
+				
 			</section>
 		
 		
 		</div>
 	</div>
-	
+	<%-- 클래스 등록 이미지 보여주기 --%>
 	<div id="imgModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); text-align:center;">
   		<img id="modalImg" src="" alt="원본" style="max-width:90vw; max-height:90vh; margin-top:5vh; border:3px solid #fff;" />
 	</div>

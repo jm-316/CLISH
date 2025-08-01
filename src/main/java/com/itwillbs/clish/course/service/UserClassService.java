@@ -20,10 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class UserClassService {
 	private final UserClassMapper userClassMapper;
 
+	// 유저 정보 조회 요청
 	public UserDTO getUserIdx(String userIdx) {
 		return userClassMapper.selectUser(userIdx);
 	}
-
+	
+	// 
 	public int registReservation(ReservationDTO reservationDTO) {
 		return userClassMapper.insertReservation(reservationDTO);
 	}

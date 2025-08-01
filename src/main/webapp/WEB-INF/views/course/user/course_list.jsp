@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
+	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
 	function filterByCategory() {
 		const selected = document.getElementById('categorySelect').value;
 		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
@@ -24,10 +25,12 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 	</header>
-		<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
+	
+	<jsp:include page="/WEB-INF/views/course/sidebar.jsp" />
 		
 		<div class="main">
 			<div class="main-content">
+				<%-- 카테고리별 검색 셀렉트박스 --%>
 				<div class="box">
 					<select id="categorySelect" onchange="filterByCategory()">
 						<option value="">카테고리 선택</option>
@@ -38,7 +41,10 @@
 						</c:forEach>
 					</select>
 				</div>
+				
+				<%-- 클래스 목록 리스트 --%>
 				<table class="table">
+				
 					<thead>
 						<tr>
 							<th colspan="6">강좌 목록</th>
@@ -51,8 +57,10 @@
 							<th colspan="2">진행상태</th>
 						</tr>
 					</thead>
+					
 					<tbody>
-						<c:set var="hasRegisteredClass" value="false" />
+						<c:set var="hasRegisteredClass" value="false" /> <%-- 클래스 목록 확인용 변수(boolean) --%> 
+						<%-- 클래스 목록이 있을 경우 --%>
 						<c:forEach var="classItem" items="${classList}">
 							<c:if test="${classItem.classStatus != 1}">
 								<c:set var="hasRegisteredClass" value="true" />
@@ -67,17 +75,21 @@
 									<td>${classItem.location}</td>
 									<td>
 										<c:choose>
+											<%-- 신청가능 클래스이면서 일반 유저일 경우 예약 버튼 활성화 --%>
 											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
 												오픈 <button onclick="location.href='/course/user/classReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
 											</c:when>
+											<%-- 관리자일 경우 관리자 아이디라는 것을 표시 --%>
 											<c:when test="${userInfo.userType eq 3}">
 												관리자
 											</c:when>
+											<%-- 신청이 마감된 클래스는 예약 버튼 비활성화 및 마감 표시 --%>
 											<c:otherwise>
 												마감 <button disabled>예약</button>
 											</c:otherwise>
 										</c:choose>
 									</td>
+									<%-- 기업 유저의 경우 수정버튼 활성화 --%>
 									<c:if test="${userInfo.userType eq 2}">
 										<td>
 											<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>
@@ -86,6 +98,7 @@
 								</tr>
 							</c:if>
 						</c:forEach>
+						<%-- 클래스 목록이 없을 경우 --%>
 						<c:if test="${not hasRegisteredClass}">
 							<tr>
 								<td colspan="6">등록된 강의가 없습니다.</td>

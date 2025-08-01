@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.clish.course.mapper.UserClassMapper">
 
+	<!-- 예약 정보 등록 INSERT -->
 	<insert id="insertReservation">
 		INSERT
 		INTO RESERVATION 
@@ -18,6 +19,7 @@
 		)
 	</insert>
 	
+	<!-- 총 예약 인원 확인 SELECT -->
 	<select id="selectCountReservationMembers" resultType="int">
 		SELECT 
 			IFNULL(SUM(reservation_members), 0)
@@ -27,6 +29,7 @@
 			class_idx = #{classIdx};
 	</select>
 	
+	<!-- 유저idx SELCT -->
 	<select id="selectUser" resultType="com.itwillbs.clish.user.dto.UserDTO">
 		SELECT
 			user_idx
@@ -36,19 +39,21 @@
 			user_id = #{userId}
 	</select>
 	
+	<!-- 클래스 정보 조회 SELECT -->
 	<select id="selectClass" resultType="com.itwillbs.clish.course.dto.ClassDTO">
 		SELECT *
 		FROM 
 			CLASS
 		WHERE 
 			class_type = #{classType}
+			<!-- 카테고리별 정렬 검색조건 -->
 			<if test="categoryIdx != null">
 			AND
 			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
 			</if>
 	</select>
 	
-	<!-- 클래스상세페이지 리뷰 카운트 -->
+	<!-- 클래스상세페이지 리뷰 카운트 SELECT -->
 	<select id="selectCountClassReview" resultType="int"> 
 		SELECT count(*)
 		FROM REVIEW
@@ -78,12 +83,6 @@
 		column="review_idx" select="selectFilesByReviewIdx"/>
 	</resultMap>
 	
-	<select id="selectFilesByReviewIdx" parameterType="String" resultType="com.itwillbs.clish.common.file.FileDTO">
-		SELECT *
-		FROM FILE
-		WHERE idx = #{reviewIdx}
-	</select>
-	
 	<select id="selectAllClassReview" resultMap="ReviewDTOListWithfileDTOListResultMap">
 		SELECT rev.*,
 				c.class_title,
@@ -105,6 +104,14 @@
 			#{startRow}
 			, #{listLimit}
 	</select>
+	
+	<!-- 리뷰idx로 첨부 파일 조회 SELECT -->
+	<select id="selectFilesByReviewIdx" parameterType="String" resultType="com.itwillbs.clish.common.file.FileDTO">
+		SELECT *
+		FROM FILE
+		WHERE idx = #{reviewIdx}
+	</select>
+	
 
 </mapper>
 
