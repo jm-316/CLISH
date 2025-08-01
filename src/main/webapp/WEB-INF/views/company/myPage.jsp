@@ -7,7 +7,19 @@
 <meta charset="UTF-8">
 <title>기업 마이페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	  /* ✅ 왼쪽 사이드바 */
+	  .sidebar {
+	    width: 200px;
+	    background-color: #f8f8f8;
+	    padding: 30px 20px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    box-sizing: border-box;
+	  }
+	  
 	.mypage-container {
 	    display: flex;
 	    width: 100%;
@@ -24,6 +36,10 @@
 </style>
 </head>
 <body>
+	<header>
+	    <jsp:include page="/WEB-INF/views/inc/top.jsp" />
+	</header>
+	
 	<div class="mypage-container">
 	
 		<%-- 🔽 사이드바 포함시키는 부분 --%>
@@ -31,9 +47,13 @@
 	
 	    <%-- 🔽 본문 내용 영역 --%>
 	    <div class="content-area">
-	        <h1>기업 마이페이지</h1>
+	        <h1>${sessionScope.sId}의 마이페이지</h1>
 	    </div>
 	</div>
+	
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
+	</footer>
 </body>
 </html>
 

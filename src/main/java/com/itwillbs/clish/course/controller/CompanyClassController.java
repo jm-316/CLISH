@@ -55,12 +55,6 @@ public class CompanyClassController {
 	private final CategoryService categoryService;
 	private final NotificationService notificationService;
 	
-	// 기업 메인페이지
-	@GetMapping("")
-	public String companyMainForm() {
-		return "company/company_main";	
-	}
-
 	
 	// 기업 마이페이지
 	@GetMapping("/myPage")
