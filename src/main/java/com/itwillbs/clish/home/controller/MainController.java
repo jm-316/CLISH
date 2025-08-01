@@ -3,14 +3,17 @@ package com.itwillbs.clish.home.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -432,6 +435,17 @@ public class MainController {
 		notificationService.modifyStatus(dbUser.getUserIdx(), idx);
 	}
 	
-
-
+	@PatchMapping("/user/notification/all-read")
+	public @ResponseBody Map<String, Object> markAllAsRead(HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.selectUserId(id);
+		
+		String result = notificationService.readAll(dbUser.getUserIdx());
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("result", result);
+		
+		return response;
+	}
+		
 }
