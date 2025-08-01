@@ -21,7 +21,7 @@ import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
 public class FileUtils {
 	
-	private static String uploadPath = "/resources/upload";
+	private static String uploadPath = "/usr/local/tomcat/upload";
 	
 	// 서브디렉토리 생성
 	public static String createDirectories(String path) {
