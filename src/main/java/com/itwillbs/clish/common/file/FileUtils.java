@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 public class FileUtils {
 	
 	private static String uploadPath = "/usr/local/tomcat/upload";
-	
+	private static Path absolutePath = Paths.get(uploadPath).toAbsolutePath().normalize();
 	// 서브디렉토리 생성
 	public static String createDirectories(String path) {
 
@@ -37,7 +39,8 @@ public class FileUtils {
 		path += "/" + subDir;
 
 		try {
-			Files.createDirectories(Paths.get(path));
+			log.info(">>>>>>>>>>");
+			Files.createDirectories(absolutePath);
 		} catch (IOException e) {
 			System.out.println("서브 디렉토리 생성 실패 - " + path);
 			e.printStackTrace();
