@@ -299,7 +299,12 @@ public class MainController {
 	
 	// 1:1문의 등록 페이지
 	@GetMapping("/customer/inquiry/write")
-	public String writeInquiryFrom(HttpSession session) {
+	public String writeInquiryFrom(HttpSession session, Model model) {
+		if (session.getAttribute("sId") == null) {
+			model.addAttribute("msg","로그인 후 작성 가능합니다..");
+			model.addAttribute("targetURL","/user/login");
+			return "commons/result_process";
+		}
 		return "customer/inquiry_write_form";
 	}
 	
