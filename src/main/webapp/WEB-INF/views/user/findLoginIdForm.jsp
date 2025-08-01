@@ -80,7 +80,7 @@ body {
     font-weight: 500;
     margin-top: 18px;
     cursor: pointer;
-    display: none;   /* 기본 감춤 */
+    display: none;   
 }
 </style>
 </head>

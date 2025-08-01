@@ -102,16 +102,16 @@ body {
     font-weight: 500;
     margin-top: 18px;
     cursor: pointer;
-    display: none;   /* 기본 감춤 */
+    display: none;   
 }
 
 .pw-check-result {
     display: block;
-    margin-top: -10px;    /* 위쪽 입력칸과 간격을 조금만 띄움 */
-    margin-bottom: 8px;   /* 아래 입력칸과 너무 붙지 않게 */
+    margin-top: -10px;   
+    margin-bottom: 8px;   
     font-size: 14px;
     color: #888;
-    min-height: 18px;     /* 메시지 없을 때도 줄 안밀리게 */
+    min-height: 18px;  
 }
 
 </style>
@@ -154,7 +154,8 @@ initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result", {purpose: "cha
 window.onEmailAuthSuccess = function() {
 	document.getElementById('userId').readOnly = true;
     document.getElementById('pw-change-form').style.display = 'block';
-    // 폼이 보여졌을 때 모듈 초기화 (폼 셀렉터, 유저정보 전달)
+    
+	// 폼이 보여졌을 때 모듈 초기화 (폼 셀렉터, 유저정보 전달)
     initPasswordChangeModule({
         formSelector: "#pw-change-form",
         userId: document.getElementById('userId').value,
