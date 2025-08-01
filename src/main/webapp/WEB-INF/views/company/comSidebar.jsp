@@ -11,8 +11,13 @@
     .sidebar {
     width: 220px;
     background-color: #f5f5f5;
-    padding: 20px;
-}
+    padding: 13px;
+	}
+	
+	.sidebar h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
 
 /* 기본 메뉴 (기업 정보 수정 ~ 회원 탈퇴) */
 	.sidebar h3 a {
@@ -81,6 +86,7 @@
 	<div class="sidebar">
 	    <!-- 왼쪽 사이드 메뉴 -->
 	    <div class="sidebar">
+	        <h2><a href="${pageContext.request.contextPath}/company/myPage"><b>${sessionScope.sId} 마이페이지</b></a></h2>
 	        <h3><a href="${pageContext.request.contextPath}/company/myPage/companyCheckPw"><b>기업 정보 수정</b></a></h3>
 	        <!-- ✅ 클래스 관리 드롭다운 메뉴 (수정 및 추가한 부분) -->
              <div class="dropdown">

@@ -75,7 +75,7 @@
 						 <a class="header-button button" href="/admin/main">마이페이지</a>
 					</c:if>
 					<c:if test="${sessionScope.sUT == 2}">
-						 <a class="header-button button" href="/company/main">마이페이지</a>
+						 <a class="header-button button" href="/company/myPage">마이페이지</a>
 					</c:if>
 					<c:if test="${sessionScope.sUT == 1}">
 		          		 <a class="button header-button" href="/clish/myPage/main">마이페이지</a>
