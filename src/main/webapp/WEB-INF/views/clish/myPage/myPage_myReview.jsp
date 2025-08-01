@@ -297,7 +297,7 @@
 				
 				console.log("리뷰아이디엑스 : " + reviewIdx);
 				
-				if(confirm("후기는 삭제후 다시 작성 하실수 없습니다. \n정말 삭제하시겠습니까 ?")){
+				if(confirm("정말 삭제하시겠습니까 ?")){
 					$.ajax({
 						url: "/myPage/myReview/deleteReview",
 						type: 'POST',

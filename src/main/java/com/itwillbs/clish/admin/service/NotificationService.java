@@ -64,7 +64,7 @@ public class NotificationService {
 	}
 
 	// 읽음 상태 변경
-	public NotificationDTO modifyStatus(String userIdx, String notiIdx) {
-		return notificationMapper.updateStatus(userIdx, notiIdx);
+	public void modifyStatus(String userIdx, String notiIdx) {
+		notificationMapper.updateStatus(userIdx, notiIdx);
 	}
 }

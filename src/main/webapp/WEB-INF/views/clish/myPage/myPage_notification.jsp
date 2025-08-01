@@ -5,7 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 문의</title>
+<title>나의 알림</title>
+<style type="text/css">
+.notiTr {
+	cursor: pointer;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,8 +33,6 @@
 	
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
-		<h3>나의문의목록</h3>
-<!-- 		<input type="hidden" id="parent" value="list"> -->
 		<div>
 			<h3>알림 전체</h3>
 			<table border="1" style="width: 100%; border-collapse: collapse;">
@@ -42,9 +45,26 @@
 			    </thead>
 			  	<tbody>
 				  	<c:forEach var="notification" items="${notificationList}">
-					    <tr class="inquery-toggle">
-					    	<td>${notification.userNoticeMessage}</td>
-					      	<td>${notification.userNoticeCreatedAt }</td>
+					    <tr class="notiTr">
+					    	<td>
+					    		<input type="hidden" class="notiIdx" value="${notification.noticeIdx }">
+					    		<a href="${notification.userNoticeLink }">
+						    		${notification.userNoticeMessage}
+					    		</a>
+					    		<c:choose>
+					    			<c:when test="${notification.userNoticeReadStatus eq 2 }">
+					    				<!-- 0일때 안읽음 -->
+					    				<span class="circle unread"></span>
+					    			</c:when>
+					    			<c:otherwise>
+					    				<!--  1일때 읽음 표시 -->
+					    				<span class="circle read"></span>
+					    			</c:otherwise>
+					    		</c:choose>
+					    	</td>
+					      	<td>
+					      		${notification.userNoticeCreatedAt }
+					      	</td>
 					    </tr>			
 				  	</c:forEach>
 			  	</tbody>
@@ -83,21 +103,37 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
-	<script>
-	  $(document).ready(function () {
-	    $(".inquery-toggle").click(function () {
-	      const detailRow = $(this).next(".inquery-detail");
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.notiTr').on('click', function(e) {
+				var $this = $(this);
+				//a 태그의 href 속성을 읽어와서 페이지 이동
+				var link = $(this).find('a').attr('href'); // 🔴
+// 				window.location.href = link;               // 🔴
 	
-	      // 모든 detail 닫고, 클릭 대상이 닫혀있던 거면 열기
-	      $(".inquery-detail").not(detailRow).slideUp(200);
+			    //input(hidden)에서 idx 값 읽어오기
+			    var idx = $(this).find('.notiIdx').val();  // 🔴
+				console.log("idx : " + idx);
+			    //읽음 처리 함수 호출, 성공시 읽음상태표시 변경
+			    markAsRead(idx).then(response =>{
+			    	if(response.ok){
+			    		$this.find('span.circle.unread').removeClass('unread').addClass('read');
+			    	} else {
+			    		console.error('읽음 처리 실패 : 서버 응답 실패');
+			    	}
+			    }).catch(error => {
+			    	alert("잠시후 다시 시도해 주세요");
+			    });
+			    
+			});
 	
-	      if (!detailRow.is(":visible")) {
-	        detailRow.slideDown();
-	      } else {
-	        detailRow.slideUp();
-	      }
-	    });
-	  });
+			 // 알림 읽음 처리함수
+			function markAsRead(noticeIdx) {
+				return fetch("/user/notification/" + noticeIdx + "/read", {
+    				method : "POST"
+    			});
+   			}
+		});
 	</script>
 </body>
 </html>
