@@ -186,7 +186,7 @@
 									<td colspan="3" width="30" class="leftAlign">
 										<c:forEach var="file" items="${review.fileList }">
 											<img class="img-thumb" 
-												src="/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName }" />					
+												src="/file/${file.fileId }?type=0" alt="${file.originalFileName }" />					
 										</c:forEach>
 									</td>
 								</tr>

@@ -42,4 +42,10 @@ public class FileService {
 		FileUtils.deleteFile(thumbnail, session);
 		fileMapper.deleteThumbnailFile(thumbnail);
 	}
+	
+	// 파일정보조회(fileId)
+	public FileDTO getFile(int fileId) {
+		
+		return fileMapper.selectFileInfo(fileId);
+	}
 }

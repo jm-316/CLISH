@@ -25,7 +25,7 @@
 		<table >
 			<tr>
 				<th rowspan="5">
-					<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
+					<img src="/file/${reservationClassInfo.file_id}?type=0"
 					 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
 				</th>
 				<th>${reservationClassInfo.class_title}</th>

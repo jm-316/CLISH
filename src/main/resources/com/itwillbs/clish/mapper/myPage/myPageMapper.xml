@@ -142,6 +142,7 @@
 		, c.class_member
 		, c.start_date
 		, c.end_date
+		, f.file_id
 		, f.sub_dir
 		, f.real_file_name
 		, f.original_file_name

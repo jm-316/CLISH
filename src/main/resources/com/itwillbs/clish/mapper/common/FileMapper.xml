@@ -117,4 +117,10 @@
 		WHERE idx = #{idx}
 	</delete>
 	
+	<select id="selectFileInfo" resultType="com.itwillbs.clish.common.file.FileDTO">
+		SELECT *
+		FROM FILE
+		WHERE file_id = #{fileId}
+	</select>
+	
 </mapper>

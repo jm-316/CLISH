@@ -32,6 +32,9 @@ public interface FileMapper {
 
 	// 썸네일 파일 삭제
 	void deleteThumbnailFile(FileDTO thumbnailFile);
+	
+	// 파일 정보 조회
+	FileDTO selectFileInfo(int fileId);
 
 
 }

@@ -64,10 +64,10 @@
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
 									<c:forEach var="fileDTO" items="${classInfo.fileList}">
-										<img src="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" width="300px" height="300px"/>
+										<img src="/usr/local/tomcat/upload${fileDTO.subDir}/${fileDTO.realFileName}" width="300px" height="300px"/>
 										<div>
 											${fileDTO.originalFileName}
-											<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+											<a href="/usr/local/tomcat/upload${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
 												<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
 											</a>
 					

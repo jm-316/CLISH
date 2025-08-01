@@ -2,20 +2,30 @@ package com.itwillbs.clish.common.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.ContentDisposition.Builder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
@@ -23,7 +33,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class FileUtils {
 	
-	private static String uploadPath = "/usr/local/tomcat/upload";
+	private static String uploadPath = "/resources/upload";
+//	private static String uploadPath = "/usr/local/tomcat/upload";
 	private static Path absolutePath = Paths.get(uploadPath).toAbsolutePath().normalize();
 	// 서브디렉토리 생성
 	public static String createDirectories(String path) {
@@ -119,6 +130,58 @@ public class FileUtils {
 		for(FileDTO fileDTO : fileList) {
 			FileUtils.deleteFile(fileDTO, session);
 		}	
+	}
+	
+	//파일 정보 호출
+	public static Map<String, Object> getFileResource(FileDTO fileDTO, int type, HttpSession session) {
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		try {
+			// 업로드 디렉토리의 파일 정보를 Path 객체로 가져오기
+			Path path = Paths.get(realPath, fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
+//			Path path = Paths.get(absolutePath.toString(), fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
+			
+			// 해당 파일에 대한 Resource 객체 생성
+			Resource resource = new UrlResource(path.toUri());
+			
+			//해당 경로 및 파일 존재 여부 판별 및 실제 접근 가능 여부도 확인
+			if(!resource.exists() || !resource.isReadable()) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다!");
+			}
+			
+			// 파일의 MIME 타입(= 컨텐츠 타입) 설정
+			String contentType = Files.probeContentType(path); // 실제 파일로부터 파일 타입 알아내기
+			System.out.println("contentType : " + contentType);
+			
+			if(contentType == null) {
+				contentType = "application/octet-stream"; //일반적인 바이너리 타입으로 컨텐츠 타입 강제 고정
+			}
+			
+			Builder builder = ContentDisposition.builder("attachment");
+			
+			if( type == 0) {
+				builder = ContentDisposition.builder("inline");  
+				
+			}
+				
+			// 한글이나 공백 등이 포함된 파일명은 별도의 추가 작업 필요(파일명 인코딩 작업 필요)
+			ContentDisposition contentDisposition = builder // 다운로드 형식 지정을 위한 ContentDisposition 객체 선언
+				.filename(fileDTO.getOriginalFileName(), StandardCharsets.UTF_8) // 파일명 인코딩 방식 지정
+				.build(); // 객체 생성
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("resource", resource);
+			map.put("contentDisposition", contentDisposition);
+			map.put("contentType", contentType);	
+			
+			
+			return map;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 다운로드 실패!");
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 정보 조회 실패!");
+		}
 	}
 	
 	
