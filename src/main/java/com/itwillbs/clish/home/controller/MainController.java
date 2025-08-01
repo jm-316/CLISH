@@ -150,9 +150,14 @@ public class MainController {
 	
 	// 공지사항 리스트
 	@GetMapping("/customer/announcements")
-	public String announcements(Model model, @RequestParam(defaultValue = "1") int pageNum) {
+	public String announcements(Model model, @RequestParam(defaultValue = "1") int pageNum,
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword) {
+		searchKeyword.trim();
+		System.out.println("search type : " + searchType);
+		System.out.println("search keyword : " + searchKeyword);
 		int listLimit = 5;
-		int announcementCount = adminCustomerService.getAnnouncementCount();
+		int announcementCount = adminCustomerService.getAnnouncementCount(searchKeyword);
 		
 		if (announcementCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, announcementCount, pageNum, 3);
@@ -165,7 +170,7 @@ public class MainController {
 			
 			model.addAttribute("pageInfo", pageInfoDTO);
 			
-			List<SupportDTO> announcementList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit);
+			List<SupportDTO> announcementList = adminCustomerService.getAnnouncementList(pageInfoDTO.getStartRow(), listLimit, searchType, searchKeyword);
 			model.addAttribute("announcementList", announcementList);
 		}
 		

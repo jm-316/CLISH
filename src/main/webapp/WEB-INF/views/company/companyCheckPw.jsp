@@ -19,9 +19,13 @@
 		
 		/* 왼쪽 사이드바 */
 		.sidebar {
-		    width: 200px; /* 필요에 따라 조절 */
-		    background-color: #f8f8f8;
-		    padding: 20px;
+		    width: 220px;
+		    background-color: #f5f5f5;
+		    padding: 30px 20px;
+		    box-sizing: border-box;
+		    border-right: 1px solid #ddd;
+		    overflow: hidden;          /* ✅ 내부 넘치는 거 잘라냄 */
+		    white-space: nowrap;       /* ✅ 줄넘김 방지 */
 		}
 		
 		/* 오른쪽 본문 */

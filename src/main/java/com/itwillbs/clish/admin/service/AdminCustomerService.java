@@ -33,13 +33,13 @@ public class AdminCustomerService {
 	private HttpSession session;
 
 	// 공지사항 게시물 수 
-	public int getAnnouncementCount() {
-		return adminCustomerMapper.selectCountAnnouncement();
+	public int getAnnouncementCount(String searchKeyword) {
+		return adminCustomerMapper.selectCountAnnouncement(searchKeyword);
 	}
 	
 	// 공지사항 리스트 (페이지 기능 추가)
-	public List<SupportDTO> getAnnouncementList(int startRow, int listLimit) {
-		return adminCustomerMapper.selectAnnouncements(startRow, listLimit);
+	public List<SupportDTO> getAnnouncementList(int startRow, int listLimit, String searchType, String searchKeyword) {
+		return adminCustomerMapper.selectAnnouncements(startRow, listLimit, searchType, searchKeyword);
 	}
 	
 	// SUPPORT 테이블 등록

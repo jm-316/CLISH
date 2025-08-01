@@ -13,7 +13,7 @@
           </li>
           <li><a id="sub-nav-toggle" href="/course/user/classList?classType=0">정기 강의</a></li>
           <li><a href="/course/user/classList?classType=1">단기 강의</a></li>
-          <li><a href="/customer/customerCenter">고객 센터</a> </li> 
+          <li><a href="/customer/announcements">고객 센터</a> </li> 
           <li><a href="/event/eventHome">이벤트</a></li>
 
       </ul>
@@ -42,8 +42,8 @@
         </ul>
         <ul>
             <li><a href="/event/eventHome"><b>이벤트</b></a></li>
-            <li><a href="/event/earlyDiscount">얼리버드 할인</a></li>
-            <li><a href="/event/specialDiscount">특별 할인</a></li> 
+<!--             <li><a href="/event/earlyDiscount">얼리버드 할인</a></li> -->
+<!--             <li><a href="/event/specialDiscount">특별 할인</a></li>  -->
         </ul>
       
 	</div> 
@@ -75,7 +75,7 @@
 						 <a class="header-button button" href="/admin/main">마이페이지</a>
 					</c:if>
 					<c:if test="${sessionScope.sUT == 2}">
-						 <a class="header-button button" href="/company/main">마이페이지</a>
+						 <a class="header-button button" href="/company/myPage">마이페이지</a>
 					</c:if>
 					<c:if test="${sessionScope.sUT == 1}">
 		          		 <a class="button header-button" href="/clish/myPage/main">마이페이지</a>

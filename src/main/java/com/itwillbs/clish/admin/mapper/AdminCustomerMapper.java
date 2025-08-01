@@ -36,10 +36,10 @@ public interface AdminCustomerMapper {
 	int updateInquiry(@Param("idx") String idx, @Param("inqueryAnswer") String inqueryAnswer);
 
 	// 공지사항 전체 게시물 수
-	int selectCountAnnouncement();
+	int selectCountAnnouncement(@Param("searchKeyword")String searchKeyword);
 
 	// 공지사항 리스트 (페이징)
-	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 
 	// 1:1 문의 등록
 	int insertInquery(InqueryDTO inqueryDTO);
