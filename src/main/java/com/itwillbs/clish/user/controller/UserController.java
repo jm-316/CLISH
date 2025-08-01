@@ -102,10 +102,10 @@ public class UserController {
 	        : userService.registerGeneralUser(userDTO);
 
 	    if(result > 0) {
-	        return "redirect:/user/join_success";
+	        return "redirect:/";
 	    } else {
 	        redirect.addFlashAttribute("errorMsg", "회원가입 실패");
-	        return "redirect:/commons/fail";
+	        return "redirect:/";
 	    }
 	}
 	
