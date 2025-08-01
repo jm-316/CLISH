@@ -117,7 +117,7 @@
     				return
     			}
     			
-    			data.forEach((noti, index) => {
+    			data.forEach((noti) => {
     				const li = document.createElement("li");
     				const type = getNoticeType(noti.userNoticeType);
     				const status = getReadStatus(noti.userNoticeReadStatus);
