@@ -84,9 +84,11 @@
 			r.user_idx = #{userIdx}
 			AND
 			r.reservation_status = 1
-			AND
-			NOW() - INTERVAL 2 HOUR > r.reservation_com 
-		
+			AND (
+				NOW() - INTERVAL 2 HOUR > r.reservation_com 
+				OR 
+				NOW() > r.reservation_class_date
+			)
 	</select>
 	
 	<!-- 예약정보 삭제 -->

@@ -51,6 +51,7 @@ public class PaymentController {
 		String id = (String)session.getAttribute("sId");
 		user.setUserId(id);
 		user = myPageService.getUserInfo(user); // 예약자 정보
+		reservation = myPageService.getReservationDetail(reservation);
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation);
 		
 		model.addAttribute("reservationClassInfo", reservationClassInfo);

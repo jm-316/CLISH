@@ -77,7 +77,7 @@ public class MyPageService {
 	
 	// 예약정보리스트 불러오기
 	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
-		//예약완료 후 2시간 지나면 예약 삭제
+		//예약완료 후 2시간이 지났거나 예약한 날짜가 지났는데 결제가 되지 않은 경우
 		//삭제해야할 예약 목록 리스트
 		List<Map<String, Object>> toCancelList = myPageMapper.selectCancel(user);
 		

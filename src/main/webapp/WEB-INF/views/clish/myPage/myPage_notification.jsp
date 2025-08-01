@@ -35,12 +35,12 @@
 		<hr>
 		<div>
 			<h3>알림 전체</h3>
+			<input type="button" value="모두읽음" id="allRead">
 			<table border="1" style="width: 100%; border-collapse: collapse;">
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>알림 내용</th>
 				    <th>알림 시간</th>
-
 			    </tr>
 			    </thead>
 			  	<tbody>
@@ -48,9 +48,9 @@
 					    <tr class="notiTr">
 					    	<td>
 					    		<input type="hidden" class="notiIdx" value="${notification.noticeIdx }">
-					    		<a href="${notification.userNoticeLink }">
-						    		${notification.userNoticeMessage}
-					    		</a>
+					    		<div class="notiContent">${notification.userNoticeMessage}</div>
+					    		<input type="hidden" name="notiUrl" value="${notification.userNoticeLink }">
+					    		
 					    		<c:choose>
 					    			<c:when test="${notification.userNoticeReadStatus eq 2 }">
 					    				<!-- 0일때 안읽음 -->
@@ -105,27 +105,25 @@
 	</footer>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
 			$('.notiTr').on('click', function(e) {
 				var $this = $(this);
+			    $this.find('span.circle.unread').removeClass('unread').addClass('read');
+			   
+				var idx = $(this).find('.notiIdx').val();  // 🔴
+			    markAsRead(idx)
+			    //읽음 처리 함수 호출, 성공시 읽음상태표시 변경
+			    
 				//a 태그의 href 속성을 읽어와서 페이지 이동
-				var link = $(this).find('a').attr('href'); // 🔴
-// 				window.location.href = link;               // 🔴
+				console.log($this);
+				var link = $(this).find('input[name="notiUrl"]').val();
+				if(link !== "/myPage/notification"){ // 링크가 존재할때
+					window.location.href = link;        
+				}
 	
 			    //input(hidden)에서 idx 값 읽어오기
-			    var idx = $(this).find('.notiIdx').val();  // 🔴
-				console.log("idx : " + idx);
-			    //읽음 처리 함수 호출, 성공시 읽음상태표시 변경
-			    markAsRead(idx).then(response =>{
-			    	if(response.ok){
-			    		$this.find('span.circle.unread').removeClass('unread').addClass('read');
-			    	} else {
-			    		console.error('읽음 처리 실패 : 서버 응답 실패');
-			    	}
-			    }).catch(error => {
-			    	alert("잠시후 다시 시도해 주세요");
-			    });
-			    
 			});
+			
 	
 			 // 알림 읽음 처리함수
 			function markAsRead(noticeIdx) {
@@ -133,6 +131,23 @@
     				method : "POST"
     			});
    			}
+		});
+		// 모두 읽음 처리
+		$('#allRead').on('click', function() {
+		    $.ajax({
+		        url: '/user/notification/all-read', 
+		        method: 'PATCH',
+		        contentType: 'application/json',
+		        dataType: 'json',
+		        success: function(response) {
+					alert(response.result);
+					window.location.reload();
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('서버 통신 오류:', error);
+		            alert('서버와 통신 중 오류가 발생했습니다.');
+		        }
+		    });
 		});
 	</script>
 </body>
