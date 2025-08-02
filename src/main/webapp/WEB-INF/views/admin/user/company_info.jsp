@@ -47,7 +47,7 @@
 											<c:forEach var="fileDTO" items="${comDto.fileList}">
 												<div>
 													${fileDTO.originalFileName}
-													<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+													<a href="/file/${fileDTO.fileId }?type=1">
 														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
 													</a>
 												</div>

@@ -30,7 +30,7 @@
 					</div>
 					<div>
 						<label>반려사유</label>
-						<textarea rows="10" cols="20" name="content"></textarea>
+						<textarea rows="10" cols="20" name="content" required></textarea>
 					</div>
 					<button type="button" onclick="closeModal()">닫기</button>
 					<button type="submit">반려하기</button>
@@ -51,23 +51,23 @@
 								<div style="display: flex; flex-direction: column;">
 									<div style="width: 950px;">
 										<label>강의명</label> 
-										<input type="text" value="${classInfo.classTitle}" name="classTitle" id="classTitle" />
+										<input type="text" value="${classInfo.classTitle}" name="classTitle" id="classTitle" required/>
 									</div>
 									<div>
 										<span>강의 소개</span>
-										<textarea name="classIntro" id="classIntro">${classInfo.classIntro}</textarea>
+										<textarea name="classIntro" id="classIntro" required>${classInfo.classIntro}</textarea>
 									</div>
 									<div>
 										<span>강의 상세 내용</span>
-										<textarea rows="9" cols="10" name="classContent" id="classContent">${classInfo.classContent}</textarea>
+										<textarea rows="9" cols="10" name="classContent" id="classContent" required>${classInfo.classContent}</textarea>
 									</div>
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
 									<c:forEach var="fileDTO" items="${classInfo.fileList}">
-										<img src="/usr/local/tomcat/upload${fileDTO.subDir}/${fileDTO.realFileName}" width="300px" height="300px"/>
+										<img src="/file/${file.fileId }?type=0" alt="${file.originalFileName }" width="300px" height="300px"/>
 										<div>
 											${fileDTO.originalFileName}
-											<a href="/usr/local/tomcat/upload${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
+											<a href="/file/${fileDTO.fileId }?type=1">
 												<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
 											</a>
 					
@@ -77,7 +77,7 @@
 										</div>
 									</c:forEach>
 									<c:if test="${empty classInfo.fileList}">
-										<input type="file"  name="files" multiple>
+										<input type="file"  name="files" multiple required>
 									</c:if>
 								</div>
 							</div>
@@ -85,16 +85,16 @@
 						<div style="display: flex; align-items: center; justify-content: flex-start; gap: 30px; margin-left: 30px; ">
 							<div style="width: 300px;">
 								<label for="startDate">시작날짜</label> 
-								<input type="date" value="${classInfo.startDate}" name="startDate" id="startDate" />
+								<input type="date" value="${classInfo.startDate}" name="startDate" id="startDate" required/>
 							</div>
 							<div style="width: 300px;">
 								<label for="endDate">종료날짜</label> 
-								<input type="date" value="${classInfo.endDate}" name="endDate" id="endDate" />
+								<input type="date" value="${classInfo.endDate}" name="endDate" id="endDate" required/>
 							</div>
 							<c:if test="${classInfo.classStatus != 1}">
 								<div style="width: 300px;">
 									<label for="classStatus">공개상태</label> 
-									<select name="classStatus" id="classStatus">
+									<select name="classStatus" id="classStatus" required>
 										<option value="2"
 											<c:if test="${classInfo.classStatus == 2}">selected</c:if>>오픈</option>
 										<option value="3"
@@ -106,19 +106,19 @@
 						<div style="display: flex; align-items: center; justify-content: flex-start; gap: 30px; margin-left: 30px; ">
 							<div style="width: 300px;">
 								<label for="classType">강의 타입</label>
-								<select id="classType">
+								<select id="classType" required>
 									<option <c:if test="${classInfo.classType eq 0 }">selected</c:if> value="0">장기</option>
 									<option <c:if test="${classInfo.classType eq 1 }">selected</c:if> value="1">단기</option>
 								</select>
 							</div>
 							<div style="width: 300px;">
 								<label>정원</label> 
-								<input type="number" value="${classInfo.classMember}" name="classMember" id="classMember" />
+								<input type="number" value="${classInfo.classMember}" name="classMember" id="classMember" required/>
 							</div>
 							<div style="width: 300px;">
 								<label>가격</label>
 								<fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0" var="formattedPrice" />
-								<input type="number" value="${classInfo.classPrice.intValue()}" name="classPrice" id="classPrice" />
+								<input type="number" value="${classInfo.classPrice.intValue()}" name="classPrice" id="classPrice" required/>
 							</div>
 						</div>
 						<div style="display: flex; flex-direction: column;  margin-left: 30px; margin-bottom: 10px;">
@@ -143,14 +143,14 @@
 						</div>
 						<div style="margin-left: 30px; margin-right: 30px; width: 950px">
 							<label for="location">수업장소</label> 
-							<input type="text" value="${classInfo.location}" name="location" id="location" />
+							<input type="text" value="${classInfo.location}" name="location" id="location" required/>
 						</div>
 						<div style="margin-left: 30px;">
 							<span>카테고리</span>
 							<div style="display: flex; align-items: center; gap: 30px;">
 								<div style="width: 300px;">
 									<div>대분류</div>
-									<select>
+									<select required>
 										<c:forEach var="category" items="${parentCategories}">
 											<option value="${category.categoryIdx}"
 												<c:if test="${selectedParentCategory != null && category.categoryIdx == selectedParentCategory.categoryIdx}">selected</c:if>>
@@ -160,7 +160,7 @@
 								</div>
 								<div style="width: 300px;">
 									<div>소분류</div>
-									<select name="categoryIdx">
+									<select name="categoryIdx" required>
 										<c:forEach var="category" items="${childCategories}">
 											<option value="${category.categoryIdx}"
 												<c:if test="${selectedChildCategory != null && category.categoryIdx == selectedChildCategory.categoryIdx}">selected</c:if>>
@@ -265,6 +265,40 @@
 			console.log(pageNum);
 			location.href="/admin/classList";
 		}
+		
+		document.getElementById("classForm").addEventListener("submit", (e) => {
+			// 날짜 비교 검사
+			const startInput = document.getElementById("startDate");
+			const endInput = document.getElementById("endDate");
+			
+			const startDate = new Date(startInput.value);
+			const endDate = new Date(endInput.value);
+			
+			if (endDate.getTime() < startDate.getTime()) {
+				alert("종료일이 시작일보다 빠를 수 없습니다.");
+				e.preventDefault();
+				return;
+			}
+			
+			// 수업 요일 검사
+			const checkboxes = document.querySelectorAll(".day-checkbox");
+		    const isChecked = Array.from(checkboxes).some(cb => cb.checked);
+			
+			if (!isChecked) {
+				alert("수업 요일을 최소 1개 이상 선택해주세요.");
+				e.preventDefault();
+				return;
+			}
+			
+			// 커리큘럼 검사
+			const container = document.getElementById("curriculumContainer");
+			
+			if (container.children.length === 0) {
+				alert("커리큘럼은 최소 1개 이상 필요합니다.");
+				e.preventDefault();
+				return;
+			}
+		});
 	</script>
 </body>
 </html>
