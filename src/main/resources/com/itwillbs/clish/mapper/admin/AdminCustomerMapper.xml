@@ -115,6 +115,45 @@
 			support_category != '공지사항'
 	</select>
 	
+	<select id="selectFaqListAndSearch" resultType="com.itwillbs.clish.admin.dto.SupportDTO">
+		SELECT *
+		FROM	
+			SUPPORT
+		WHERE
+			support_category != '공지사항'
+			<choose>
+			<when test="searchType.equals('강의수강')">
+			AND support_category = '강의수강'
+			AND (
+				support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR  support_detail LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</when>
+			<when test="searchType.equals('계정관리')">
+			AND support_category = '계정관리'
+			AND (
+				support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR  support_detail LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</when>
+			<when test="searchType.equals('결제환불')">
+			AND support_category = '결제환불'
+			AND (
+				support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR  support_detail LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</when>
+			<otherwise>
+			AND 
+				(
+				support_title LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR  support_detail LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</otherwise>
+			</choose>
+	</select>
+	
+	
 	<resultMap id="inquiryJoinUserMap" type="com.itwillbs.clish.admin.dto.InquiryJoinUserDTO">
 	<id property="inquiry.inqueryIdx" column="inquery_idx"/>
 	<result property="classIdx" column="class_idx"/>

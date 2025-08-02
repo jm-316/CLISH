@@ -122,8 +122,10 @@ public class AdminCustomerController {
 	
 	// faq 페이지 리스트
 	@GetMapping("/faq")
-	public String faqList(Model model) {
-		List<SupportDTO> supportDTO = adminCustomerService.getFaqList();
+	public String faqList(Model model,
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword) {
+		List<SupportDTO> supportDTO = adminCustomerService.getFaqListAndSearch(searchType, searchKeyword);
 		
 		model.addAttribute("faqList", supportDTO);
 		

@@ -46,19 +46,25 @@
 									<tr>
 										<th>파일첨부</th>
 										<td>
-											<input type="file" class="custom-file-input" name="files" multiple>
-											<c:forEach var="fileDTO" items="${support.fileList}">
-												<div>
-													${fileDTO.originalFileName}
-													<a href="/resources/upload/${fileDTO.subDir}/${fileDTO.realFileName}" download="${fileDTO.originalFileName}">
-														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
-													</a>
-							
-													<a href="javascript:deleteFile(${fileDTO.fileId})">
-														<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
-													</a>
-												</div>
-											</c:forEach>
+											<c:choose>
+												<c:when test="${empty support.fileList}">
+													<input type="file" class="custom-file-input" name="files" multiple>
+												</c:when>
+												<c:otherwise>
+													<c:forEach var="fileDTO" items="${support.fileList}">
+														<div>
+															${fileDTO.originalFileName}
+															<a href="/file/${fileDTO.fileId }?type=1">
+																<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+															</a>
+									
+															<a href="javascript:deleteFile(${fileDTO.fileId})">
+																<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
+															</a>
+														</div>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
 										</td>
 									</tr>
 								</tbody>

@@ -25,6 +25,9 @@ public interface AdminCustomerMapper {
 
 	// faq 리스트
 	List<SupportDTO> selectFaqList();
+	
+	// faq 리스트(검색 기능 포함)
+	List<SupportDTO> selectFaqListAndSearch(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 
 	// 1:1 문의 리스트(페이지네이션)
 	List<InquiryJoinUserDTO> selectInquiries(@Param("startRow") int startRow, @Param("listLimit") int listLimit);

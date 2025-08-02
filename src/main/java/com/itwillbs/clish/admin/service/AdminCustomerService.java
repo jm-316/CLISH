@@ -95,6 +95,11 @@ public class AdminCustomerService {
 		return adminCustomerMapper.selectFaqList();
 	}
 	
+	// faq 리스트(검색 기능 포함)
+	public List<SupportDTO> getFaqListAndSearch(String searchType, String searchKeyword) {
+		return adminCustomerMapper.selectFaqListAndSearch(searchType, searchKeyword);
+	}
+	
 	// faq 수정
 	public int modifyFaq(SupportDTO supportDTO) {
 		return adminCustomerMapper.updateSupport(supportDTO);
@@ -182,9 +187,5 @@ public class AdminCustomerService {
 		
 		return idx;
 	}
-
-
-
-
 
 }

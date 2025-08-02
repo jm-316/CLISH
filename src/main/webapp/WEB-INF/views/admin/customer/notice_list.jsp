@@ -27,22 +27,29 @@
 							<button onclick="location.href='/admin/notice/writeNotice'" class="submitBtn">등록</button>
 						</div>
 						<form class="filter-form">
-							<select class="filter-select">
-								<option>최신순</option>
-								<option>과거순</option>
+							<select class="filter-select" name="searchType">
+								<option <c:if test="${param.searchType eq '최신순'}">selected</c:if> value="최신순">최신순</option>
+								<option <c:if test="${param.searchType eq '오래된순'}">selected</c:if> value="오래된순">과거순</option>
 							</select>
 							<div class="search-box">
-								<input type="text" class="search-input"/>
-								<button class="search-button">검색</button>
+								<input name="searchKeyword" type="search" class="search-input" placeholder="검색어를 입력하세요" value="${param.searchKeyword}"/>
+								<button type="submit" class="search-button">검색</button>
 							</div>
 						</form>
 					</div>
 					<div>
 						<div style="height: 250px;">
 							<table>
+								<colgroup>
+									<col width="10%">
+									<col width="40%">
+									<col width="20%">
+									<col width="10%">
+									<col width="20%">
+								</colgroup>
 								<thead>
 									<tr>
-										<th>게시판번호</th>
+										<th>글순서</th>
 										<th>제목</th>
 										<th>작성일자</th>
 										<th>게시판유형</th>
