@@ -15,6 +15,8 @@
 	<main id="container">
 	
 	<div id="main">
+	<h1>${reservationClassInfo.class_type}</h1>
+	<h1>${reservationClassInfo.class_days}</h1>
 	
 		<h1>예약변경</h1>
 		<form action="/myPage/payment_info/change" method="post" onsubmit="return validateForm();">
@@ -64,7 +66,8 @@
 								type="both" />
 				<!-- localdatetime 에서 date타입으로 변환 -->
 				<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
-				<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}"></td>
+				<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}"
+				<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
 				<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" id="reservationMembers"></td>
 				<fmt:parseDate var="reservationCom" 
 									value="${reservationClassInfo.reservation_com}"

@@ -84,6 +84,18 @@ public interface MyPageMapper {
 	ReviewDTO selectOneReview(ReviewDTO reviewDTO);
 	// 후기 수정요청
 	void updateReview(ReviewDTO reviewDTO);
+	// 최근 예약 목록 수
+	int countRecentReservationCount(UserDTO user);
+	// 최근 예약리스트
+	List<Map<String, Object>> selectRecentReservation(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	// 최근 1:1문의 답변 수[7일]
+	int countRecentSiteInqueryCount(UserDTO user);
+	// 최근 1:1문의 답변리스트[7일]
+	List<Map<String, Object>> selectRecentSiteInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	// 나의 최근 강의문의 답변수[7일]
+	int countRecentClassInqueryCount(UserDTO user);
+	// 나의 최근 강의문의 답변목록[7일]
+	List<Map<String, Object>> selectRecentClassInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
 
 
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -75,9 +76,85 @@ public class MyPageController {
 	
 	// 마이페이지 메인
 	@GetMapping("/main")
-	public String myPage_main() {
+	public String myPage_main(HttpSession session, Model model
+			, @RequestParam(defaultValue = "1") int recentReservePageNum
+			, @RequestParam(defaultValue = "1") int recentSiteInqueryPageNum
+			, @RequestParam(defaultValue = "1") int recentClassInqueryPageNum
+			) {
+		UserDTO user = new UserDTO();
+		//유저정보 불러오기
+		user = getUserFromSession(session);
+		model.addAttribute("user",user);
+		// 삭제할 예약목록 삭제
+		myPageService.reservationCheck(user);
+		// 메인페이지에 정보 전달할 리스트 객체생성
+		List<Map<String,Object>> mainList = new ArrayList<>();
+		// 페이징에 필요한 변수선언
+		int listLimit = 2;
+		// 나의 최근 예약 목록 수
+		int myRecentReservationCount = myPageService.getRecentReservationCount(user);
+		// 나의 최근 예약 목록 수 가 1개 이상일 때
+		if(myRecentReservationCount > 0 ) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
+			// pageNum에 이상한 파라미터가 넘어올 때
+			if(recentReservePageNum < 1 || recentReservePageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
+				return "commons/result_process";
+			}
+			 
+			model.addAttribute("recentReservePageInfo", pageInfoDTO);
+			
+			// 나의 최근 예약 목록리스트
+			mainList = myPageService.getRecentReservation(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("RecentReservation",mainList);
+		}
+		
+		// 나의 최근 1:1 문의 답변[7일]
+		int myRecentSiteInqueryCount = myPageService.getRecentSiteInqueryCount(user);
+		// 나의 최근 1:1 문의 답변 수 가 1개 이상일 때
+		if(myRecentSiteInqueryCount > 0 ) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentSiteInqueryCount, recentSiteInqueryPageNum, 3);
+			// pageNum에 이상한 파라미터가 넘어올 때
+			if(recentReservePageNum < 1 || recentReservePageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("recentSiteInqueryPageInfo", pageInfoDTO);
+			
+			// 나의 최근 1:1문의 답변리스트
+			mainList = myPageService.getRecentSiteInquery(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("RecentSiteInquery",mainList);
+		}
+		
+		// 나의 최근 강의 문의 답변[7일]
+		int myRecentClassInqueryCount = myPageService.getRecentClassInqueryCount(user);
+		// 나의 최근 1:1 문의 답변 수 가 1개 이상일 때
+		if(myRecentClassInqueryCount > 0 ) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentClassInqueryCount, recentClassInqueryPageNum, 3);
+			// pageNum에 이상한 파라미터가 넘어올 때
+			if(recentReservePageNum < 1 || recentReservePageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/myPage/payment_info"); 
+				return "commons/result_process";
+			}
+			
+			model.addAttribute("recentClassInqueryPageInfo", pageInfoDTO);
+			
+			// 나의 최근 1:1문의 답변리스트
+			mainList = myPageService.getRecentClassInquery(pageInfoDTO.getStartRow(), listLimit, user);
+			model.addAttribute("RecentClassInquery",mainList);
+		}
+		
+		
+		
+		
 		return "/clish/myPage/myPage_main";
 	}
+	
+	// ------------------------------------------------------------------------------------
 	
 	// 마이페이지 정보변경
 	@GetMapping("/change_user_info")
@@ -95,7 +172,7 @@ public class MyPageController {
 		
 		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) { // 비밀번호 불일치 할때
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
-			model.addAttribute("targetUrl","myPage/change_user_info_form");
+			model.addAttribute("targetURL","myPage/change_user_info_form");
 			return "commons/result_process";
 	    }
 
@@ -213,7 +290,8 @@ public class MyPageController {
 			}
 			 
 			model.addAttribute("reservationPageInfo", pageInfoDTO);
-			
+			// 삭제할 예약목록 삭제
+			myPageService.reservationCheck(user);
 			// 예약목록 불러오기
 			List<ReservationDTO> reservationList = myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user);
 			// 예약목록 정보 저장
@@ -273,6 +351,17 @@ public class MyPageController {
 		// 남은자리 확인을 위해 예약정보 불러오기
 		reservation = myPageService.getReservationDetail(reservation);
 		
+		// 삭제할 예약목록 삭제
+		List<Map<String, Object>> toCancelList = myPageService.reservationCheck(user);
+		// 삭제한 예약목록이 선택되어 있을떄
+		for(Map<String, Object> cancelList: toCancelList) {
+			if(((String)cancelList.get("reservationIdx")).equals(reservation.getReservationIdx())) {
+				model.addAttribute("msg", "만료된 예약입니다. 다시 예약해주세요");
+				model.addAttribute("targetURL", "/error");
+				return "commons/result_process";
+			}
+		}
+		
 		// 예약상세정보 불러오기
 		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation); 
 		
@@ -290,7 +379,17 @@ public class MyPageController {
 		user = getUserFromSession(session);
 		// 남은자리 확인을 위해 예약정보 불러오기
 		reservation = myPageService.getReservationDetail(reservation);
-		System.out.println("asdfasdfasdfsadf" + reservation.getReservationClassDate());
+		
+		// 삭제할 예약목록 삭제
+		List<Map<String, Object>> toCancelList = myPageService.reservationCheck(user);
+		// 삭제한 예약목록이 선택되어 있을떄
+		for(Map<String, Object> cancelList: toCancelList) {
+			if(((String)cancelList.get("reservationIdx")).equals(reservation.getReservationIdx())) {
+				model.addAttribute("msg", "만료된 예약입니다. 다시 예약해주세요");
+				model.addAttribute("targetURL", "/error");
+				return "commons/result_process";
+			}
+		}
 
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation); 
 		model.addAttribute("reservationClassInfo", reservationClassInfo);
@@ -321,11 +420,22 @@ public class MyPageController {
 		
 	//예약 수정 폼 submit시 수행
 	@PostMapping("/payment_info/change")
-	public String resrvationChange(ReservationDTO reservation) {
-		System.out.println("수정완료페이지 : " + reservation.getReservationIdx());
-		System.out.println(reservation.getReservationClassDate());
+	public String resrvationChange(ReservationDTO reservation, Model model, HttpSession session) {
+		// 세션을 이용한 유저 정보 불러오기
+		UserDTO user = new UserDTO();
+
+		user = getUserFromSession(session);
 		
-		
+		// 삭제할 예약목록 삭제
+		List<Map<String, Object>> toCancelList = myPageService.reservationCheck(user);
+		// 삭제한 예약목록이 선택되어 있을떄
+		for(Map<String, Object> cancelList: toCancelList) {
+			if(((String)cancelList.get("reservationIdx")).equals(reservation.getReservationIdx())) {
+				model.addAttribute("msg", "만료된 예약입니다. 다시 예약해주세요");
+				model.addAttribute("targetURL", "/error");
+				return "commons/result_process";
+			}
+		}
 		myPageService.changeReservation(reservation);
 
 		return "redirect:/myPage/payment_info/detail?reservationIdx=" + reservation.getReservationIdx();
@@ -643,12 +753,13 @@ public class MyPageController {
 	}
 	
 	// 세션을 이용한 유저 정보 불러오기
-	private UserDTO getUserFromSession(HttpSession session) {
+	public UserDTO getUserFromSession(HttpSession session) {
 	    String id = (String) session.getAttribute("sId");
 	    UserDTO user = new UserDTO();
 	    user.setUserId(id);
 	    return myPageService.getUserInfo(user);
 	}
+	
 }
 
 

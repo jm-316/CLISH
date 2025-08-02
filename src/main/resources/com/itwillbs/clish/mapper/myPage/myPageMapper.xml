@@ -87,7 +87,7 @@
 			AND (
 				NOW() - INTERVAL 2 HOUR > r.reservation_com 
 				OR 
-				NOW() > r.reservation_class_date
+				NOW() - INTERVAL 1 DAY > r.reservation_class_date
 			)
 	</select>
 	
@@ -146,6 +146,8 @@
 	<select id="ReservationDetailInfo" resultType="map">
 	SELECT
 		r.class_idx
+		, c.class_type
+		, c.class_days
 		, c.class_title
 		, c.class_price
 		, c.class_member
@@ -571,6 +573,103 @@
 			review_idx = #{reviewIdx}  
 	</update>
 	
+	<!--  최근예약목록수 -->
+	<select id="countRecentReservationCount" resultType="int">
+		SELECT count(*)
+		FROM RESERVATION r
+		WHERE
+			r.reservation_status = 1
+			AND
+			r.user_idx = #{userIdx}
+	</select>
+	
+	<!-- 최근예약목록불러오기 : 마이페이지 메인 -->
+	<select id="selectRecentReservation" resultType="Map">
+		SELECT 
+			r.*
+			, c.class_title
+		FROM 
+			RESERVATION r
+		LEFT JOIN
+			CLASS c
+		ON c.class_idx = r.class_idx
+		WHERE
+			r.reservation_status = 1
+			AND
+			r.user_idx = #{user.userIdx}
+		ORDER BY 
+			(r.reservation_status = 1) DESC, r.reservation_class_date DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- 최근 1:1문의 답변 수 -->
+	<select id="countRecentSiteInqueryCount" resultType="int">
+		SELECT count(*)
+		FROM INQUERY
+		WHERE
+			inquery_type = 1
+			AND
+			inquery_status = 2
+			AND
+			user_idx = #{userIdx}
+			AND 
+			inquery_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+	</select>
+	
+	<!-- 최근 1:1문의 답변 목록  -->
+	<select id="selectRecentSiteInquery" resultType="Map">
+		SELECT *
+		FROM INQUERY
+		WHERE 
+			user_idx = #{user.userIdx}
+			AND 
+			inquery_type = 1
+			AND
+			inquery_status = 2
+			AND 
+			inquery_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- 최근 강의문의 답변 수 -->
+	<select id="countRecentClassInqueryCount" resultType="int">
+		SELECT count(*)
+		FROM INQUERY
+		WHERE
+			inquery_type = 2
+			AND
+			inquery_status = 2
+			AND
+			user_idx = #{userIdx}
+			AND 
+			inquery_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+	</select>
+	
+	<!-- 최근 강의문의 답변 목록  -->
+	<select id="selectRecentClassInquery" resultType="Map">
+		SELECT 
+			i.*
+			, c.class_title 
+		FROM INQUERY i
+		LEFT JOIN CLASS c
+			ON
+			c.class_idx = i.class_idx
+		WHERE 
+			i.user_idx = #{user.userIdx}
+			AND 
+			i.inquery_type = 2
+			AND
+			i.inquery_status = 2
+			AND 
+			i.inquery_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
 	
 </mapper>
 

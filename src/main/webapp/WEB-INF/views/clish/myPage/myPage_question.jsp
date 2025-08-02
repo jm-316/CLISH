@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,6 +56,7 @@
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>문의 번호</th>
+	      			<th>문의 시간</th>
 				    <th>이름</th>
 				    <th>강좌명</th>
 				    <th>제목</th>
@@ -65,6 +67,7 @@
 				  	<c:forEach var="classQ" items="${classQDTOList}">
 					    <tr class="inquery-toggle">
 					    	<td>${classQ.inqueryIdx}</td>
+					    	<td><fmt:formatDate value="${classQ.inqueryDatetime }" pattern="MM-dd HH:mm:ss"/></td>
 					      	<td>${user.userName}</td>
 					      	<td>${classQ.classTitle }</td>
 					      	<td>${classQ.inqueryTitle}</td>
@@ -137,6 +140,7 @@
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>문의 번호</th>
+	      			<th>문의 시간</th>
 				    <th>이름</th>
 				    <th>제목</th>
 				    <th>상태</th>
@@ -146,19 +150,20 @@
 				  	<c:forEach var="inquery" items="${inqueryDTOList}">
 					    <tr class="inquery-toggle">
 					    	<td>${inquery.inqueryIdx}</td>
+					    	<td><fmt:formatDate value="${inquery.inqueryDatetime }" pattern="MM-dd HH:mm:ss"/></td>
 					      	<td>${user.userName}</td>
 					      	<td>${inquery.inqueryTitle}</td>
 					      	<td>
-					        <c:choose>
-					        	<c:when test="${inquery.inqueryStatus == 1}">답변대기</c:when>
-					          	<c:when test="${inquery.inqueryStatus == 2}">답변완료</c:when>
-					       	 	<c:when test="${inquery.inqueryStatus == 3}">검토중</c:when>
-					        </c:choose>
+						        <c:choose>
+						        	<c:when test="${inquery.inqueryStatus == 1}">답변대기</c:when>
+						          	<c:when test="${inquery.inqueryStatus == 2}">답변완료</c:when>
+						       	 	<c:when test="${inquery.inqueryStatus == 3}">검토중</c:when>
+						        </c:choose>
 					     	</td>
 					    </tr>
 					
 					    <tr class="inquery-detail">
-					      	<td colspan="4">
+					      	<td colspan="5">
 						        <strong>문의 내용:</strong><br>
 						        	${inquery.inqueryDetail}<br><br>
 						        <strong>답변 내용:</strong><br>

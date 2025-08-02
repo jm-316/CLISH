@@ -75,8 +75,8 @@ public class MyPageService {
 		return myPageMapper.selectPaymentCount(user);
 	}
 	
-	// 예약정보리스트 불러오기
-	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+	// 삭제해야 할 예약 목록 삭제
+	public List<Map<String, Object>> reservationCheck(UserDTO user) {
 		//예약완료 후 2시간이 지났거나 예약한 날짜가 지났는데 결제가 되지 않은 경우
 		//삭제해야할 예약 목록 리스트
 		List<Map<String, Object>> toCancelList = myPageMapper.selectCancel(user);
@@ -94,17 +94,25 @@ public class MyPageService {
 						
 				// 알림 발송 메세지 작성
 				String classTitle = (String)cancelList.get("classTitle");
-//				System.out.println("강의명 : " + classTitle);
+//						System.out.println("강의명 : " + classTitle);
 				String reservationMembers = cancelList.get("reservationMembers").toString();
-//				System.out.println("예약인원 : " + reservationMembers);
+//						System.out.println("예약인원 : " + reservationMembers);
 				String reservationCom = ((LocalDateTime)cancelList.get("reservationCom")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-//				System.out.println("예약한시간 : " + reservationCom);
+//						System.out.println("예약한시간 : " + reservationCom);
 				String reservationClassDate = ((LocalDateTime)cancelList.get("reservationClassDate")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//				System.out.println("예약일 : " + reservationClassDate );
+//						System.out.println("예약일 : " + reservationClassDate );
 				notificationService.send(userIdx, 3, 
 						reservationCom + "에 예약한 " + classTitle + "의 " + reservationClassDate + "수업 " + reservationMembers + "명 예약이 예약시간이 만료되어 자동으로 삭제됩니다" );
 			}
 		}
+		
+		return toCancelList;
+	}
+	
+	
+	// 예약정보리스트 불러오기
+	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+		
 		// 삭제후 예약 목록 불러오기
 		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
 	}
@@ -278,6 +286,33 @@ public class MyPageService {
 			fileMapper.insertFiles(fileList);
 		}
 	}
+	
+	//마이페이지 메인
+	// 결제가능예약수
+	public int getRecentReservationCount(UserDTO user) {
+		return myPageMapper.countRecentReservationCount(user);
+	}
+	// 최근 예약 목록
+	public List<Map<String, Object>> getRecentReservation(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectRecentReservation(startRow, listLimit, user);
+	}
+	//나의 최근 1:1문의 답변수[7일]
+	public int getRecentSiteInqueryCount(UserDTO user) {
+		return myPageMapper.countRecentSiteInqueryCount(user);
+	}
+	// 나의 최근 1:!문의 답변리스트[7일]
+	public List<Map<String, Object>> getRecentSiteInquery(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectRecentSiteInquery(startRow, listLimit, user);
+	}
+	// 나의 최근 강의 문의 답변 수[7일]
+	public int getRecentClassInqueryCount(UserDTO user) {
+		return myPageMapper.countRecentClassInqueryCount(user);
+	}
+	// 나의 최근 강의 문의 답변리스트[7일]
+	public List<Map<String, Object>> getRecentClassInquery(int startRow, int listLimit, UserDTO user) {
+		return myPageMapper.selectRecentClassInquery(startRow, listLimit, user);
+	}
+
 	
 
 

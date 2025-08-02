@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -43,14 +44,26 @@ import lombok.RequiredArgsConstructor;
 public class PaymentController {
 	private final PaymentService paymentService;
 	private final MyPageService myPageService;
+	private final MyPageController myPageController;
 	
 	//결제페이지
 	@GetMapping("/payment_info/payReservation")
 	public String payReservationForm(HttpSession session, Model model,
 			ReservationDTO reservation, UserDTO user) {		
-		String id = (String)session.getAttribute("sId");
-		user.setUserId(id);
-		user = myPageService.getUserInfo(user); // 예약자 정보
+		// 세션을 이용한 유저 정보 불러오기
+		user = myPageController.getUserFromSession(session);
+		
+		// 삭제할 예약목록 삭제
+		List<Map<String, Object>> toCancelList = myPageService.reservationCheck(user);
+		// 삭제한 예약목록이 선택되어 있을떄
+		for(Map<String, Object> cancelList: toCancelList) {
+			if(((String)cancelList.get("reservationIdx")).equals(reservation.getReservationIdx())) {
+				model.addAttribute("msg", "만료된 예약입니다. 다시 예약해주세요");
+				model.addAttribute("targetURL", "/error");
+				return "commons/result_process";
+			}
+		}
+		
 		reservation = myPageService.getReservationDetail(reservation);
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation);
 		
