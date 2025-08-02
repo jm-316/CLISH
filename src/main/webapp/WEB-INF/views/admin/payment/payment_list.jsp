@@ -69,11 +69,11 @@
 												</td>
 												<td><fmt:formatNumber value="${payment.amount}" type="number" groupingUsed="true"/> 원</td>
 												<td>
-													<button data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" class="blue-button"
+													<button data-imp-num="${payment.imp_uid}" onclick="cancelPayment(this)" class="blue-button"
 													<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>>결제취소</button>
 												</td>
 												<td>
-													<button onclick="paymentInfo('${payment.impUid}', '${payment.status}')">상세정보</button>
+													<button onclick="paymentInfo('${payment.imp_uid}', '${payment.status}')">상세정보</button>
 												</td>
 											</tr>
 										</c:forEach>
