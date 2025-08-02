@@ -7,9 +7,38 @@
 <meta charset="UTF-8">
 <title>나의 알림</title>
 <style type="text/css">
-.notiTr {
-	cursor: pointer;
-}
+	.notiTr {
+		cursor: pointer;
+	}
+	.pageSection {
+		text-align: center;
+		border: none;
+	}
+	.notiHeader {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0px 0px 0px 30px;
+		width: 100%;
+	/* 필요하면 width:100% 지정도 가능 */
+	}
+	#allRead {
+		padding: 6px 14px;
+		border-radius: 5px;
+		background: #2a7ae2;
+		color: white;
+		border: none;
+		cursor: pointer;
+		font-weight: bold;
+		font-size: 15px;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+		transition: background 0.2s;
+	}
+	#allRead:hover {
+		background: #1d4fbb;
+	}
+	
+
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
@@ -29,14 +58,16 @@
 	
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
-	<div id="main">
+	<div id="main" >
 	
 		<h1>${sessionScope.sId}의 페이지</h1>
-		<hr>
+		
 		<div>
-			<h3>알림 전체</h3>
-			<input type="button" value="모두읽음" id="allRead">
-			<table border="1" style="width: 100%; border-collapse: collapse;">
+			<div class="notiHeader">
+				<h3>알림 전체</h3>
+				<input type="button" value="모두읽음" id="allRead">
+			</div>
+			<table border="1" style="width: 100%; border-collapse: collapse; margin: 5px 0px 0px 30px;">
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>알림 내용</th>
@@ -69,7 +100,7 @@
 				  	</c:forEach>
 			  	</tbody>
 		  	</table>
-			<section id="notificationList">
+			<section id="notificationList" class="pageSection" >
 				<c:if test="${not empty notificationPageInfo.maxPage or notificationPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/notification?notificationPageNum=${notificationPageInfo.pageNum - 1 }'" 

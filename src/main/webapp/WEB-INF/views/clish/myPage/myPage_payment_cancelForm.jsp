@@ -16,56 +16,56 @@
   </head>
   <body>
 		<form action="/myPage/payment_info/cancelPayment" method="post" id="cancelRequest" onsubmit="alert('정말 취소 하시겠습니까?')">
-		<h1>${message }</h1>
-		<h1>${paymentCancelClassInfo.reservationClassDate }</h1>
-		<h1>${paymentCancelClassInfo.cancelAmount }</h1>
-		<fmt:formatNumber var="formattedAmount" value="${paymentCancelClassInfo.amount}" pattern="#,##0" />
-		<fmt:formatNumber var="formattedAmountCancel" value="${paymentCancelClassInfo.cancelAmount }" pattern="#,##0" />
-		<table>
-			<tr>
-				<th>결제 번호</th>
-				<td><input type="text" value="${paymentCancelClassInfo.impUid }" name="impUid" readonly></td>
-			</tr><tr>
-				<th>상품 이름</th>
-				<td><input type="text" value="${paymentCancelClassInfo.classTitle}" name="classTitle" readonly></td>
-			</tr><tr>
-			</tr><tr>
-				<th>예약 일자</th>
-				<td><input type="text" value="${paymentCancelClassInfo.reservationClassDate }" readonly></td>
-			</tr><tr>
-				<th>주문 번호</th>
-				<td><input type="text" value="${paymentCancelClassInfo.reservationIdx}"name="reservationIdx" readonly></td>
-			</tr><tr>
-				<th>결제 금액</th>
-				<td><input type="text" value="${formattedAmount }" readonly></td>
-			</tr><tr>
-			</tr><tr>
-				<th>환불 가능 금액</th>
-				<td>
-					<input type="text" value="${formattedAmountCancel }" readonly>
-					<input type="hidden" value="${paymentCancelClassInfo.cancelAmount }" name="amount">
-				</td>
-					
-			</tr><tr>
-				<th>구매 I  D</th>
-				<td><input type="text" value="${paymentCancelClassInfo.userName}"name="userName" readonly></td>
-			</tr><tr>
-				<th>구매 상태</th>
-				<td><input type="text" value="${paymentCancelClassInfo.status }" readonly></td>
-			</tr><tr>
-				<th>결제 시각</th>
-				<td><input type="text" value="${payTime}" readonly></td>
-			</tr><tr>
-				<th>변 환</th>
-				<td><input type="text" value="${payTime}" readonly></td>
-			</tr>
-			<tr>
-				<th>취소 이유</th>
-				<td><textarea rows="15" cols="50" placeholder="취소사유입력" name="cancelReason"></textarea></td> 
-			</tr>
-			
-		</table>
-		<input type="submit" value="결제취소신청" >
+			<fmt:formatNumber var="formattedAmount" value="${paymentCancelClassInfo.amount}" pattern="#,##0" />
+			<fmt:formatNumber var="formattedAmountCancel" value="${paymentCancelClassInfo.cancelAmount }" pattern="#,##0" />
+			<table>
+				<tr>
+					<th>결제 번호</th>
+					<td><input type="text" value="${paymentCancelClassInfo.impUid }" name="impUid" readonly></td>
+				</tr><tr>
+					<th>상품 이름</th>
+					<td><input type="text" value="${paymentCancelClassInfo.classTitle}" name="classTitle" readonly></td>
+				</tr><tr>
+				</tr><tr>
+					<th>예약 일자</th>
+					<fmt:parseDate var="reservationClassDate" 
+									value="${paymentCancelClassInfo.reservationClassDate}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+					<td><input type="text" value="<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/>" readonly></td>
+				</tr><tr>
+					<th>주문 번호</th>
+					<td><input type="text" value="${paymentCancelClassInfo.reservationIdx}"name="reservationIdx" readonly></td>
+				</tr><tr>
+					<th>결제 금액</th>
+					<td><input type="text" value="${formattedAmount }" readonly></td>
+				</tr><tr>
+				</tr><tr>
+					<th>환불 금액</th>
+					<td>
+						<input type="text" value="${formattedAmountCancel }" readonly>
+						<input type="hidden" value="${paymentCancelClassInfo.cancelAmount }" name="amount">
+					</td>
+						
+				</tr><tr>
+					<th>구매 I  D</th>
+					<td><input type="text" value="${paymentCancelClassInfo.userName}"name="userName" readonly></td>
+				</tr><tr>
+					<th>구매 상태</th>
+					<td><input type="text" value="${paymentCancelClassInfo.status }" readonly></td>
+				</tr><tr>
+					<th>결제 시각</th>
+					<td><input type="text" value="${payTime}" readonly></td>
+				</tr>
+				<tr>
+					<th>취소 이유</th>
+					<td><textarea rows="5" cols="50" placeholder="취소사유입력" name="cancelReason"></textarea></td> 
+				</tr>
+				
+			</table>
+			<div style="text-align: center;">
+				<input type="submit" value="결제취소신청" >
+			</div>
 		</form>
 		<script type="text/javascript">
 			$(function(){
@@ -80,6 +80,12 @@
 				    
 				});
 			});
+			
+			window.onunload = function() {
+			    if (window.opener && !window.opener.closed) {
+			        window.opener.location.reload();
+			    }
+			};
 		</script>
   </body>
 </html>

@@ -15,78 +15,79 @@
 	<main id="container">
 	
 	<div id="main">
-	<h1>${reservationClassInfo.class_type}</h1>
-	<h1>${reservationClassInfo.class_days}</h1>
 	
 		<h1>예약변경</h1>
 		<form action="/myPage/payment_info/change" method="post" onsubmit="return validateForm();">
-		<table >
-			<tr>
-				<th rowspan="5">
-					<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
-					 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
-				</th>
-				<th >${reservationClassInfo.class_title}</th>
-			</tr>
-			<tr>
-				<th>전체 자리</th>
-			</tr>
-			<tr> 
-				<th>${reservationClassInfo.class_member}</th>
-			<tr>
-				<th>남은 자리</th>
-			</tr>
-			<tr>
-				<th id="remainSeats">${reservationClassInfo.remainSeats}</th>
-			</tr>
-			<tr>
-				<th>${reservationClassInfo.start_date}</th>
-				<th>${reservationClassInfo.end_date}</th>
-			</tr> 
-		</table>
-		<table >
-			<tr>
-				<th>예약번호</th>
-				<th>예약자</th>
-				<th>클래스명</th>
-				<th>예약일</th>
-				<th>예약인원</th>
-				<th>예약완료일</th>
-				<th>결제 금액</th>
-				<th>변경 후 금액 </th>				
-			</tr>
-        	<tr>
-        		<td><input type="text" value="${reservationClassInfo.reservation_idx}" name="reservationIdx"readonly></td>
-				<td>${user.userName}</td>
-				<td>${reservationClassInfo.class_title}</td>
-				
-				<fmt:parseDate var="reservationClassDate" 
-								value="${reservationClassInfo.reservation_class_date}"
-								pattern="yyyy-MM-dd'T'HH:mm"
-								type="both" />
-				<!-- localdatetime 에서 date타입으로 변환 -->
-				<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
-				<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}"
-				<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
-				<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" id="reservationMembers"></td>
-				<fmt:parseDate var="reservationCom" 
-									value="${reservationClassInfo.reservation_com}"
+			<table style="margin-left: auto ; margin-right: auto;" >
+				<tr>
+					<th rowspan="5">
+						<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
+						 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
+					</th>
+					<th >${reservationClassInfo.class_title}</th>
+				</tr>
+				<tr>
+					<th>전체 자리</th>
+				</tr>
+				<tr> 
+					<th>${reservationClassInfo.class_member}</th>
+				<tr>
+					<th>남은 자리</th>
+				</tr>
+				<tr>
+					<th id="remainSeats">${reservationClassInfo.remainSeats}</th>
+				</tr>
+				<tr>
+					<th>${reservationClassInfo.start_date}</th>
+					<th>${reservationClassInfo.end_date}</th>
+				</tr> 
+			</table>
+			<table >
+				<tr>
+					<th>예약번호</th>
+					<th>예약자</th>
+					<th>클래스명</th>
+					<th>예약일</th>
+					<th>예약인원</th>
+					<th>예약완료일</th>
+					<th>결제 금액</th>
+					<th>변경 후 금액 </th>				
+				</tr>
+	        	<tr>
+	        		<td>
+	        			${reservationClassInfo.reservation_idx}
+	        			<input type="hidden" value="${reservationClassInfo.reservation_idx}" name="reservationIdx">
+	        		</td>
+					<td>${user.userName}</td>
+					<td>${reservationClassInfo.class_title}</td>
+					
+					<fmt:parseDate var="reservationClassDate" 
+									value="${reservationClassInfo.reservation_class_date}"
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
-				<td><fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/></td>
-<%-- 				<td>${reservationClassInfo.reservation_com}</td> --%>
-				<%-- 가격 * 예약인원 해서 총 가격 계산  --%>
-				<td><fmt:formatNumber value="${reservationClassInfo.class_price * reservationClassInfo.reservation_members}" pattern="#,##0" /></td>
-				<td><div name="changePrice"></div></td>
-        	</tr>
-        	<tr>
-				<td colspan="6">
-					<input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
-	         onclick="history.back()">
-					<input type="submit" value="수정완료" >
-         		</td>        		
-        	</tr>
-		</table>
+					<!-- localdatetime 에서 date타입으로 변환 -->
+					<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
+					<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}"
+					<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
+					<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" id="reservationMembers"></td>
+					<fmt:parseDate var="reservationCom" 
+										value="${reservationClassInfo.reservation_com}"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+					<td><fmt:formatDate value="${reservationCom}" pattern="yy-MM-dd HH:mm"/></td>
+	<%-- 				<td>${reservationClassInfo.reservation_com}</td> --%>
+					<%-- 가격 * 예약인원 해서 총 가격 계산  --%>
+					<td><fmt:formatNumber value="${reservationClassInfo.class_price * reservationClassInfo.reservation_members}" pattern="#,##0" /></td>
+					<td><div name="changePrice"></div></td>
+	        	</tr>
+	        	<tr>
+					<td colspan="8" style="text-align: right; ">
+							<input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
+			         onclick="history.back()" >
+							<input type="submit" value="수정완료" >
+	         		</td>        		
+	        	</tr>
+			</table>
 		</form>
 		
 	
@@ -96,7 +97,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		var maxMembers = ${reservationClassInfo.remainSeats + reservationClassInfo.reservation_members};
-
+		
 		$(function() {
 			const classIdx = "${reservationClassInfo.class_idx}"; // 강의idx 
 			const price = ${reservationClassInfo.class_price}; // 강의 가격 

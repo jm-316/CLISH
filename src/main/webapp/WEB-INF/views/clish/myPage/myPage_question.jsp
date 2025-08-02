@@ -18,21 +18,29 @@
 	.inquery-toggle { cursor: pointer; background: #f9f9f9; }
 	.inquery-detail { display: none; background: #fff4d9; }
 	.btn-wrap {
-	  display: flex;
-	  gap: 16px;
-	  margin-top: 10px;
+		display: flex;
+		gap: 16px;
+		margin-top: 10px;
+		justify-content: flex-end;
 	}
 	.btn-wrap form {
-	  margin: 0;
-	  padding: 0;
-	  border: none;        
-	  background: none;     
-	  box-shadow: none;     
-	  display: inline;      
+		margin: 0;
+		padding: 0;
+		border: none;        
+		background: none;     
+		box-shadow: none;     
+		display: inline;   
+	    
 	}
 	.btn-wrap button:hover {
-	  background: #ff9c34;
+		background: #ff9c34;
 	}
+	
+	.pageSection {
+		text-align: center;
+		border: none;
+	}
+
 </style>
 </head>
 <body>
@@ -48,8 +56,6 @@
 	
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
-		<h3>나의문의목록</h3>
-<!-- 		<input type="hidden" id="parent" value="list"> -->
 		<div>
 			<h3>강좌 문의</h3>
 			<table border="1" style="width: 100%; border-collapse: collapse;">
@@ -81,7 +87,7 @@
 					    </tr>
 					
 					    <tr class="inquery-detail">
-					      	<td colspan="4">
+					      	<td colspan="6">
 						        <strong>문의 내용:</strong><br>
 						        	${classQ.inqueryDetail}<br><br>
 						        <strong>답변 내용:</strong><br>
@@ -93,12 +99,12 @@
 						        </c:if>
 						
 						        <c:if test="${classQ.inqueryStatus == 1}">
-						          	<div class="btn-wrap">
-							            <form action="/myPage/myQuestion/inquery/modify" method="get" style="display:inline;">
+						          	<div class="btn-wrap" style="text-align: right;">
+							            <form action="/myPage/myQuestion/inquery/modify" method="get" style="display:inline; text-align: right;">
 							            	<input type="hidden" name="inqueryIdx" value="${classQ.inqueryIdx}">
 							            	<button type="submit">수정</button>
 							            </form>
-							            <form action="/myPage/myQuestion/inquery/delete" method="post" style="display:inline;">
+							            <form action="/myPage/myQuestion/inquery/delete" method="post" style="display:inline; text-align: right;">
 							              	<input type="hidden" name="inqueryIdx" value="${classQ.inqueryIdx}">
 							              	<button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
 							            </form>
@@ -109,7 +115,7 @@
 				  	</c:forEach>
 			  	</tbody>
 		  	</table>
-			<section id="inqueryList">
+			<section id="inqueryList" class="pageSection">
 				<c:if test="${not empty classQPageInfo.maxPage or classQPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/myQuestion?classQuestionPageNum=${classQPageInfo.pageNum - 1 }&inqueryPageNum=${inqueryPageInfo.pageNum}'" 
@@ -191,7 +197,7 @@
 				  	</c:forEach>
 			  	</tbody>
 		  	</table>
-			<section id="inqueryList">
+			<section id="inqueryList" class="pageSection">
 				<c:if test="${not empty inqueryPageInfo.maxPage or inqueryPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/myQuestion?classQuestionPageNum=${classQuestionPageInfo.pageNum }&inqueryPageNum=${inqueryPageInfo.pageNum - 1}'" 

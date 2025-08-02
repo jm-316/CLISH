@@ -76,10 +76,11 @@
 					<label for="file">첨부파일</label>
 						
 					<input type="file" class="custom-file-input" name="files" multiple>
-			
-					<input type="submit" value="리뷰등록" >
-					<input type="reset" value="초기화">
-					<input type="button" value="취소" onclick="history.back()">
+					<div style="text-align: right;">
+						<input type="submit" value="리뷰등록" >
+						<input type="reset" value="초기화">
+						<input type="button" value="취소" onclick="history.back()">
+					</div>
 		 		</form>
 	 		</div>
 	

@@ -81,6 +81,12 @@
 	  border: 1px solid #ddd;
 	  margin: 5px;
 	}
+	
+	.pageSection {
+		text-align: center;
+		border: none;
+	}
+
 </style>
 </head>
 <body>
@@ -202,7 +208,7 @@
 				</c:otherwise>
 			</c:choose>
 
-			<section id="reviewPageList">
+			<section id="reviewPageList" class="pageSection">
 				<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/myReview?reviewCom=${reviewCom }&reviewPageNum=${pageInfo.pageNum - 1 }'" 

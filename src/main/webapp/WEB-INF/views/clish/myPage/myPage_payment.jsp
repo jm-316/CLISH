@@ -8,6 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
+<style type="text/css">
+	.pageSection {
+		text-align: center;
+		border: none;
+	}
+
+
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
@@ -78,7 +86,7 @@
 
 	       		</c:forEach>
 			</table>
-			<section id="reservationPageList">
+			<section id="reservationPageList" class="pageSection">
 				<c:if test="${not empty reservationPageInfo.maxPage or reservationPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum - 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
@@ -146,7 +154,7 @@
 		        	</tr>
 	       		</c:forEach>
 			</table>
-			<section id="paymentPageList">
+			<section id="paymentPageList" class="pageSection">
 				<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
 					<input type="button" value="이전" 
 						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum }&paymentPageNum=${paymentPageInfo.pageNum - 1}'" 
@@ -215,7 +223,7 @@
 	    window.open(
 	        '/myPage/payment_info/detail?reservationIdx=' + encodeURIComponent(reservationIdx),
 	        'reservationDetail',
-	        `width=600,height=1500,resizable=yes,scrollbars=yes`
+	        `width=1345,height=670,resizable=yes,scrollbars=yes`
 	    );
 	}
 	
@@ -225,19 +233,19 @@
 	    window.open(
 	        '/myPage/payment_info/payReservation?from=list&reservationIdx=' + encodeURIComponent(reservationIdx),
 	        'payReservation',
-	        `width=600,height=1500,resizable=yes,scrollbars=yes`
+	        `width=1085,height=555,resizable=yes,scrollbars=yes`
 	    );
 	}
-	
+	//결제취소버튼
 	function cancelPayment(btn) {
 		var impUid = btn.getAttribute('data-imp-num');
 		window.open(
 			'/myPage/payment_info/cancelPayment?impUid=' + encodeURIComponent(impUid),			
 			'paymentInfo',
-			`width=600,height=1500, resizable=yes, scrollbars=yes`
+			`width=650,height=900, resizable=yes, scrollbars=yes`
 		);
 	}
-	
+	//결제상세정보
 	function paymentInfo(btn) {
 		var impUid = btn.getAttribute('data-imp-num');
 		var status = btn.getAttribute('data-status');
@@ -246,14 +254,14 @@
 			window.open(
 				'/myPage/payment_info/paymentDetail?impUid=' + encodeURIComponent(impUid),			
 				'paymentInfo',
-				`width=600,height=1500, resizable=yes, scrollbars=yes`
+				'width=600,height=600, resizable=yes, scrollbars=yes'
 			);
 		}
 		if(status == 'cancelled'){
 			window.open(
 					'/myPage/payment_info/cancelDetail?impUid=' + encodeURIComponent(impUid),			
 					'paymentInfo',
-					`width=600,height=1500, resizable=yes, scrollbars=yes`
+					'width=600,height=600, resizable=yes, scrollbars=yes'
 				);
 		}
 	}

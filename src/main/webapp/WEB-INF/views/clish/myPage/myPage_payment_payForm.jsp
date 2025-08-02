@@ -22,7 +22,7 @@
 	
 	<div id="main">
 		<form action="" method="post">
-		<table >
+		<table style="margin-left: auto ; margin-right: auto;">
 			<tr>
 				<th rowspan="5">
 					<img src="/file/${reservationClassInfo.file_id}?type=0"
@@ -74,17 +74,15 @@
 				<td><fmt:formatNumber pattern="#,##0">${reservationClassInfo.reservation_members * reservationClassInfo.class_price}</fmt:formatNumber>
 				 </td>		
         	</tr>
-		</table>
-			<table>
-				<tr>
-					<td>
+			<tr>
+				<td colspan="8" style="text-align: right;">
 					<input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
-          				onclick="cancelPayment(this)">
+	         				onclick="cancelPayment(this)">
 					<input type="button" value="결제" data-reservation-num="${reservationClassInfo.reservation_idx}"
 						onclick="requestPay()" id="paybtn">
-          			</td>
-          		</tr> 
-			</table>
+       			</td>
+       		</tr> 
+		</table>
 		</form>
 	</div>
 	
@@ -116,6 +114,14 @@
 		  return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 		}
 		
+		window.onunload = function() {
+		    if (window.opener && !window.opener.closed) {
+		        window.opener.location.reload();
+		    }
+		    if (window.opener.opener && !window.opener.opener.closed) {
+		        window.opener.opener.location.reload();
+		    }
+		};
 	// 	//테스트를 위한 난수생성
 	// 	function getRandomString(length) {
 	// 	  return Math.random().toString(36).substr(2, length);

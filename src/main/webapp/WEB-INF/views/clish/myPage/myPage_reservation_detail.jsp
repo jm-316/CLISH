@@ -21,7 +21,7 @@
 	
 		<h1>예약상세페이지</h1>
 <!-- 		<input type="hidden" id="parent" value="detail"> -->
-		<table >
+		<table style="margin-left: auto ; margin-right: auto;">
 			<tr>
 				<th rowspan="5">
 				<img src="/file/${reservationClassInfo.file_id}?type=0" alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
@@ -88,48 +88,54 @@
 	
 	</main>
 	
+	<script type="text/javascript">
+		window.onunload = function() {
+		    if (window.opener && !window.opener.closed) {
+		        window.opener.location.reload();
+		    }
+		};
+		//취소버튼
+		function cancelReservation(btn) {
+			if(confirm("정말로 예약을 취소하시겠습니까?")){
+			    // 1. 버튼의 data- 속성에서 예약번호 읽기
+			    var reservationIdx = btn.getAttribute('data-reservation-num');
+			
+			    fetch('/myPage/payment_info/cancel', {
+			        method: 'POST',
+			        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			        body: 'reservationIdx=' + encodeURIComponent(reservationIdx)
+			    })
+			    .then(response => response.text())
+			    .then(result => {
+			        alert(result); // 서버에서 받은 결과 메시지 표시
+			        window.opener.location.reload(); // 결제내역 새로고침
+			        window.close(); // 예약상세창 끄기
+			    })
+			    .catch(error => {
+			        alert("오류 발생: " + error);
+			    });
+			}
+		}
+		//수정버튼
+		function reservationChange(btn) {
+			var reservationIdx = btn.getAttribute('data-reservation-num');
+			console.log("예약번호 :" + reservationIdx);
+			console.log("예약정보수정페이지이동");
+			location.href="/myPage/payment_info/change?reservationIdx=" + reservationIdx;
+		}
+		//결제버튼
+		function payReservation(btn) {
+		    var reservationIdx = btn.getAttribute('data-reservation-num');
+			var from = btn.getAttribute('data-from');
+			window.open(
+			        '/myPage/payment_info/payReservation?from=detail&reservationIdx=' + encodeURIComponent(reservationIdx),
+			        'payReservation',
+			        `width=1069,height=576,resizable=yes,scrollbars=yes`
+			    );
+			window.close();
+		}
+	
+	</script>
 
 </body>
 </html>
-<script type="text/javascript">
-
-	function cancelReservation(btn) {
-		if(confirm("정말로 예약을 취소하시겠습니까?")){
-		    // 1. 버튼의 data- 속성에서 예약번호 읽기
-		    var reservationIdx = btn.getAttribute('data-reservation-num');
-		
-		    fetch('/myPage/payment_info/cancel', {
-		        method: 'POST',
-		        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-		        body: 'reservationIdx=' + encodeURIComponent(reservationIdx)
-		    })
-		    .then(response => response.text())
-		    .then(result => {
-		        alert(result); // 서버에서 받은 결과 메시지 표시
-		        window.opener.location.reload(); // 결제내역 새로고침
-		        window.close(); // 예약상세창 끄기
-		    })
-		    .catch(error => {
-		        alert("오류 발생: " + error);
-		    });
-		}
-	}
-		
-	function reservationChange(btn) {
-		var reservationIdx = btn.getAttribute('data-reservation-num');
-		console.log("예약번호 :" + reservationIdx);
-		console.log("예약정보수정페이지이동");
-		location.href="/myPage/payment_info/change?reservationIdx=" + reservationIdx;
-	}
-	
-	function payReservation(btn) {
-	    var reservationIdx = btn.getAttribute('data-reservation-num');
-		var from = btn.getAttribute('data-from');
-		window.open(
-		        '/myPage/payment_info/payReservation?from=detail&reservationIdx=' + encodeURIComponent(reservationIdx),
-		        'payReservation',
-		        `width=600,height=1500,resizable=yes,scrollbars=yes`
-		    );
-	}
-
-</script>

@@ -101,6 +101,7 @@
 			<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 		</footer>
 		<script>
+
 			//파일삭제
 			function deleteFile(fileId) {	
 				if(confirm("첨부파일을 삭제하시겠습니까?")) {
