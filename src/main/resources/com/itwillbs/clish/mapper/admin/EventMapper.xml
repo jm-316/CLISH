@@ -6,9 +6,23 @@
 	<!-- 이벤트 리스트 -->
 	 <select id="selectAllEvent" resultType="com.itwillbs.clish.admin.dto.EventDTO">
 	 	SELECT *
-	 	FROM EVENT
+	 	FROM 
+	 		EVENT
+	 	WHERE 1 = 1
+	 		<if test="searchType == '진행중'">
+	 		AND event_in_progress = 1
+	 		</if>
+	 		<if test="searchType == '예정'">
+	 		AND event_in_progress = 2
+	 		</if>
+	 		<if test="searchType == '종료'">
+	 		AND event_in_progress = 0
+	 		</if>
+	 		 <if test="searchKeyword != null and searchKeyword != ''">
+	 		AND event_title LIKE CONCAT('%', #{searchKeyword}, '%') 
+	 		</if>
 	 	ORDER BY
-	 		event_created_at
+	 		event_in_progress DESC
 	 	LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -16,8 +30,28 @@
 	 
 	 <!-- 이벤트 게시물 수  -->
 	 <select id="selectCountEvent" resultType="int">
-	 	SELECT COUNT(*)
-	 	FROM EVENT
+	 	SELECT 
+	 		COUNT(*)
+	 	FROM 
+	 		EVENT
+	 	WHERE
+	 		<choose>
+			<when test="searchType == '진행중'">
+			event_in_progress = 1
+			</when>
+			<when test="searchType == '예정'">
+			event_in_progress = 2
+			</when>
+			<when test="searchType == '종료'">
+			event_in_progress = 0
+			</when>
+			<when test="searchKeyword != null and searchKeyword != ''">
+			event_title LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<otherwise>
+			1 = 1
+			</otherwise>
+			</choose>
 	 </select>
 	 
 	<!-- 이벤트 등록 -->

@@ -8,54 +8,15 @@
 <title>Insert title here</title>
 <style type="text/css">
 .event-detail-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding: 20px;
+	display: flex;
+	flex-direction: column;
+	margin-left: 30px;
 }
 
-.event-header {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-.event-info {
-  width: 400px;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.event-thumbnail {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  align-items: center;
-  gap: 8px;
-}
-
-.event-thumbnail img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
-
-.event-content {
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  max-width: 95%;
-  gap: 8px;
-}
-
-.event-content img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
+.event-thumbnail, .event-content {
+	display: flex;
+	display: flex;
+	flex-direction: column;
 }
 
 </style>
@@ -75,8 +36,7 @@
 						</div>
 					</div>
 					<div class="event-detail-container">
-						<div class="event-header">
-						  <div class="event-info">
+						<div class="event-info">
 						    <div>제목 : <span>${eventDTO.eventTitle}</span></div>
 						    <div>날짜 : <span>${eventDTO.eventStartDate} ~ ${eventDTO.eventEndDate}</span></div>
 						    <div>상태 : 
@@ -92,15 +52,14 @@
 						    		</c:otherwise>
 						    	</c:choose>
 						    </div>
-						  </div>
-						  <div class="event-thumbnail">
-						    <span>썸네일</span>
-						    <img src="/resources/upload/${thumbnailFile.subDir}/${thumbnailFile.realFileName}" alt="이벤트 썸네일" />
-						  </div>
+					  	</div>
+						<div class="event-thumbnail">
+							<span>썸네일</span>
+						    <img src="/file/${fileDTO.fileId}?type=0"  alt="이벤트 썸네일" />
 						</div>
 						<div class="event-content">
 						  <span>이벤트 본문</span>
-						  <img src="/resources/upload/${contentFile.subDir}/${contentFile.realFileName}" alt="이벤트 내용 이미지" />
+						  <img src="/file/${fileDTO.fileId}?type=0"  alt="이벤트 내용 이미지" />
 						</div>
 					</div>
 					<div class="button-wrapper">

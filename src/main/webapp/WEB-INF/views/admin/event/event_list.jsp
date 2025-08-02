@@ -27,55 +27,63 @@
 							<button onclick="location.href='/admin/event/write'" class="submitBtn">등록</button>
 						</div>
 						<form class="filter-form">
-							<select class="filter-select">
-								<option>진행중</option>
-								<option>예정</option>
-								<option>종료</option>
+							<select class="filter-select" name="searchType">
+								<option <c:if test="${param.searchType eq '전체'}">selected</c:if> value="전체">전체</option>
+								<option <c:if test="${param.searchType eq '진행중'}">selected</c:if> value="진행중">진행중</option>
+								<option <c:if test="${param.searchType eq '예정'}">selected</c:if> value="예정">예정</option>
+								<option <c:if test="${param.searchType eq '종료'}">selected</c:if> value="종료">종료</option>
 							</select>
 							<div class="search-box">
-								<input type="text" class="search-input"/>
-								<button class="search-button">검색</button>
+								<input type="text" class="search-input" placeholder="검색어를 입력하세요" name="searchKeyword" value="${param.searchKeyword}"/>
+								<button type="submit" class="search-button">검색</button>
 							</div>
 						</form>
 					</div>
 					<div>
 						<div style="height: 250px;">
-							<table>
-								<thead>
-									<tr>
-										<th>제목</th>
-										<th>시작날짜</th>
-										<th>끝나는날짜</th>
-										<th>상태</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="event" items="${eventList}" varStatus="status" >
-										<tr>
-											<td>${event.eventTitle}</td>
-											<td>${event.eventStartDate}</td>
-											<td>${event.eventEndDate}</td>
-											<td>
-												<c:choose>
-													<c:when test="${event.eventInProgress eq 1}">
-														<span>진행중</span>
-													</c:when>
-													<c:when test="${event.eventInProgress eq 2}">
-														<span>예정</span>
-													</c:when>
-													<c:otherwise>
-														<span>종료</span>
-													</c:otherwise>
-												</c:choose>
-											</td>
-											<td class="flex">
-												<button onclick="location.href='/admin/event/detail/${event.eventIdx}?pageNum=${pageNum}'">상세보기</button>
-											</td>
-										</tr>
-									</c:forEach>									
-								</tbody>
-							</table>
+							<c:choose>
+								<c:when test="${empty eventList}">
+									<div class="list-empty">검색된 이벤트가 없습니다.</div>
+								</c:when>
+								<c:otherwise>
+									<table>
+										<thead>
+											<tr>
+												<th>제목</th>
+												<th>시작날짜</th>
+												<th>끝나는날짜</th>
+												<th>상태</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="event" items="${eventList}" varStatus="status" >
+												<tr>
+													<td>${event.eventTitle}</td>
+													<td>${event.eventStartDate}</td>
+													<td>${event.eventEndDate}</td>
+													<td>
+														<c:choose>
+															<c:when test="${event.eventInProgress eq 1}">
+																<span>진행중</span>
+															</c:when>
+															<c:when test="${event.eventInProgress eq 2}">
+																<span>예정</span>
+															</c:when>
+															<c:otherwise>
+																<span>종료</span>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td class="flex">
+														<button onclick="location.href='/admin/event/detail/${event.eventIdx}?pageNum=${pageNum}'">상세보기</button>
+													</td>
+												</tr>
+											</c:forEach>									
+										</tbody>
+									</table>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
 							<div>

@@ -30,13 +30,13 @@ public class AdminEventService {
 	private HttpSession session;
 
 	// 이벤트 리스트
-	public List<EventDTO> getEvents(int startRow, int listLimit) {
-		return adminEventMapper.selectAllEvent(startRow, listLimit);
+	public List<EventDTO> getEvents(int startRow, int listLimit, String searchType, String searchKeyword) {
+		return adminEventMapper.selectAllEvent(startRow, listLimit, searchType, searchKeyword);
 	}
 
 	// 이벤트 게시물 수
-	public int getEventCount() {
-		return adminEventMapper.selectCountEvent();
+	public int getEventCount(String searchType, String searchKeyword) {
+		return adminEventMapper.selectCountEvent(searchType, searchKeyword);
 	}
 
 	// 이벤트 등록

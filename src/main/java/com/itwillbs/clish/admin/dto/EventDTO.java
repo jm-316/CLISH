@@ -38,12 +38,6 @@ public class EventDTO  implements FileUploadHelpper{
 	private MultipartFile thumbnailFile;
 	private MultipartFile contentFile;
 	
-	
-//	@Override
-//	public MultipartFile[] getFiles() {
-//	    return new MultipartFile[] { thumbnailFile, contentFile };
-//	}
-	
 	@Override
 	public MultipartFile[] getFiles() {
 	    List<MultipartFile> list = new ArrayList<>();

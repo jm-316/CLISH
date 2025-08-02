@@ -9,10 +9,10 @@ import com.itwillbs.clish.admin.dto.EventDTO;
 public interface AdminEventMapper {
 
 	// 이벤트 리스트
-	List<EventDTO> selectAllEvent(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	List<EventDTO> selectAllEvent(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 
 	// 이벤트 게시물 수
-	int selectCountEvent();
+	int selectCountEvent(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 
 	// 이벤트 등록
 	int insertEvent(EventDTO eventDTO);

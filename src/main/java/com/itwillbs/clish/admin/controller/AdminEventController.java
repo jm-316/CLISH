@@ -32,9 +32,12 @@ public class AdminEventController {
 
 	// 이벤트 리스트
 	@GetMapping("/event")
-	public String eventList(Model model, @RequestParam( defaultValue = "1") int pageNum) {
+	public String eventList(Model model, 
+			@RequestParam( defaultValue = "1") int pageNum, 
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword) {
 		int listLimit = 5;
-		int eventCount = adminEventService.getEventCount();
+		int eventCount = adminEventService.getEventCount(searchType, searchKeyword);
 		
 		if (eventCount > 0) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, eventCount, pageNum, 3);
@@ -50,7 +53,7 @@ public class AdminEventController {
 			// 이벤트 상태 최신화
 			adminEventService.updateAllEventStatus();
 			
-			List<EventDTO> eventList = adminEventService.getEvents(pageInfoDTO.getStartRow(), listLimit);
+			List<EventDTO> eventList = adminEventService.getEvents(pageInfoDTO.getStartRow(), listLimit, searchType, searchKeyword);
 			model.addAttribute("eventList", eventList);
 		}
 		

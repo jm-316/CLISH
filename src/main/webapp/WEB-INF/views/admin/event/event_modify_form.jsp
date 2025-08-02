@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div>
-						<form action="/admin/event/modify" method="post" enctype="multipart/form-data">
+						<form action="/admin/event/modify" method="post" enctype="multipart/form-data" id="modifyForm">
 							<input type="hidden" name="eventIdx" value="${eventDTO.eventIdx }"/>
 							<table>
 								<colgroup>
@@ -38,17 +38,17 @@
 										<th>이벤트 상태<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
 											<label for="event-progress-ended">
-												<input type="radio" id="event-progress-active" name="eventInProgress" value="0"  
+												<input type="radio" id="event-progress-active" name="eventInProgress" value="0" class="eventInProgress"
 													<c:if test="${eventDTO.eventInProgress eq 0}">checked</c:if>/>
 												종료
 											</label>
 											<label for="event-progress-active">
-												<input type="radio" id="event-progress-active" name="eventInProgress" value="1" 
+												<input type="radio" id="event-progress-active" name="eventInProgress" value="1" class="eventInProgress"
 													<c:if test="${eventDTO.eventInProgress eq 1}">checked</c:if>/>
 												진행중											
 											</label>
 											<label for="event-progress-upcoming">
-												<input type="radio" id="event-progress-upcoming"" name="eventInProgress" value="2" 
+												<input type="radio" id="event-progress-upcoming"" name="eventInProgress" value="2" class="eventInProgress"
 													<c:if test="${eventDTO.eventInProgress eq 2}">checked</c:if>/>
 												예정
 											</label>
@@ -95,10 +95,17 @@
 									<tr>
 										<th>적용기간<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
-											<label for="start-datetime">시작날짜</label>
-											<input type="date" id="start-datetime" name="eventStartDate" value="${eventDTO.eventStartDate}" required/>
-											<label for="end-datetime">종료날짜</label>
-											<input type="date" id="end-datetime" name="eventEndDate" value="${eventDTO.eventEndDate}" required/>
+											<div style="display: flex; align-items: center; justify-content: space-between;">
+												<div style="width: 400px;">
+													<label for="startDate">시작날짜</label>
+													<input type="date" id="startDate" name="eventStartDate" value="${eventDTO.eventStartDate}"/>
+												</div>
+												<div style="width: 400px;">
+													<label for="endDate">종료날짜</label>
+													<input type="date" id="endDate" name="eventEndDate" value="${eventDTO.eventEndDate}" required/>
+												</div>
+											</div>
+											<span id="startDateError" style="color: red; display: none;"></span>
 										</td>
 									</tr>
 								</tbody>
@@ -114,11 +121,63 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-	function deleteFile(fileId, type) {
-		if(confirm("첨부파일을 삭제하시겠습니까?")) {
-			location.href = "/admin/event/fileDelete?fileId=" + fileId + "&type=" + type + "&idx=${eventDTO.eventIdx}";
+		function deleteFile(fileId, type) {
+			if(confirm("첨부파일을 삭제하시겠습니까?")) {
+				location.href = "/admin/event/fileDelete?fileId=" + fileId + "&type=" + type + "&idx=${eventDTO.eventIdx}";
+			}
 		}
-	}
-</script>
+		
+		// 수정 폼 제출
+		document.getElementById("modifyForm").addEventListener("submit", (e) => {
+			// 날짜 비교 검사
+			const startInput = document.getElementById("startDate");
+			const endInput = document.getElementById("endDate");
+			const errorSpan = document.getElementById("startDateError");
+			 const radioButtons = document.querySelectorAll(".eventInProgress");
+			
+			const startDate = new Date(startInput.value);
+			const endDate = new Date(endInput.value);
+			const today = new Date();
+			
+			// 라디오 버튼 유효성 검사
+			const selectedRadio  = [...radioButtons].find(radio => radio.checked);
+			const selectedValue = selectedRadio ? selectedRadio.value : null;
+			
+			const isValidStatus = validateEventStatusChange(selectedValue, startDate, endDate, today, endInput);
+			
+			if (!isValidStatus) {
+				e.preventDefault();
+				return;
+			};
+			
+			if (endDate.getTime() < startDate.getTime()) {
+				alert("종료일이 시작일보다 빠를 수 없습니다.");
+				e.preventDefault();
+				return;
+			}
+		});
+		
+		function validateEventStatusChange(selectedValue, startDate, endDate, today, endInput) {
+			// 예정
+			if (selectedValue === "2") {
+				if (startDate <= today) {
+					alert("시작 날짜가 오늘보다 뒤인 경우에만 '예정' 상태로 설정할 수 있습니다.");
+				    return false;
+				}
+			}
+			
+			// 진행중
+			if (selectedValue === "1") {
+				if (endDate < today) {
+					alert("종료 날짜가 오늘보다 이전입니다. 종료 날짜를 수정해주세요.");
+					endInput.focus();
+				    return false;
+				}
+			}
+			
+			return true;
+		}
+		
+	</script>
 </body>
 </html>

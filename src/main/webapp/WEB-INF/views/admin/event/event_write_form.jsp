@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div>
-						<form action="/admin/event/write" method="post" enctype="multipart/form-data">
+						<form action="/admin/event/write" method="post" enctype="multipart/form-data" id="eventForm">
 							<table>
 								<colgroup>
 									<col width="20%">
@@ -43,7 +43,7 @@
 									<tr>
 										<th>이벤트페이지<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
-											<input type="file" name="contentFile" />
+											<input type="file" name="contentFile" required/>
 											<input type="hidden" name="fileTypes" value="content" />
 										</td>
 									</tr>
@@ -54,10 +54,17 @@
 									<tr>
 										<th>적용기간<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
-											<label for="start-datetime">시작날짜</label>
-											<input type="date" id="start-datetime" name="eventStartDate" required/>
-											<label for="end-datetime">종료날짜</label>
-											<input type="date" id="end-datetime" name="eventEndDate" required/>
+											<div style="display: flex; align-items: center; justify-content: space-between;">
+												<div style="width: 400px;">
+													<label for="startDate">시작날짜</label>
+													<input type="date" id="startDate" name="eventStartDate" required/>
+												</div>
+												<div style="width: 400px;">
+													<label for="endDate">종료날짜</label>
+													<input type="date" id="endDate" name="eventEndDate" required/>
+												</div>
+											</div>
+											<span id="startDateError" style="color: red; display: none;"></span>
 										</td>
 									</tr>
 								</tbody>
@@ -68,10 +75,39 @@
 							</div>
 						</form>
 					</div>
-				
 				</div>
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		document.getElementById("eventForm").addEventListener("submit", (e) => {
+			// 날짜 비교 검사
+			const startInput = document.getElementById("startDate");
+			const endInput = document.getElementById("endDate");
+			const errorSpan = document.getElementById("startDateError");
+			
+			const startDate = new Date(startInput.value);
+			const endDate = new Date(endInput.value);
+			const today = new Date();
+			
+			if (startDate < today) {
+				errorSpan.textContent = "시작 날자는 오늘보다 뒤일 수 없습니다."
+				errorSpan.style.display = "block";
+				e.preventDefault();
+			    return;
+			} else {
+		      errorSpan.textContent = "";
+		      errorSpan.style.display = "none";
+			}
+			
+			if (endDate.getTime() < startDate.getTime()) {
+				alert("종료일이 시작일보다 빠를 수 없습니다.");
+				e.preventDefault();
+				return;
+			}
+			
+		});
+	
+	</script>
 </body>
 </html>
