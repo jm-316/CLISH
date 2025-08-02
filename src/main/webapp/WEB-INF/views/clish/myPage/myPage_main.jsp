@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Clish</title>
+<title>Clish - myPage</title>
 <style type="text/css">
 	.main {
 		width: 90%;

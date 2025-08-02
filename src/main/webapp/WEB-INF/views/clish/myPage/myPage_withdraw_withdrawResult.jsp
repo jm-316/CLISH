@@ -29,8 +29,10 @@
 		
 		<hr>
 		<h1>탈퇴하면어쩌고저쩌고저쩌고</h1>
-		<input type="checkbox" id="agree">동의하쉴?
-		<input type="button" value="확인" onclick="withdraw()">
+		<div style="text-align: right">
+			<input type="checkbox" id="agree">동의하쉴?
+			<input type="button" value="확인" onclick="withdraw()">
+		</div>
 	
 	</div>
 	

@@ -172,11 +172,14 @@ public class MyPageController {
 		
 		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) { // 비밀번호 불일치 할때
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
-			model.addAttribute("targetURL","myPage/change_user_info_form");
+			model.addAttribute("targetURL","/myPage/change_user_info");
 			return "commons/result_process";
 	    }
 
 		model.addAttribute("user", user);
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+		System.out.println(user);
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		return "clish/myPage/myPage_change_user_info_form"; //비밀번호 일치시 이동페이지
 
 		

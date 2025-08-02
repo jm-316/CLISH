@@ -34,6 +34,7 @@
 			<if test="newEmail != null and newEmail != ''">
 			user_email = #{newEmail},
 			</if>
+			user_birth = #{userBirth},
 			user_gender = #{userGender},
 			user_phone_number = #{userPhoneNumber},
 			user_Phone_number_sub = #{userPhoneNumberSub},

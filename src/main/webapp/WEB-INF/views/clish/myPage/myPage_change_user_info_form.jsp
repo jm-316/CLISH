@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Clish - 정보변경</title>
 <style type="text/css">
 
 * {
@@ -386,15 +386,15 @@ form input[type="radio"] {
 			<tr>
 				<th>주소</th>
 				<td>
-					<input type="text" name="userPostcode" id="userPostcode" placeholder="우편번호" required readonly style="width: 150px;" value=${user.userPostcode }>
+					<input type="text" name="userPostcode" id="userPostcode" placeholder="우편번호" required readonly style="width: 150px;" value="${user.userPostcode }">
 					<input type="button" value="주소검색" id="btnSearchAddress"><br>
-					<input type="text" name="userAddress1" id="userAddress1" placeholder="기본주소" required readonly style="width: 70%;" value=${user.userAddress1 }><br>
-					<input type="text" name="userAddress2" id="userAddress2" placeholder="상세주소" required style="width: 70%;" value=${user.userAddress2 }>
+					<input type="text" name="userAddress1" id="userAddress1" placeholder="기본주소" required readonly style="width: 70%;" value="${user.userAddress1 }"><br>
+					<input type="text" name="userAddress2" id="userAddress2" placeholder="상세주소" required style="width: 70%;" value="${user.userAddress2 }">
 				</td>
 			</tr>
 		</table>
 		<input type="hidden" name="userType" value="${sessionScope.sUT}"/>
-		<p><button type="submit" id="submitBtn"> 정보변경</button></p>
+		<div style="display: flex; justify-content: flex-end;"><button type="submit" id="submitBtn"> 정보변경</button></div>
 		</form>
 	
 	</div>
@@ -436,6 +436,7 @@ form input[type="radio"] {
 		
 	    changeBtn.addEventListener("click", function() {
 	    	window.isEmailVerified = false;
+	    	updateSubmitButton();
 	    	// 이메일 입력창 수정 가능
 	        emailInput.removeAttribute("readonly");
 	        emailInput.focus();
@@ -583,7 +584,7 @@ form input[type="radio"] {
 		        new daum.Postcode({
 		            oncomplete: function (data) {
 		                const address = data.buildingName
-		                    ? data.address + " (" + ${data.buildingName} + ")"
+		                    ? data.address + '(' + data.buildingName + ')'
 		                    : data.address;
 		                postcodeInput.value = data.zonecode;
 		                address1Input.value = address;
