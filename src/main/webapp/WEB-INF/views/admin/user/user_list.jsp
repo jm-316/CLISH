@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,55 +28,55 @@
 								<option value="oldest" <c:if test="${param.filter eq 'oldest' }">selected</c:if>>오래된가입순</option>
 							</select>
 							<div class="search-box">
-								<input type="text" class="search-input" name="searchKeyword"/>
+								<input type="text" class="search-input" name="searchKeyword" placeholder="검색할 이름을 입력해주세요." value="${param.searchKeyword}"/>
 								<button class="search-button">검색</button>
 							</div>
 						</form>
 					</div>
 					<div>
-						<div>
-							<table class="table">
-								<thead>
-									<tr>
-										<th>회원번호</th>
-										<th>회원아이디</th>
-										<th>이름</th>
-										<th>연락처</th>
-										<th>이메일</th>
-										<th>성별</th>
-										<th>가입일</th>
-										<th colspan="2"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="user" items="${users}">
-										<tr>
-											<td>${user.userIdx}</td>
-											<td>${user.userId}</td>
-											<td>${user.userName}</td>
-											<td>${user.userPhoneNumber}</td>
-											<td>${user.userEmail}</td>
-											<td>${user.userGender}</td>
-											<td>${user.userRegDate}</td>
-											<td>
-												<button onclick="location.href='/admin/user/${user.userIdx}?pageNum=${pageInfo.pageNum}'">상세보기</button>
-											</td>
-											<td>
-												<button type="button" onclick="event.stopPropagation(); withdraw('${user.userIdx}')">
-													탈퇴
-												</button>
-											</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
+						<div style="height: 260px;">
+							<c:choose>
+								<c:when test="${empty users}">
+									<div class="list-empty">검색된 회원이 없습니다.</div>
+								</c:when>
+								<c:otherwise>
+									<table class="table">
+										<thead>
+											<tr>
+												<th>회원번호</th>
+												<th>회원아이디</th>
+												<th>이름</th>
+												<th>연락처</th>
+												<th>이메일</th>
+												<th>가입일</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="user" items="${users}">
+												<tr>
+													<td>${fn:substringAfter(user.userIdx, 'user')}</td>
+													<td>${user.userId}</td>
+													<td>${user.userName}</td>
+													<td>${user.userPhoneNumber}</td>
+													<td>${user.userEmail}</td>
+													<td>${user.userRegDate}</td>
+													<td>
+														<button onclick="location.href='/admin/user/${user.userIdx}?pageNum=${pageInfo.pageNum}'">상세보기</button>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
 						<div>
 							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 								<input type="button" value="이전" 
-									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum - 1}&filter=${param.filter}'" 
+									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum - 1}&filter=${param.filter}&searchKeyword=${param.searchKeyword}'" 
 									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 								
 								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
@@ -84,13 +85,13 @@
 											<strong>${i}</strong>
 										</c:when>
 										<c:otherwise>
-											<a href="/admin/user?pageNum=${i}&filter=${param.filter}">${i}</a>
+											<a href="/admin/user?pageNum=${i}&filter=${param.filter}&searchKeyword=${param.searchKeyword}">${i}</a>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 								
 								<input type="button" value="다음" 
-									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum + 1}&filter=${param.filter}'" 
+									onclick="location.href='/admin/user?pageNum=${pageInfo.pageNum + 1}&filter=${param.filter}&searchKeyword=${param.searchKeyword}'" 
 								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 							</c:if>
 						</div>
@@ -99,16 +100,5 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		function withdraw(userIdx) {
-			if (confirm("탈퇴 처리하시겠습니까?")) {
-		        const form = document.createElement('form');
-		        form.method = 'POST';
-		        form.action = "/admin/user/" + userIdx + "/withdraw";
-		        document.body.appendChild(form);
-		        form.submit();
-			}
-		}
-	</script>
 </body>
 </html>

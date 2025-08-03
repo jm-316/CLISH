@@ -67,13 +67,13 @@
 							<option value="latest">최신등록순</option>
 						</select>
 						<div class="search-box">
-							<input type="text" class="search-input" name="searchKeyword"/>
+							<input type="text" class="search-input" name="searchKeyword" placeholder="검색할 강의 제목을 입력해주세요." value="${param.searchKeyword}"/>
 							<button class="search-button">검색</button>
 						</div>
 					</form>
 					<div>
 						<c:choose>
-							<c:when test="${hasRegisteredClass}">
+							<c:when test="${empty classList}">
 								<div class="list-empty">등록된 강의가 없습니다.</div>
 							</c:when>
 							<c:otherwise>
@@ -113,7 +113,7 @@
 						<div>
 							<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
 								<input type="button" value="이전" 
-									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum - 1}'" 
+									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum - 1}&filter=${param.filter}&searchKeyword=${param.searchKeyword}'" 
 									<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 								
 								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
@@ -122,13 +122,13 @@
 											<strong>${i}</strong>
 										</c:when>
 										<c:otherwise>
-											<a href="/admin/classList?pageNum=${i}">${i}</a>
+											<a href="/admin/classList?pageNum=${i}&filter=${param.filter}&searchKeyword=${param.searchKeyword}">${i}</a>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 								
 								<input type="button" value="다음" 
-									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum + 1}'" 
+									onclick="location.href='/admin/classList?pageNum=${pageInfo.pageNum + 1}&filter=${param.filter}&searchKeyword=${param.searchKeyword}'" 
 								<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 							</c:if>
 						</div>

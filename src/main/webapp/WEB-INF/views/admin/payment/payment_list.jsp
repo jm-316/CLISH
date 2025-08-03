@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,7 @@
 						  </div>
 						</form>
 					</div>
-					<div>
+					<div style="height: 520px;">
 						<c:choose>
 							<c:when test="${empty paymentList}">
 								<div class="list-empty">결제된 강의가 없습니다.</div>
@@ -53,7 +54,7 @@
 									<tbody>
 										<c:forEach var="payment" items="${paymentList}">
 											<tr>
-												<td>${payment.imp_uid}</td>
+												<td>${fn:substringAfter(payment.imp_uid, 'imp_')}</td>
 												<td>${payment.formatted_pay_time}</td>
 												<td>${payment.class_title}</td>
 												<td>${payment.user_name}</td>
