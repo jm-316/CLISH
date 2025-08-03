@@ -35,9 +35,13 @@ public interface MyPageMapper {
 	//예약삭제
 	int deleteReservation(ReservationDTO reservation);
 	//예약목록선택
-	List<ReservationDTO> selectAllReservationInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit,@Param("user")UserDTO user);
+	List<ReservationDTO> selectAllReservationInfo(
+			@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user
+			, @Param("reservationOrderBy")String reservationOrderBy, @Param("reservationOrderDir")String reservationOrderDir);
 	//결제목록선택
-	List<PaymentInfoDTO> selectAllPaymentInfo(@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	List<PaymentInfoDTO> selectAllPaymentInfo(
+			@Param("startRow")int startRow,@Param("listLimit")int listLimit, @Param("user")UserDTO user
+			, @Param("paymentOrderBy")String paymentOrderBy, @Param("paymentOrderDir")String paymentOrderDir);
 	//예약정보, 예약된 수업정보
 	Map<String, Object> ReservationDetailInfo(ReservationDTO reservation);
 	// 남은자리검색

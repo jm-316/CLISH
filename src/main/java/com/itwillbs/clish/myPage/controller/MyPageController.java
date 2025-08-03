@@ -282,9 +282,17 @@ public class MyPageController {
 	// 예약/결제 목록 불러오기
 	@GetMapping("/payment_info")
 	public String payment_info(HttpSession session, Model model,UserDTO user
-			, @RequestParam(defaultValue = "1") int reservationPageNum
-			, @RequestParam(defaultValue = "1") int paymentPageNum) {
+		,@RequestParam(defaultValue = "1") int reservationPageNum
+		,@RequestParam(defaultValue = "reservation_class_date") String reservationOrderBy
+		,@RequestParam(defaultValue = "desc") String reservationOrderDir
+		,@RequestParam(defaultValue = "1") int paymentPageNum
+		,@RequestParam(defaultValue = "pay_time") String paymentOrderBy
+		,@RequestParam(defaultValue = "desc") String paymentOrderDir) {
 		
+		model.addAttribute("reservationOrderBy", reservationOrderBy);
+		model.addAttribute("reservationOrderDir", reservationOrderDir);
+		model.addAttribute("paymentOrderBy", paymentOrderBy);
+		model.addAttribute("paymentOrderDir", paymentOrderDir);
 		//세션에 저장된 sId이용 유저정보 불러오기
 		user = getUserFromSession(session);
 		
@@ -308,7 +316,8 @@ public class MyPageController {
 			// 삭제할 예약목록 삭제
 			myPageService.reservationCheck(user);
 			// 예약목록 불러오기
-			List<ReservationDTO> reservationList = myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user);
+			List<ReservationDTO> reservationList =
+				myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user, reservationOrderBy, reservationOrderDir);
 			// 예약목록 정보 저장
 			model.addAttribute("reservationList",reservationList);
 
@@ -328,7 +337,8 @@ public class MyPageController {
 			model.addAttribute("paymentPageInfo", pageInfoDTO);
 			
 			//결제 정보 불러오기
-			List<PaymentInfoDTO> paymentList = myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user);
+			List<PaymentInfoDTO> paymentList = 
+				myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user, paymentOrderBy, paymentOrderDir);
 			
 			//결제시간정보 보기좋게 바꾸기
 			for(PaymentInfoDTO payment : paymentList) {

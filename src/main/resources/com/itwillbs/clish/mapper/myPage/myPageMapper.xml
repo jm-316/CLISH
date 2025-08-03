@@ -113,7 +113,7 @@
 		WHERE
 			r.user_idx = #{user.userIdx}
 		ORDER BY 
-			(r.reservation_status = 1) DESC, r.reservation_class_date DESC
+			(r.reservation_status = 1) DESC, ${reservationOrderBy} ${reservationOrderDir}
 		LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -131,7 +131,7 @@
 		WHERE
 			r.user_idx = #{user.userIdx}
 		ORDER BY
-			r.reservation_class_date DESC
+			${paymentOrderBy} ${paymentOrderDir}
 		LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -398,6 +398,8 @@
 			AND r.reservation_status = 2
 			AND CURDATE() >= r.reservation_class_date
 			AND rev.reservation_idx IS NULL
+		ORDER BY
+			r.reservation_class_date
 		LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -412,6 +414,7 @@
 		WHERE r.user_idx = #{userIdx}
 			AND r.reservation_status = 2
 			AND CURDATE() >= r.reservation_class_date -- 예약한 날짜가 오늘이거나 과거일때
+		
 	</select>
 	
 	<!-- 수강 후기별 후기사진을 보기위해 rseultMap 작성 -->
@@ -460,7 +463,10 @@
 			ON rev.reservation_idx = r.reservation_idx
 		LEFT JOIN USER u
 			ON rev.user_idx = u.user_idx
-		WHERE rev.user_idx = #{user.userIdx}
+		WHERE 
+			rev.user_idx = #{user.userIdx}
+		ORDER BY
+			GREATEST(updated_at, created_at) DESC
 		LIMIT
 			#{startRow}
 			, #{listLimit}

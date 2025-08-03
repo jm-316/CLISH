@@ -8,13 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.pageSection {
 		text-align: center;
 		border: none;
 	}
-
-
+	.sortable {
+		cursor: pointer;	
+	}
+	
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,21 +34,38 @@
 	<main id="container">
 	
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
-	
 	<div id="main">
 	
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
 		<div>
 			<h3>예약 목록</h3>
-			<table >
+			<table id="reservationTable">
 				<tr>
-					<th>결제상태</th>
+					<th >결제상태</th>
 					<th>예약번호</th>
 					<th>예약자</th>
 					<th>클래스</th>
-					<th>클래스예약일</th>
-					<th>예약완료일</th>
+					<th class="sortable" data-column="reservation_class_date">
+						클래스예약일
+						<c:choose>
+							<c:when test="${reservationOrderBy eq 'reservation_class_date' }">
+									<c:if test="${reservationOrderDir eq 'desc' }">▼</c:if>
+									<c:if test="${reservationOrderDir eq 'asc' }">▲</c:if>
+							</c:when>
+							<c:otherwise>↕</c:otherwise>
+						</c:choose>
+					</th>
+					<th class="sortable" data-column="reservation_com">
+						예약완료일
+						<c:choose>
+							<c:when test="${reservationOrderBy eq 'reservation_com' }">
+									<c:if test="${reservationOrderDir eq 'desc' }">▼</c:if>
+									<c:if test="${reservationOrderDir eq 'asc' }">▲</c:if>
+							</c:when>
+							<c:otherwise>↕</c:otherwise>
+						</c:choose>
+					</th>
 					<th>취소</th>
 					<th>결제</th>
 					<th>상세보기</th>
@@ -113,16 +133,43 @@
 		</div>
 		<div>
 		
-			<h3>결제 목록</h3>
-			<table border="solid 1px">
+			<h3 >결제 목록</h3>
+			<table id="paymentTable">
 				<tr>
 					<th>결제 번호</th>
 					<th>예약 번호</th>
-					<th>결제 상태</th>
+					<th class="sortable" data-column="status">
+						결제 상태
+						<c:choose>
+							<c:when test="${paymentOrderBy eq 'status' }">
+									<c:if test="${paymentOrderDir eq 'desc' }">▼</c:if>
+									<c:if test="${paymentOrderDir eq 'asc' }">▲</c:if>
+							</c:when>
+							<c:otherwise>↕</c:otherwise>
+						</c:choose>
+					</th>
 					<th>유저이름</th>
 					<th>클래스명</th>
-					<th>예약일</th>
-					<th>결제완료시간</th>
+					<th class="sortable" data-column="reservation_class_date">
+						예약일
+						<c:choose>
+							<c:when test="${paymentOrderBy eq 'reservation_class_date' }">
+									<c:if test="${paymentOrderDir eq 'desc' }">▼</c:if>
+									<c:if test="${paymentOrderDir eq 'asc' }">▲</c:if>
+							</c:when>
+							<c:otherwise>↕</c:otherwise>
+						</c:choose>
+					</th>
+					<th class="sortable" data-column="pay_time">
+						결제완료시간
+						<c:choose>
+							<c:when test="${paymentOrderBy eq 'pay_time' }">
+									<c:if test="${paymentOrderDir eq 'desc' }">▼</c:if>
+									<c:if test="${paymentOrderDir eq 'asc' }">▲</c:if>
+							</c:when>
+							<c:otherwise>↕</c:otherwise>
+						</c:choose>
+					</th>
 					<th>취소</th>
 					<th>상세보기</th>
 				</tr>
@@ -188,6 +235,66 @@
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
 <script type="text/javascript">
+	// 정렬방법 선택
+	$(document).ready(() => {
+		const initialReservationOrderBy = "${reservationOrderBy}"; //예약정렬 컬럼
+		const initialReservationOrderDir = "${reservationOrderDir}";// 정렬방법
+		const initialPaymentOrderBy = "${paymentOrderBy}"; // 결제정렬 컬럼
+		const initialPaymentOrderDir = "${paymentOrderDir}"; // 정렬방법
+		
+		// 예약목록 정렬방법 선택
+		$('#reservationTable th.sortable').click(function () {
+			// 클릭한 sortable 클래스를 가지고 있는 th태그의 data-column속성 값을 정렬기준으로 요청   
+			const column = $(this).data('column');
+			// 요청할 정렬방법
+			let newOrderDir = 'desc';
+			// 요청한 정렬기준이 기존의 정렬기준과 같고 기존의 정렬방법이 'desc'라면 요청방법은 'asc'이다
+			if (initialReservationOrderBy === column && initialReservationOrderDir === 'desc') {
+				newOrderDir = 'asc';	
+			}
+			
+			const urlParams = new URLSearchParams(window.location.search);
+			
+			urlParams.set('reservationOrderBy', column);
+			urlParams.set('reservationOrderDir', newOrderDir);
+			// 결제 파라미터 세팅
+			if (urlParams.has('paymentOrderBy') === false) {
+		      urlParams.set('paymentOrderBy', initialPaymentOrderBy);
+		    }
+		    if (urlParams.has('paymentOrderDir') === false) {
+		      urlParams.set('paymentOrderDir', initialPaymentOrderDir);
+		    }
+			// 파라미터 추가해서 페이지로 이동
+			window.location.search = urlParams.toString();
+		});
+		
+		// 결제목록 정렬방법 선택
+		$('#paymentTable th.sortable').click(function () {
+			// 클릭한 sortable 클래스를 가지고 있는 th태그의 data-column속성 값을 정렬기준으로 요청   
+			const column = $(this).data('column');
+			// 요청할 정렬방법
+			let newOrderDir = 'desc';
+			// 요청한 정렬기준이 기존의 정렬기준과 같고 기존의 정렬방법이 'desc'라면 요청방법은 'asc'이다
+			if (initialPaymentOrderBy === column && initialPaymentOrderDir === 'desc') {
+				newOrderDir = 'asc';	
+			}
+			
+			const urlParams = new URLSearchParams(window.location.search);
+			
+			urlParams.set('paymentOrderBy', column);
+			urlParams.set('paymentOrderDir', newOrderDir);
+			// 결제 파라미터 세팅
+			if (urlParams.has('reservationOrderBy') === false) {
+		      urlParams.set('reservationOrderBy', initialReservationOrderBy);
+		    }
+		    if (urlParams.has('reservationOrderDir') === false) {
+		      urlParams.set('reservationOrderDir', initialReservationOrderDir);
+		    }
+			// 파라미터 추가해서 페이지로 이동
+			window.location.search = urlParams.toString();
+		});
+	});
+	
 	//취소버튼 함수
 	function cancelReservation(btn) {
 		if(confirm("정말로 예약을 취소하시겠습니까?")){

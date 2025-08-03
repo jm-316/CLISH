@@ -111,15 +111,15 @@ public class MyPageService {
 	
 	
 	// 예약정보리스트 불러오기
-	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user) {
+	public List<ReservationDTO> getReservationInfo(int startRow, int listLimit, UserDTO user, String reservationOrderBy, String reservationOrderDir) {
 		
 		// 삭제후 예약 목록 불러오기
-		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user);
+		return myPageMapper.selectAllReservationInfo(startRow, listLimit, user, reservationOrderBy, reservationOrderDir);
 	}
 	
 	// 결제 정보 불러오기
-	public List<PaymentInfoDTO> getPaymentList(int startRow, int listLimit, UserDTO user) {
-		return myPageMapper.selectAllPaymentInfo(startRow, listLimit, user);
+	public List<PaymentInfoDTO> getPaymentList(int startRow, int listLimit, UserDTO user, String paymentOrderBy, String paymentOrderDir) {
+		return myPageMapper.selectAllPaymentInfo(startRow, listLimit, user, paymentOrderBy, paymentOrderDir);
 	}
 	
 	// 예약 취소
