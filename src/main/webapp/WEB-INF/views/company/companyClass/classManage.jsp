@@ -20,10 +20,12 @@
 		}
     	
         .classManage-container {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
+		    display: flex;
+		    width: 100%;
+		    min-height: 100vh;
+		    padding-right: 200px; /* ✅ 오른쪽도 사이드바만큼 여백 주기 */
+		    box-sizing: border-box;
+		}
 
         .content-area {
             flex: 1;
@@ -66,6 +68,7 @@
         .class-table {
             width: 100%;
             border-collapse: collapse;
+            margin-left: 0px; /* ✅ 살짝 왼쪽으로 이동 */
         }
 
         .class-table th, .class-table td {

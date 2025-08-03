@@ -11,9 +11,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
     .container {
-      display: flex;
-      min-height: 80vh;
-    }
+	  display: flex;
+	  min-height: 80vh;
+	  padding-right: 200px; /* ✅ 오른쪽 여백 추가! */
+	  box-sizing: border-box;
+	}
 
     /* 왼쪽 사이드바 */
 	.sidebar {

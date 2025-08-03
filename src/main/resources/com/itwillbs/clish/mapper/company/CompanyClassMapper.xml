@@ -87,11 +87,11 @@
 			AND C.CLASS_STATUS IN (2, 3)
 		  
 			<if test="type == 'short'">
-				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) <= 2]]>
+				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) = 0]]>
 			</if>
 		 
 			<if test="type == 'regular'">
-				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) >= 3]]>
+				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) >= 1]]>
 			</if>
 		</where>
 	</select>
@@ -110,6 +110,8 @@
 			, end_date = #{classInfo.endDate}
 			, class_days = #{classInfo.classDays}
 			, location = #{classInfo.location}
+			, class_intro = #{classInfo.classIntro}
+			, class_content = #{classInfo.classContent}
 			, updated_at = now()
 		WHERE
 			class_idx = #{classInfo.classIdx}

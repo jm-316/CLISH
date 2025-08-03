@@ -14,6 +14,7 @@
       display: flex;
       width: 100%;
       min-height: 600px;
+      padding-right: 220px;
     }
 
     .sidebar {
