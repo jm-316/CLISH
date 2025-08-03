@@ -307,7 +307,6 @@ form input[type="radio"] {
 				<th>이메일</th>
 				<td>
 					<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
-					
 					<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
 					<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
 					<button type="button" id="checkEmailVerifiedBtn" style="display: none; width:90px;">[인증 완료 확인]</button>
@@ -403,26 +402,15 @@ form input[type="radio"] {
 	</main>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="module">
-	import { initEmailAuth } from '/resources/js/email/email_auth.js';
-	initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
 
-	window.addEventListener("DOMContentLoaded", () => {
-		initJoinForm();
-		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result", {purpose: "join"});
-		// userEmail : 이메일 입력창 id
-		// emailVerifyBtn : 버튼 id
-		// email-auth-result : 이메일 인증 표시창 id
-		// purpose : 용도 구분, 위에 3개만 입력해도 작동함
-	});
-</script>
 <script type="text/javascript">
 	window.isEmailVerified = true;
 	
 	document.addEventListener("DOMContentLoaded", function() {
 	    const emailInput = document.getElementById("userEmail");
-	    const changeBtn = document.getElementById("changeEmail");
+	    const changeEmailBtn = document.getElementById("changeEmail");
 	    const verifyBtn = document.getElementById("emailVerifyBtn");
+	    const checkVerifyBtn = document.getElementById('checkEmailVerifiedBtn');
 	    const authResult = document.getElementById("email-auth-result");
 		const userRepNameInput = document.getElementById('userRepName');
 		const initialRepName = userRepNameInput.value.trim();
@@ -435,7 +423,7 @@ form input[type="radio"] {
 		const postcodeInput = document.getElementById("userPostcode");
 		const address1Input = document.getElementById("userAddress1");
 		const address2Input = document.getElementById("userAddress2");
-
+		
 		var isPwOk = true;
 		var isPwMatchOk = true;
 		var isRepNameOk = true;
@@ -444,7 +432,11 @@ form input[type="radio"] {
 		
 		updateSubmitButton();
 		
-	    changeBtn.addEventListener("click", function() {
+		var sendMail = null;
+	    window.isEmailVerified = true; // 전역으로 인증상태 관리
+		
+	    // 이메일 변경 클릭
+	    changeEmailBtn.addEventListener("click", function() {
 	    	window.isEmailVerified = false;
 	    	updateSubmitButton();
 	    	// 이메일 입력창 수정 가능
@@ -453,11 +445,100 @@ form input[type="radio"] {
 	
 	        // 이메일 인증 버튼, 인증 안내 문구 모두 보이게
 	        verifyBtn.style.display = "inline-block";
+	        checkVerifyBtn.style.display = "inline-block";
 	        authResult.style.display = "inline-block";
 	
 	        // "이메일변경" 버튼 숨김 (또는 비활성화 해도 됨)
-	        changeBtn.style.display = "none";
+	        changeEmailBtn.style.display = "none";
 	    });
+	    
+	    checkEmailVerifiedBtn.addEventListener("click", function(){
+	    	
+	    });
+	    
+		//이메일 인증 요청 클릭 시
+	    verifyBtn.addEventListener('click', function() {
+	        const email = emailInput.value.trim();
+	        if (!email) {
+	            alert('이메일을 입력하세요!');
+	            emailInput.focus();
+	            return;
+	        }
+	        // 서버에 인증메일 보내기 API 호출
+	        fetch('/email/send', {
+	            method: 'POST',
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify({ userEmail: email })
+	        })
+	        .then(res => res.text())
+	        .then(token => {
+	            if (token) {
+	                alert('인증 메일이 전송되었습니다. 메일 내 인증 링크를 확인하세요.');
+	                authResult.textContent = '이메일 인증 중...';
+	                authResult.style.color = 'orange';
+	                sendMail = email;
+	            } else {
+	                alert('이메일 전송에 실패했습니다.');
+	            }
+	        })
+	        .catch(() => alert('서버 오류로 메일 전송 실패!'));
+	    });
+		
+		// 3) 인증 완료 확인 클릭 시
+	    checkVerifyBtn.addEventListener('click', function() {
+	        const email = emailInput.value.trim().toLowerCase();
+	        if (!email) {
+	            alert('이메일을 입력하세요!');
+	            emailInput.focus();
+	            return;
+	        }
+	        
+	        if (sendMail !== email) {
+	            alert('인증 요청한 이메일과 일치하지 않습니다.');
+	            return;
+	        }
+
+	        fetch('/email/check?email=' + encodeURIComponent(email))
+	        .then(res => res.json())
+	        .then(data => {
+	            if (data.verified) {
+	            	authResult.textContent = '이메일 인증 완료!';
+	            	authResult.style.color = 'green';
+
+	                emailInput.setAttribute('readonly', 'readonly');
+	                verifyBtn.style.display = 'none';
+	                checkVerifyBtn.style.display = 'none';
+	                changeEmailBtn.style.display = 'inline-block';
+
+	                window.isEmailVerified = true;
+	                updateSubmitButton();
+	            } else {
+	            	authResult.textContent = '아직 인증되지 않았습니다.';
+	            	authResult.style.color = 'red';
+	                window.isEmailVerified = false;
+	                updateSubmitButton();
+	            }
+	        })
+	        .catch(() => {
+	            alert('인증 확인 중 오류가 발생했습니다.');
+	        });
+	    });
+	
+	    function updateSubmitButton() {
+	        if (window.isEmailVerified /* && 다른 조건들 */) {
+	            submitBtn.disabled = false;
+	        } else {
+	            submitBtn.disabled = true;
+	        }
+	    }
+
+	    // 초기 버튼 상태 업데이트
+	    updateSubmitButton();
+	    
+	    
+	    
+	    
+	    
 	    
 		// 닉네임창 벗어나면 중복체크 실행
 		userRepNameInput.addEventListener('blur', () => {
