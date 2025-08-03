@@ -35,7 +35,7 @@
     
 
 }
-#flex-item2 > li > a:hover {
+#flex-item2 > li > a:hover, .flex-item2:hover {
 	background-color: #f0f0f0;
     font-weight: bold;
 }
@@ -45,6 +45,9 @@
 }
 #flex-item2 > li:first-child {
     width: 50%;
+}
+#small-menu {
+	font-size: 24px;
 }
 
 
@@ -192,9 +195,20 @@ input#search {
 #notification-box > ul > li {
 	margin-top: 5px;
 }
+#small-menu {
+	display:none;
+}
 
 
-
+@media screen and (max-width: 1250px) {
+	#flex-item2 {
+	display: none;
+	}
+	#small-menu {
+	display: inline-block;
+	}
+	
+}
 
 
 

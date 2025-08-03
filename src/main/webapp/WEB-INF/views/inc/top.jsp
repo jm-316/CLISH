@@ -5,7 +5,7 @@
 <section id="top-menu">
   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
   <nav>
-      <ul id="flex-item2">
+      <ul id="flex-item2" class="flex-item2">
           <li>
                <form action="/search" name="search" method="get" id="search-form">
                   <input type="search" id="search" placeholder="검색어를 입력하세요" name="searchKeyword" value="${param.searchKeyword}" required="required">
@@ -17,6 +17,7 @@
           <li><a href="/event/eventHome">이벤트</a></li>
 
       </ul>
+       <a class="flex-item2" id="small-menu">메뉴</a>
           
 	<div id="sub-nav">
         <ul>
