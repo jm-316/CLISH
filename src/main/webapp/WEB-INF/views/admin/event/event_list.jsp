@@ -88,7 +88,7 @@
 						<div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
 							<div>
 								<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
-									<input type="button" value="이전" onclick="location.href='/admin/event?pageNum=${pageInfo.pageNum - 1}'" 
+									<input type="button" value="이전" onclick="location.href='/admin/event?pageNum=${pageInfo.pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'" 
 								<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 									<c:choose>
@@ -96,11 +96,11 @@
 											<strong>${i}</strong>
 										</c:when>
 										<c:otherwise>
-											<a href="/admin/event?pageNum=${i}">${i}</a>
+											<a href="/admin/event?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-								<input type="button" value="다음" onclick="location.href='/admin/event?pageNum=${pageInfo.pageNum + 1}'" 
+								<input type="button" value="다음" onclick="location.href='/admin/event?pageNum=${pageInfo.pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'" 
 										<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 								</c:if>
 							</div>

@@ -39,43 +39,50 @@
 					</div>
 					<div>
 						<div style="height: 250px;">
-							<table>
-								<colgroup>
-									<col width="10%">
-									<col width="40%">
-									<col width="20%">
-									<col width="10%">
-									<col width="20%">
-								</colgroup>
-								<thead>
-									<tr>
-										<th>글순서</th>
-										<th>제목</th>
-										<th>작성일자</th>
-										<th>게시판유형</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="support" items="${supportList}" varStatus="status" >
-										<tr>
-											<td>${pageInfo.startRow + status.index + 1}</td>
-											<td>${support.supportTitle}</td>
-											<td>${support.supportCreatedAt}</td>
-											<td>${support.supportCategory}</td>
-											<td class="flex">
-												<button onclick="location.href='/admin/notice/detail/${support.supportIdx}?pageNum=${param.pageNum}'">상세보기</button>
-												<button onclick="location.href='/admin/notice/delete/${support.supportIdx}'">삭제</button>
-											</td>
-										</tr>
-									</c:forEach>									
-								</tbody>
-							</table>
+							<c:choose>
+								<c:when test="${empty supportList}">
+									<div class="list-empty">검색된 공지가 없습니다.</div>
+								</c:when>
+								<c:otherwise>
+									<table>
+										<colgroup>
+											<col width="10%">
+											<col width="35%">
+											<col width="20%">
+											<col width="15%">
+											<col width="20%">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>글순서</th>
+												<th>제목</th>
+												<th>작성일자</th>
+												<th>게시판유형</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="support" items="${supportList}" varStatus="status" >
+												<tr>
+													<td>${pageInfo.startRow + status.index + 1}</td>
+													<td>${support.supportTitle}</td>
+													<td>${support.supportCreatedAt}</td>
+													<td>${support.supportCategory}</td>
+													<td class="flex">
+														<button onclick="location.href='/admin/notice/detail/${support.supportIdx}?pageNum=${param.pageNum}'">상세보기</button>
+														<button onclick="location.href='/admin/notice/delete/${support.supportIdx}'">삭제</button>
+													</td>
+												</tr>
+											</c:forEach>									
+										</tbody>
+									</table>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
 							<div>
 								<c:if test="${not empty pageInfo.maxPage or pageInfo.maxPage > 0}">
-									<input type="button" value="이전" onclick="location.href='/admin/notice?pageNum=${pageInfo.pageNum - 1}'" 
+									<input type="button" value="이전" onclick="location.href='/admin/notice?pageNum=${pageInfo.pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'" 
 								<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>>
 								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 									<c:choose>
@@ -83,11 +90,11 @@
 											<strong>${i}</strong>
 										</c:when>
 										<c:otherwise>
-											<a href="/admin/notice?pageNum=${i}">${i}</a>
+											<a href="/admin/notice?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-								<input type="button" value="다음" onclick="location.href='/admin/notice?pageNum=${pageInfo.pageNum + 1}'" 
+								<input type="button" value="다음" onclick="location.href='/admin/notice?pageNum=${pageInfo.pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'" 
 										<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>>
 								</c:if>
 							</div>

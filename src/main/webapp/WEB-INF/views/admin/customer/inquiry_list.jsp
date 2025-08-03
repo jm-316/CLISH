@@ -104,7 +104,7 @@
 						</div>
 					</div>
 					<div>
-						<div>
+						<div style="height: 250px;">
 							<table>
 								<colgroup>
 									<col width="10%">

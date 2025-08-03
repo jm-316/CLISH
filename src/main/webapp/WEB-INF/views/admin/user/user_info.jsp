@@ -25,7 +25,7 @@
 					<div>
 						<h3>회원 상세 정보</h3>
 					</div>
-					<form>
+					<form action="/admin/user/${user.userIdx}/withdraw" method="POST">
 						<table border="1" style="width: 100%; text-align: left;">
 							<tr>
 								<th><label for="userName">회원이름</label></th>
@@ -78,8 +78,9 @@
 								</td>
 							</tr>
 						</table>
-						<div>
+						<div class="button-wrapper">
 							<button type="button" onclick="location.href='/admin/user'">닫기</button>
+							<button type="submit">탈퇴</button>
 						</div>
 					</form>
 				</div>
