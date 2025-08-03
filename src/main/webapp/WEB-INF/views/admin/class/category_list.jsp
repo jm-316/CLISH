@@ -222,7 +222,6 @@
 	                } else if (result.orderDuplicate) {
 	                    alert("이미 사용 중인 정렬 순서입니다.");
 	                } else {
-	                    // 중복 없음 → 폼 제출
 	                    $("form[action='/admin/category/add']")[0].submit();
 	                }
 	            },
