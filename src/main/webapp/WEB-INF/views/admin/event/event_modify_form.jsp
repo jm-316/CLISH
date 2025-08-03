@@ -143,7 +143,7 @@
 			const selectedRadio  = [...radioButtons].find(radio => radio.checked);
 			const selectedValue = selectedRadio ? selectedRadio.value : null;
 			
-			const isValidStatus = validateEventStatusChange(selectedValue, startDate, endDate, today, endInput);
+			const isValidStatus = validateEventStatusChange(selectedValue, startDate, endDate, today, endInput, startInput);
 			
 			if (!isValidStatus) {
 				e.preventDefault();
@@ -157,7 +157,7 @@
 			}
 		});
 		
-		function validateEventStatusChange(selectedValue, startDate, endDate, today, endInput) {
+		function validateEventStatusChange(selectedValue, startDate, endDate, today, endInput, startInput) {
 			// 예정
 			if (selectedValue === "2") {
 				if (startDate <= today) {
@@ -171,6 +171,12 @@
 				if (endDate < today) {
 					alert("종료 날짜가 오늘보다 이전입니다. 종료 날짜를 수정해주세요.");
 					endInput.focus();
+				    return false;
+				}
+				
+				if (startDate > today) {
+					alert("시작 날짜는 오늘 날짜와 같거나 이전이어야 합니다.");
+					startInput.focus();
 				    return false;
 				}
 			}
