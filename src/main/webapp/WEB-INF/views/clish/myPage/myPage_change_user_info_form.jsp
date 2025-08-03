@@ -310,6 +310,7 @@ form input[type="radio"] {
 					
 					<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
 					<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
+					<button type="button" id="checkEmailVerifiedBtn" style="display: none;">[인증 완료 확인]</button>
 					<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
 				</td>
 			</tr>
@@ -405,6 +406,15 @@ form input[type="radio"] {
 <script type="module">
 	import { initEmailAuth } from '/resources/js/email/email_auth.js';
 	initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
+
+	window.addEventListener("DOMContentLoaded", () => {
+		initJoinForm();
+		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result", {purpose: "join"});
+		// userEmail : 이메일 입력창 id
+		// emailVerifyBtn : 버튼 id
+		// email-auth-result : 이메일 인증 표시창 id
+		// purpose : 용도 구분, 위에 3개만 입력해도 작동함
+	});
 </script>
 <script type="text/javascript">
 	window.isEmailVerified = true;

@@ -215,241 +215,252 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>${recentReservePageInfo.listCount}</td>
-							<td>${recentSiteInqueryPageInfo.listCount }</td>
-							<td>${recentClassInqueryPageInfo.listCount }</td>
+							<td>
+								${recentReservePageInfo.listCount}
+							</td>
+							<td>
+								${recentSiteInqueryPageInfo.listCount }
+							</td>
+							<td>
+								${recentClassInqueryPageInfo.listCount }
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</section>
 			
-			<section class="subSection">
-			<p class="subTitle">결제가능 예약목록</p>
-			
-				<table class="subTable">
-					<thead>
-						<tr>
-							<th>예약번호</th>
-							<th>결제상태</th>
-							<th>예약자</th>
-							<th>클래스</th>
-							<th>클래스예약</th>
-							<th>클래스예약 신청</th>
-							<th>취소</th>
-							<th>결제</th>
-							<th>상세보기</th>
-						</tr>
-					</thead>
-				    <tbody>
-					    <c:forEach var="recentReserve" items="${RecentReservation}">
-						    <tr>
-								<td>${recentReserve.reservation_idx}</td>
-								<td>
-									<c:if test="${recentReserve.reservation_status eq 1 }">미결제</c:if>
-								</td>
-								<td>${user.userName}</td>
-								<td>${recentReserve.class_title}</td>
-								<td>
-								<fmt:parseDate var="reservationClassDate" 
-									value="${recentReserve.reservation_class_date}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationClassDate}" pattern="MM-dd"/>
-								</td>
-	<%-- 							<td>${recentReserve.reservation_class_date}</td> --%>
-								<td>
-								<fmt:parseDate var="reservationCom" 
-									value="${recentReserve.reservation_com}"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-								<fmt:formatDate value="${reservationCom}" pattern="MM-dd HH:mm"/>
-								</td>
-	<%-- 							<td>${recentReserve.reservation_com}</td> --%>
-								<td><input type="button" value="취소" data-reservation-num="${recentReserve.reservation_idx}"
-		          				onclick="cancelReservation(this)" <c:if test="${recentReserve.reservation_status eq 2 }">disabled</c:if>></td>
-							<td><input type="button" value="결제" data-reservation-num="${recentReserve.reservation_idx}"
-		        				onclick="payReservation(this)" <c:if test="${recentReserve.reservation_status eq 2 }">disabled</c:if>> </td>
-							<td><input type="button" value="상세보기" data-reservation-num="${recentReserve.reservation_idx}"
-		        	  			onclick="reservationInfo(this)"> </td>
-						    </tr>
-					    </c:forEach>
-				    </tbody>
-				</table>
+			<c:if test="${ recentReservePageInfo.listCount > 0}">
+				<section class="subSection">
+				<p class="subTitle">결제가능 예약목록</p>
 				
-				<section id="recentReservePageList" class="pageList">
-					<c:if test="${not empty recentReservePageInfo.maxPage or recentReservePageInfo.maxPage > 0}">
-						<input type="button" value="이전" 
-							onclick="location.href='/myPage/main?recentReservePageNum=${recentReservePageInfo.pageNum - 1}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
-							<c:if test="${recentReservePageInfo.pageNum eq 1}">disabled</c:if>
-						>
-						
-						<c:forEach var="i" begin="${recentReservePageInfo.startPage}" end="${recentReservePageInfo.endPage}">
-							<c:choose>
-								<c:when test="${i eq recentReservePageInfo.pageNum}">
-									<strong>${i}</strong>
-								</c:when>
-								<c:otherwise>
-									<a href="/myPage/main?recentReservePageNum=${i}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }">${i}</a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						
-						<input type="button" value="다음" 
-							onclick="location.href='/myPage/main?recentReservePageNum=${recentReservePageInfo.pageNum + 1}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
-							<c:if test="${recentReservePageInfo.pageNum eq recentReservePageInfo.maxPage}">disabled</c:if>
-						>
-					</c:if>
+					<table class="subTable">
+						<thead>
+							<tr>
+								<th>예약번호</th>
+								<th>결제상태</th>
+								<th>예약자</th>
+								<th>클래스</th>
+								<th>클래스예약</th>
+								<th>클래스예약 신청</th>
+								<th>취소</th>
+								<th>결제</th>
+								<th>상세보기</th>
+							</tr>
+						</thead>
+					    <tbody>
+						    <c:forEach var="recentReserve" items="${RecentReservation}">
+							    <tr>
+									<td>${recentReserve.reservation_idx}</td>
+									<td>
+										<c:if test="${recentReserve.reservation_status eq 1 }">미결제</c:if>
+									</td>
+									<td>${user.userName}</td>
+									<td>${recentReserve.class_title}</td>
+									<td>
+									<fmt:parseDate var="reservationClassDate" 
+										value="${recentReserve.reservation_class_date}"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+									<fmt:formatDate value="${reservationClassDate}" pattern="MM-dd"/>
+									</td>
+		<%-- 							<td>${recentReserve.reservation_class_date}</td> --%>
+									<td>
+									<fmt:parseDate var="reservationCom" 
+										value="${recentReserve.reservation_com}"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+									<fmt:formatDate value="${reservationCom}" pattern="MM-dd HH:mm"/>
+									</td>
+		<%-- 							<td>${recentReserve.reservation_com}</td> --%>
+									<td><input type="button" value="취소" data-reservation-num="${recentReserve.reservation_idx}"
+			          				onclick="cancelReservation(this)" <c:if test="${recentReserve.reservation_status eq 2 }">disabled</c:if>></td>
+								<td><input type="button" value="결제" data-reservation-num="${recentReserve.reservation_idx}"
+			        				onclick="payReservation(this)" <c:if test="${recentReserve.reservation_status eq 2 }">disabled</c:if>> </td>
+								<td><input type="button" value="상세보기" data-reservation-num="${recentReserve.reservation_idx}"
+			        	  			onclick="reservationInfo(this)"> </td>
+							    </tr>
+						    </c:forEach>
+					    </tbody>
+					</table>
+					
+					<section id="recentReservePageList" class="pageList">
+						<c:if test="${not empty recentReservePageInfo.maxPage or recentReservePageInfo.maxPage > 0}">
+							<input type="button" value="이전" 
+								onclick="location.href='/myPage/main?recentReservePageNum=${recentReservePageInfo.pageNum - 1}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
+								<c:if test="${recentReservePageInfo.pageNum eq 1}">disabled</c:if>
+							>
+							
+							<c:forEach var="i" begin="${recentReservePageInfo.startPage}" end="${recentReservePageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq recentReservePageInfo.pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="/myPage/main?recentReservePageNum=${i}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<input type="button" value="다음" 
+								onclick="location.href='/myPage/main?recentReservePageNum=${recentReservePageInfo.pageNum + 1}&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
+								<c:if test="${recentReservePageInfo.pageNum eq recentReservePageInfo.maxPage}">disabled</c:if>
+							>
+						</c:if>
+					</section>
 				</section>
-			</section>
+			</c:if>
 			
-			<section class="subSection">
-			<p class="subTitle">최근 1:1 문의 답변</p>
+			<c:if test="${ recentSiteInqueryPageInfo.listCount > 0}">
+				<section class="subSection">
+				<p class="subTitle">최근 1:1 문의 답변</p>
+				
+					<table class="subTable">
+						<thead>
+							<tr>
+								<th>문의번호</th>
+								<th>문의시간</th>
+								<th>이름</th>
+								<th>제목</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+					    <tbody>
+						    <c:forEach var="recentSite" items="${RecentSiteInquery}">
+							    <tr class="inquery-toggle">
+									<td>${recentSite.inquery_idx}</td>
+									<td>
+									<fmt:parseDate var="inqueryDatetime" 
+										value="${recentSite.inquery_datetime }"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+						    			<fmt:formatDate value="${inqueryDatetime }" pattern="MM-dd HH:mm:ss"/>
+									</td>
+									<td>${user.userName}</td>
+									<td>${recentSite.inquery_title}</td>
+									<td>
+								        <c:choose>
+								        	<c:when test="${recentSite.inquery_status == 1}">답변대기</c:when>
+								          	<c:when test="${recentSite.inquery_status == 2}">답변완료</c:when>
+								       	 	<c:when test="${recentSite.inquery_status == 3}">검토중</c:when>
+								        </c:choose>
+							     	</td>								
+							    </tr>
+							    <tr class="inquery-detail">
+							      	<td colspan="5">
+								        <strong>문의 내용:</strong><br>
+								        	${recentSite.inquery_detail}<br><br>
+								        <strong>답변 내용:</strong><br>
+								        	${recentSite.inquery_answer}
+							    	</td>
+						    	</tr>
+							    
+						    </c:forEach>
+					    </tbody>
+					</table>
+					
+					<section id="recentSiteInqueryPageList" class="pageList">
+						<c:if test="${not empty recentSiteInqueryPageInfo.maxPage or recentSiteInqueryPageInfo.maxPage > 0}">
+							<input type="button" value="이전" 
+								onclick="location.href='/myPage/main?recentSiteInqueryPageNum=${recentSiteInqueryPageInfo.pageNum - 1}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
+								<c:if test="${recentSiteInqueryPageInfo.pageNum eq 1}">disabled</c:if>
+							>
+							
+							<c:forEach var="i" begin="${recentSiteInqueryPageInfo.startPage}" end="${recentSiteInqueryPageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq recentSiteInqueryPageInfo.pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="/myPage/main?recentSiteInqueryPageNum=${i}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<input type="button" value="다음" 
+								onclick="location.href='/myPage/main?recentSiteInqueryPageNum=${recentSiteInqueryPageInfo.pageNum + 1}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
+								<c:if test="${recentSiteInqueryPageInfo.pageNum eq recentSiteInqueryPageInfo.maxPage}">disabled</c:if>
+							>
+						</c:if>
+					</section>
+				</section>
+			</c:if>
 			
-				<table class="subTable">
-					<thead>
-						<tr>
-							<th>문의번호</th>
-							<th>문의시간</th>
-							<th>이름</th>
-							<th>제목</th>
-							<th>상태</th>
-						</tr>
-					</thead>
-				    <tbody>
-					    <c:forEach var="recentSite" items="${RecentSiteInquery}">
-						    <tr class="inquery-toggle">
-								<td>${recentSite.inquery_idx}</td>
-								<td>
-								<fmt:parseDate var="inqueryDatetime" 
-									value="${recentSite.inquery_datetime }"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-					    			<fmt:formatDate value="${inqueryDatetime }" pattern="MM-dd HH:mm:ss"/>
-								</td>
-								<td>${user.userName}</td>
-								<td>${recentSite.inquery_title}</td>
-								<td>
-							        <c:choose>
-							        	<c:when test="${recentSite.inquery_status == 1}">답변대기</c:when>
-							          	<c:when test="${recentSite.inquery_status == 2}">답변완료</c:when>
-							       	 	<c:when test="${recentSite.inquery_status == 3}">검토중</c:when>
-							        </c:choose>
-						     	</td>								
-						    </tr>
-						    <tr class="inquery-detail">
+			<c:if test="${ recentClassInqueryPageInfo.listCount > 0}">
+				<section class="subSection">
+				<p class="subTitle">최근 강의 문의 답변</p>
+				
+					<table class="subTable">
+						<thead>
+							<tr>
+								<th>문의번호</th>
+								<th>문의시간</th>
+								<th>이름</th>
+								<th>강좌명</th>
+								<th>제목</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+					    <tbody>
+						    <c:forEach var="recentClass" items="${RecentClassInquery}">
+							    <tr class="inquery-toggle">
+									<td>${recentClass.inquery_idx}</td>
+									<td>
+									<fmt:parseDate var="inqueryDatetime" 
+										value="${recentClass.inquery_datetime }"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										type="both" />
+						    			<fmt:formatDate value="${inqueryDatetime }" pattern="MM-dd HH:mm:ss"/>
+									</td>
+									<td>${user.userName}</td>
+									<td>${recentClass.class_title }</td>
+									<td>${recentClass.inquery_title}</td>
+									<td>
+								        <c:choose>
+								        	<c:when test="${recentClass.inquery_status == 1}">답변대기</c:when>
+								          	<c:when test="${recentClass.inquery_status == 2}">답변완료</c:when>
+								       	 	<c:when test="${recentClass.inquery_status == 3}">검토중</c:when>
+								        </c:choose>
+							     	</td>								
+							    </tr>
+							    <tr class="inquery-detail">
 						      	<td colspan="5">
 							        <strong>문의 내용:</strong><br>
-							        	${recentSite.inquery_detail}<br><br>
+							        	${recentClass.inquery_detail}<br><br>
 							        <strong>답변 내용:</strong><br>
-							        	${recentSite.inquery_answer}
+							        	${recentClass.inquery_answer}
 						    	</td>
-					    	</tr>
-						    
-					    </c:forEach>
-				    </tbody>
-				</table>
-				
-				<section id="recentSiteInqueryPageList" class="pageList">
-					<c:if test="${not empty recentSiteInqueryPageInfo.maxPage or recentSiteInqueryPageInfo.maxPage > 0}">
-						<input type="button" value="이전" 
-							onclick="location.href='/myPage/main?recentSiteInqueryPageNum=${recentSiteInqueryPageInfo.pageNum - 1}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
-							<c:if test="${recentSiteInqueryPageInfo.pageNum eq 1}">disabled</c:if>
-						>
-						
-						<c:forEach var="i" begin="${recentSiteInqueryPageInfo.startPage}" end="${recentSiteInqueryPageInfo.endPage}">
-							<c:choose>
-								<c:when test="${i eq recentSiteInqueryPageInfo.pageNum}">
-									<strong>${i}</strong>
-								</c:when>
-								<c:otherwise>
-									<a href="/myPage/main?recentSiteInqueryPageNum=${i}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }">${i}</a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						
-						<input type="button" value="다음" 
-							onclick="location.href='/myPage/main?recentSiteInqueryPageNum=${recentSiteInqueryPageInfo.pageNum + 1}&recentReservePageNum=${param.recentReservePageNum }&recentClassInqueryPageNum=${param.recentClassInqueryPageNum }'" 
-							<c:if test="${recentSiteInqueryPageInfo.pageNum eq recentSiteInqueryPageInfo.maxPage}">disabled</c:if>
-						>
-					</c:if>
-				</section>
-			</section>
-			
-			<section class="subSection">
-			<p class="subTitle">최근 강의 문의 답변</p>
-			
-				<table class="subTable">
-					<thead>
-						<tr>
-							<th>문의번호</th>
-							<th>문의시간</th>
-							<th>이름</th>
-							<th>강좌명</th>
-							<th>제목</th>
-							<th>상태</th>
-						</tr>
-					</thead>
-				    <tbody>
-					    <c:forEach var="recentClass" items="${RecentClassInquery}">
-						    <tr class="inquery-toggle">
-								<td>${recentClass.inquery_idx}</td>
-								<td>
-								<fmt:parseDate var="inqueryDatetime" 
-									value="${recentClass.inquery_datetime }"
-									pattern="yyyy-MM-dd'T'HH:mm"
-									type="both" />
-					    			<fmt:formatDate value="${inqueryDatetime }" pattern="MM-dd HH:mm:ss"/>
-								</td>
-								<td>${user.userName}</td>
-								<td>${recentClass.class_title }</td>
-								<td>${recentClass.inquery_title}</td>
-								<td>
-							        <c:choose>
-							        	<c:when test="${recentClass.inquery_status == 1}">답변대기</c:when>
-							          	<c:when test="${recentClass.inquery_status == 2}">답변완료</c:when>
-							       	 	<c:when test="${recentClass.inquery_status == 3}">검토중</c:when>
-							        </c:choose>
-						     	</td>								
 						    </tr>
-						    <tr class="inquery-detail">
-					      	<td colspan="5">
-						        <strong>문의 내용:</strong><br>
-						        	${recentClass.inquery_detail}<br><br>
-						        <strong>답변 내용:</strong><br>
-						        	${recentClass.inquery_answer}
-					    	</td>
-					    </tr>
-						    
-					    </c:forEach>
-				    </tbody>
-				</table>
-				
-				<section id="recentClassInqueryPageList" class="pageList">
-					<c:if test="${not empty recentClassInqueryPageInfo.maxPage or recentClassInqueryPageInfo.maxPage > 0}">
-						<input type="button" value="이전" 
-							onclick="location.href='/myPage/main?recentClassInqueryPageNum=${recentClassInqueryPageInfo.pageNum - 1}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }'" 
-							<c:if test="${recentClassInqueryPageInfo.pageNum eq 1}">disabled</c:if>
-						>
-						
-						<c:forEach var="i" begin="${recentClassInqueryPageInfo.startPage}" end="${recentClassInqueryPageInfo.endPage}">
-							<c:choose>
-								<c:when test="${i eq recentClassInqueryPageInfo.pageNum}">
-									<strong>${i}</strong>
-								</c:when>
-								<c:otherwise>
-									<a href="/myPage/main?recentClassInqueryPageNum=${i}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }">${i}</a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						
-						<input type="button" value="다음" 
-							onclick="location.href='/myPage/main?recentClassInqueryPageNum=${recentClassInqueryPageInfo.pageNum + 1}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }'" 
-							<c:if test="${recentClassInqueryPageInfo.pageNum eq recentClassInqueryPageInfo.maxPage}">disabled</c:if>
-						>
-					</c:if>
+							    
+						    </c:forEach>
+					    </tbody>
+					</table>
+					
+					<section id="recentClassInqueryPageList" class="pageList">
+						<c:if test="${not empty recentClassInqueryPageInfo.maxPage or recentClassInqueryPageInfo.maxPage > 0}">
+							<input type="button" value="이전" 
+								onclick="location.href='/myPage/main?recentClassInqueryPageNum=${recentClassInqueryPageInfo.pageNum - 1}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }'" 
+								<c:if test="${recentClassInqueryPageInfo.pageNum eq 1}">disabled</c:if>
+							>
+							
+							<c:forEach var="i" begin="${recentClassInqueryPageInfo.startPage}" end="${recentClassInqueryPageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq recentClassInqueryPageInfo.pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="/myPage/main?recentClassInqueryPageNum=${i}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<input type="button" value="다음" 
+								onclick="location.href='/myPage/main?recentClassInqueryPageNum=${recentClassInqueryPageInfo.pageNum + 1}&recentReservePageNum=${param.recentReservePageNum }&recentSiteInqueryPageNum=${param.recentSiteInqueryPageNum }'" 
+								<c:if test="${recentClassInqueryPageInfo.pageNum eq recentClassInqueryPageInfo.maxPage}">disabled</c:if>
+							>
+						</c:if>
+					</section>
 				</section>
-			</section>
-			
+			</c:if>
 
 	
 	</main>

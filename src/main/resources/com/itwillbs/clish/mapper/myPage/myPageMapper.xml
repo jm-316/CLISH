@@ -576,7 +576,7 @@
 	
 	<!--  최근예약목록수 -->
 	<select id="countRecentReservationCount" resultType="int">
-		SELECT count(*)
+		SELECT IFNULL(count(*), 0)
 		FROM RESERVATION r
 		WHERE
 			r.reservation_status = 1
@@ -607,7 +607,7 @@
 	
 	<!-- 최근 1:1문의 답변 수 -->
 	<select id="countRecentSiteInqueryCount" resultType="int">
-		SELECT count(*)
+		SELECT IFNULL(count(*), 0)
 		FROM INQUERY
 		WHERE
 			inquery_type = 1
@@ -638,7 +638,7 @@
 	
 	<!-- 최근 강의문의 답변 수 -->
 	<select id="countRecentClassInqueryCount" resultType="int">
-		SELECT count(*)
+		SELECT IFNULL(count(*), 0)
 		FROM INQUERY
 		WHERE
 			inquery_type = 2

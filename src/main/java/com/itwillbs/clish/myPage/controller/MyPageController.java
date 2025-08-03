@@ -93,6 +93,7 @@ public class MyPageController {
 		int listLimit = 2;
 		// 나의 최근 예약 목록 수
 		int myRecentReservationCount = myPageService.getRecentReservationCount(user);
+		
 		// 나의 최근 예약 목록 수 가 1개 이상일 때
 		if(myRecentReservationCount > 0 ) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
@@ -102,12 +103,15 @@ public class MyPageController {
 				model.addAttribute("targetURL", "/myPage/payment_info"); 
 				return "commons/result_process";
 			}
-			 
 			model.addAttribute("recentReservePageInfo", pageInfoDTO);
 			
 			// 나의 최근 예약 목록리스트
 			mainList = myPageService.getRecentReservation(pageInfoDTO.getStartRow(), listLimit, user);
 			model.addAttribute("RecentReservation",mainList);
+		} else {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
+			
+			model.addAttribute("recentReservePageInfo", pageInfoDTO);
 		}
 		
 		// 나의 최근 1:1 문의 답변[7일]
@@ -127,6 +131,10 @@ public class MyPageController {
 			// 나의 최근 1:1문의 답변리스트
 			mainList = myPageService.getRecentSiteInquery(pageInfoDTO.getStartRow(), listLimit, user);
 			model.addAttribute("RecentSiteInquery",mainList);
+		} else {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
+			
+			model.addAttribute("recentSiteInqueryPageInfo", pageInfoDTO);
 		}
 		
 		// 나의 최근 강의 문의 답변[7일]
@@ -146,6 +154,10 @@ public class MyPageController {
 			// 나의 최근 1:1문의 답변리스트
 			mainList = myPageService.getRecentClassInquery(pageInfoDTO.getStartRow(), listLimit, user);
 			model.addAttribute("RecentClassInquery",mainList);
+		} else {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
+			
+			model.addAttribute("recentClassInqueryPageInfo", pageInfoDTO);
 		}
 		
 		
