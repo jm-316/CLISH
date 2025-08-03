@@ -5,7 +5,7 @@
 <section id="top-menu">
   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
   <nav>
-      <ul id="flex-item2">
+      <ul id="flex-item2" class="flex-item2">
           <li>
                <form action="/search" name="search" method="get" id="search-form">
                   <input type="search" id="search" placeholder="검색어를 입력하세요" name="searchKeyword" value="${param.searchKeyword}" required="required">
@@ -17,6 +17,7 @@
           <li><a href="/event/eventHome">이벤트</a></li>
 
       </ul>
+       <a class="flex-item2" id="small-menu">메뉴</a>
           
 	<div id="sub-nav">
         <ul>
@@ -55,10 +56,16 @@
 	           			<h3>알림</h3>
 	           			<c:choose>
 	           				<c:when test="${sUT eq 1 }">
-	           					<a href="/myPage/notification">전체보기</a>
+	           					<div>
+		           					<a href="/myPage/notification">전체보기</a>
+		           					<div onclick="readAll()">전체읽음</div>
+	           					</div>
 	           				</c:when>
 	           				<c:otherwise>
-	           					<a href="/company/myPage">전체보기</a>
+	           					<div>
+		           					<a href="/company/myPage">전체보기</a>
+		           					<div onclick="readAll()">전체읽음</div>
+	           					</div>
 	           				</c:otherwise>
 	           			</c:choose>
            			</div>
@@ -144,14 +151,13 @@
     			markAsRead(noticeIdx)
     				.catch(err => console.log(err))
     				.finally(() => {
-    					console.log("ㅁㅁㅁㅁㅁ");
-//     					window.location.href = link;
+    					window.location.href = link;
     				});
     		}
     		
     		function markAsRead(noticeIdx) {
     			return fetch("/user/notification/" + noticeIdx + "/read", {
-    				method : "POST"
+    				method: "POST"
     			});
     		}
     		
@@ -171,6 +177,27 @@
    				return status === 1 
 	   		        ? '<span class="circle read"></span>' 
 	   		        : '<span class="circle unread"></span>';
+    		}
+    		
+    		// 전체 읽음
+    		function readAll(userIdx) {
+    			fetch("/user/notification/all-read", {
+    				method: "PATCH",
+    				header: {
+    					"Content-Type": "application/json"
+    				}
+    			})
+    			  .then((res) => res.json())
+    			  .then((data) => {
+    				  if (data.result === "모든 알림을 읽음 처리했습니다") {
+    					  document.querySelectorAll(".read-status").forEach(span => {
+    				          span.innerHTML = getReadStatus(1);
+    				      }); 
+    				  } else {
+    					  alert("더 이상 읽을 알림이 없습니다.");
+    				  }
+    			  })
+    			    .catch((err) => console.error("전체 읽음 오류:", err));
     		}
     	</script>
 </section>

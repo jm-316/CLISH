@@ -12,6 +12,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     display: none;
     z-index: 100;
+    padding-top: 0;
     
 }
 
@@ -44,6 +45,9 @@
 	justify-content: space-between; 
 	align-items: center;
 	border-bottom: 1px solid #ddd;
+	position: fixed;
+	background: white;
+	width: 370px;
 }
 
 #notification-header a {
@@ -104,4 +108,10 @@
 }
 .circle.unread {
     background-color: red;
+}
+
+#notification-header  div {
+	display: flex;
+	gap: 20px;
+	cursor: pointer;
 }
