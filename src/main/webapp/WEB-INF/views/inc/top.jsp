@@ -55,10 +55,16 @@
 	           			<h3>알림</h3>
 	           			<c:choose>
 	           				<c:when test="${sUT eq 1 }">
-	           					<a href="/myPage/notification">전체보기</a>
+	           					<div>
+		           					<a href="/myPage/notification">전체보기</a>
+		           					<div onclick="readAll()">전체읽음</div>
+	           					</div>
 	           				</c:when>
 	           				<c:otherwise>
-	           					<a href="/company/myPage">전체보기</a>
+	           					<div>
+		           					<a href="/company/myPage">전체보기</a>
+		           					<div onclick="readAll()">전체읽음</div>
+	           					</div>
 	           				</c:otherwise>
 	           			</c:choose>
            			</div>
@@ -144,14 +150,13 @@
     			markAsRead(noticeIdx)
     				.catch(err => console.log(err))
     				.finally(() => {
-    					console.log("ㅁㅁㅁㅁㅁ");
-//     					window.location.href = link;
+    					window.location.href = link;
     				});
     		}
     		
     		function markAsRead(noticeIdx) {
     			return fetch("/user/notification/" + noticeIdx + "/read", {
-    				method : "POST"
+    				method: "POST"
     			});
     		}
     		
@@ -171,6 +176,27 @@
    				return status === 1 
 	   		        ? '<span class="circle read"></span>' 
 	   		        : '<span class="circle unread"></span>';
+    		}
+    		
+    		// 전체 읽음
+    		function readAll(userIdx) {
+    			fetch("/user/notification/all-read", {
+    				method: "PATCH",
+    				header: {
+    					"Content-Type": "application/json"
+    				}
+    			})
+    			  .then((res) => res.json())
+    			  .then((data) => {
+    				  if (data.result === "모든 알림을 읽음 처리했습니다") {
+    					  document.querySelectorAll(".read-status").forEach(span => {
+    				          span.innerHTML = getReadStatus(1);
+    				      }); 
+    				  } else {
+    					  alert("더 이상 읽을 알림이 없습니다.");
+    				  }
+    			  })
+    			    .catch((err) => console.error("전체 읽음 오류:", err));
     		}
     	</script>
 </section>
