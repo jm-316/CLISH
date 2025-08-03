@@ -310,7 +310,7 @@ form input[type="radio"] {
 					
 					<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
 					<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
-					<button type="button" id="checkEmailVerifiedBtn" style="display: none;">[인증 완료 확인]</button>
+					<button type="button" id="checkEmailVerifiedBtn" style="display: none; width:90px;">[인증 완료 확인]</button>
 					<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
 				</td>
 			</tr>
