@@ -29,13 +29,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class FileUtils {
+//	private static String uploadPath = "/usr/local/tomcat/upload"; // 서버 업로드용
+	private static String uploadPath = "/resources/upload"; // 로컬 작업용
 	
-	private static String uploadPath = "/resources/upload";
-//	private static String uploadPath = "/usr/local/tomcat/upload";
 	private static Path absolutePath = Paths.get(uploadPath).toAbsolutePath().normalize();
+	
+	
 	// 서브디렉토리 생성
 	public static String createDirectories(String path) {
 
@@ -70,11 +73,10 @@ public class FileUtils {
 	// 파일 업로드
 	public static List<FileDTO> uploadFile(FileUploadHelpper help, HttpSession session) throws IllegalStateException, IOException {
 		String subDir = ""; // 서브디렉토리명을 저장할 변수 선언
-		System.out.println("업로드 패스 : " + uploadPath);
 		// --------------------------------------------------------
 		// 프로젝트 상의 가상의 업로드 경로를 사용할 경우 추가 작업
-		String realPath = session.getServletContext().getRealPath(uploadPath);
-		System.out.println("리얼 패스 : " + realPath);
+//		String realPath = uploadPath; // 서버 업로드용
+		String realPath = session.getServletContext().getRealPath(uploadPath); // 로컬작업용
 		
 		subDir = FileUtils.createDirectories(realPath);
 		
@@ -112,8 +114,9 @@ public class FileUtils {
 	
 	//파일 삭제
 	public static void deleteFile(FileDTO fileDTO, HttpSession session) {
-
-		String realPath = session.getServletContext().getRealPath(uploadPath);
+		
+//		String realPath = uploadPath; // 서버 업로드용
+		String realPath = session.getServletContext().getRealPath(uploadPath); // 로컬작업용
 		
 		Path path = Paths.get(realPath, fileDTO.getSubDir(), fileDTO.getRealFileName());
 
@@ -134,8 +137,10 @@ public class FileUtils {
 	
 	//파일 정보 호출
 	public static Map<String, Object> getFileResource(FileDTO fileDTO, int type, HttpSession session) {
-		String realPath = session.getServletContext().getRealPath(uploadPath);
 		try {
+//			String realPath = uploadPath; // 서버 업로드용
+			String realPath = session.getServletContext().getRealPath(uploadPath); // 로컬작업용
+			
 			// 업로드 디렉토리의 파일 정보를 Path 객체로 가져오기
 			Path path = Paths.get(realPath, fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
 //			Path path = Paths.get(absolutePath.toString(), fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
