@@ -40,14 +40,17 @@ public class EventDTO  implements FileUploadHelpper{
 	
 	@Override
 	public MultipartFile[] getFiles() {
-	    List<MultipartFile> list = new ArrayList<>();
-	    if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
-	        list.add(thumbnailFile);
+	    List<MultipartFile> validFiles = new ArrayList<>();
+	    if (fileTypes != null) {
+	        for (String type : fileTypes) {
+	            if (type.equals("thumbnail") && thumbnailFile != null && !thumbnailFile.isEmpty()) {
+	                validFiles.add(thumbnailFile);
+	            } else if (type.equals("content") && contentFile != null && !contentFile.isEmpty()) {
+	                validFiles.add(contentFile);
+	            }
+	        }
 	    }
-	    if (contentFile != null && !contentFile.isEmpty()) {
-	        list.add(contentFile);
-	    }
-	    return list.toArray(new MultipartFile[0]);
+	    return validFiles.toArray(new MultipartFile[0]);
 	}
 	
    

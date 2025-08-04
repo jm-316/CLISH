@@ -36,7 +36,7 @@ public class FileService {
 		}
 	}
 	
-	// 썸네이 파일 삭제
+	// 썸네일 파일 삭제
 	public void removeThumbnailFile(FileDTO thumbnailFile) {
 		FileDTO thumbnail = fileMapper.selectThumbnailFile(thumbnailFile.getIdx());
 		FileUtils.deleteFile(thumbnail, session);
@@ -47,5 +47,10 @@ public class FileService {
 	public FileDTO getFile(int fileId) {
 		
 		return fileMapper.selectFileInfo(fileId);
+	}
+	
+	// 썸네일정보조회(fileId)
+	public FileDTO getThumbnail(int fileId) {
+		return fileMapper.selectThumbnailInfo(fileId);
 	}
 }

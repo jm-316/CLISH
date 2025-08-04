@@ -123,4 +123,10 @@
 		WHERE file_id = #{fileId}
 	</select>
 	
+	<select id="selectThumbnailInfo" resultType="com.itwillbs.clish.common.file.FileDTO">
+		SELECT *
+		FROM THUMBNAILFILE
+		WHERE file_id = #{fileId}
+	</select>
+	
 </mapper>
