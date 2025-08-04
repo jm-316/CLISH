@@ -204,10 +204,10 @@
 	</resultMap>
 	<select id="selectCompanyBizReg" resultMap="BizRegWithFileDTOListResultMap">
 		SELECT 
-			r.user_idx
-			, r.biz_reg_no
-			, r.biz_file_name
-			, r.biz_file_path
+			c.user_idx
+			, c.biz_reg_no
+			, c.biz_file_name
+			, c.biz_file_path
 		    , f.file_id
 		    , f.original_file_name
 		    , f.real_file_name
@@ -215,10 +215,10 @@
 		    , f.file_size
 		    , f.content_type
 		FROM
-			REGISTRATION r
+			COMPANY c
 		LEFT JOIN FILE f
-		ON r.user_idx = f.idx
-		WHERE r.user_idx = #{idx}
+		ON c.user_idx = f.idx
+		WHERE c.user_idx = #{idx}
 	</select>
 </mapper>  
   

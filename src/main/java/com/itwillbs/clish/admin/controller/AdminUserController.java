@@ -111,9 +111,9 @@ public class AdminUserController {
 	
 	private String masktedPhone(String phone) {
 		String maskedPhone = "";
-		if (phone != null && phone.length() == 11) {
-		    maskedPhone = phone.substring(0, 3) + "-" +
-		                  phone.substring(3, 7) + "-" +
+		if (phone != null && phone.length() == 13) {
+		    maskedPhone = phone.substring(0, 4) + 
+		                  phone.substring(4, 8) + 
 		                  "****";
 		} else {
 		    maskedPhone = "잘못된 번호";
