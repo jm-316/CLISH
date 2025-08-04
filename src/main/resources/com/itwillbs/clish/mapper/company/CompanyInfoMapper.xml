@@ -11,6 +11,16 @@
 		WHERE user_id = #{userId}
 	</select>
 	
+	<!-- 기업전화번호 중복 확인 -->
+	<select id="selectPhoneNumberDuplicate" resultType="boolean">
+	    SELECT COUNT(*) > 0
+	    FROM USER 
+	    WHERE
+			user_phone_number = #{userPhoneNumber}
+		AND
+			user_idx != #{userIdx}
+	</select>
+	
 	<!-- 기업회원 정보 수정 처리 -->
 	<update id="updateUserInfo">
     UPDATE USER
