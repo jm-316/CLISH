@@ -585,10 +585,13 @@ form input[type="radio"] {
 				dataType: "json"
 			}).done(function(response) {
 				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
-				$("#checkRepNameResult").html(msg);
 				if(response.status == 'fail'){
+					$("#checkRepNameResult").html(msg);
+					$("#checkRepNameResult").css("color","red");
 					isRepNameOk = false; //사용불가
 				} else {
+					$("#checkRepNameResult").html(msg);
+					$("#checkRepNameResult").css("color","green");
 					userRepNameInput.value = response.repName;
 					isRepNameOk = true; // 사용가능
 				}

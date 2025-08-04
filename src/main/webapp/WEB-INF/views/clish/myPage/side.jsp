@@ -3,7 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link href="/resources/css/myPage.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
+<style type="text/css">
+	.slide_btn.active {
+		background-color: #FF8C00; /* 선택된 버튼 색상 */
+		color: white;
+	}
+</style>
 
 <div id="side">
 	<div class="title-fixed" id="userProfileHeader">
@@ -18,26 +23,47 @@
 	<input type="button" value="회원탈퇴" class="slide_btn" onclick="location.href='/myPage/withdraw'"><br>
 </div>
 
+
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function() {
 		fetch("/myPage/profileImg")
-			.then(res => res.json())
-			.then(data => {
-			    console.log("fileId:", data.fileId);
+		.then(res => res.json())
+		.then(data => {
+		    console.log("fileId:", data.fileId);
 
-				const header = document.getElementById('userProfileHeader');
-				
-				const img = document.createElement('img');
-				img.src = data.src;
-		        img.alt = '프로필 이미지';
-		        img.style.width = '100px';
-		        img.style.height = '80px';
-		        img.style.borderRadius = '50%';
-		        img.style.marginRight = '10px';
-		        img.style.verticalAlign = 'middle';
-		        
-		        header.append(img);
-				
-			}).catch(err => console.log("에러에러"));
+			const header = document.getElementById('userProfileHeader');
+			
+			const img = document.createElement('img');
+			img.src = data.src;
+	        img.alt = '프로필 이미지';
+	        img.style.width = '100px';
+	        img.style.height = '80px';
+	        img.style.borderRadius = '50%';
+	        img.style.marginRight = '10px';
+	        img.style.verticalAlign = 'middle';
+	        
+	        header.append(img);
+			
+		}).catch(err => console.log("에러에러"));
+		
+		const buttons = document.querySelectorAll('.slide_btn');
+		
+		// 현재 페이지 URL 경로나 파라미터로 현재 위치 판단
+		const currentPath = window.location.pathname;
+		buttons.forEach(button => {
+			const url = new URL(button.getAttribute('onclick').match(/'(.*?)'/)[1], window.location.origin);
+			
+			if (url.pathname === currentPath) {
+			    button.classList.add('active');
+		    }
+			
+			button.addEventListener('click', function() {
+				// 모든 버튼에서 active 클래스 제거
+				buttons.forEach(btn => btn.classList.remove('active'));
+				// 클릭된 버튼에만 active 클래스 추가
+				this.classList.add('active');
+			});
+		});
+		
 	});
 </script>
