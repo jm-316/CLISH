@@ -10,6 +10,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
     <style>
+    	#footer-area {
+	      margin-top: 0 !important;
+	    }
+    	
     	/* 왼쪽 사이드바 */
 		.sidebar {
 		    width: 200px; /* 필요에 따라 조절 */
@@ -30,6 +34,7 @@
         .content-area {
             flex: 1;
             padding: 30px;
+            margin-right: 50px
         }
 
         .class-header {

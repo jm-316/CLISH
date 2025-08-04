@@ -10,6 +10,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	#footer-area {
+      margin-top: 0 !important;
+    }
+	
     /* ✅ 사이드바와 본문 묶는 container 전체 높이 조정 */
     .container {
         display: flex;
@@ -26,6 +30,14 @@
 	    overflow: hidden;          /* ✅ 내부 넘치는 거 잘라냄 */
 	    white-space: nowrap;       /* ✅ 줄넘김 방지 */
 	}
+	
+	.sidebar h2 {
+        display: block;
+	    text-align: left;
+	    margin-left: 0px;
+	    padding-left: 0px;
+	    font-weight: bold;
+    }
 
     /* ✅ 메인 콘텐츠 스타일 - 폼을 화면 위쪽으로 */
     .main-content {
@@ -40,6 +52,7 @@
     .form-wrapper {
         max-width: 1000px;
         margin-top: 40px; /* 중앙보다 위로 */
+        margin-right: 200px;
         padding: 20px;
         background: #fff;
         box-shadow: 0 0 8px rgba(0,0,0,0.1);
@@ -48,10 +61,8 @@
     /* 테이블 기본 스타일 */
     .form-wrapper table {
         width: 100%;
-/*         table-layout: fixed; */
         border-collapse: collapse;
-/*         margin-left: 10px;  */
-/*     	margin-right: 10px;  */
+        margin: 80px;
     }
 
     .form-wrapper th, .form-wrapper td {
@@ -122,7 +133,7 @@
 			<h2 style="text-align:center;">${sessionScope.sId} 기업 회원정보 수정</h2>
 			<form action="${pageContext.request.contextPath}/company/myPage/companyInfoSubmit"
 			      method="post" enctype="multipart/form-data">
-			    <table border="1" style="width: 80%; text-align: left;">
+			    <table border="1" style="width: 80%;">
 			
 			       	<tr>
 						<th>사업자등록번호</th>
@@ -210,7 +221,6 @@
 					<input type="hidden" name="userIdx" value="${user.userIdx}" />
 					<p>
 						<button type="submit" >수정하기</button>
-					
 					</p>
 				</form>
 			</div>

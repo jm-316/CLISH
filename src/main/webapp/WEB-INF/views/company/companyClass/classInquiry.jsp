@@ -10,6 +10,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	#footer-area {
+      margin-top: 0 !important;
+    }
+
 	/* 왼쪽 사이드바 */
 	.sidebar {
 		width: 200px; /* 필요에 따라 조절 */
@@ -34,15 +38,16 @@
 		text-align: center;
 	}
 	.class-table {
-		width: 100%;
+		width: 85%;
 		border-collapse: collapse;
 	}
+	
 	.class-table th, .class-table td {
 	    border: 1px solid #ccc;
 		padding: 10px;
 		text-align: center;
 	}
-  .class-table tr:hover {
+	.class-table tr:hover {
 		background-color: #f5f5f5;
 		cursor: pointer;
 	}

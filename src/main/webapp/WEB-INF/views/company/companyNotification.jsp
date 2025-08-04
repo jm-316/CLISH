@@ -11,6 +11,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	#footer-area {
+      margin-top: 0 !important;
+    }
+
   .container {
     display: flex;
     min-height: 80vh;
@@ -45,7 +49,6 @@
     margin-bottom: 30px;
   }
 
-  /* ✅ 마이페이지 버튼처럼 생긴 스타일 */
   .btn-notice-readAll {
      background-color: #FF7601;
      color: #fff;
@@ -61,7 +64,7 @@
     transform: translateY(-2px);
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
-
+  
   table {
     width: 100%;
     border-collapse: collapse;
