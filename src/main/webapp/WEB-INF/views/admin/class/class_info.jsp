@@ -64,7 +64,7 @@
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
 									<c:forEach var="fileDTO" items="${classInfo.fileList}">
-										<img src="/file/${file.fileId }?type=0" alt="${file.originalFileName }" width="300px" height="300px"/>
+										<img src="/file/${fileDTO.fileId }?type=0" alt="${fileDTO.originalFileName }" width="300px" height="300px"/>
 										<div>
 											${fileDTO.originalFileName}
 											<a href="/file/${fileDTO.fileId }?type=1">
