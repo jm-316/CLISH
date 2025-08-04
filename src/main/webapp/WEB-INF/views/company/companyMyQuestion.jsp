@@ -10,10 +10,16 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
-    .container {
-      display: flex;
-      min-height: 80vh;
+  	#footer-area {
+      margin-top: 0 !important;
     }
+  
+    .container {
+	  display: flex;
+	  min-height: 80vh;
+	  padding-right: 200px; /* ✅ 오른쪽 여백 추가! */
+	  box-sizing: border-box;
+	}
 
     /* 왼쪽 사이드바 */
 	.sidebar {
@@ -49,6 +55,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-left: 1300px;
     }
 
     .btn-write {
@@ -63,10 +70,8 @@
     }
 
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
+	  width: 97%;
+	}
 
     th, td {
       border: 1px solid #ddd;

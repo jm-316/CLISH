@@ -3,6 +3,7 @@ package com.itwillbs.clish.admin.service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -74,11 +75,10 @@ public class AdminEventService {
 	}
 	
 	// 이벤트 수정
-	@Transactional
 	public int modifyEvent(EventDTO eventDTO) throws IllegalStateException, IOException {
 		MultipartFile thumbnail = eventDTO.getThumbnailFile();
 	    MultipartFile content = eventDTO.getContentFile();
-		
+	    
 	    // 썸네일 파일 업로드
 	    if (thumbnail != null && !thumbnail.isEmpty()) {
 	    	eventDTO.setFileTypes(List.of("thumbnail"));

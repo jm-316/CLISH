@@ -72,6 +72,25 @@ public class MyPageController {
 	        }
 	    });
 	}
+	
+	//마이페이지프로필이미지
+	@GetMapping("/profileImg")
+	@ResponseBody
+	public Map<String, Object> sidebarProfileImg(HttpSession session) {
+		UserDTO user = getUserFromSession(session);
+		FileDTO file = myPageService.getUserProfileImg(user);
+		Map<String, Object> result = new HashMap<>();
+		
+		if (file != null && (Integer)file.getFileId() != null ) {
+	        result.put("result", "success");
+	        result.put("src", "/file/" + file.getFileId() + "?type=0");
+	    } else {
+	        result.put("result", "default");
+	        result.put("src", "/resources/images/default_profile_photo.png");
+	    }
+		
+		return result;
+	}
 		
 	
 	// 마이페이지 메인
@@ -181,21 +200,19 @@ public class MyPageController {
 			
 		user.setUserId((String)session.getAttribute("sId"));
 		user = myPageService.getUserInfo(user); // 세션id 유저 정보
-		
+		FileDTO userProfileImg = myPageService.getUserProfileImg(user);
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+		System.out.println(userProfileImg);
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		if (user == null || !userService.matchesPassword(inputPw, user.getUserPassword())) { // 비밀번호 불일치 할때
 			model.addAttribute("msg","비밀번호가 틀렸습니다.");
 			model.addAttribute("targetURL","/myPage/change_user_info");
 			return "commons/result_process";
 	    }
 
+		model.addAttribute("userProfileImg", userProfileImg);
 		model.addAttribute("user", user);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-		System.out.println(user);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		return "clish/myPage/myPage_change_user_info_form"; //비밀번호 일치시 이동페이지
-
-		
-
 	}
 	
 	//닉네임 중복확인
@@ -256,11 +273,15 @@ public class MyPageController {
 	// 수정정보 UPDATE문 으로 반영후 정보변경 메인페이지로 이동
 	@PostMapping("/change_user_info")
 	public String mypage_change_user_info(UserDTO user, HttpSession session,
-			@RequestParam("newPasswordConfirm") String new_password) {
+			@RequestParam("newPasswordConfirm") String new_password
+			, @RequestParam("profileImageAction") String profileImageAction
+			, @RequestParam("deleteProfileImgFlag") String deleteProfileImgFlag) throws IOException {
 		
 		user.setUserId((String)session.getAttribute("sId"));
-		UserDTO user1 = myPageService.getUserInfo(user); // 기존 유저 정보 불러오기
-
+		UserDTO user1 = getUserFromSession(session);// 기존 유저 정보 불러오기
+		//기존 프로필사진 유무정보
+		FileDTO userProfileImg = myPageService.getUserProfileImg(user);
+		
 		//입력받은 이메일과 기존의 이메일이 일치한다면
 		if(!user1.getUserEmail().equals(user.getUserEmail())){
 			user.setNewEmail(user.getUserEmail()); //새이메일에 기존이메일 정보 추가
@@ -272,7 +293,7 @@ public class MyPageController {
 			user.setUserPassword(user1.getUserPassword());
 		}
 				
-		myPageService.setUserInfo(user);
+		myPageService.setUserInfo(user, userProfileImg, profileImageAction, deleteProfileImgFlag);
 		
 		return "redirect:/myPage/change_user_info";
 	}

@@ -112,7 +112,6 @@ public class AdminEventController {
 	// 수정 요청
 	@PostMapping("/event/modify")
 	public String modifyEvent(EventDTO eventDTO, Model model) throws IllegalStateException, IOException {
-		System.out.println(eventDTO);
 		int update = adminEventService.modifyEvent(eventDTO);
 		
 		if (update > 0) {

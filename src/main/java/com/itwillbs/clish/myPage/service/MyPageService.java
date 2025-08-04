@@ -48,6 +48,11 @@ public class MyPageService {
 		return myPageMapper.selectUserInfo(user);
 	}
 	
+	// 유저정보기반 프로필사진 정보 가져오기
+	public FileDTO getUserProfileImg(UserDTO user) {
+		return myPageMapper.selectUserProfileImg(user);
+	}
+	
 	// 닉네임 중복 확인
 	public UserDTO checkRepName(UserDTO userDTO) {
 		return myPageMapper.checkRepName(userDTO);
@@ -60,8 +65,31 @@ public class MyPageService {
 	}
 	
 	// 유저정보 저장하기
-	public int setUserInfo(UserDTO user) {
-		// TODO Auto-generated method stub
+	public int setUserInfo(UserDTO user, FileDTO userProfileImg, String profileImageAction, String deleteProfileImgFlag) throws IOException {
+		// 프로필사진변경작업
+		if ("insert".equals(profileImageAction)) { //insert수행해야할떄
+			// 기존이미지가 존재할때
+			if (userProfileImg != null ) {
+				FileUtils.deleteFile(userProfileImg, session);
+				fileMapper.deleteFile(userProfileImg); // 기존 파일 삭제
+				
+				List<FileDTO> fileList = FileUtils.uploadFile(user, session);
+				if(!fileList.isEmpty()) {
+					fileMapper.insertFiles(fileList); // 새파일 업로드
+				}
+			} else { // 기존이미지가 없을때
+				List<FileDTO> fileList = FileUtils.uploadFile(user, session);
+				if(!fileList.isEmpty()) {
+					fileMapper.insertFiles(fileList); // 새파일 업로드
+				}
+		    } 
+		} else if ("delete".equals(profileImageAction)) {
+			if (userProfileImg != null ) { // 기존이미지가 존재할때
+				FileUtils.deleteFile(userProfileImg, session);
+				fileMapper.deleteFile(userProfileImg); // 기존 파일 삭제
+			}
+		} 	
+		
 		return myPageMapper.updateUserInfo(user);
 	}
 	
@@ -313,6 +341,7 @@ public class MyPageService {
 		return myPageMapper.selectRecentClassInquery(startRow, listLimit, user);
 	}
 
+	
 	
 
 

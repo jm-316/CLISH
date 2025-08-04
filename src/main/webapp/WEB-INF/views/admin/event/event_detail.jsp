@@ -55,11 +55,11 @@
 					  	</div>
 						<div class="event-thumbnail">
 							<span>썸네일</span>
-						    <img src="/file/${fileDTO.fileId}?type=0"  alt="이벤트 썸네일" />
+						    <img src="/file/${thumbnailFile.fileId}?type=2"  alt="이벤트 썸네일" width="500px;"/>
 						</div>
 						<div class="event-content">
 						  <span>이벤트 본문</span>
-						  <img src="/file/${fileDTO.fileId}?type=0"  alt="이벤트 내용 이미지" />
+						  <img src="/file/${contentFile.fileId}?type=0"  alt="이벤트 내용 이미지" width="500px;"/>
 						</div>
 					</div>
 					<div class="button-wrapper">

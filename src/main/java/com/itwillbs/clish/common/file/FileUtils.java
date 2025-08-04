@@ -53,7 +53,6 @@ public class FileUtils {
 		path += "/" + subDir;
 
 		try {
-			log.info(">>>>>>>>>>");
 			Files.createDirectories(absolutePath);
 		} catch (IOException e) {
 			System.out.println("서브 디렉토리 생성 실패 - " + path);

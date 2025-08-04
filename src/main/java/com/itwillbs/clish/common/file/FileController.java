@@ -31,6 +31,11 @@ public class FileController {
 		// BoardService - getBoardFile() 메서드 호출하여 파일 정보 조회
 		// => 파라미터 : 파일 아이디  리턴타입 : BoardFileDTO(boardFileDTO)
 		FileDTO fileDTO = fileService.getFile(fileId);
+		
+		// 썸네일 이미지의 경우 param을 2로 받아서 파일 조회
+		if (type == 2) {
+			fileDTO = fileService.getThumbnail(fileId);
+		}
 		// ---------------------------------------------------------------------------
 		// FileUtils - getFile() 메서드 호출하여 실제 파일 가져오기
 		// => 파라미터 : BoardFileDTO   리턴타입 : 

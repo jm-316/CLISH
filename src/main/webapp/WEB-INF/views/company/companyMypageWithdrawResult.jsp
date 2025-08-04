@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	#footer-area {
+      margin-top: 0 !important;
+    }
 
 	/* 왼쪽 사이드바 */
 	.sidebar {
@@ -20,75 +23,75 @@
 	   	white-space: nowrap;
 	}
 
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-
-  main {
-    flex: 1;
-    display: flex;
-  }
-
-  /* 🔧 사이드바 포함하는 flex 구조 */
-  .withdraw-container {
-    display: flex;
-    width: 100%;
-    min-height: calc(100vh - 120px); /* 헤더+푸터 높이 제외한 전체 높이 */
-  }
-
-  .sidebar {
-    width: 220px;
-    background-color: #f9f9f9;
-  }
-
-  /* 🔧 본문을 수직 수평 중앙 정렬 */
-  .main-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-  }
-
-  .withdraw-box {
-    width: 100%;
-    max-width: 600px;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #fff;
-    text-align: center;
-  }
-
-  .withdraw-box h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  .withdraw-box p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  .withdraw-box label {
-    font-size: 15px;
-  }
-
-  .withdraw-box input[type="submit"] {
-    margin-top: 20px;
-    padding: 10px 25px;
-    font-size: 16px;
-    background-color: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .withdraw-box input[type="submit"]:hover {
-    background-color: #c0392b;
-  }
+	html, body {
+		height: 100%;
+		margin: 0;
+	}
+	
+	main {
+		flex: 1;
+		display: flex;
+	}
+	
+	/* ?사이드바 포함하는 flex 구조 */
+	.withdraw-container {
+		display: flex;
+		width: 100%;
+		min-height: calc(100vh - 120px); /* 헤더+푸터 높이 제외한 전체 높이 */
+	}
+	
+	.sidebar {
+		width: 220px;
+		background-color: #f9f9f9;
+	}
+	
+	/* 본문을 수직 수평 중앙 정렬 */
+	.main-content {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 30px;
+	}
+	
+	.withdraw-box {
+		width: 100%;
+		max-width: 600px;
+		padding: 30px;
+		border: 1px solid #ddd;
+		border-radius: 10px;
+		background-color: #fff;
+		text-align: center;
+	}
+	
+	.withdraw-box h2 {
+		font-size: 24px;
+		margin-bottom: 20px;
+	}
+	
+	.withdraw-box p {
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+	
+	.withdraw-box label {
+		font-size: 15px;
+	}
+	
+	.withdraw-box input[type="submit"] {
+		margin-top: 20px;
+		padding: 10px 25px;
+		font-size: 16px;
+		background-color: #e74c3c;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	
+	.withdraw-box input[type="submit"]:hover {
+		background-color: #c0392b;
+	}
 </style>
 </head>
 <body>

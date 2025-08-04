@@ -282,8 +282,10 @@ form input[type="radio"] {
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+<link href="/resources/css/home/top.css" rel="stylesheet" >
+<script type="text/javascript" src="/resources/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 	<header>
@@ -296,117 +298,140 @@ form input[type="radio"] {
 	
 	<div id="main">
 	
-		<h1>${sessionScope.sId} 정보변경</h1>
+		<h1>${sessionScope.sId} 정보변경 </h1>
 		
 		<hr>
 		
-		<form action="/myPage/change_user_info" method="post" class="form" name="modifyForm">
+		<form action="/myPage/change_user_info" method="post" class="form" name="modifyForm" enctype="multipart/form-data">
+		<input type="hidden" name="userIdx" value=${user.userIdx }>
 			<table border="1" style="width: 100%; text-align: left;">	
-			<!-- 공통 입력 영역 -->
-			<tr>
-				<th>이메일</th>
-				<td>
-					<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
-					<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
-					<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
-					<button type="button" id="checkEmailVerifiedBtn" style="display: none; width:90px;">[인증 완료 확인]</button>
-					<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
-				</td>
-			</tr>
-			<tr>
-				<th><label for="userName">회원이름</label></th>
-				<td><input type="text" name="userName" id="userName" readonly value="${user.userName }"></td>
-			</tr>
-	
-			<tr>
-				<th><label for="userRepName">닉네임</label></th>
-				<td>
-					<input type="text" name="userRepName" id="userRepName" value="${user.userRepName }">
-					<span id="checkRepNameResult"></span>
-<!-- 					<input type="button" value="중복확인" id="checkRepName" -->
-<%-- 						onclick="repNameCheck(document.getElementById('userRepName').value,'${user.userIdx }')"> --%>
-				</td>
-			</tr>
-	
-			<tr>
-				<th><label for="userBirth">생년월일</label></th>
-				<td><input type="date" name="userBirth" id="userBirth" value="${user.userBirth }"></td>
-				<span id="birthCheckResult"></span>
-			</tr>
-	
-			<c:if test="${sessionScope.sUT == 1}">
 				<tr>
-					<th><label for="userGender">성별</label></th>
+					<th>프로필 사진</th>
 					<td>
-						<select name="userGender" id="userGender" required>
-							<option value="">선택</option>
-							<option value="M" <c:if test="${user.userGender eq 'M' }">selected</c:if>>남자</option>
-							
-							<option value="F" <c:if test="${user.userGender eq 'F' }">selected</c:if>>여자</option>
-						</select>
+					    <div style="position: relative; display: inline-block;">
+					        <img id="profilePreview"
+					            src=""
+					            alt="프로필 사진"
+					            style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 1px solid #d9d9d9;">
+					        <button type="button"
+					            id="deleteProfileImgBtn"
+					            style="position: absolute; top: 2px; right: 2px; background: #FF8C00; border: none; color: white; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; cursor: pointer;">
+					            ×
+					        </button>
+					    </div>
+					    <br>
+					    <input type="file" name="files" id="profileImage" accept="image/*" style="margin-top: 10px;">
+					    <input type="hidden" id="profileImageAction" name="profileImageAction" value="none">
+					    <input type="hidden" id="deleteProfileImgFlag" name="deleteProfileImgFlag" value="false">
 					</td>
 				</tr>
-			</c:if>
+				<tr>
+					<th>이메일</th>
+					<td>
+						<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
+						<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
+						<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
+						<button type="button" id="checkEmailVerifiedBtn" style="display: none; width:90px;">[인증 완료 확인]</button>
+						<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="userName">회원이름</label></th>
+					<td><input type="text" name="userName" id="userName" readonly value="${user.userName }"></td>
+				</tr>
+		
+				<tr>
+					<th><label for="userRepName">닉네임</label></th>
+					<td>
+						<input type="text" name="userRepName" id="userRepName" value="${user.userRepName }">
+						<span id="checkRepNameResult"></span>
+	<!-- 					<input type="button" value="중복확인" id="checkRepName" -->
+	<%-- 						onclick="repNameCheck(document.getElementById('userRepName').value,'${user.userIdx }')"> --%>
+					</td>
+				</tr>
+		
+				<tr>
+					<th><label for="userBirth">생년월일</label></th>
+					<td><input type="date" name="userBirth" id="userBirth" value="${user.userBirth }" max="9999-12-31" ></td>
+					<span id="birthCheckResult"></span>
+				</tr>
+		
+				<c:if test="${sessionScope.sUT == 1}">
+					<tr>
+						<th><label for="userGender">성별</label></th>
+						<td>
+							<select name="userGender" id="userGender" required>
+								<option value="">선택</option>
+								<option value="M" <c:if test="${user.userGender eq 'M' }">selected</c:if>>남자</option>
+								
+								<option value="F" <c:if test="${user.userGender eq 'F' }">selected</c:if>>여자</option>
+							</select>
+						</td>
+					</tr>
+				</c:if>
+		
+				<tr>
+					<th><label for="userId">아이디</label></th>
+					<td><input type="text" name="userId" id="userId" value="${user.userId }" readonly="readonly"></td>
+				</tr>
+		
+				<tr>
+				    <th><label for="userPassword">새 비밀번호</label></th>
+				    <td>
+				    	<input type="password" name="newPassword" id="userPassword" >
+				   		<div id="checkPasswdResult" style="margin-top: 5px;"></div>
+				    </td>
+				</tr>
 	
-			<tr>
-				<th><label for="userId">아이디</label></th>
-				<td><input type="text" name="userId" id="userId" value="${user.userId }" readonly="readonly"></td>
-			</tr>
-	
-			<tr>
-			    <th><label for="userPassword">새 비밀번호</label></th>
-			    <td>
-			    	<input type="password" name="newPassword" id="userPassword" >
-			   		<div id="checkPasswdResult" style="margin-top: 5px;"></div>
-			    </td>
-			</tr>
-
-			<tr>
-			    <th><label for="userPasswordConfirm">새 비밀번호 확인</label></th>
-			    <td>
-			        <input type="password" id="userPasswordConfirm" name="newPasswordConfirm" >
-			        <span id="pw-match-msg" style="margin-left: 10px;"></span>
-			        <div id="checkPasswd2Result" style="margin-top: 5px;"></div>
-			    </td>
-			</tr>
-			
-			<tr>
-				<th><label for="userPhoneNumber">휴대폰번호</label></th>
-				<td>
-				<input type="text" name="userPhoneNumber" id="userPhoneNumber" value="${user.userPhoneNumber }" required>
-				<span id="phoneCheckResult"></span>
-				</td>
-			</tr>
-	
-			<tr>
-				<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.sUT == 1}">비상연락망</c:if><c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
-				<td><input type="text" name="userPhoneNumberSub" id="userPhoneNumberSub" value="${user.userPhoneNumberSub }"></td>
-			</tr>
-	
-			<tr>
-				<th>주소</th>
-				<td>
-					<input type="text" name="userPostcode" id="userPostcode" placeholder="우편번호" required readonly style="width: 150px;" value="${user.userPostcode }">
-					<input type="button" value="주소검색" id="btnSearchAddress"><br>
-					<input type="text" name="userAddress1" id="userAddress1" placeholder="기본주소" required readonly style="width: 70%;" value="${user.userAddress1 }"><br>
-					<input type="text" name="userAddress2" id="userAddress2" placeholder="상세주소" required style="width: 70%;" value="${user.userAddress2 }">
-				</td>
-			</tr>
-		</table>
-		<input type="hidden" name="userType" value="${sessionScope.sUT}"/>
-		<div style="display: flex; justify-content: flex-end;"><button type="submit" id="submitBtn"> 정보변경</button></div>
+				<tr>
+				    <th><label for="userPasswordConfirm">새 비밀번호 확인</label></th>
+				    <td>
+				        <input type="password" id="userPasswordConfirm" name="newPasswordConfirm" >
+				        <span id="pw-match-msg" style="margin-left: 10px;"></span>
+				        <div id="checkPasswd2Result" style="margin-top: 5px;"></div>
+				    </td>
+				</tr>
+				
+				<tr>
+					<th><label for="userPhoneNumber">휴대폰번호</label></th>
+					<td>
+					<input type="text" name="userPhoneNumber" id="userPhoneNumber" value="${user.userPhoneNumber }" required>
+					<span id="phoneCheckResult"></span>
+					</td>
+				</tr>
+		
+				<tr>
+					<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.sUT == 1}">비상연락망</c:if><c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
+					<td><input type="text" name="userPhoneNumberSub" id="userPhoneNumberSub" value="${user.userPhoneNumberSub }"></td>
+				</tr>
+		
+				<tr>
+					<th>주소</th>
+					<td>
+						<input type="text" name="userPostcode" id="userPostcode" placeholder="우편번호" required readonly style="width: 150px;" value="${user.userPostcode }">
+						<input type="button" value="주소검색" id="btnSearchAddress"><br>
+						<input type="text" name="userAddress1" id="userAddress1" placeholder="기본주소" required readonly style="width: 70%;" value="${user.userAddress1 }"><br>
+						<input type="text" name="userAddress2" id="userAddress2" placeholder="상세주소" required style="width: 70%;" value="${user.userAddress2 }">
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="userType" value="${sessionScope.sUT}"/>
+			<div style="display: flex; justify-content: flex-end;"><button type="submit" id="submitBtn"> 정보변경</button></div>
 		</form>
 	
 	</div>
 	
 	</main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
+	</footer>
+	<script type="text/javascript">
 
-<script type="text/javascript">
 	window.isEmailVerified = true;
 	
 	document.addEventListener("DOMContentLoaded", function() {
+		// 정보 유효성검사
 	    const emailInput = document.getElementById("userEmail");
 	    const changeEmailBtn = document.getElementById("changeEmail");
 	    const verifyBtn = document.getElementById("emailVerifyBtn");
@@ -418,17 +443,19 @@ form input[type="radio"] {
 		const pwInput = document.getElementById("userPassword");
 		const pwConf = document.getElementById("userPasswordConfirm");
 		const phoneInput = document.getElementById("userPhoneNumber");
+		const subphoneInput = document.getElementById("userPhoneNumberSub");
 		const submitBtn = document.getElementById("submitBtn");
 		const addressBtn = document.getElementById("btnSearchAddress");
 		const postcodeInput = document.getElementById("userPostcode");
 		const address1Input = document.getElementById("userAddress1");
 		const address2Input = document.getElementById("userAddress2");
-		
 		var isPwOk = true;
 		var isPwMatchOk = true;
 		var isRepNameOk = true;
 		var isPhoneOk = true;
 		var isAddressOk = true;
+
+		
 		
 		updateSubmitButton();
 		
@@ -535,11 +562,6 @@ form input[type="radio"] {
 	    // 초기 버튼 상태 업데이트
 	    updateSubmitButton();
 	    
-	    
-	    
-	    
-	    
-	    
 		// 닉네임창 벗어나면 중복체크 실행
 		userRepNameInput.addEventListener('blur', () => {
 		    let currentRepName = userRepNameInput.value.trim();
@@ -627,6 +649,51 @@ form input[type="radio"] {
 			};
 		}
 		
+		//전화번호 형식 지정
+		phoneInput.addEventListener('input', function(e) {
+			var value = e.target.value;
+			value = value.replace(/\D/g, ''); // 숫자만 입력가능
+			// 앞3자리 010 고정
+			if (!value.startsWith('010')) {
+				value = '010' + value.substring(3);
+			}
+			// 앞3자리 입력후 -
+			if (value.length > 3) {
+			    value = value.substring(0, 3) + '-' + value.substring(3);
+			}
+			// 7자리 이상이면 두 번째 - 추가 (010-1111-)
+			if (value.length > 8) {
+				value = value.substring(0, 8) + '-' + value.substring(8, 12);
+			}
+			// 12자리 이상은 자르기 (최대 010-1111-1111)
+			if (value.length > 13) {
+			  	value = value.substring(0, 13);
+			}
+			e.target.value = value;
+		});
+		
+		//비상연락망 형식 지정
+		subphoneInput.addEventListener('input', function(e) {
+			var value = e.target.value;
+			value = value.replace(/\D/g, '');
+			// 앞3자리 010 고정
+			if (!value.startsWith('010')) {
+				value = '010' + value.substring(3);
+			}
+			// 앞3자리 입력후 -
+			if (value.length > 3) {
+			    value = value.substring(0, 3) + '-' + value.substring(3);
+			}
+			// 7자리 이상이면 두 번째 - 추가 (010-1111-)
+			if (value.length > 8) {
+				value = value.substring(0, 8) + '-' + value.substring(8, 12);
+			}
+			// 12자리 이상은 자르기 (최대 010-1111-1111)
+			if (value.length > 13) {
+			  	value = value.substring(0, 13);
+			}
+			e.target.value = value;
+		});
 		
 		// 6. 전화번호 중복 & 정규표현식 체크
 		phoneInput.addEventListener('blur', function() {
@@ -703,7 +770,6 @@ form input[type="radio"] {
 		    input.addEventListener('input', checkAddressFields);
 		});
 		
-		
 		function updateSubmitButton() {
 			 console.log({
 				isRepNameOk,
@@ -718,11 +784,61 @@ form input[type="radio"] {
 		        submitBtn.disabled = true;
 		    }
 		}
+		// 프로필이미지 변경
+		var fileId = "${userProfileImg.fileId}";
+		
+		const existProfileImg = fileId && fileId !== '' && fileId !== 'null'; // true||false
+		
+		const profileImageAction = document.getElementById('profileImageAction'); // isnert, delete, update, none
+		const deleteProfileImgFlag = document.getElementById('deleteProfileImgFlag'); //
+		const profileImageInput = document.getElementById('profileImage'); //선택된 파일
+		
+		var profileUrl = existProfileImg ? '/file/' + fileId + '?type=0' : '/resources/images/default_profile_photo.png';
+		console.log(profileUrl);
+		document.getElementById('profilePreview').src = profileUrl;
+		console.log(document.getElementById('profilePreview').src);
+		
+		//파일 선택 시preview에 보여줌
+		document.getElementById('profileImage').addEventListener('change', function(e) {
+			const file = e.target.files[0];
+			
+			if (file) {
+		        const reader = new FileReader();
+		        reader.onload = function(evt) {
+		            // 읽은 이미지 데이터를 profilePreview 이미지의 src에 설정
+		            document.getElementById('profilePreview').src = evt.target.result;
+		        }
+		        reader.readAsDataURL(file);  // 파일을 DataURL 형식으로 읽기 (이미지 미리보기용)
+		        profileImageAction.value = 'insert';
+		        deleteProfileImgFlag.value = 'false';
+		        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+		        console.log(profileImageAction.value);
+		        console.log(deleteProfileImgFlag.value);
+		        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+		    } else {
+		        // 파일선택 취소 시 "none" 처리
+		        profileImageAction.value = 'none';
+		    }
+		});
+		
+		//이미지 삭제 버튼
+		$('#deleteProfileImgBtn').on('click', function() {
+		    // 프리뷰 이미지를 디폴트 이미지로 교체
+		    $('#profilePreview').attr('src', '/resources/images/default_profile_photo.png');
+		    // 삭제 의도를 서버에 전달할 수 있게 hidden input 값을 true로 설정
+		    profileImageAction.value = 'delete';
+		    deleteProfileImgFlag.value = 'true';
+	        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+			console.log(profileImageAction.value);
+			console.log(deleteProfileImgFlag.value);	
+	        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+
+		    // 파일 선택된 것도 비워줌
+		    profileImageInput.value = '';
+		});
+		
 	});
-</script>
 	
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
+	</script>
 </body>
 </html>

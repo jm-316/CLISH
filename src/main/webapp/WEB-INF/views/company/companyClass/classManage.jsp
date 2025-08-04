@@ -10,6 +10,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
     <style>
+    	#footer-area {
+	      margin-top: 0 !important;
+	    }
+    	
     	/* 왼쪽 사이드바 */
 		.sidebar {
 		    width: 200px; /* 필요에 따라 조절 */
@@ -20,14 +24,17 @@
 		}
     	
         .classManage-container {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
+		    display: flex;
+		    width: 100%;
+		    min-height: 100vh;
+		    padding-right: 200px; /* ✅ 오른쪽도 사이드바만큼 여백 주기 */
+		    box-sizing: border-box;
+		}
 
         .content-area {
             flex: 1;
             padding: 30px;
+            margin-right: 50px
         }
 
         .class-header {
@@ -66,6 +73,7 @@
         .class-table {
             width: 100%;
             border-collapse: collapse;
+            margin-left: 0px; /* ✅ 살짝 왼쪽으로 이동 */
         }
 
         .class-table th, .class-table td {

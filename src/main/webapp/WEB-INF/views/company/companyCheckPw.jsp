@@ -10,29 +10,38 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 	<style type="text/css">
-		/* 큰 전체 박스 */
+		html, body {
+		    height: 100%;
+		    margin: 0;
+		}
+		
+		#footer-area {
+	      margin-top: 0 !important;
+	    }
+		
 		.main-container {
 		    display: flex;
 		    width: 100%;
-		    min-height: 600px; /* 필요에 따라 조절 */
+		    height: calc(100vh - 120px); /* header/footer 높이에 맞게 조절 */
+		    box-sizing: border-box;
 		}
 		
-		/* 왼쪽 사이드바 */
 		.sidebar {
 		    width: 220px;
 		    background-color: #f5f5f5;
 		    padding: 30px 20px;
 		    box-sizing: border-box;
+		    height: 100%; /* 부모인 main-container에 맞춤 */
 		    border-right: 1px solid #ddd;
-		    overflow: hidden;          /* ✅ 내부 넘치는 거 잘라냄 */
-		    white-space: nowrap;       /* ✅ 줄넘김 방지 */
+		    overflow: hidden;
+		    white-space: nowrap;
 		}
 		
-		/* 오른쪽 본문 */
 		.content-area {
 		    flex: 1;
-		    padding: 40px;
+		    padding: 80px;
 		    background-color: #ffffff;
+		    margin-right: 220px;
 		}
 	</style>
 </head>

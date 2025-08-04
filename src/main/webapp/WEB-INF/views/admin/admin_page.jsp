@@ -199,6 +199,8 @@ function loadDailyRevenueChart() {
 			  const labels = data.map(item => item.categoryName);
 			  const values = data.map(item => item.total);
 			  
+			  console.log(values);
+			  
 			  const ctx = document.getElementById("categoryChart").getContext("2d");
 			  
 			  new Chart(ctx, {
@@ -206,7 +208,7 @@ function loadDailyRevenueChart() {
 			        data: {
 			          labels: labels,
 			          datasets: [{
-			            label: "카테고리별 매출",
+			            label: "월별 카테고리 매출",
 			            backgroundColor: "rgba(255, 118, 1, 0.7)",
 			            data: values,
 			            borderRadius: 6

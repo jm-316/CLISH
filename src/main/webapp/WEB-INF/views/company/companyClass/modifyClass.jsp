@@ -80,19 +80,31 @@
 				<tr>
 					<th>수업 요일</th>
 					<td>
-						<label><input type="checkbox" class="day" name="class_days" value="1">월</label>
-						<label><input type="checkbox" class="day" name="class_days" value="2">화</label>
-						<label><input type="checkbox" class="day" name="class_days" value="4">수</label>
-						<label><input type="checkbox" class="day" name="class_days" value="8">목</label>
-						<label><input type="checkbox" class="day" name="class_days" value="16">금</label>
-						<label><input type="checkbox" class="day" name="class_days" value="32">토</label>
-						<label><input type="checkbox" class="day" name="class_days" value="64">일</label>
-						<input type="hidden" name="classDays" id="classDays" value="${classInfo.classDays}" />
+						<label><input type="checkbox" class="day" name="classDays" value="1">월</label>
+						<label><input type="checkbox" class="day" name="classDays" value="2">화</label>
+						<label><input type="checkbox" class="day" name="classDays" value="4">수</label>
+						<label><input type="checkbox" class="day" name="classDays" value="8">목</label>
+						<label><input type="checkbox" class="day" name="classDays" value="16">금</label>
+						<label><input type="checkbox" class="day" name="classDays" value="32">토</label>
+						<label><input type="checkbox" class="day" name="classDays" value="64">일</label>
+<%-- 						<input type="hidden" name="classDays" id="classDays" value="${classInfo.classDays}" /> --%>
 					</td>
 				</tr>
 				<tr>
 					<th>장소</th>
-					<td><input type="text" name="location" value="${classInfo.location}"></td>
+					<td>
+						<input type="text" name="classPostcode" id="classPostcode" 
+						       placeholder="우편번호" style="width:150px;" readonly required
+						       value="">
+						<input type="button" value="주소 검색" id="btnSearchAddress"><br>
+						<input type="text" name="classAddress1" id="classAddress1" 
+						       placeholder="도로명 주소" style="width:70%;" readonly required
+						       value="">
+						<input type="text" name="classAddress2" id="classAddress2" 
+						       placeholder="장소 상세 설명" style="width:70%;" required
+						       value="">
+						<input type="hidden" name="location" id="location" value="${classInfo.location}">
+					</td>
 				</tr>
 				<tr>
 					<th>강의 소개</th>
@@ -164,10 +176,23 @@
 	<footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
     </footer>
-
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<!-- ✅ 요일 처리 스크립트 -->
 	<script>
 	window.addEventListener("DOMContentLoaded", function () {
+		// 추가된 주소 복원 코드
+	    const locationValue = document.getElementById("location").value;
+	    if (locationValue && locationValue.trim() !== "") {
+	        const lastSpace = locationValue.lastIndexOf(" ");
+	        const address1 = locationValue.substring(0, lastSpace);
+	        const address2 = locationValue.substring(lastSpace + 1);
+	        document.getElementById("classAddress1").value = address1;
+	        document.getElementById("classAddress2").value = address2;
+	        document.getElementById("classPostcode").value = "";
+	    }
+		
 	    const value = parseInt(document.getElementById("classDays").value || "0");
 	    document.querySelectorAll(".day").forEach(cb => {
 	        if (value & parseInt(cb.value)) {
@@ -217,6 +242,28 @@
 	        reader.readAsDataURL(file);
 	      }
 	    }
+	  });
+	
+	// 주소 검색 버튼 이벤트 바인딩
+	document.getElementById("btnSearchAddress").addEventListener("click", function () {
+	    new daum.Postcode({
+	      oncomplete: function (data) {
+	        let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+	        let detail = "";
+
+	        document.getElementById("classPostcode").value = data.zonecode;
+	        document.getElementById("classAddress1").value = addr;
+	        document.getElementById("classAddress2").focus();
+
+	        document.getElementById("classAddress2").addEventListener("input", function () {
+	          detail = this.value;
+	          document.getElementById("location").value = addr + " " + detail;
+	        });
+
+	        // 상세주소 없이도 기본 주소는 넣어줌
+	        document.getElementById("location").value = addr;
+	      }
+	    }).open();
 	  });
 	</script>
 

@@ -10,51 +10,113 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
+	#footer-area {
+      margin-top: 0 !important;
+    }
+
 	/* 왼쪽 사이드바 */
 	.sidebar {
-	    width: 200px; /* 필요에 따라 조절 */
-	    background-color: #f8f8f8;
-	    padding: 20px;
-	    overflow: hidden;  /* ✅ 내부 넘치는 거 잘라냄 */
-    	white-space: nowrap;
+		width: 200px; /* 필요에 따라 조절 */
+		background-color: #f8f8f8;
+		padding: 20px;
+		overflow: hidden;  /* ✅ 내부 넘치는 거 잘라냄 */
+		white-space: nowrap;
 	}
-  .classManage-container { display: flex; width: 100%; min-height: 100vh; }
-  .content-area { flex: 1; padding: 30px; }
-  .class-header { margin-bottom: 30px; text-align: center; }
-  .class-table { width: 100%; border-collapse: collapse; }
-  .class-table th, .class-table td {
-    border: 1px solid #ccc; padding: 10px; text-align: center;
-  }
-  .class-table tr:hover { background-color: #f5f5f5; cursor: pointer; }
+	.classManage-container {
+		 display: flex;
+		 width: 100%;
+		 min-height: 100vh;
+		 padding-right: 200px; /* ✅ 오른쪽도 사이드바만큼 여백 주기 */
+		 box-sizing: border-box;
+	}
+	.content-area {
+		flex: 1;
+		padding: 30px; 
+	}
+	.class-header {
+		margin-bottom: 30px;
+		text-align: center;
+	}
+	.class-table {
+		width: 85%;
+		border-collapse: collapse;
+	}
+	
+	.class-table th, .class-table td {
+	    border: 1px solid #ccc;
+		padding: 10px;
+		text-align: center;
+	}
+	.class-table tr:hover {
+		background-color: #f5f5f5;
+		cursor: pointer;
+	}
+	.modal {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0.5);
+		justify-content: center;
+		align-items: center;
+		z-index: 999;
+	}
+	.modal_body {
+		background: white;
+		padding: 35px;
+		border-radius: 12px;
+		width: 650px;
+		box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.modal_body table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.modal_body th {
+		width: 120px;
+		text-align: center;
+		vertical-align: middle;
+		padding: 12px 10px;
+		white-space: nowrap;
+		background-color: #e0e0e0;
+		font-weight: bold;
+	}
+	.modal_body td {
+		padding: 12px 10px;
+		vertical-align: top;
+	}
+	.modal_body textarea {
+		width: 100%;
+		height: 150px;
+		font-size: 14px;
+		padding: 12px;
+		resize: vertical;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+	}
 
-  .modal {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 999;
-  }
-
-  .modal_body {
-    background: white; padding: 35px; border-radius: 12px; width: 650px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.25); display: flex; flex-direction: column; align-items: center;
-  }
-
-  .modal_body table { width: 100%; border-collapse: collapse; }
-  .modal_body th {
-    width: 120px; text-align: center; vertical-align: middle; padding: 12px 10px;
-    white-space: nowrap; background-color: #e0e0e0; font-weight: bold;
-  }
-  .modal_body td { padding: 12px 10px; vertical-align: top; }
-
-  .modal_body textarea {
-    width: 100%; height: 150px; font-size: 14px; padding: 12px;
-    resize: vertical; border: 1px solid #ccc; border-radius: 6px;
-  }
-
-  .modal-buttons { text-align: center; margin-top: 30px; }
-  .modal-buttons button {
-    background-color: orange; color: white; padding: 10px 25px;
-    border: none; border-radius: 6px; margin: 0 10px; cursor: pointer; font-size: 15px;
-  }
-  .modal-buttons button:hover { background-color: #ff7f00; }
+	.modal-buttons {
+		text-align: center;
+		margin-top: 30px;
+	}
+	.modal-buttons button {
+		background-color: orange;
+		color: white;
+		padding: 10px 25px;
+		border: none;
+		border-radius: 6px;
+		margin: 0 10px;
+		cursor: pointer;
+		font-size: 15px;
+	}
+	.modal-buttons button:hover { 
+		background-color: #ff7f00;
+	}
 </style>
 </head>
 <body>

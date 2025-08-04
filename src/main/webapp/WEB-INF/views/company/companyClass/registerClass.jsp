@@ -92,9 +92,15 @@
 	            <label><input type="checkbox" name="classDayNames" value="64">일</label>
 	        </div>
 	
-	        <label><b>장소</b></label>
-	        <input type="text" name="location" size="50" required>
-	        
+	        <label><b>장소</b></label><br>
+			<input type="text" name="classPostcode" id="classPostcode" 
+			       placeholder="우편번호" style="width:150px;" readonly required>
+			<input type="button" value="주소 검색" id="btnSearchAddress"><br>
+			<input type="text" name="classAddress1" id="classAddress1" 
+			       placeholder="도로명 주소" style="width:70%;" readonly required><br>
+			<input type="text" name="classAddress2" id="classAddress2" 
+			       placeholder="장소 상세 설명" style="width:70%;" required>
+			<input type="hidden" name="location" id="location"><br>
 			
 			<label><b>썸네일 업로드</b></label>
 			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*">
@@ -107,6 +113,8 @@
 	        </div>
 	    </form>
 	    
+	    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
 		function addCurriculum() {
 			const div = document.createElement('div');
@@ -140,6 +148,29 @@
 		      }
 		    }
 		  });
+		
+		// 주소 검색 버튼 이벤트 바인딩
+		document.getElementById("btnSearchAddress").addEventListener("click", function () {
+		  new daum.Postcode({
+		    oncomplete: function (data) {
+		      let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+		      let detail = "";
+		
+		      document.getElementById("classPostcode").value = data.zonecode;
+		      document.getElementById("classAddress1").value = addr;
+		      document.getElementById("classAddress2").focus();
+		
+		      // detail 주소 입력될 때마다 location 필드도 업데이트
+		      document.getElementById("classAddress2").addEventListener("input", function () {
+		        detail = this.value;
+		        document.getElementById("location").value = addr + " " + detail;
+		      });
+		      
+		      // ✅ 2. 주소 선택 직후 기본값으로도 location 초기 세팅
+		      document.getElementById("location").value = addr;
+		    }
+		  }).open();
+		});
 		</script>
 	</section>
 	<footer>

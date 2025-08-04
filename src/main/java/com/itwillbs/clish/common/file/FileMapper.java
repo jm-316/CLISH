@@ -36,5 +36,8 @@ public interface FileMapper {
 	// 파일 정보 조회
 	FileDTO selectFileInfo(int fileId);
 
+	// 썸네일 정보 조회
+	FileDTO selectThumbnailInfo(int fileId);
+
 
 }

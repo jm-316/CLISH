@@ -47,9 +47,9 @@
 					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
 						<div>
-							<div style="display: flex; flex: 1 1 auto;  align-items: center; justify-content: space-between; margin-left: 30px; margin-right: 30px">
-								<div style="display: flex; flex-direction: column;">
-									<div style="width: 950px;">
+							<div style="display: flex; flex: 1 1 auto;  align-items: center; justify-content: space-between; margin-left: 30px; margin-right: 30px;">
+								<div style="display: flex; flex-direction: column; width: 600px;">
+									<div>
 										<label>강의명</label> 
 										<input type="text" value="${classInfo.classTitle}" name="classTitle" id="classTitle" required/>
 									</div>
@@ -64,7 +64,7 @@
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
 									<c:forEach var="fileDTO" items="${classInfo.fileList}">
-										<img src="/file/${file.fileId }?type=0" alt="${file.originalFileName }" width="300px" height="300px"/>
+										<img src="/file/${fileDTO.fileId }?type=0" alt="${fileDTO.originalFileName }" width="300px" height="300px"/>
 										<div>
 											${fileDTO.originalFileName}
 											<a href="/file/${fileDTO.fileId }?type=1">

@@ -447,5 +447,13 @@ public class MainController {
 		
 		return response;
 	}
+	@GetMapping("/customer/termsOfService")
+	public String termsOfService() {
+		return "customer/terms_of_service";
+	}
+	@GetMapping("/customer/privacyPolicy")
+	public String privacyPolicy() {
+		return "customer/privacy_policy";
+	}
 		
 }

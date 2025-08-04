@@ -20,6 +20,8 @@ import com.itwillbs.clish.user.dto.UserDTO;
 public interface MyPageMapper {
 	// 유저 정보 불러오기
 	UserDTO selectUserInfo(UserDTO user);
+	//유저 프로필사진 불러오기
+	FileDTO selectUserProfileImg(UserDTO user);
 	// 닉네임중복확인
 	UserDTO checkRepName(UserDTO userDTO);
 	// 전화번호 중복확인

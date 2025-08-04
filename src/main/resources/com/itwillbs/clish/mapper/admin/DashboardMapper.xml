@@ -88,35 +88,34 @@
 	
 	<!-- 카테고리별 매출 -->
 	<select id="selectCategoryRevenue" resultType="com.itwillbs.clish.admin.dto.CategoryRevenueDTO">
-		SELECT
-			c.category_name AS categoryName
-			, IFNULL(SUM(p.amount), 0) AS total
-		FROM
-			CATEGORY c
-		LEFT JOIN
-			CATEGORY sub
-		ON
-			sub.parent_idx = c.category_idx
-		AND
-			sub.depth = 2
-		LEFT JOIN
-			CLASS cls
-		ON
-			cls.category_idx = sub.category_idx
- 		LEFT JOIN
- 			RESERVATION r
- 		ON
- 			r.class_idx = cls.class_idx
- 		LEFT JOIN
- 			PAYMENT_INFO p
- 		ON
- 			p.reservation_idx = r.reservation_idx
- 		AND
- 			p.status = 'paid'
- 		WHERE
- 			c.depth = 1
- 		GROUP BY
- 			c.category_name
+   		SELECT
+	        c.category_name AS categoryName,
+	        IFNULL(SUM(p.amount), 0) AS total
+	    FROM
+	        CATEGORY c
+	    LEFT JOIN 
+	    	CATEGORY sub
+	    ON 
+	    	sub.parent_idx = c.category_idx AND sub.depth = 2
+	    LEFT JOIN 
+	    	CLASS cls
+        ON 
+        	cls.category_idx = sub.category_idx
+	    LEFT JOIN 
+	    	RESERVATION r
+        ON 
+        	r.class_idx = cls.class_idx
+	    LEFT JOIN (
+	        SELECT *
+	        FROM PAYMENT_INFO
+	        WHERE status = 'paid'
+	          AND FROM_UNIXTIME(pay_time / 1000, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+	    ) p
+	        ON p.reservation_idx = r.reservation_idx
+	    WHERE
+	        c.depth = 1
+	    GROUP BY
+	        c.category_name
 	</select>
 </mapper>  
   

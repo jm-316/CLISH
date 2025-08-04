@@ -100,14 +100,6 @@
 			CATEGORY
 		WHERE
 	    	category_name = #{categoryName}
-	  	<choose>
-	    	<when test="parentIdx != null and parentIdx != ''">
-	      		AND parent_idx = #{parentIdx}
-	    	</when>
-	    	<otherwise>
-	     		AND parent_idx IS NULL
-	    	</otherwise>
-	  	</choose>
 		<if test="currentIdx != null and currentIdx != ''">
 		   AND category_idx != #{currentIdx}
 		 </if>
