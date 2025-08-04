@@ -18,6 +18,9 @@ public interface CompanyInfoMapper {
 	// 로그인한 기업회원 정보 조회
 	UserDTO selectUserInfo(UserDTO user);
 	
+	// 기업전화번호 중복 확인
+	boolean selectPhoneNumberDuplicate(@Param("userPhoneNumber") String userPhoneNumber, @Param("userIdx") String userIdx);
+	
 	// 기업 정보 수정
 	int updateUserInfo(UserDTO user);
 	
@@ -57,7 +60,6 @@ public interface CompanyInfoMapper {
 	// ---------------------------------------------------------------
 	// 기업 회원 탈퇴
 	int updateWithdraw(UserDTO user);
-	
 
 
 	

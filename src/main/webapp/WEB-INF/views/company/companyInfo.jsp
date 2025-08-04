@@ -97,7 +97,11 @@
         width: 60%;
         vertical-align: middle;
     }
-
+    
+    button#emailVerifyBtn {
+	  width: 100px; /* 또는 180px, 200px 등 원하는 길이 */
+	}
+	
     .email-auth-wrap button {
         vertical-align: middle;
         margin-left: 10px;
@@ -131,14 +135,22 @@
 		<div class="main-content">
 			<div class="form-wrapper">
 			<h2 style="text-align:center;">${sessionScope.sId} 기업 회원정보 수정</h2>
-			<form action="${pageContext.request.contextPath}/company/myPage/companyInfoSubmit"
-			      method="post" enctype="multipart/form-data">
+			<form id="companyInfoForm" action="${pageContext.request.contextPath}/company/myPage/companyInfoSubmit"
+				method="post" enctype="multipart/form-data">
 			    <table border="1" style="width: 80%;">
 			
-			       	<tr>
+<!-- 			       	<tr> -->
+<!-- 						<th>사업자등록번호</th> -->
+<!-- 						<td> -->
+<!-- 							<input type="text" name="bi" id="companyNumber" placeholder="000-00-00000"> -->
+<!-- 							<span style="color: gray; font-size: 12px;">※ 정확한 사업자등록번호를 입력해주세요.</span> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+					<tr>
 						<th>사업자등록번호</th>
 						<td>
-							<input type="text" name="bizRegNo" value="${company.bizRegNo}">
+							<input type="text" name="bizRegNo" value="${company.bizRegNo}" placeholder="000-00-00000">
+							<span style="color: gray; font-size: 12px;">※ 정확한 사업자등록번호를 입력해주세요.</span>
 						</td>
 					</tr>
 					<tr>
@@ -157,9 +169,9 @@
 						<th>이메일</th>
 						<td>
 							<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
-							
-							<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" onclick="changeEmail()"/>
+							<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" />
 							<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
+							<button type="button" id="checkEmailVerifiedBtn" style="display: none;">[인증 완료 확인]</button>
 							<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
 						</td>
 					</tr>
@@ -196,8 +208,10 @@
 					<tr>
 						<th>기업전화번호</th>
 						<td>
-							<input type="text" id="userPhoneNumber" name="userPhoneNumber" value="${user.userPhoneNumber}" required>
-							<span id="phoneCheckResult"></span>
+							<input type="text" id="userPhoneNumber" name="userPhoneNumber"
+								value="${user.userPhoneNumber}" required maxlength="14"
+								placeholder="051-123-4567">
+							<span id="phoneCheckResult" style="margin-left:10px;"></span>
 						</td>
 					</tr>
 			
@@ -228,40 +242,90 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script type="module">
-		import { initEmailAuth } from '/resources/js/email/email_auth.js';
-		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
-	</script>
-	
-	<script type="module">
-		import { initEmailAuth } from '/resources/js/email/email_auth.js';
-		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
-	</script>
 	
 	<script type="text/javascript">
-		window.isEmailVerified = true;
-		
-		document.addEventListener("DOMContentLoaded", function() {
-		    const emailInput = document.getElementById("userEmail");
-		    const changeBtn = document.getElementById("changeEmail");
-		    const verifyBtn = document.getElementById("emailVerifyBtn");
-		    const authResult = document.getElementById("email-auth-result");
-		    
-		    changeBtn.addEventListener("click", function() {
-		    	window.isEmailVerified = false;
-		    	// 이메일 입력창 수정 가능
-		        emailInput.removeAttribute("readonly");
-		        emailInput.focus();
-		
-		        // 이메일 인증 버튼, 인증 안내 문구 모두 보이게
-		        verifyBtn.style.display = "inline-block";
-		        authResult.style.display = "inline-block";
-		
-		        // "이메일변경" 버튼 숨김 (또는 비활성화 해도 됨)
-		        changeBtn.style.display = "none";
-		    });
+	window.isEmailVerified = false;
+
+	document.addEventListener("DOMContentLoaded", function () {
+		// ====================== 이메일 변경 관련 ======================
+		const emailInput = document.getElementById("userEmail");
+		const changeBtn = document.getElementById("changeEmail");
+		const verifyBtn = document.getElementById("emailVerifyBtn");
+		const checkBtn = document.getElementById("checkEmailVerifiedBtn");
+		const authResult = document.getElementById("email-auth-result");
+		let sendMail = null;
+
+		changeBtn.addEventListener("click", function () {
+			window.isEmailVerified = false;
+			emailInput.removeAttribute("readonly");
+			emailInput.focus();
+
+			verifyBtn.style.display = "inline-block";
+			authResult.style.display = "inline-block";
+			changeBtn.style.display = "none";
+		});
+
+		// 이메일 인증 메일 전송
+		verifyBtn.addEventListener("click", function () {
+			const email = emailInput.value.trim();
+			if (!email) {
+				alert("이메일을 입력하세요!");
+				return;
+			}
+
+			fetch("${pageContext.request.contextPath}/email/send", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ userEmail: email, purpose: "user" })
+			})
+			.then(res => res.json())
+			.then(data => {
+				if (data.token) {
+					alert("이메일이 전송되었습니다. 받은 메일에서 인증 링크를 클릭하세요.");
+					authResult.innerText = "이메일 인증 중...";
+					authResult.style.color = "orange";
+					checkBtn.style.display = "inline-block";
+					sendMail = email;
+				} else {
+					alert("이메일 전송 실패!");
+				}
+			})
+			.catch(() => alert("서버 오류로 메일 전송 실패!"));
+		});
+
+			// 이메일 인증 완료 확인 버튼
+			checkBtn.addEventListener("click", function () {
+				const email = emailInput.value.trim().toLowerCase();
+	
+				if (!email) {
+					alert("이메일을 입력하세요!");
+					return;
+				}
+				if (email !== sendMail) {
+					alert("인증 요청한 이메일과 일치하지 않습니다.");
+					return;
+				}
+	
+				fetch("${pageContext.request.contextPath}/email/check?email=" + encodeURIComponent(email))
+					.then(res => res.json())
+					.then(data => {
+						if (data.verified) {
+							authResult.innerText = "이메일 인증 완료!";
+							authResult.style.color = "green";
+							emailInput.readOnly = true;
+							verifyBtn.disabled = true;
+							checkBtn.disabled = true;
+							checkBtn.style.display = "none";
+							window.isEmailVerified = true;
+						} else {
+							authResult.innerText = "아직 인증되지 않았습니다.";
+							authResult.style.color = "red";
+						}
+					})
+					.catch(() => alert("인증 확인 중 오류 발생"));
+			});
 		  
-			 // 주소 검색 버튼 이벤트 바인딩
+		 	// ====================== 주소 검색 관련 ======================
 		    document.getElementById("btnSearchAddress").addEventListener("click", function () {
 	        new daum.Postcode({
 	            oncomplete: function (data) {
@@ -278,22 +342,81 @@
 	            }
 	        }).open();
 	    });
-	});	    
+		 
+	 // ====================== [ 전화번호 중복 확인 + 하이픈 자동입력 ] ======================
+		const phoneInput = document.getElementById("userPhoneNumber");
+		const phoneResult = document.getElementById("phoneCheckResult");
+
+		// 하이픈 자동 삽입 (지역번호 대응)
+		phoneInput.addEventListener("input", function () {
+			let number = phoneInput.value.replace(/[^0-9]/g, "");
+			let result = "";
+
+			if (number.startsWith("02")) {
+				// 서울 지역번호 02
+				if (number.length <= 2) {
+					result = number;
+				} else if (number.length <= 5) {
+					result = number.slice(0, 2) + "-" + number.slice(2);
+				} else if (number.length <= 9) {
+					result = number.slice(0, 2) + "-" + number.slice(2, 5) + "-" + number.slice(5);
+				} else {
+					result = number.slice(0, 2) + "-" + number.slice(2, 6) + "-" + number.slice(6, 10);
+				}
+			} else {
+				// 그 외 지역번호 (051, 031 등)
+				if (number.length <= 3) {
+					result = number;
+				} else if (number.length <= 6) {
+					result = number.slice(0, 3) + "-" + number.slice(3);
+				} else if (number.length <= 10) {
+					result = number.slice(0, 3) + "-" + number.slice(3, 6) + "-" + number.slice(6);
+				} else {
+					result = number.slice(0, 3) + "-" + number.slice(3, 7) + "-" + number.slice(7, 11);
+				}
+			}
+			phoneInput.value = result;
+		});
+
+		// 포커스 빠질 때 중복 검사
+		phoneInput.addEventListener("blur", function () {
+			const phone = phoneInput.value.trim();
+			if (!phone) {
+				phoneResult.innerText = "전화번호를 입력하세요.";
+				phoneResult.style.color = "red";
+				return;
+			}
+			
+			const userIdx = document.querySelector("input[name='userIdx']").value;
+			
+			fetch("${pageContext.request.contextPath}/company/myPage/checkPhone?userPhoneNumber=" + encodeURIComponent(phone) + "&userIdx=" + encodeURIComponent(userIdx))
+				.then(res => res.text())
+				.then(data => {
+					console.log("🔍 서버 응답:", data); 
+					if (data === "true") {
+						phoneResult.innerText = "사용 불가능한 번호입니다.";
+						phoneResult.style.color = "red";
+					} else {
+						phoneResult.innerText = "사용 가능한 번호입니다.";
+						phoneResult.style.color = "green";
+					}
+				});
+			});
+		});
 	</script>
-	
-	<c:if test="${modifySuccess == true}">
-    <script>
-	        alert("기업 정보 수정이 완료되었습니다.");
-	    </script>
-	</c:if>
-	<c:if test="${modifySuccess == false}">
-	    <script>
-	        alert("기업 정보 수정에 실패했습니다.");
-	    </script>
-	</c:if>
+		<c:if test="${modifySuccess == true}">
+			<script>
+				alert("기업 정보 수정이 완료되었습니다.");
+			</script>
+		</c:if>
+		<c:if test="${modifySuccess == false}">
+			<script>
+				alert("기업 정보 수정에 실패했습니다.");
+			</script>
+		</c:if>
 	
 	<footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
-    </footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
+	</footer>
 </body>
 </html>

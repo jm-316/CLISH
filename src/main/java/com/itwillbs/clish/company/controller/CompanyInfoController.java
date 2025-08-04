@@ -47,6 +47,16 @@ public class CompanyInfoController {
 		return "company/companyCheckPw";
 	}
 	
+	// 기업전화번호 중복 확인 
+	@GetMapping("/myPage/checkPhone")
+	@ResponseBody
+	public String checkPhoneDuplicate(@RequestParam("userPhoneNumber") String userPhoneNumber, @RequestParam("userIdx") String userIdx) {
+		// 중복 확인
+	    boolean isDuplicate = companyInfoService.isPhoneNumberDuplicate(userPhoneNumber, userIdx);
+	    
+	    return String.valueOf(isDuplicate); // "true" 또는 "false" 문자열로 반환
+	}
+	
 	// 비밀번호 확인 일치시 수정페이지로 불일치시 비밀번호가 틀렸습니다 메시지
 	@PostMapping("/myPage/companyInfo")
 	public String companyInfoForm(UserDTO user, HttpSession session, Model model) {
@@ -78,10 +88,10 @@ public class CompanyInfoController {
 	@PostMapping("/myPage/companyInfoSubmit")
 	// 수정정보 UPDATE문 으로 반영 후 메인페이지로 이동
 	public String companyInfoSubmit(UserDTO user, CompanyDTO company, HttpSession session,
-			@RequestParam("userPasswordConfirm") String new_password,
-			@RequestParam(value = "files", required = false) MultipartFile file, Model model) {
+	        @RequestParam("userPasswordConfirm") String new_password,
+	        @RequestParam(value = "files", required = false) MultipartFile file, Model model) {
 
-		try {
+	    try {
 	        // 세션에서 유저 ID 가져오기
 	        user.setUserId((String) session.getAttribute("sId"));
 	        UserDTO user1 = companyInfoService.getUserInfo(user); // 기존 유저 정보 불러오기
@@ -147,7 +157,9 @@ public class CompanyInfoController {
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // 실패
+	        // 실패 시: 입력했던 값을 그대로 전달
+	        model.addAttribute("user", user);         // 입력했던 유저 값 유지
+	        model.addAttribute("company", company);   // 입력했던 기업 값 유지
 	        model.addAttribute("modifySuccess", false);
 	    }
 

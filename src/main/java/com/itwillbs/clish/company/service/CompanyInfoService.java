@@ -30,10 +30,14 @@ public class CompanyInfoService {
 		return companyInfoMapper.selectUserInfo(user);
 	}
 	
+	// 기업전화번호 중복 확인
+	public boolean isPhoneNumberDuplicate(String userPhoneNumber, String userIdx) {
+		return companyInfoMapper.selectPhoneNumberDuplicate(userPhoneNumber, userIdx);
+	}
+	
 	// 기업회원 정보 수정 처리 
 	public int setUserInfo(UserDTO user) {
 		return companyInfoMapper.updateUserInfo(user);
-		
 	}
 	
 	// userIdx로 기업 정보 조회 (company 테이블 SELECT)
@@ -96,8 +100,6 @@ public class CompanyInfoService {
 	public int withdraw(UserDTO user) {
 		return companyInfoMapper.updateWithdraw(user);
 	}
-
-
 	
 
 	
