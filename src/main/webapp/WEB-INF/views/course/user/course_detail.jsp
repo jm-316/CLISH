@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_detail.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
@@ -51,9 +52,11 @@
 			<%-- 클래스에 대한 간단한 설명 --%>
 			<div class="class-container">
 				<%-- 클래스 썸네일 --%>
-	        	<div class="cls-pic">
-	  				<img src="/resources/images/logo4-2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
-	            </div>
+				<div class="cls-pic">
+					<c:forEach var="file" items="${classInfo.fileList}">
+						<img src="/file/${file.fileId }?type=0" alt="${file.originalFileName }"  id="preview" class="figure-img img-fluid rounded" style="height: 280px;"/>
+					</c:forEach>
+				</div>
 				<%-- 제목 및 인트로, 카테고리 표시 --%>
 				<div class="cls-info-card">
 					<h2 class="class-title">${classInfo.classTitle}</h2>
@@ -86,47 +89,39 @@
 					
 		</section>
 		
+		<%-- 상세 정보를 보기 위한 태그 버튼 --%>
+		<ul class="tabnav" style="text-align: center; display: flex;">
+			<li><a href="#classDetail">클래스 소개</a></li>
+			<li><a href="#curriCulum">커리큘럼</a></li>
+			<li><a href="#refund">환불규정</a></li>
+			<li><a href="#reView">수강평(${pageInfo.listCount != null ? pageInfo.listCount : 0})</a></li>
+		</ul> 
 		
 		<div class="section-container">
+		    <h1>클래스 상세 페이지</h1>
+		    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
 			<%-- classIdx를 hidden 속성으로 전달 --%>
 		    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
-		    
-			<%-- 상세 정보를 보기 위한 태그 버튼 --%>
-			<ul class="tabnav" style="text-align: center; padding-top: 30px; display: flex;">
-				<li><a href="#classDetail">클래스 소개</a></li>
-				<li><a href="#curriCulum">커리큘럼</a></li>
-				<li><a href="#reView">수강평(${pageInfo.listCount != null ? pageInfo.listCount : 0})</a></li>
-			</ul> 
-			
-			<section>
-			    <h1>클래스 상세 페이지</h1>
-			    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
-					
+			<section id="classDetail">
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
 			</section>
 		    
-		    
-		    <section id="classDetail">
-				<h1>클래스 컨텐츠 출력칸</h1>
-				<c:forEach var="file" items="${classInfo.fileList}">
-					<b>파일이름</b> : ${file.originalFileName} <br>
-					<b>파일 서브 디렉토리</b> :${file.subDir} <br>
-					<b>진짜 파일 이름</b> : ${file.realFileName}<br>
-					<img width="100%" 
-						src="/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName}"/>
-				</c:forEach>
-		    </section>
-		    
-			<section id="curriCulum">
-			<h1>커리큘럼정보</h1>
-				<c:forEach var="curri" items="${curriculumList}">
-					${curri.curriculumTitle}, ${curri.curriculumRuntime} <br>
-				
-				</c:forEach>
+			<section id="curriCulum" >
+				<h3 style="margin-bottom: 20px;">📚 커리큘럼 소개</h3>
+				<div id="curriculumContainer">
+					<c:forEach var="curri" items="${curriculumList}">
+						<div class="curriculum-box" style="display: flex; align-items: center; justify-content: space-between;">
+							<div style="display: flex; gap: 30px;">
+								<span>${curri.curriculumTitle}</span>
+								<span>${curri.curriculumRuntime}분</span>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
 			</section>
 			
-			<section id="Refund">
+			<section id="refund">
 				<h1>환불 규정</h1>
 					<br>
 					<b>정기강의 일때</b><br> 
@@ -143,10 +138,11 @@
 					1일 미만 관리자에게 문의<br>
 					<br>
 			</section>
+			
 			<section id="reView">
 				<h1>수강후기</h1>
 				<c:forEach var="review" items="${reviewList}" varStatus="status">
-					<table>
+					<table style="margin: 0;">
 					<tr>
 						<th>작성자</th>
 						<td>${review.userName}(${review.userId})</td>
