@@ -86,6 +86,8 @@ public class AdminCustomerController {
 	public String noticeModify(SupportDTO supportDTO, Model model) throws IllegalStateException, IOException {
 		int update = adminCustomerService.modifySupport(supportDTO);
 		
+		System.out.println("supportDTO" + supportDTO);
+		
 		if (update > 0) {
 			model.addAttribute("msg", "공지사항을 수정했습니다.");
 			model.addAttribute("targetURL", "/admin/notice");

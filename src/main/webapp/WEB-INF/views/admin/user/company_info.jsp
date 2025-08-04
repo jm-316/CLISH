@@ -20,7 +20,7 @@
 						<h3>기업 정보 수정</h3>
 					</div>
 					<form>
-						<table border="1" style="width: 100%; text-align: left;">
+						<table border="1" style="width: 100%; text-align: left; margin: 0;">
 							<tr>
 								<th><label for="userName">회원이름</label></th>
 								<td><input type="text" value="${company.userName}" readonly></td>

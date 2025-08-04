@@ -11,6 +11,12 @@
 	display: flex;
 	flex-direction: column;
 	margin-left: 30px;
+	align-items: center;
+}
+
+.event-info {
+	width: 500px;
+	text-align: left;
 }
 
 .event-thumbnail, .event-content {

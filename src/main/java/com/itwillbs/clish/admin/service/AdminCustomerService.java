@@ -71,11 +71,15 @@ public class AdminCustomerService {
 	@Transactional
 	public int modifySupport(SupportDTO supportDTO) throws IllegalStateException, IOException {
 		supportDTO.setSupportCategory("공지사항");
-		List<FileDTO> fileList = FileUtils.uploadFile(supportDTO, session);
 		
-		if(!fileList.isEmpty()) {
-			fileMapper.insertFiles(fileList);
+		if(supportDTO.getFiles() != null && supportDTO.getFiles().length > 0) {
+			List<FileDTO> fileList = FileUtils.uploadFile(supportDTO, session);
+			
+			if (!fileList.isEmpty()) {
+				fileMapper.insertFiles(fileList);
+			}
 		}
+		
 		return adminCustomerMapper.updateSupport(supportDTO);
 	}
 
