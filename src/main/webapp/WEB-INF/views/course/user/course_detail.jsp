@@ -76,7 +76,7 @@
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
 		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		            예약정보 입력</button>
-					<button onclick="location.href='/company/myPage/writeInquery'">강의 문의</button>
+					<button onclick="location.href='/customer/inquiry/write'">강의 문의</button>
 		        </c:if>
 		        <%-- 정보 수정버튼은 기업 유저일 경우만 표시 --%>
 		        <c:if test="${userInfo.userType eq 2}">
@@ -86,24 +86,33 @@
 					
 		</section>
 		
-		<%-- 상세 정보를 보기 위한 태그 버튼 --%>
-		<ul class="tabnav" style="text-align: center; padding-top: 30px; display: flex;">
-			<li><a href="#classDetail">클래스 소개</a></li>
-			<li><a href="#curriCulum">커리큘럼</a></li>
-			<li><a href="#reView">수강평(1)</a></li>
-		</ul>
 		
 		<div class="section-container">
-		    <h1>클래스 상세 페이지</h1>
-		    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
+			<%-- classIdx를 hidden 속성으로 전달 --%>
 		    <input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}"><br>
+		    
+			<%-- 상세 정보를 보기 위한 태그 버튼 --%>
+			<ul class="tabnav" style="text-align: center; padding-top: 30px; display: flex;">
+				<li><a href="#classDetail">클래스 소개</a></li>
+				<li><a href="#curriCulum">커리큘럼</a></li>
+				<li><a href="#reView">수강평(${pageInfo.listCount != null ? pageInfo.listCount : 0})</a></li>
+			</ul> 
+			
+			<section>
+			    <h1>클래스 상세 페이지</h1>
+			    <h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
+					
+		    	<b>강사명</b> : ${userInfo.userName} <br>
+				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
+			</section>
+		    
+		    
 		    <section id="classDetail">
-				${classInfo.classContent} <hr>
 				<h1>클래스 컨텐츠 출력칸</h1>
 				<c:forEach var="file" items="${classInfo.fileList}">
-					파일이름 : ${file.originalFileName} <br>
-					파일 서브 디렉토리 :${file.subDir} <br>
-					진짜 파일 이름 : ${file.realFileName}<br>
+					<b>파일이름</b> : ${file.originalFileName} <br>
+					<b>파일 서브 디렉토리</b> :${file.subDir} <br>
+					<b>진짜 파일 이름</b> : ${file.realFileName}<br>
 					<img width="100%" 
 						src="/resources/upload/${file.subDir}/${file.realFileName}" alt="${file.originalFileName}"/>
 				</c:forEach>

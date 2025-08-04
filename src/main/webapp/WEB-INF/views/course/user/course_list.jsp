@@ -19,6 +19,11 @@
 		const selected = document.getElementById('categorySelect').value;
 		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
 	}
+	
+	const heartBtn = document.getElementById("heartBtn");
+	  heartBtn.addEventListener("click", function () {
+	    this.classList.toggle("active"); // 클릭 시 'active' 클래스 토글
+	  });
 </script>
 </head>
 <body>
@@ -30,8 +35,8 @@
 		
 		<div class="main">
 			<div class="main-content">
-				<%-- 카테고리별 검색 셀렉트박스 --%>
 				<div class="box">
+					<%-- 카테고리별 검색 셀렉트박스 --%>
 					<select id="categorySelect" onchange="filterByCategory()">
 						<option value="">카테고리 선택</option>
 						<c:forEach var="parentCat" items="${parentCategories}">
@@ -40,6 +45,14 @@
 							</option>
 						</c:forEach>
 					</select>
+					
+					<%-- 기업 유저의 경우 클래스 개설 버튼 표시 --%>
+					<c:if test="${userInfo.userType eq 2}">
+		                <button class="orange-button"
+		                        onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
+		                    클래스 개설
+		                </button>
+	                </c:if>
 				</div>
 				
 				<%-- 클래스 목록 리스트 --%>
@@ -54,6 +67,7 @@
 							<th>제목</th>
 							<th>일자</th>
 							<th>장소</th>
+							<th>관심</th>
 							<th colspan="2">진행상태</th>
 						</tr>
 					</thead>
@@ -74,6 +88,17 @@
 									<td>${classItem.startDate} ~ ${classItem.endDate}</td>
 									<td>${classItem.location}</td>
 									<td>
+										<button class="heart-toggle" id="heartBtn" aria-label="Toggle favorite">
+										  <svg viewBox="0 0 24 24" class="heart-icon">
+										    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+										             2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.5 2.09
+										             C12.09 5.01 13.76 4 15.5 4
+										             18 4 20 6 20 8.5
+										             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+										  </svg>
+										</button>
+									</td>
+									<td>
 										<c:choose>
 											<%-- 신청가능 클래스이면서 일반 유저일 경우 예약 버튼 활성화 --%>
 											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
@@ -89,7 +114,7 @@
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<%-- 기업 유저의 경우 수정버튼 활성화 --%>
+									<%-- 기업 유저의 경우 수정버튼 표시 --%>
 									<c:if test="${userInfo.userType eq 2}">
 										<td>
 											<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>

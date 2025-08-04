@@ -50,6 +50,7 @@ body {
 
 .box {
 	margin-bottom:			24px;
+	padding-right:			55px;
 	display:				flex;
 	justify-content:		flex-end;
 }
@@ -224,24 +225,53 @@ body {
 ul.tabnav {
   list-style: none;
   padding: 0;
-  margin: 0;
-}
-
-ul.tabnav li {
+  margin: 0 auto;        /* 가운데 정렬 */
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 16px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  justify-content: flex-start;  /* 탭 항목을 수평 중앙 정렬(center) 또는 오른쪽 정렬 */
+  gap: 20px;             /* 탭 간 간격 */
 }
 
 ul.tabnav li {
-  flex: 1;
-  min-width: 100px;
+  flex: none;            /* 균등 분할 하지 않음 */
+}
+
+ul.tabnav li a {
+  display: block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  color: #333;
   font-size: 14px;
+  text-decoration: none;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s;
+}
+
+ul.tabnav li a:hover {
+  background: #eaeaea;
+  color: #000;
+}
+
+.heart-toggle {
+  background: none;
+  border: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-icon {
+  width: 24px;
+  height: 24px;
+  fill: #bbb;
+  transition: fill 0.2s ease;
+}
+
+.heart-toggle.active .heart-icon {
+  fill: #e91e63;             /* 클릭 시 핑크 하트로 변경 */
 }
 
