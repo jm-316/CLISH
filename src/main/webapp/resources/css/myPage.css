@@ -2,7 +2,7 @@
 #container {
   display: flex;
   flex-direction: row; /* 기본값이지만 명확히 써주세요 */
-  width: 100vw;        /* or 100% */
+  width: auto;        /* or 100% */
   min-height: 100vh;   /* 브라우저 전체 높이 채우기 */
 }
 #side {

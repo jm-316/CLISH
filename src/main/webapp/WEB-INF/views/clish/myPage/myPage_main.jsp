@@ -186,7 +186,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" >
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
@@ -395,7 +394,7 @@
 								<th>문의번호</th>
 								<th>문의시간</th>
 								<th>이름</th>
-								<th>강좌명</th>
+								<th>강의명</th>
 								<th>제목</th>
 								<th>상태</th>
 							</tr>
@@ -462,7 +461,7 @@
 				</section>
 			</c:if>
 
-	
+		</div>
 	</main>
 	
 	<footer>

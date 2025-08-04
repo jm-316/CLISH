@@ -11,9 +11,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
 	.inquery-toggle { cursor: pointer; background: #f9f9f9; }
 	.inquery-detail { display: none; background: #fff4d9; }
@@ -57,14 +54,14 @@
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
 		<div>
-			<h3>강좌 문의</h3>
+			<h3>강의 문의</h3>
 			<table border="1" style="width: 100%; border-collapse: collapse;">
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>문의 번호</th>
 	      			<th>문의 시간</th>
 				    <th>이름</th>
-				    <th>강좌명</th>
+				    <th>강의명</th>
 				    <th>제목</th>
 				    <th>상태</th>
 			    </tr>
@@ -141,7 +138,7 @@
 			</section>
 		</div>
 		<div>
-			<h3>사이트 문의</h3>
+			<h3>고객센터 문의</h3>
 			<table border="1" style="width: 100%; border-collapse: collapse;">
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>

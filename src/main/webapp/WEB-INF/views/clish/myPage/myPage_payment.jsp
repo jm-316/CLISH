@@ -10,21 +10,55 @@
 <title>마이페이지</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
-	.pageSection {
-		text-align: center;
-		border: none;
-	}
 	.sortable {
 		cursor: pointer;	
+	}
+	
+	.filterButton {
+		display: inline-block;
+		background: #f6f7fb;        /* 밝은 배경 */
+		border: none;               /* 테두리 없음 */
+		border-radius: 10px;        /* 둥근 모서리 */
+		padding: 12px 26px;         /* 넉넉한 여백 */
+		font-size: 16px;
+		font-weight: 600;
+		margin-right: 8px;          /* 버튼 사이 간격 */
+		color: #222;                /* 글씨 색 */
+		box-shadow: 0 1px 3px rgba(0,0,0,.04);
+		cursor: pointer;
+		transition: background 0.2s, color 0.2s;
+	}
+
+	.filterButton:hover {
+		background-color: #2478ff; /* 어두운 파란색 호버 효과 */
+		color: #fff; 
+	}
+
+	.filterButton:active {
+		background-color: #004080; /* 클릭 시 더 어두운 파란색 */
+	}
+	
+	#reservationTable th, #reservationTable td,
+	#paymentTable th, #paymentTable td {
+		max-width: 150px; /* 셀 최대 너비 설정 (필요시 조절) */
+		white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+		overflow: hidden; /* 넘치는 텍스트 숨김 */
+		text-overflow: ellipsis; /* 줄임표 ... 표시 */
+		vertical-align: middle;
+		word-wrap: normal;
+	}
+
+	#reservationTable, #paymentTable {
+		table-layout: fixed; /* 테이블 전체 너비 고정 */
+		width: 1000px;
+		
 	}
 	
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+
 </head>
 <body>
 	<header>
@@ -39,14 +73,18 @@
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
 		<div>
-			<h3>예약 목록</h3>
+			<a href="/myPage/payment_info/reservation_payment?filterType=0" class="filterButton">예약</a>
+			<a href="/myPage/payment_info/reservation_payment?filterType=1" class="filterButton">결제</a>
+		</div>
+		<div>
+			<h3 class="title-fixed">예약 목록</h3>
 			<table id="reservationTable">
 				<tr>
-					<th >결제상태</th>
-					<th>예약번호</th>
-					<th>예약자</th>
+					<th width="90px">결제상태</th>
+					<th width="180px">예약번호</th>
+					<th width="85px">예약자</th>
 					<th>클래스</th>
-					<th class="sortable" data-column="reservation_class_date">
+					<th class="sortable" data-column="reservation_class_date" width="140">
 						클래스예약일
 						<c:choose>
 							<c:when test="${reservationOrderBy eq 'reservation_class_date' }">
@@ -56,7 +94,7 @@
 							<c:otherwise>↕</c:otherwise>
 						</c:choose>
 					</th>
-					<th class="sortable" data-column="reservation_com">
+					<th class="sortable" data-column="reservation_com" width="160">
 						예약완료일
 						<c:choose>
 							<c:when test="${reservationOrderBy eq 'reservation_com' }">
@@ -66,9 +104,9 @@
 							<c:otherwise>↕</c:otherwise>
 						</c:choose>
 					</th>
-					<th>취소</th>
-					<th>결제</th>
-					<th>상세보기</th>
+					<th width="60px">취소</th>
+					<th width="60px">결제</th>
+					<th width="90px">상세보기</th>
 				</tr>
 				<!-- 예약  -->
 				<c:forEach var="reserve" items="${reservationList }" >
@@ -105,40 +143,42 @@
 		        	</tr>
 
 	       		</c:forEach>
+				<tr>
+					<td colspan="9" align="center">			
+						<c:if test="${not empty reservationPageInfo.maxPage or reservationPageInfo.maxPage > 0}">
+							<input type="button" value="이전" 
+								onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum - 1}&paymentPageNum=${paymentPageInfo.pageNum }&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 
+								<c:if test="${reservationPageInfo.pageNum eq 1}">disabled</c:if>
+							>
+							
+							<c:forEach var="i" begin="${reservationPageInfo.startPage}" end="${reservationPageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq reservationPageInfo.pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="/myPage/payment_info?reservationPageNum=${i}&paymentPageNum=${paymentPageInfo.pageNum }&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<input type="button" value="다음" 
+								onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum + 1}&paymentPageNum=${paymentPageInfo.pageNum }&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 
+								<c:if test="${reservationPageInfo.pageNum eq reservationPageInfo.maxPage}">disabled</c:if>
+							>
+						</c:if>
+					</td>
+				</tr>
 			</table>
-			<section id="reservationPageList" class="pageSection">
-				<c:if test="${not empty reservationPageInfo.maxPage or reservationPageInfo.maxPage > 0}">
-					<input type="button" value="이전" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum - 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
-						<c:if test="${reservationPageInfo.pageNum eq 1}">disabled</c:if>
-					>
-					
-					<c:forEach var="i" begin="${reservationPageInfo.startPage}" end="${reservationPageInfo.endPage}">
-						<c:choose>
-							<c:when test="${i eq reservationPageInfo.pageNum}">
-								<strong>${i}</strong>
-							</c:when>
-							<c:otherwise>
-								<a href="/myPage/payment_info?reservationPageNum=${i}&paymentPageNum=${paymentPageInfo.pageNum }">${i}</a>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					
-					<input type="button" value="다음" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum + 1}&paymentPageNum=${paymentPageInfo.pageNum }'" 
-						<c:if test="${reservationPageInfo.pageNum eq reservationPageInfo.maxPage}">disabled</c:if>
-					>
-				</c:if>
-			</section>
 		</div>
 		<div>
 		
 			<h3 >결제 목록</h3>
 			<table id="paymentTable">
 				<tr>
-					<th>결제 번호</th>
-					<th>예약 번호</th>
-					<th class="sortable" data-column="status">
+					<th width="120px">결제 번호</th>
+					<th width="180px">예약 번호</th>
+					<th class="sortable" data-column="status" width="120px">
 						결제 상태
 						<c:choose>
 							<c:when test="${paymentOrderBy eq 'status' }">
@@ -148,9 +188,9 @@
 							<c:otherwise>↕</c:otherwise>
 						</c:choose>
 					</th>
-					<th>유저이름</th>
+					<th width="85px">이름</th>
 					<th>클래스명</th>
-					<th class="sortable" data-column="reservation_class_date">
+					<th class="sortable" data-column="reservation_class_date" width="140px">
 						예약일
 						<c:choose>
 							<c:when test="${paymentOrderBy eq 'reservation_class_date' }">
@@ -160,7 +200,7 @@
 							<c:otherwise>↕</c:otherwise>
 						</c:choose>
 					</th>
-					<th class="sortable" data-column="pay_time">
+					<th class="sortable" data-column="pay_time" width="160px">
 						결제완료시간
 						<c:choose>
 							<c:when test="${paymentOrderBy eq 'pay_time' }">
@@ -170,8 +210,8 @@
 							<c:otherwise>↕</c:otherwise>
 						</c:choose>
 					</th>
-					<th>취소</th>
-					<th>상세보기</th>
+					<th width="90px">취소</th>
+					<th width="90px">상세보기</th>
 				</tr>
 				<jsp:useBean id="now" class="java.util.Date" scope="page" />
 				<c:set var="nowTime" value="${now.time}" />
@@ -188,43 +228,45 @@
 									pattern="yyyy-MM-dd'T'HH:mm"
 									type="both" />
 						<td><fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd"/></td>
-						
-						<%-- 현재날짜, 예약일자 계산, 예약일이 3일 미만으로 남았을 경우 취소 불가능 --%>
-<%-- 						<c:set var="reservationTime" value="${reservationClassDate.time}" /> --%>
-<%-- 						<c:set var="diffDays" value="${(reservationTime - nowTime) / (1000 * 60 * 60 * 24)}" /> --%>
-<%-- 							<c:if test="${payment.status eq 'cancelled' || diffDays < 3 }">disabled</c:if> --%>
-						<td>${payment.payTimeFormatted} </td>
+						<fmt:parseDate var="payTimeFormatted" 
+									value="${payment.payTimeFormatted}"
+									pattern="yyyy-MM-dd HH:mm"
+									type="both" />
+						<td><fmt:formatDate value="${payTimeFormatted}" pattern="yy-MM-dd HH:mm"/></td>
 						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" 
 							<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>></td>
 						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"
 	          onclick="paymentInfo(this)"> </td>
 		        	</tr>
 	       		</c:forEach>
+				<tr>
+					<td colspan="9" align="center">
+						<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
+							<input type="button" value="이전" 
+								onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum }&paymentPageNum=${paymentPageInfo.pageNum - 1}&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 
+								<c:if test="${paymentPageInfo.pageNum eq 1}">disabled</c:if>
+							>
+							
+							<c:forEach var="i" begin="${paymentPageInfo.startPage}" end="${paymentPageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq paymentPageInfo.pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum}&paymentPageNum=${i}&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<input type="button" value="다음" 
+								onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum}&paymentPageNum=${paymentPageInfo.pageNum + 1}&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 
+								<c:if test="${paymentPageInfo.pageNum eq paymentPageInfo.maxPage}">disabled</c:if>
+							>
+						</c:if>
+					</td>
+				</tr>
+<!-- 			</section> -->
 			</table>
-			<section id="paymentPageList" class="pageSection">
-				<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
-					<input type="button" value="이전" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum }&paymentPageNum=${paymentPageInfo.pageNum - 1}'" 
-						<c:if test="${paymentPageInfo.pageNum eq 1}">disabled</c:if>
-					>
-					
-					<c:forEach var="i" begin="${paymentPageInfo.startPage}" end="${paymentPageInfo.endPage}">
-						<c:choose>
-							<c:when test="${i eq paymentPageInfo.pageNum}">
-								<strong>${i}</strong>
-							</c:when>
-							<c:otherwise>
-								<a href="/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum}&paymentPageNum=${i}">${i}</a>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					
-					<input type="button" value="다음" 
-						onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum}&paymentPageNum=${paymentPageInfo.pageNum + 1}'" 
-						<c:if test="${paymentPageInfo.pageNum eq paymentPageInfo.maxPage}">disabled</c:if>
-					>
-				</c:if>
-			</section>
 		</div>
 	
 	</div>

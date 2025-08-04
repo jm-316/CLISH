@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link href="/resources/css/myPage.css" rel="stylesheet">
+<link href="/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<script type="text/javascript" src="/resources/js/home.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.slide_btn.active {
@@ -10,16 +13,16 @@
 	}
 </style>
 
-<div id="side">
+<div id="side" >
 	<div class="title-fixed" id="userProfileHeader">
 		<h1 ><a href="/myPage/main">${sessionScope.sId}'s page</a></h1>
 	</div>
-	<input type="button" value="개인정보변경" class="slide_btn" onclick="location.href='/myPage/change_user_info'"><br>
+	<input type="button" value="정보변경" class="slide_btn" onclick="location.href='/myPage/change_user_info'"><br>
 <!-- 	<input type="button" value="즐겨찾기" class="slide_btn" onclick="location.href='/myPage/favoriteClass'"><br> -->
-	<input type="button" value="결제내역" class="slide_btn" onclick="location.href='/myPage/payment_info'"><br>
+	<input type="button" value="예약/결제" class="slide_btn" onclick="location.href='/myPage/payment_info'"><br>
 	<input type="button" value="나의문의" class="slide_btn" onclick="location.href='/myPage/myQuestion'"><br>
-	<input type="button" value="후기관리" class="slide_btn" onclick="location.href='/myPage/myReview'"><br>
-	<input type="button" value="알림전체보기" class="slide_btn" onclick="location.href='/myPage/notification'"><br>
+	<input type="button" value="나의리뷰" class="slide_btn" onclick="location.href='/myPage/myReview'"><br>
+	<input type="button" value="나의알림" class="slide_btn" onclick="location.href='/myPage/notification'"><br>
 	<input type="button" value="회원탈퇴" class="slide_btn" onclick="location.href='/myPage/withdraw'"><br>
 </div>
 
@@ -29,8 +32,6 @@
 		fetch("/myPage/profileImg")
 		.then(res => res.json())
 		.then(data => {
-		    console.log("fileId:", data.fileId);
-
 			const header = document.getElementById('userProfileHeader');
 			
 			const img = document.createElement('img');
@@ -53,7 +54,7 @@
 		buttons.forEach(button => {
 			const url = new URL(button.getAttribute('onclick').match(/'(.*?)'/)[1], window.location.origin);
 			
-			if (url.pathname === currentPath) {
+			if (currentPath.includes(url.pathname)) {
 			    button.classList.add('active');
 		    }
 			

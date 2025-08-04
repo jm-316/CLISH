@@ -374,6 +374,84 @@ public class MyPageController {
 
 	}
 	
+	//마이페이지 - 필터 : 예약/결제
+	@GetMapping("/payment_info/reservation_payment")
+	public String paymentFilter(Model model, UserDTO user, HttpSession session
+			, @RequestParam(defaultValue = "1") int reservationPageNum
+			, @RequestParam(defaultValue = "reservation_class_date") String reservationOrderBy
+			, @RequestParam(defaultValue = "desc") String reservationOrderDir
+			, @RequestParam(defaultValue = "1") int paymentPageNum
+			, @RequestParam(defaultValue = "pay_time") String paymentOrderBy
+			, @RequestParam(defaultValue = "desc") String paymentOrderDir
+			, @RequestParam("filterType") int filterType) {
+		
+		model.addAttribute("reservationOrderBy", reservationOrderBy);
+		model.addAttribute("reservationOrderDir", reservationOrderDir);
+		model.addAttribute("paymentOrderBy", paymentOrderBy);
+		model.addAttribute("paymentOrderDir", paymentOrderDir);
+		model.addAttribute("filterType",filterType);
+		//세션에 저장된 sId이용 유저정보 불러오기
+		user = getUserFromSession(session);
+		
+		// 페이징에 필요한 변수선언
+		int listLimit = 10;
+		int reservationListCount = myPageService.getReservationCount(user);
+		int paymentListCount = myPageService.getPaymentCount(user);
+		
+		if(filterType == 0 ) { // 필터 : 예약선택
+			if(reservationListCount > 0 ) {
+				// 예약페이지 정보 저장
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reservationListCount, reservationPageNum, 3);
+				// pageNum에 이상한 파라미터가 넘어올 때
+				if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					return "commons/result_process";
+				}
+				 
+				model.addAttribute("reservationPageInfo", pageInfoDTO);
+				// 삭제할 예약목록 삭제
+				myPageService.reservationCheck(user);
+				// 예약목록 불러오기
+				List<ReservationDTO> reservationList =
+					myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user, reservationOrderBy, reservationOrderDir);
+				// 예약목록 정보 저장
+				model.addAttribute("reservationList",reservationList);
+
+			}
+		} else if(filterType == 1) {
+			// 결제목록이 존재한다면
+			if(paymentListCount > 0) {
+				//결제페이지정보 저장
+				PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
+				
+				// pageNum에 이상한 파라미터가 넘어올 때
+				if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/payment_info"); 
+					return "commons/result_process";
+				}
+				
+				model.addAttribute("paymentPageInfo", pageInfoDTO);
+				
+				//결제 정보 불러오기
+				List<PaymentInfoDTO> paymentList = 
+					myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user, paymentOrderBy, paymentOrderDir);
+				
+				//결제시간정보 보기좋게 바꾸기
+				for(PaymentInfoDTO payment : paymentList) {
+					payment.setPayTime(payment.getPayTime());
+				}
+				
+				model.addAttribute("paymentList",paymentList);
+			}
+		}
+		
+		model.addAttribute("user",user);
+		
+		return "/clish/myPage/myPage_payment_filter";
+	}
+	
 	//예약 취소
 	@PostMapping(value="/payment_info/cancel", produces = "application/json; charset=UTF-8")
 	@ResponseBody
