@@ -30,7 +30,7 @@ window.onload = () => {
 				            + `&userName=` + data.userName 
 							+ `&payMethod=` + data.payMethod
 				            + `&payTime=`+ data.payTime 
-							+ `&classTitle=` + data.classTitle
+							+ `&classTitle=` + encodeURIComponent(data.classTitle)
 							+ `&requestTime=` + data.requestTime
 							+ `&receiptUrl=` + encodeURIComponent(data.receiptUrl);
 		        	}
