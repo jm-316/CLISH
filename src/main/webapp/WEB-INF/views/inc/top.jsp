@@ -63,7 +63,7 @@
 	           				</c:when>
 	           				<c:otherwise>
 	           					<div>
-		           					<a href="/company/myPage">전체보기</a>
+		           					<a href="/company/myPage/notification">전체보기</a>
 		           					<div onclick="readAll()">전체읽음</div>
 	           					</div>
 	           				</c:otherwise>
