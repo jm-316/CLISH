@@ -60,25 +60,11 @@
 			</tr>
 			<tr>
 				<th>취소 이유</th>
-				<td><textarea rows="15" cols="50" placeholder="취소사유입력" name="cancelReason"></textarea></td> 
+				<td><textarea rows="15" cols="50" placeholder="취소사유입력" name="cancelReason" required></textarea></td> 
 			</tr>
 			
 		</table>
 		<input type="submit" value="결제취소신청" >
 		</form>
-		<script type="text/javascript">
-// 			$(function(){
-// 				 $('#cancelRequest').submit(function(event) {
-// 				    var amountValue = $('[name="amount"]').val();  // value 값 가져오기
-
-// 				    if (Number(amountValue) <= 0) {
-// 				        alert('취소할 수 없습니다.');
-// 				        event.preventDefault();
-// 				        return false;
-// 				    }
-				    
-// 				});
-// 			});
-		</script>
   </body>
 </html>
