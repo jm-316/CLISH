@@ -154,6 +154,7 @@
 		, c.class_member
 		, c.start_date
 		, c.end_date
+		, c.class_days
 		, f.file_id
 		, f.sub_dir
 		, f.real_file_name

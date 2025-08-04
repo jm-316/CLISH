@@ -9,13 +9,17 @@
 <title>예약변경</title>
 <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- jquery date picker -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
 
 </head>
 <body>
 	<main id="container">
 	
 	<div id="main">
-	
 		<h1>예약변경</h1>
 		<form action="/myPage/payment_info/change" method="post" onsubmit="return validateForm();">
 			<table style="margin-left: auto ; margin-right: auto;" >
@@ -67,8 +71,10 @@
 									type="both" />
 					<!-- localdatetime 에서 date타입으로 변환 -->
 					<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
-					<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}"
-					<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
+<%-- 					<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}" --%>
+<%-- 					<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td> --%>
+					<td><input type="text" id="datepicker" name="reservationClassDate" value="${classDate}" 
+						required <c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
 					<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" id="reservationMembers"></td>
 					<fmt:parseDate var="reservationCom" 
 										value="${reservationClassInfo.reservation_com}"
@@ -94,7 +100,6 @@
 	</div>
 	
 	</main>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		var maxMembers = ${reservationClassInfo.remainSeats + reservationClassInfo.reservation_members};
 		
@@ -106,21 +111,48 @@
 			var originalReservationDateTime = '${reservationClassInfo.reservation_class_date}';//처음예약한날
 			const normalizedOriginal = originalReservationDateTime.replace('T', ' ') + ':00';
 			var selectedReservationDateTime = originalReservationDateTime;//선택한예약날자 초기값:처음예약한날
-			const today = new Date();
+			const today = new Date(); //오늘날짜
 		    const yyyy = today.getFullYear();
 		    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하니 +1 필요
 		    const dd = String(today.getDate()).padStart(2, '0');
 
 		    const todayStr = yyyy + '-' + mm + '-' + dd;
 		    const $dateInput = $('input[name="reservationClassDate"]');
+		    
+		  	//datepicker
+			var allowedDaysMask = Number("${reservationClassInfo.class_days}"); //가능한 요일
 			
-		 	// 기존 min 값과 비교해서 더 늦은 날짜를 최소값으로 설정 (필요시)
-		    const existingMin = $dateInput.attr('min');
-		 	
-		    if (!existingMin || existingMin < todayStr) {
-		        $dateInput.attr('min', todayStr);
-		    }
+			var startDateStr = "${reservationClassInfo.start_date}"; // 수업 시작일
+			var startDate = new Date(startDateStr);
+			var endDateStr = "${reservationClassInfo.end_date}"; // 수업 마감일
+			var endDate = new Date(endDateStr);
+			today.setHours(0,0,0,0);
 			
+			var minDate = startDate > today ? startDate : today;
+			
+			$("#datepicker").datepicker({
+				
+				minDate: new Date(minDate),
+				maxDate: new Date("${reservationClassInfo.end_date}"),
+				
+				//지정 요일만 보여주기
+				beforeShowDay: function(date) {
+					var day = date.getDay();     // 0:일, 1:월, ..., 6:토
+					var bitIndex = day === 0 ? 6 : day - 1;
+					var dayBit = 1 << bitIndex;  // 2^(day+1) 계산
+					
+					var allowed = (allowedDaysMask & dayBit) !== 0; // 해당 요일 비트 체크
+					return [allowed, "", allowed ? "선택 가능 날짜" : "선택 불가 날짜"];
+				},
+				
+				dateFormat: 'yy-mm-dd' // 날짜 형식 설정 (선택)
+			});
+			
+			<c:if test="${reservationClassInfo.class_type eq 0}">
+		    	$("#datepicker").datepicker("option", "disabled", true);
+	  		</c:if>
+			
+		 				
 			
 			// 변경후 금액 표시
 		    updatePrice(initialMembers);
@@ -232,6 +264,8 @@
 	 		
 	 		return true;
 	 	}
+		
+		
 	</script>
 
 </body>
