@@ -194,7 +194,7 @@
 	    };
 	});
 
-
+	// 카테고리 등록
 	$(function() {
 	    $("form[action='/admin/category/add']").on("submit", function(e) {
 	        e.preventDefault(); // 기본 제출 막기
@@ -202,6 +202,13 @@
 	        const categoryName = $("input[name='categoryName']").val().trim();
 	        const sortOrder = $("input[name='sortOrder']").val().trim();
 	        const parentIdx = $("select[name='parentIdx']").val();
+	        
+	        // 특수문자 제한
+	        const RegExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+	        if (RegExp.test(categoryName)) {
+	        	alert("특수문자 입력은 불가능합니다.");
+	        	return;
+	        }
 
 	        if (!categoryName || !sortOrder) {
 	            alert("카테고리 이름과 순서를 입력해주세요.");
@@ -232,6 +239,7 @@
 	    });
 	});
 
+	// 카테고리 수정
 	$(function () {
 	  $("#updateForm").on("submit", function (e) {
 	    e.preventDefault();
@@ -241,6 +249,13 @@
 	    const categoryName = form.find("input[name='categoryName']").val().trim();
 	    const sortOrder = form.find("input[name='sortOrder']").val().trim();
 	    const parentIdx = form.find("select[name='parentIdx']").val();
+	    
+        // 특수문자 제한
+        const RegExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+        if (RegExp.test(categoryName)) {
+        	alert("특수문자 입력은 불가능합니다.");
+        	return;
+        }
 
 	    if (!categoryName || !sortOrder) {
 	      alert("카테고리 이름과 순서를 입력해주세요.");
