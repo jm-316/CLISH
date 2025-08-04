@@ -21,7 +21,7 @@
 	</header>
 <!-- 	<h1>Main.jsp</h1> -->
 	
-		<div id="event" onclick="location.href='/event/eventHome'"></div>
+		<div id="event" onclick="location.href='/event/event_detail/EVT20250804112506'"></div>
 	<div class="h2-flexbox">
 		<h2>추천 정기 강의</h2>
 		<div id="class-filter-wrapper">

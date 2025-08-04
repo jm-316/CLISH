@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -62,21 +63,35 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="event" items="${eventList}">
+<%-- 					<c:set var="eventSize" value="${fn:length(eventList)}" /> --%>
+					
+					<c:forEach var="i" begin="0" end="${eventSize -1}">
+					
 							<tr>
 								<td>
-									<a href="/event/event_detail/${event.eventIdx}">
-										<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
-									</a>
+									<c:choose>
+									    <c:when test="${empty fileDTO.get(i).fileId}">
+											<a href="/event/event_detail/${eventList.get(i).eventIdx}">
+												<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
+											</a>
+									    </c:when>
+									    <c:otherwise>
+											<a href="/event/event_detail/${eventList.get(i).eventIdx}">
+<%-- 											<a href="/event/event_detail/${eventList.get(i).thumbnailFile}"> --%>
+<%-- 												<img src="/file/${fileDTO.get(i).fileId}?type=0" alt="썸네일" style="width: 100px; height: auto;"> --%>
+												<img src="/file/${fileDTO.get(i).fileId}?type=2" alt="썸네일" style="width: 100px; height: auto;">
+											</a>
+									    </c:otherwise>
+									</c:choose>
 								</td>
 								<td>
-									<a href="/event/event_detail/${event.eventIdx}">${event.eventTitle}</a>
+									<a href="/event/event_detail/${eventList.get(i).eventIdx}">${eventList.get(i).eventTitle}</a>
 								</td>
-								<td id="detail"><a href="/event/event_detail/${event.eventIdx}">${event.eventDescription}</a></td>
-								<td>${event.eventStartDate} ~ ${event.eventEndDate}</td>
+								<td id="detail"><a href="/event/event_detail/${eventList.get(i).eventIdx}">${eventList.get(i).eventDescription}</a></td>
+								<td>${eventList.get(i).eventStartDate} ~ ${eventList.get(i).eventEndDate}</td>
 								<td>
 									<c:choose>
-										<c:when test="${event.eventInProgress == 1}">
+										<c:when test="${eventList.get(i).eventInProgress == 1}">
 											진행중  
 										</c:when>
 										<c:otherwise>

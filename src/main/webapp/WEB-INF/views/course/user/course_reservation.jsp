@@ -53,7 +53,7 @@
 			    <h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 				
 				<%-- 예약 가능 날짜만 보여주기 --%>			    
-    			예약 날짜: <input type="date" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required /><br>
+    			예약 날짜: <input type="date" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required/><br>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br>
 			    
 				<%-- 유저정보와 클래스 정보를 INSERT 하기 위해서 hidden으로 전달 --%>			    
@@ -128,7 +128,7 @@
 				</c:if>
 				<%-- 신청가능한 클래스이고 일반 유저일 경우 예약 확정 버튼 표시 --%>
 				<c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
-		            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">예약 확정</button>
+		            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">수강 신청</button>
 				</c:if>
 			</div>
 		</form>
