@@ -38,8 +38,10 @@
 						<label>카테고리 순서</label> 
 						<input type="number" name="sortOrder" required/>
 					</div>
-					<button type="button" onclick="closeAddModal()">닫기</button>
-					<button type="submit">등록하기</button>
+					<div class="button-wrapper">
+						<button type="button" onclick="closeAddModal()">닫기</button>
+						<button type="submit">등록하기</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -141,8 +143,10 @@
 							<div>
 								<label>카테고리 순서</label> <input type="number" name="sortOrder" required/>
 							</div>
-							<button type="button" onclick="closeModifyModal()">닫기</button>
-							<button type="submit">저장</button>
+							<div class="button-wrapper">
+								<button type="button" onclick="closeModifyModal()">닫기</button>
+								<button type="submit">저장</button>
+							</div>
 						</form>
 					</div>
 				</div>

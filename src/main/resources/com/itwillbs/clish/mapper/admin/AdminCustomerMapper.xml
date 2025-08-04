@@ -92,7 +92,6 @@
 			support_title = #{supportTitle}
 			, support_detail = #{supportDetail}
 			, support_category = #{supportCategory}
-			, support_attach = #{supportAttach}
 		WHERE
 			support_idx = #{supportIdx}
 	</update>
