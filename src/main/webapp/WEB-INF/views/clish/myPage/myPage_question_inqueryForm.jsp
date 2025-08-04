@@ -7,8 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>문의수정</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <style type="text/css">
 
 	.btn-group {
@@ -29,7 +31,11 @@
 
 </head>
 <body>
+	<header>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	</header>
 	<main id="container">
+		<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main">
 	

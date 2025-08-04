@@ -235,7 +235,7 @@
 	    $(".inquery-toggle").click(function () {
 	      const detailRow = $(this).next(".inquery-detail");
 	
-	      $(".inquery-detail").not(detailRow).slideUp(200);
+	      $(".inquery-detail").not(detailRow).slideUp();
 	
 	      if (!detailRow.is(":visible")) {
 	        detailRow.slideDown();
