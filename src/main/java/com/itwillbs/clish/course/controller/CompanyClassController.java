@@ -208,7 +208,7 @@ public class CompanyClassController {
 	
 	// 클래스 수정 로직
 	@PostMapping("/myPage/modifyClass")
-	public String modifyClassSubmit(@RequestParam("classIdx") String classIdx, @RequestParam("classDays") int classDays,
+	public String modifyClassSubmit(@RequestParam("classIdx") String classIdx, @RequestParam(value = "classDays", required = false) String[] classDaysArray,
 			Model model, @ModelAttribute ClassDTO classInfo, HttpSession session,
 			@RequestParam("curriculumIdx") List<String> curriculumIdxList,
 			@RequestParam("curriculumTitle") List<String> curriculumTitleList,
@@ -238,8 +238,15 @@ public class CompanyClassController {
 		        curriculumList.add(dto);
 		    }
 		}
-
-	    classInfo.setClassDays(classDays);
+		
+		// 체크된 요일들의 값을 모두 더해 비트마스크 형태의 정수(classDays)로 변환
+		int classDays = 0;
+		if (classDaysArray != null) {
+		    for (String val : classDaysArray) {
+		        classDays += Integer.parseInt(val);
+		    }
+		}
+		classInfo.setClassDays(classDays); // DTO에 설정
 		
 		int count = companyClassService.modifyClassInfo(classIdx, classInfo, curriculumList, session);	
 		

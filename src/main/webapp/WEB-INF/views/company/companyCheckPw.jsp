@@ -14,9 +14,10 @@
 		.main-container {
 		    display: flex;
 		    width: 100%;
-		    min-height: 600px; /* 필요에 따라 조절 */
+		    min-height: 600px;
+		    padding-right: 220px;   /* ✅ 오른쪽도 사이드바처럼 여백 */
+		    box-sizing: border-box;
 		}
-		
 		/* 왼쪽 사이드바 */
 		.sidebar {
 		    width: 220px;

@@ -184,7 +184,10 @@
 			
 					<tr>
 						<th>기업전화번호</th>
-						<td><input type="text" name="userPhoneNumber" id="userPhoneNumber" value="${user.userPhoneNumber}" required></td>
+						<td>
+							<input type="text" id="userPhoneNumber" name="userPhoneNumber" value="${user.userPhoneNumber}" required>
+							<span id="phoneCheckResult"></span>
+						</td>
 					</tr>
 			
 					<tr>
@@ -220,6 +223,11 @@
 		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
 	</script>
 	
+	<script type="module">
+		import { initEmailAuth } from '/resources/js/email/email_auth.js';
+		initEmailAuth("userEmail", "emailVerifyBtn", "email-auth-result");
+	</script>
+	
 	<script type="text/javascript">
 		window.isEmailVerified = true;
 		
@@ -243,7 +251,7 @@
 		        changeBtn.style.display = "none";
 		    });
 		  
-			 // ✅ 주소 검색 버튼 이벤트 바인딩 (중첩 제거!)
+			 // 주소 검색 버튼 이벤트 바인딩
 		    document.getElementById("btnSearchAddress").addEventListener("click", function () {
 	        new daum.Postcode({
 	            oncomplete: function (data) {
@@ -262,6 +270,17 @@
 	    });
 	});	    
 	</script>
+	
+	<c:if test="${modifySuccess == true}">
+    <script>
+	        alert("기업 정보 수정이 완료되었습니다.");
+	    </script>
+	</c:if>
+	<c:if test="${modifySuccess == false}">
+	    <script>
+	        alert("기업 정보 수정에 실패했습니다.");
+	    </script>
+	</c:if>
 	
 	<footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />

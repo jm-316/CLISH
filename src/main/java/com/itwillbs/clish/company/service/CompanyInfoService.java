@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
+import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.company.mapper.CompanyInfoMapper;
 import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.user.dto.CompanyDTO;
@@ -35,10 +36,12 @@ public class CompanyInfoService {
 		
 	}
 	
+	// userIdx로 기업 정보 조회 (company 테이블 SELECT)
 	public CompanyDTO getCompanyInfo(String userIdx) {
 		 return companyInfoMapper.selectCompanyInfo(userIdx);
 	}
 	
+	// 기업 사업자등록증 등록
 	public void insertCompanyInfo(CompanyDTO company) {
 		companyInfoMapper.insertCompanyInfo(company);
 	}
@@ -48,7 +51,6 @@ public class CompanyInfoService {
 		return companyInfoMapper.updateCompanyInfo(company);
 		
 	}
-	
 	
 	// ------------------------------------------------------------------------
 	// 기업 - 나의 문의 목록(리스트) 조회
@@ -78,6 +80,16 @@ public class CompanyInfoService {
 	// 문의 삭제버튼 로직
 	public void deleteInquery(String inqueryIdx) {
 		companyInfoMapper.deleteInquery(inqueryIdx);
+	}
+	
+	// 알림 총 개수 조회
+	public int getNotificationCount(UserDTO user) {
+		return companyInfoMapper.selectCountNotification(user);
+	}
+	
+	// 알림 리스트 조회 (페이징)
+	public List<NotificationDTO> selectNotification(int startRow, int listLimit, UserDTO user) {
+		return companyInfoMapper.selectAllNotification(startRow, listLimit, user);
 	}
 	
 	// 기업 회원 탈퇴
