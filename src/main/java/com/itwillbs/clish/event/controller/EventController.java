@@ -1,5 +1,6 @@
 package com.itwillbs.clish.event.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.itwillbs.clish.admin.dto.EventDTO;
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileService;
 import com.itwillbs.clish.event.service.EventService;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class EventController {
 	private final EventService eventService;
 	private final UserService userService;
+	private final FileService fileService;
 	
 	@GetMapping("event/event_detail/{eventIdx}")
 	public String eventDetailForm(@PathVariable("eventIdx") String eventIdx, Model model, HttpSession session) {
@@ -36,7 +40,9 @@ public class EventController {
 			return "commons/fail";
 		}
 		EventDTO eventDTO = eventService.getEvent(eventIdx);	
+		FileDTO eventBanner = fileService.getFile(eventIdx, "content");	
 		model.addAttribute("eventDTO", eventDTO);
+		model.addAttribute("eventBanner", eventBanner);
 		System.out.println("eventDTO : " + eventDTO);
 		return "event/event_detail";
 	}
@@ -44,6 +50,13 @@ public class EventController {
 	public String eventHome(HttpSession session, Model model) {
 		List<EventDTO> eventList = eventService.getEventList();
 		model.addAttribute("eventList", eventList);
+		int eventSize = eventList.size();
+		model.addAttribute("eventSize", eventSize);
+		List<FileDTO> fileDTO = new ArrayList<FileDTO>();
+		for(int i = 0; i < eventSize; i++) {
+			fileDTO.add(fileService.getFile(eventList.get(i).getEventIdx(), "thumbnail"));	
+		}
+		model.addAttribute("fileDTO", fileDTO);
 		
 		return "event/event_home";
 	}

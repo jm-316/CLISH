@@ -39,7 +39,7 @@
 	}
 	.img {
 		width: 700px;
-		height: 500px;
+		height: 1000px;
 		
 	}
 	button {
@@ -69,17 +69,18 @@
 		<section id="event-details">
 			<hr>
 			<div id="flex-container1">
-				<div class="flex-item"><h3 class="flex-item">날짜:</h3> <p class="flex-item"> ${eventDTO.eventStartDate} ~ ${eventDTO.eventEndDate}</p></div class="flex-item"><div><h3 class="flex-item">작상자명:</h3>  <p class="flex-item">admin</p></div>
+				<div class="flex-item"><h3 class="flex-item">날짜:</h3> <p class="flex-item"> ${eventDTO.eventStartDate} ~ ${eventDTO.eventEndDate}</p></div><div><h3 class="flex-item">작상자명:</h3>  <p class="flex-item">admin</p></div>
 			</div>
 			<hr>
 			<h3>제목: <span id="title">${eventDTO.eventTitle}</span></h3>
 			<div id="flex-container2">
 				<c:choose>
-				    <c:when test="${empty thumbnailFile.realFileName}">
-				        <img class="img" src="${pageContext.request.contextPath}/resources/images/event2.png" alt="${eventDTO.eventTitle}" >
+				    <c:when test="${empty eventBanner.fileId}">
+				        <img class="img" src="${pageContext.request.contextPath}/resources/images/logo4-2.png" alt="${eventDTO.eventTitle}" >
 				    </c:when>
 				    <c:otherwise>
-				        <img class="img" src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${eventDTO.eventTitle}" >
+				        <img class="img" src="/file/${eventBanner.fileId}?type=0" alt="${eventDTO.eventTitle}" >
+
 				    </c:otherwise>
 				</c:choose>
 			</div> 
