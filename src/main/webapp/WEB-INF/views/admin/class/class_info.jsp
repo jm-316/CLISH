@@ -33,8 +33,10 @@
 						<label>반려사유</label>
 						<textarea rows="10" cols="20" name="content" required></textarea>
 					</div>
-					<button type="button" onclick="closeModal()">닫기</button>
-					<button type="submit">반려하기</button>
+					<div class="button-wrapper">
+						<button type="button" onclick="closeModal()">닫기</button>
+						<button type="submit">반려하기</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -43,7 +45,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3 class="section-title">강의 수정</h3>
+						<h3 class="section-title">강의 상세 정보</h3>
 					</div>
 					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
