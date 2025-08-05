@@ -1,21 +1,20 @@
 package com.itwillbs.clish.user.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
 import com.itwillbs.clish.user.service.UserService;
@@ -38,7 +39,6 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private static final String UPLOAD_DIR = "src/main/webapp/resources/upload/biz";
 	
 	//회원가입
 	@GetMapping("/join")
@@ -61,39 +61,35 @@ public class UserController {
 	@PostMapping("/register")
 	public String processJoin( 
 			@ModelAttribute UserDTO userDTO,
-	        @RequestParam(value = "bizFile", required = false) MultipartFile bizFileName,
-	        @RequestParam(value = "bizRegNo", required = false) String bizRegNo,
-	        RedirectAttributes redirect) {
+		    @RequestParam(required = false) MultipartFile bizFile, // 회사일 때만 들어옴
+		    @RequestParam(required = false) String bizRegNo,
+		    HttpSession session, Model model, RedirectAttributes redirect) throws IOException {
 
 	    String prefix = (userDTO.getUserType() == 1) ? "user" : "comp";
 	    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 	    String userIdx = prefix + now;
 	    userDTO.setUserIdx(userIdx);
-
+	    
 	    CompanyDTO companyDTO = null;
 	    if(userDTO.getUserType() == 2) {
-	        companyDTO = new CompanyDTO();
+	    	companyDTO = new CompanyDTO();
 	        companyDTO.setUserIdx(userIdx);
 	        companyDTO.setBizRegNo(bizRegNo);
 
-	        try {
-	            File uploadDir = new File(UPLOAD_DIR);
-	            if(!uploadDir.exists()) {
-	                uploadDir.mkdirs();
-	            }
-	            String originalFilename = bizFileName.getOriginalFilename();
-	            String uuid = UUID.randomUUID().toString();
-	            String newFilename = uuid + "_" + originalFilename;
-	            File destFile = new File(uploadDir, newFilename);
+	        // 파일 업로드 처리
+	        if(bizFile != null && !bizFile.isEmpty()) {
+	            List<FileDTO> files = FileUtils.uploadFile(
+	                new FileUtils.FileUploadHelpper() {
+	                    public MultipartFile[] getFiles() { return new MultipartFile[]{bizFile}; }
+	                    public String getIdx() { return userIdx; }
+	                }, session
+	            );
 	            
-	            bizFileName.transferTo(destFile);
-	            companyDTO.setBizFileName(newFilename); 
-	            companyDTO.setBizFilePath("/resources/upload/biz/" + newFilename); 
-	            // /usr/local/tomcat/webapps/upload/biz/
-	            // /c5d2504t1p1.itwillbs.com:8080/upload
-	        } catch (IOException e) {
-	            redirect.addFlashAttribute("errorMsg", "기업 회원가입 실패 - 파일 저장 오류");
-	            return "redirect:/user/join/form";
+	            if(!files.isEmpty()) {
+	                FileDTO file = files.get(0);
+	                companyDTO.setBizFileName(file.getOriginalFileName());
+	                companyDTO.setBizFilePath(file.getSubDir() + "/" + file.getRealFileName());
+	            }
 	        }
 	    }
 
@@ -102,7 +98,7 @@ public class UserController {
 	        : userService.registerGeneralUser(userDTO);
 
 	    if(result > 0) {
-	        return "redirect:/";
+	    	return "redirect:/user/login";
 	    } else {
 	        redirect.addFlashAttribute("errorMsg", "회원가입 실패");
 	        return "redirect:/";

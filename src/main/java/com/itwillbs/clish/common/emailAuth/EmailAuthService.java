@@ -56,7 +56,8 @@ public class EmailAuthService {
 
         return null;
     }
-
+    
+    @Transactional
     public EmailAuthResultDTO verifyToken(String token, String purpose) {
         EmailAuthDTO auth = emailAuthMapper.selectByToken(token);
         

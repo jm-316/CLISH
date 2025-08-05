@@ -5,40 +5,64 @@
 <mapper namespace="com.itwillbs.clish.user.mapper.UserMapper">
 	
 	 <insert id="insertUser" parameterType="com.itwillbs.clish.user.dto.UserDTO">
-        INSERT INTO USER SET
-	          user_idx               = #{userIdx}
-	        , user_name              = #{userName}
-	        , user_rep_name          = #{userRepName}
-	        , user_birth             = #{userBirth}
-	        , user_gender            = #{userGender}
-	        , user_id                = #{userId}
-	        , user_password          = #{userPassword}
-	        , user_email             = #{userEmail}
-	        , user_phone_number      = #{userPhoneNumber}
-	        , user_phone_number_sub  = #{userPhoneNumberSub}
-	        , user_postcode          = #{userPostcode}
-	        , user_address1          = #{userAddress1}
-	        , user_address2          = #{userAddress2}
-			<choose>
-    	  		<when test="userType == 1">
-      	 	, user_status            = 1
-    			</when>
-    			<otherwise>
-      		, user_status            = 5
-    			</otherwise>
-			</choose>
-          , user_reg_date          = NOW()
-          , user_withdraw_date     = #{userWithdrawDate}
-          , user_type              = #{userType}
-          , user_penalty_count     = 0
-    </insert>
+        INSERT INTO USER (
+	          user_idx
+	        , user_name
+	        , user_rep_name
+	        , user_birth
+	        , user_gender
+	        , user_id
+	        , user_password
+	        , user_email
+	        , user_phone_number
+	        , user_phone_number_sub
+	        , user_postcode
+	        , user_address1
+	        , user_address2
+	        , user_status
+	        , user_reg_date
+	        , user_withdraw_date
+	        , user_type
+	        , user_penalty_count
+	    )
+	    VALUES (
+	          #{userIdx}
+	        , #{userName}
+	        , #{userRepName}
+	        , #{userBirth}
+	        , #{userGender}
+	        , #{userId}
+	        , #{userPassword}
+	        , #{userEmail}
+	        , #{userPhoneNumber}
+	        , #{userPhoneNumberSub}
+	        , #{userPostcode}
+	        , #{userAddress1}
+	        , #{userAddress2}
+	        , <choose>
+	              <when test="userType == 1">1</when>
+	              <otherwise>5</otherwise>
+	          </choose>
+	        , NOW()
+	        , #{userWithdrawDate}
+	        , #{userType}
+	        , 0
+	    )
+	</insert>
+    
 	<insert id="insertCompany" parameterType="com.itwillbs.clish.user.dto.CompanyDTO">
-        INSERT INTO COMPANY SET
-            user_idx         = #{userIdx}
-          , biz_reg_no       = #{bizRegNo}
-          , biz_file_name    = #{bizFileName}
-          , biz_file_path    = #{bizFilePath}
-    </insert>
+	    INSERT INTO COMPANY (
+	        user_idx,
+	        biz_reg_no,
+	        biz_file_name,
+	        biz_file_path
+	    ) VALUES (
+	        #{userIdx},
+	        #{bizRegNo},
+	        #{bizFileName},
+	        #{bizFilePath}
+	    )
+	</insert>
     
 	<select id="selectUserId" parameterType="String" resultType="com.itwillbs.clish.user.dto.UserDTO">
 	    SELECT
@@ -54,13 +78,10 @@
 	        user_id = #{userId}
 	</select>
 
-	<select id="existsByEmail" parameterType="String" resultType="boolean"> 
-		SELECT
-			COUNT(*) > 0
-		FROM
-			USER
-		WHERE
-			user_email = #{email}
+	<select id="existsByEmail" parameterType="String" resultType="Boolean"> 
+	    SELECT COUNT(*)
+	    FROM USER
+	    WHERE user_email = #{email}
 	</select>
 	
 	<select id="countByNickname" parameterType="String" resultType="int">

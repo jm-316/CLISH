@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.clish.user.dto.CompanyDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
@@ -18,6 +19,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final BCryptPasswordEncoder passwordEncoder;
 
+	@Transactional
     public int registerCompanyUser(UserDTO userDTO, CompanyDTO companyDTO) {
     	userDTO.setUserPassword(encodePassword(userDTO.getUserPassword()));
         int userResult = userMapper.insertUser(userDTO);

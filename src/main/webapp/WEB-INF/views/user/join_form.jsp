@@ -32,7 +32,6 @@
 						<th>사업자등록증 업로드</th>
 						<td>
 							<input type="file" name="bizFile" accept=".jpg,.jpeg,.png,.pdf" required>
-							<button type="button" onclick="confirmBizFileUpload()">[파일 등록]</button>
 							<span id="biz-file-result" style="margin-left: 10px; color: green;"></span>
 						</td>
 					</tr>
@@ -122,16 +121,28 @@
 						<th><label for="userPhoneNumber"><c:if test="${sessionScope.userType == 1}">휴대폰번호</c:if>
 														<c:if test="${sessionScope.userType == 2}">대표관리자번호</c:if></label></th>
 						<td>
-							<input type="text" name="userPhoneNumber" id="userPhoneNumber" required>
+							<div class="phone-input-group">
+								<input type="text" id="userPhoneNumber1" maxlength="3" required> -
+								<input type="text" id="userPhoneNumber2" maxlength="4" required> -
+								<input type="text" id="userPhoneNumber3" maxlength="4" required>
+								<input type="hidden" name="userPhoneNumber" id="userPhoneNumber" required>
+							</div>
 							<span id="phoneCheckResult"></span>
 						</td>
-						
 					</tr>
 			
 					<tr>
 						<th><label for="userPhoneNumberSub"><c:if test="${sessionScope.userType == 1}">비상연락망</c:if>
 															<c:if test="${sessionScope.userType == 2}">기업전화번호</c:if></label></th>
-						<td><input type="text" name="userPhoneNumberSub" id="userPhoneNumberSub"></td>
+						<td>
+							<div class="SubPhone-input-group">
+								<input type="text" id="userPhoneNumberSub1" maxlength="3" required> -
+								<input type="text" id="userPhoneNumberSub2" maxlength="4" required> -
+								<input type="text" id="userPhoneNumberSub3" maxlength="4" required>
+								<input type="hidden" name="userPhoneNumberSub" id="userPhoneNumberSub" required>
+							</div>
+							<span id="SubPhoneCheckResult"></span>
+						</td>
 					</tr>
 			
 					<tr>

@@ -7,7 +7,14 @@ export function initJoinForm() {
 	const idResultSpan = document.getElementById('idCheckResult');
 	const pwInput = document.getElementById("userPassword");
 	const pwConf = document.getElementById("userPasswordConfirm");
-	const phoneInput = document.getElementById("userPhoneNumber");
+	const phoneInput1 = document.getElementById("userPhoneNumber1");
+	const phoneInput2 = document.getElementById("userPhoneNumber2");
+	const phoneInput3 = document.getElementById("userPhoneNumber3");
+	const phoneHidden = document.getElementById("userPhoneNumber");
+	const subPhoneInput1 = document.getElementById("userPhoneNumberSub1");
+	const subPhoneInput2 = document.getElementById("userPhoneNumberSub2");
+	const subPhoneInput3 = document.getElementById("userPhoneNumberSub3");
+	const subPhoneHidden = document.getElementById("userSubPhoneNumber");
 	const agreeChk = document.getElementById("agreeTerms");
 	const submitBtn = document.getElementById("submitBtn");
 	const addressBtn = document.getElementById("btnSearchAddress");
@@ -171,8 +178,37 @@ export function initJoinForm() {
 	}
 	
 	// 6. 전화번호 중복 & 정규표현식 체크
-	phoneInput.addEventListener('blur', function() {
-	    const phone = this.value.replace(/\s+/g, "");
+	function setPhoneNumberToHidden() {
+	    const p1 = phoneInput1.value.trim();
+	    const p2 = phoneInput2.value.trim();
+	    const p3 = phoneInput3.value.trim();
+	    phoneHidden.value = `${p1}-${p2}-${p3}`;
+	}
+	
+	function setSubPhoneNumberToHidden() {
+	    const s1 = subPhoneInput1.value.trim();
+	    const s2 = subPhoneInput2.value.trim();
+	    const s3 = subPhoneInput3.value.trim();
+	    subPhoneHidden.value = `${s1}-${s2}-${s3}`;
+	}
+	
+	[phoneInput1, phoneInput2, phoneInput3].forEach(input => {
+	    input.addEventListener('blur', checkPhoneNumber);
+	});
+	
+	// 숫자만 입력하도록 수정
+	function onlyNumberInput(e) {
+	    e.target.value = e.target.value.replace(/[^0-9]/g, "");
+	}
+	
+	[phoneInput1, phoneInput2, phoneInput3,
+	subPhoneInput1, subPhoneInput2, subPhoneInput3].forEach(input => {
+		input.addEventListener('input', onlyNumberInput);
+	});
+	
+	function checkPhoneNumber() {
+	    setPhoneNumberToHidden();
+	    const phone = phoneHidden.value;
 	    const resultSpan = document.getElementById('phoneCheckResult');
 	    const pattern = /^\d{3}-\d{4}-\d{4}$/;
 	
@@ -187,25 +223,30 @@ export function initJoinForm() {
 	
 	    // 2차: 서버에 중복체크 요청
 	    fetch(`/user/checkPhone?userPhone=${encodeURIComponent(phone)}`)
-	        .then(res => res.json())
-	        .then(data => {
-	            if (data.exists) {
-	                resultSpan.innerText = '이미 등록된 전화번호입니다.';
-	                resultSpan.style.color = 'red';
-	                isPhoneOk = false;
-	            } else {
-	                resultSpan.innerText = '사용 가능한 전화번호입니다!';
-	                resultSpan.style.color = 'green';
-	                isPhoneOk = true;
-	            }
-	            updateSubmitButton();
-	        })
-	        .catch(_err => {
-	            resultSpan.innerText = '중복 확인 실패';
-	            resultSpan.style.color = 'gray';
-	            isPhoneOk = false;
-	            updateSubmitButton();
-	        });
+        .then(res => res.json())
+        .then(data => {
+            if (data.exists) {
+                resultSpan.innerText = '이미 등록된 전화번호입니다.';
+                resultSpan.style.color = 'red';
+                isPhoneOk = false;
+            } else {
+                resultSpan.innerText = '사용 가능한 전화번호입니다!';
+                resultSpan.style.color = 'green';
+                isPhoneOk = true;
+            }
+            updateSubmitButton();
+        })
+        .catch(_err => {
+            resultSpan.innerText = '중복 확인 실패';
+            resultSpan.style.color = 'gray';
+            isPhoneOk = false;
+            updateSubmitButton();
+        });
+	}
+	
+	document.querySelector('form[name="joinForm"]').addEventListener('submit', function() {
+	    setPhoneNumberToHidden();
+	    setSubPhoneNumberToHidden();
 	});
 	
 	// 7. 주소 검색 API
@@ -269,5 +310,24 @@ export function initJoinForm() {
 	        submitBtn.disabled = true;
 	    }
 	}
+	
+	// 10. 전화번호 포커스
+	function autoPhoneFocus(input1, input2, input3) {
+	
+		input1.addEventListener('input', function() {
+			if(this.value.length === this.maxLength) {
+				input2.focus();
+			}
+		});
+		
+		input2.addEventListener('input', function() {
+			if(this.value.length === this.maxLength) {
+				input3.focus();
+			}
+		});
+		
+	}
+	autoPhoneFocus(phoneInput1, phoneInput2, phoneInput3);
+	autoPhoneFocus(subPhoneInput1, subPhoneInput2, subPhoneInput3);
 	
 }

@@ -110,3 +110,22 @@ button {
 #email-auth-result {
   font-weight: bold;
 }
+
+.phone-input-group,
+.SubPhone-input-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.phone-input-group input[type="text"],
+.SubPhone-input-group input[type="text"] {
+  width: 70px;
+  text-align: center;
+  margin: 0 2px;
+}
+
+.phone-input-group input[type="text"]:last-child,
+.SubPhone-input-group input[type="text"]:last-child {
+  margin-right: 0;
+}
