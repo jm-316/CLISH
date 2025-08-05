@@ -17,7 +17,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3>기업 정보 수정</h3>
+						<h3>기업 상세정보</h3>
 					</div>
 					<form>
 						<table border="1" style="width: 100%; text-align: left; margin: 0;">
@@ -103,7 +103,9 @@
 								</c:when>
 								<c:otherwise>
 									<button type="submit" name="action" value="withdraw" 
-											formaction="/admin/company/${company.userIdx}/withdraw" formmethod="post">탈퇴</button>
+											formaction="/admin/company/${company.userIdx}/withdraw" formmethod="post"
+											onclick="return confirm('정말로 탈퇴 처리하시겠습니까?');"
+											>탈퇴</button>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -113,4 +115,7 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+
+</script>
 </html>
