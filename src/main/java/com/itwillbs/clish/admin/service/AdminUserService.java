@@ -55,7 +55,7 @@ public class AdminUserService {
 		return adminMapper.updateUserStatus(idx, status);
 	}
 
-	// 승인 또는 탈퇴 로직
+	// 기업 상태 변경
 	@Transactional
 	public int modifyStatus(String idx, int status) {
 		int update = adminMapper.updateUserStatus(idx, status);
