@@ -109,7 +109,7 @@
 			<div id="preview-area" style="margin-top: 15px;"></div>
 			
 	        <div style="text-align: center; margin-top: 30px;">
-	            <input type="submit" value="강좌 개설 신청" class="orange-button big-button">
+	            <input type="submit" value="클래스 개설 신청" class="orange-button big-button">
 	        </div>
 	    </form>
 	    

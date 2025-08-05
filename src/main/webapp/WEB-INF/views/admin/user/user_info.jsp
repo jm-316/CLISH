@@ -80,7 +80,7 @@
 						</table>
 						<div class="button-wrapper">
 							<button type="button" onclick="location.href='/admin/user'">닫기</button>
-							<button type="submit">탈퇴</button>
+							<button type="submit" onclick="return confirm('정말로 탈퇴 처리하시겠습니까?');">탈퇴</button>
 						</div>
 					</form>
 				</div>
