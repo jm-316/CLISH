@@ -57,7 +57,7 @@
 						<div>
 							<div class="category-header">
 								<h3 class="sub-title">대분류</h3>
-								<button type="button" onclick="onAddModal()">추가</button>
+								<button type="button" onclick="onAddModal()">등록</button>
 							</div>
 						</div>
 						<table id="parentTable">
