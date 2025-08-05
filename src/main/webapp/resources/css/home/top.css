@@ -35,7 +35,7 @@
     
 
 }
-#flex-item2 > li > a:hover, .flex-item2:hover {
+#flex-item2 > li > a:hover, #small-menu:hover {
 	background-color: #f0f0f0;
     font-weight: bold;
 }
@@ -48,6 +48,7 @@
 }
 #small-menu {
 	font-size: 24px;
+	padding: 10px 15px;
 }
 
 

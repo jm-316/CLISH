@@ -53,8 +53,85 @@
 						<input type="text" name="searchClassKeyword" value="${param.searchClassKeyword}" placeholder="검색어를 입력하세요."/>
 						<input type="submit" value="검색" />
 					</form>
-				</div>
+	
+	
+	
+	
+<!-- 	==============================================================				 -->
 					
+	</div>
+	<div class="class-filter">
+		<button id="filter-button" >필터</button>	
+	</div>
+	<script>
+	window.onload = () => {
+			// when filter button is clicked filter options are shown and hidden when clicked again	
+			//필터 버튼을 클릭하면 필터 옵션이 표시되고 다시 클릭하면 숨겨집니다.
+		const filterButton = document.getElementById("filter-button");
+		
+		filterButton.addEventListener("click", () => {
+		  const filterArea = document.getElementById("main-filter");
+		  
+		  if (filterArea.style.display === "block") {
+		    filterArea.style.display = "none"; // Hide it
+		  } else {
+		    filterArea.style.display = "block"; // Show it
+		  }
+		});
+	}
+	</script>
+	<div id="main-filter" style="display: none; width: 500px; position: absolute; right: 50px; z-index: 100; margin-top: 50px;">
+		<form action="/user/classList?filterType=${param.filterType}&region=${param.region}&price=${param.price}" method="get" style="border-radius: 30px;">
+			<select name="filterType">
+				<option value="">유형별 필터링</option>
+				<option <c:if test="${param.filterType eq '최신'}">selected</c:if> value="최신">최신</option>
+				<option <c:if test="${param.filterType eq '인기'}">selected</c:if> value="인기">인기</option>
+				<option <c:if test="${param.filterType eq '평점'}">selected</c:if> value="평점">평점</option>
+				<option <c:if test="${param.filterType eq '높은가격'}">selected</c:if> value="높은가격">높은가격</option>
+				<option <c:if test="${param.filterType eq '낮은가격'}">selected</c:if> value="낮은가격">낮은가격</option>
+			</select>
+			<select name="region">
+				<option value="">지역 선택</option>
+				<option <c:if test="${param.region eq '서울'}">selected</c:if> value="서울">서울</option>
+				<option <c:if test="${param.region eq '인천'}">selected</c:if> value="인천">인천</option>
+				<option <c:if test="${param.region eq '대전'}">selected</c:if> value="대전">대전</option>
+				<option <c:if test="${param.region eq '대구'}">selected</c:if> value="대전">대구</option>
+				<option <c:if test="${param.region eq '울산'}">selected</c:if> value="울산">울산</option>
+				<option <c:if test="${param.region eq '부산'}">selected</c:if> value="울산">부산</option>
+				<option <c:if test="${param.region eq '광주'}">selected</c:if> value="광주">광주</option>
+				<option <c:if test="${param.region eq '새종'}">selected</c:if> value="새종">새종</option>
+			</select>
+			<select id="categorySelect" onchange="filterByCategory()">
+						<option value="">카테고리 선택</option>
+						<c:forEach var="parentCat" items="${parentCategories}">
+							<option value="${parentCat.categoryIdx}">
+								${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
+							</option>
+						</c:forEach>
+			</select>
+			<div >
+				<label for="price" style="font-size: 12px">상한 금액: 0원</label>
+			  <input type="range" id="price" name="price" min="0" max="5000000" step="50000" style="width: 300px;"/>
+			  <label for="price" style="font-size: 12px">5,000,000원</label><br>
+			  <div style="text-align: center;"><p>금액: <output id="value"></output>원</p></div>
+			</div>
+<!-- 			슬라이더 값을 보여주는 자바스크립트 -->
+			<script>
+				const value = document.querySelector("#value");
+				const input = document.querySelector("#price");
+				value.textContent = input.value;
+				input.addEventListener("input", (event) => {
+					let newValue = event.target.value
+				  value.textContent = newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+				});
+			</script>
+			<input type="submit" value="검색"  />
+		</form>
+	</div>
+					
+<!-- 	==============================================================				 -->
+
+
 					
 					<%-- 기업 유저의 경우 강의 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">

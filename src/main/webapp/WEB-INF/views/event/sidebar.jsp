@@ -19,7 +19,7 @@
 			<span >
 			<!--  필요 url 세팅 -->
 				<a href="/event/eventHome">
-				완료된이벤트
+<!-- 				완료된이벤트 -->
 				</a>
 			</span>
 		</li>
