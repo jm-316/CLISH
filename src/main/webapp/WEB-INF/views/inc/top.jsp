@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link href="${pageContext.request.contextPath}/resources/css/home/notification.css" rel="stylesheet" type="text/css">
 <section id="top-menu">
   <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
   <nav>
@@ -100,6 +99,7 @@
     	</div>
     	<script type="text/javascript">
 	    	const notiButton = document.getElementById('notification-box');
+	    	
     		function notification() {
     			notiButton.style.display = (notiButton.style.display === 'block') ? 'none' : 'block';
     			
@@ -132,7 +132,7 @@
     				li.dataset.noticeIdx = noti.noticeIdx;
     				li.dataset.link = noti.userNoticeLink;
     				
-    				li.innerHTML = '[' + type + '] ' + noti.userNoticeMessage + '<span class="read-status">' + status + '</span>';
+    				li.innerHTML = '[' + type + '] ' + '<span class="noti-message">' + noti.userNoticeMessage + '</span>' + '<span class="read-status">' + status + '</span>';
     				li.addEventListener("mouseover", changeNotiColor);
     				li.addEventListener("click", () => handleNotiClick(li))
     				ul.appendChild(li);
