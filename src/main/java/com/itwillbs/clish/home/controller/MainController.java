@@ -404,7 +404,7 @@ public class MainController {
 	@GetMapping("clish/myPage/main")
 	public String myPageMain() {
 		
-		return "clish/myPage/myPage_main";
+		return "redirect:/myPage/main";
 	}
 	@GetMapping("/user/joinForm")
 	public String userJoin() {
