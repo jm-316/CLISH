@@ -44,14 +44,21 @@
 								<td>
 									<div style="display: flex;">
 										<div>
-											<c:forEach var="fileDTO" items="${comDto.fileList}">
-												<div>
-													${fileDTO.originalFileName}
-													<a href="/file/${fileDTO.fileId }?type=1">
-														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
-													</a>
-												</div>
-											</c:forEach>
+											<c:choose>
+												<c:when test="${empty comDto.fileList}">
+													<span>현재 등록된 파일: </span>${comDto.bizFileName}
+												</c:when>
+												<c:otherwise>
+													<c:forEach var="fileDTO" items="${comDto.fileList}">
+														<div>
+															<span>현재 등록된 파일:</span>${fileDTO.originalFileName}
+															<a href="/file/${fileDTO.fileId }?type=1">
+																<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+															</a>
+														</div>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</div>
 								</td>
