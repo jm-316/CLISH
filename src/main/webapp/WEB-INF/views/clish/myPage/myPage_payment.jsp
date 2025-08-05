@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지</title>
+<title>Clish - 예약/결제</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.sortable {
@@ -69,10 +70,8 @@
 	
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	<div id="main">
-	
-		<h1>${sessionScope.sId}의 페이지</h1>
-		<hr>
 		<div>
+			<a href="/myPage/payment_info" class="filterButton">전체</a>
 			<a href="/myPage/payment_info/reservation_payment?filterType=0" class="filterButton">예약</a>
 			<a href="/myPage/payment_info/reservation_payment?filterType=1" class="filterButton">결제</a>
 		</div>

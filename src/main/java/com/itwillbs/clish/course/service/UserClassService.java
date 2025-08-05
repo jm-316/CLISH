@@ -30,8 +30,8 @@ public class UserClassService {
 		return userClassMapper.insertReservation(reservationDTO);
 	}
 
-	public List<ClassDTO> getClassList(int classType, String categoryIdx) {
-		return userClassMapper.selectClass(classType, categoryIdx);
+	public List<ClassDTO> getClassList(int startRow, int listLimit, int classType, String categoryIdx, String searchClassKeyword) {
+		return userClassMapper.selectClass(startRow, listLimit, classType, categoryIdx, searchClassKeyword);
 	}
 	
 	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
@@ -44,6 +44,10 @@ public class UserClassService {
 
 	public int selectReservationMembers(String classIdx) {
 		return userClassMapper.selectCountReservationMembers(classIdx);
+	}
+
+	public int getClassListCount(String searchKeyword) {
+		return userClassMapper.selectCountClassList(searchKeyword);
 	}
 
 

@@ -7,10 +7,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${classInfo.classTitle}</title>
 <link
-	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
+	href="/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <style>
 </style>
@@ -21,19 +22,21 @@
 		</div>
 		<div class="modal">
 			<div class="modal_body">
-				<h3>강좌 반려</h3>
+				<h3>강의 반려</h3>
 				<form action="/admin/class/${classInfo.classIdx}/reject"
 					method="post">
 					<div>
-						<label>강좌명</label> <input type="text"
+						<label>강의명</label> <input type="text"
 							value="${classInfo.classTitle}" readonly />
 					</div>
 					<div>
 						<label>반려사유</label>
 						<textarea rows="10" cols="20" name="content" required></textarea>
 					</div>
-					<button type="button" onclick="closeModal()">닫기</button>
-					<button type="submit">반려하기</button>
+					<div class="button-wrapper">
+						<button type="button" onclick="closeModal()">닫기</button>
+						<button type="submit">반려하기</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -42,7 +45,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3 class="section-title">강좌 수정</h3>
+						<h3 class="section-title">강의 상세 정보</h3>
 					</div>
 					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />

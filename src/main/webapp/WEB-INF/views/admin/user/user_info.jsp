@@ -6,12 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원상세정보</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap"
 	rel="stylesheet">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -80,7 +81,7 @@
 						</table>
 						<div class="button-wrapper">
 							<button type="button" onclick="location.href='/admin/user'">닫기</button>
-							<button type="submit">탈퇴</button>
+							<button type="submit" onclick="return confirm('정말로 탈퇴 처리하시겠습니까?');">탈퇴</button>
 						</div>
 					</form>
 				</div>

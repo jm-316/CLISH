@@ -9,10 +9,11 @@
 	    <link rel="icon" type="image/png" href="/favicon.png" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	    <title>결제정보</title>
+	    <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 	    <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
 	</head>
 	<body>
-	    <h1>결제완료</h1>
+	    <h1>결제정보</h1>
 		<h3>
 			결제 번호 : ${paymentInfoDTO.impUid }<br>
 			상품 이름 : ${paymentInfoDTO.classTitle}<br>

@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>기업 회원 탈퇴</title>
+<title>Clish - 기업 회원 탈퇴</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
   	#footer-area {
@@ -65,6 +66,10 @@
     .withdraw-form input[type="submit"]:hover {
       background-color: #c0392b;
     }
+    
+    .form {
+    	width: 800px;
+    }
   </style>
 </head>
 <body>
@@ -83,7 +88,7 @@
 	<!-- 본문 -->
     <div class="content-area">
 		<div class="class-header">
-			<h1>${sessionScope.sId} 탈퇴</h1>
+			<h1>${sessionScope.sId} 비밀번호 확인</h1>
 		</div>
 	
 		<form action="${pageContext.request.contextPath}/company/myPage/withdraw" method="post" class="form">

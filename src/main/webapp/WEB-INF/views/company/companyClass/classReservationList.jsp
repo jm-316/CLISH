@@ -5,7 +5,7 @@
 <%-- ✅ 모달에 AJAX로 로딩되는 부분이므로 HTML 구조 제거함 --%>
 <%-- ✅ 전체 레이아웃 없이 테이블만 출력되도록 수정함 --%>
 
-<table border="1" cellpadding="8" style="width:100%; border-collapse: collapse;">
+<table border="1" cellpadding="8" style="width:100%; border-collapse: collapse; margin-left: 0px;">
 	<thead>
 		<tr>
 			<th>이름</th>

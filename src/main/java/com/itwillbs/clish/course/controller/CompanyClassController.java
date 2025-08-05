@@ -31,9 +31,11 @@ import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.service.AdminClassService;
 import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
 import com.itwillbs.clish.common.file.FileMapper;
 import com.itwillbs.clish.common.file.FileUtils;
+import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -289,20 +291,38 @@ public class CompanyClassController {
 	// ----------------------------------------------------------------------------------------------
 	// 클래스 문의 페이지 - 문의 리스트
 	@GetMapping("/myPage/classInquiry")
-	public String classInquiry(HttpSession session, Model model) {
+	public String classInquiry(HttpSession session, Model model, @RequestParam(defaultValue = "1") int inquiryPageNum) {
 		
 		 String userId = (String) session.getAttribute("sId");
 		 String userIdx = companyClassService.getUserIdxByUserId(userId);
 		 
-		 System.out.println("userId = " + userId);
-		 System.out.println("userIdx = " + userIdx);
+		// 한 페이지당 보여줄 클래스 문의 수
+		int listLimit = 6;
+		 // 전체 클래스 문의 수 조회 (inquery_type = 2 만 해당)
+	    int inquiryListCount = companyClassService.getClassInquiryCountByUserIdx(userIdx);
+	    
+		 	// 페이징 처리
+		    if (inquiryListCount > 0) {
+		        PageInfoDTO pageInfoDTO = PageUtil.paging(
+		            listLimit, inquiryListCount, inquiryPageNum, 3 // 한 페이지당 수, 전체수, 현재 페이지, 페이지바 길이
+		        );
+	
+		        // 페이지 번호 유효성 검사
+		        if (inquiryPageNum < 1 || inquiryPageNum > pageInfoDTO.getMaxPage()) {
+		            model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+		            model.addAttribute("targetURL", "/company/myPage");
+		            return "commons/result_process";
+		        }
+	
+		        // 페이징 정보 전달
+		        model.addAttribute("inquiryPageInfo", pageInfoDTO);
 
-	    // 클래스 문의 리스트 (조인된 정보 포함)
-	    List<InquiryJoinUserDTO> classInquiryList = companyClassService.getClassInquiryList(userIdx);
-	    
-	    model.addAttribute("classInquiryList", classInquiryList);
-	    
-		return "/company/companyClass/classInquiry";
+		    // 클래스 문의 리스트 (조인된 정보 포함)
+		    List<InquiryJoinUserDTO> classInquiryList = companyClassService.getClassInquiryList(pageInfoDTO.getStartRow(), listLimit, userIdx);
+		    
+		    model.addAttribute("classInquiryList", classInquiryList);
+		}
+	    return "/company/companyClass/classInquiry";
 	}
 	
 	// 클래스 문의 페이지 - 문의 상세
@@ -316,7 +336,6 @@ public class CompanyClassController {
 //	    System.out.println(">>> 반환된 객체: " + result); // 응답 확인
 
 	    return result;
-//	    return companyClassService.getClassInquiryDetail(idx);
 	}
 	
 	// 클래스 문의 페이지 - 문의 답변

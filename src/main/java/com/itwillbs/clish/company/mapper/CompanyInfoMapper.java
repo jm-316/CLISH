@@ -33,8 +33,11 @@ public interface CompanyInfoMapper {
 	// 기업회원 사업자등록증 정보 수정 처리
 	int updateCompanyInfo(CompanyDTO company);
 	// ---------------------------------------------------------------
-	// 기업 - 나의 문의 목록(리스트) 조회
-	List<InquiryJoinUserDTO> selectInquiriesByUserIdx(String userIdx);
+	// 기업 - 나의 문의 총 개수 조회
+	int selectInquiryCountByUserIdx(String userIdx);
+	
+	// 기업 - 나의 문의 리스트 조회 (페이징)
+	List<InquiryJoinUserDTO> selectInquiriesByUserIdx(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("userIdx") String userIdx);
 	
 	// 문의 등록버튼 로직
 	void insertInquery(InqueryDTO dto);
@@ -49,7 +52,6 @@ public interface CompanyInfoMapper {
 	
 	// 문의 삭제버튼 로직
 	void deleteInquery(String inqueryIdx);
-	
 	// ---------------------------------------------------------------
 	// 알림 총 개수 조회	
 	int selectCountNotification(UserDTO user);
@@ -57,9 +59,15 @@ public interface CompanyInfoMapper {
 	// 알림 리스트 조회 (페이징)
 	List<NotificationDTO> selectAllNotification(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("user") UserDTO user);
 	
+	// 알림 읽음 처리
+	void updateNotificationReadStatus(String noticeIdx);
+	
+	// 모두 읽음 처리
+	int updateAllNotificationReadStatus(String userIdx);
 	// ---------------------------------------------------------------
 	// 기업 회원 탈퇴
 	int updateWithdraw(UserDTO user);
+
 
 
 	

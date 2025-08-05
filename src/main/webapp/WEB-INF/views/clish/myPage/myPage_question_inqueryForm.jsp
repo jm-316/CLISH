@@ -7,10 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>문의수정</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/home/top.css" rel="stylesheet" >
 <style type="text/css">
 
 	.btn-group {

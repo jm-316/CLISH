@@ -154,6 +154,16 @@
 			<result property="inqueryStatus" column="inquery_status"/>
 		</association>
 	</resultMap>
+	<!-- 클래스 문의 총 개수 조회 -->
+	<select id="selectClassInquiryCountByUserIdx" resultType="int">
+		SELECT COUNT(*) 
+		FROM INQUERY i
+		JOIN CLASS c ON i.class_idx = c.class_idx
+		WHERE c.user_idx = #{userIdx}
+		AND i.inquery_type = 2
+	</select>
+	
+	<!-- 클래스 문의 리스트 조회 (페이징) -->
 	<select id="selectClassInquiryList" resultMap="inquiryJoinUserMap">
 		SELECT 
 		    i.inquery_idx,
@@ -174,6 +184,7 @@
 		WHERE c.user_idx = #{userIdx}
 		AND i.inquery_type = 2
 		ORDER BY i.inquery_datetime DESC
+		LIMIT #{startRow}, #{listLimit}
 	</select>
 	
 	<!-- 클래스 문의 페이지 - 문의 상세 -->

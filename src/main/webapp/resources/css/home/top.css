@@ -35,7 +35,7 @@
     
 
 }
-#flex-item2 > li > a:hover, .flex-item2:hover {
+#flex-item2 > li > a:hover, #small-menu:hover {
 	background-color: #f0f0f0;
     font-weight: bold;
 }
@@ -48,6 +48,7 @@
 }
 #small-menu {
 	font-size: 24px;
+	padding: 10px 15px;
 }
 
 
@@ -208,6 +209,139 @@ input#search {
 	display: inline-block;
 	}
 	
+}
+
+/* notification */
+#notification-box {
+    position: absolute;
+    top: 100%; 
+    right: 240px;  
+    margin-top: 0.5em; 
+    width: 420px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 100;
+    padding-top: 0;
+}
+
+#notification-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+#notification-list li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+#notification-list li:hover {
+    background: #f9f9f9;
+}
+
+#notification-list li .dot {
+    font-size: 14px;
+}
+
+#notification-header {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center;
+	border-bottom: 1px solid #ddd;
+	position: sticky;
+	top: 0;
+	background: white;
+	width: 370px;
+	z-index: 999;
+}
+
+#notification-header a {
+	color: black;
+}
+
+.no-notification {
+    padding: 10px;
+    color: #888;
+    text-align: center;
+}
+
+#notification-box #notification-list li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+    background-color: white;
+    white-space: nowrap;       
+  	overflow: hidden;          /* 넘치는 텍스트 감춤 */
+  	text-overflow: ellipsis; 
+}
+
+#notification-list li:hover {
+    background: #f9f9f9;
+}
+
+#notification-box h3 {
+    position: sticky;
+    top: -20px;
+    background: white;
+	padding: 10px;
+    margin: 0;
+    font-size: 1.2em;
+    z-index: 10;
+}
+
+.read-status {
+    font-size: 12px;
+    color: #888;
+    margin-left: 10px;
+}
+.no-notification {
+    text-align: center;
+    color: #999;
+    padding: 10px;
+}
+
+.circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+.circle.read {
+    background-color: #ccc; 
+}
+.circle.unread {
+    background-color: red;
+}
+
+#notification-header  div {
+	display: flex;
+	gap: 20px;
+	cursor: pointer;
+}
+
+
+.noti-message {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333;
 }
 
 

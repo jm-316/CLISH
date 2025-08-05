@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Clish - 공지사항</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<c:if test="${not empty msg}">
@@ -70,7 +71,7 @@
 													<td>${support.supportCategory}</td>
 													<td class="flex">
 														<button onclick="location.href='/admin/notice/detail/${support.supportIdx}?pageNum=${param.pageNum}'">상세보기</button>
-														<button onclick="location.href='/admin/notice/delete/${support.supportIdx}'">삭제</button>
+														<button onclick="deleteFaq('${support.supportIdx}')">삭제</button>
 													</td>
 												</tr>
 											</c:forEach>									
@@ -105,4 +106,11 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	function deleteFaq(idx) {
+		if (confirm("삭제하시겠습니까?")) {
+			location.href="/admin/notice/delete/" + idx;
+		}
+	}
+</script>
 </html>

@@ -187,9 +187,9 @@ public class MyPageService {
 	}
 	
 	// 나의 강의 문의 리스트 불러오기
-	public List<InqueryDTO> getMyclassQ(int startRow, int listLimit, UserDTO user) {
+	public List<InqueryDTO> getMyclassQ(int startRow, int listLimit, UserDTO user, String classQOrderBy, String classQOrderDir) {
 		// TODO Auto-generated method stub
-		return myPageMapper.selectAllClassQ(startRow, listLimit, user);
+		return myPageMapper.selectAllClassQ(startRow, listLimit, user, classQOrderBy, classQOrderDir);
 	}
 	
 	// 사이트문의 수 확인
@@ -198,9 +198,9 @@ public class MyPageService {
 	}
 	
 	// 나의 사이트문의 리스트 불러오기
-	public List<InqueryDTO> getMyInquery(int startRow, int listLimit, UserDTO user) {
+	public List<InqueryDTO> getMyInquery(int startRow, int listLimit, UserDTO user, String inqueryOrderBy, String inqueryOrderDir) {
 		// TODO Auto-generated method stub
-		return myPageMapper.selectAllInquery(startRow, listLimit, user);
+		return myPageMapper.selectAllInquery(startRow, listLimit, user, inqueryOrderBy, inqueryOrderDir);
 	}
 	
 	// 나의 문의[강의, 사이트] 상세정보 불러오기

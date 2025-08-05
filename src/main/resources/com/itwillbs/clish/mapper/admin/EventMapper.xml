@@ -65,7 +65,7 @@
 			, #{eventDescription}
 			, #{eventStartDate}
 			, #{eventEndDate}
-			, #{eventInProgress}
+			, 2
 			, now()
 		)
 	</insert>
@@ -109,6 +109,7 @@
 		SET
 			event_in_progress = 
 			CASE
+				WHEN event_in_progress = 0 THEN 0
 				WHEN CURRENT_DATE &lt; event_start_date THEN 2
 				WHEN CURRENT_DATE &gt; event_end_date THEN 0
 				ELSE 1

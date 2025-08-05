@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Clish - 정보변경</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<link rel="icon" type="image/x-icon" href="/resources/images/logo_favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
@@ -22,11 +24,6 @@
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main">
-	
-		<h1>${sessionScope.sId} 정보변경 </h1>
-		
-		<hr>
-		
 		<form action="/myPage/change_user_info" method="post" class="form" name="modifyForm" enctype="multipart/form-data">
 		<input type="hidden" name="userIdx" value=${user.userIdx }>
 			<table border="1" style="margin: 0;">	

@@ -6,14 +6,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>결제창</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<title>${reservationClassInfo.class_title} - 결제</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+
+<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
 <!-- jQuery와 포트원 결제 SDK 로드 -->
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- <script src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script> -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/myPage/myPage_payment.js"></script>
+<script type="text/javascript" src="/resources/js/myPage/myPage_payment.js"></script>
 
 </head>
 <body>
@@ -74,6 +76,12 @@
 				<td><fmt:formatNumber pattern="#,##0">${reservationClassInfo.reservation_members * reservationClassInfo.class_price}</fmt:formatNumber>
 				 </td>		
         	</tr>
+        	<tr>
+        		<td colspan="8" style="text-align: right;">
+	        		<a href="#" onclick="window.open('/agreement/privacy', '_blank', 'width=500,height=600,scrollbars=yes'); return false;">[필수]개인정보 수집·이용 동의</a><input type="checkbox" id="privacy"> <br>
+	        		<a href="#" onclick="window.open('/agreement/payment_refund', '_blank', 'width=500,height=600,scrollbars=yes'); return false;">결제 및 환불 정책 동의</a><input type="checkbox" id="policy">
+        		</td>
+        	</tr>
 			<tr>
 				<td colspan="8" style="text-align: right;">
 					<input type="button" value="취소" data-reservation-num="${reservationClassInfo.reservation_idx}"
@@ -106,14 +114,6 @@
 			}
 		}	
 		
-		// PC/모바일 환경 구분 함수
-		// navigator.userAgent : 사용자의 브라우저, 운영체제, 기기 정보
-		// /Mobi|Android|iPhone|iPad/i "Mobi","Android", "iPhone", "iPad" 이라는 단어가 들어있는지 검사 /i
-		// .test() navigator.userAgent에 위의 단어가 포함되어있는지 검사, true false 리턴
-		function isMobile() {
-		  return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-		}
-		
 		window.onunload = function() {
 		    if (window.opener && !window.opener.closed) {
 		        window.opener.location.reload();
@@ -122,12 +122,6 @@
 		        window.opener.opener.location.reload();
 		    }
 		};
-	// 	//테스트를 위한 난수생성
-	// 	function getRandomString(length) {
-	// 	  return Math.random().toString(36).substr(2, length);
-	// 	}
-		
-	// 	const randomStr = getRandomString(8);
 		
 	</script>
 

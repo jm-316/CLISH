@@ -5,9 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 상세 페이지</title>
+<title>
+    <c:choose>
+        <c:when test="${not empty classInfo.classTitle}">
+            ${classInfo.classTitle}
+        </c:when>
+        <c:otherwise>
+            Clish - 강의 상세정보
+        </c:otherwise>
+    </c:choose>
+</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 </head>
 <body>
@@ -16,8 +26,8 @@
 	</header>
 	<main>
 		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
-				<h1>클래스 상세 페이지</h1>
-				<h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 상세 정보 ]</h3>
+				<h1>강의 상세</h1>
+				<h3 style="text-align: center; margin-bottom: 30px;">[ 강의 상세 정보 ]</h3>
 				
 				<table class="table-with-side-borders" style="width: 90%;">
 				<colgroup>
@@ -80,7 +90,7 @@
 				<div style="display: flex; justify-content: center; margin-top: 40px;">
 				    <button class="orange-button"
 				            onclick="location.href='${pageContext.request.contextPath}/company/myPage/classManage'">
-				        클래스 목록
+				        강의 목록
 				    </button>
 				</div>
 		</section>

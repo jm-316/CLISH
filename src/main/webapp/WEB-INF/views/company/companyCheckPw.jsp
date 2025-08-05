@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>기업 정보 수정 페이지</title>
+<title>Clish - 기업 정보 수정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 	<style type="text/css">
 		html, body {
@@ -43,6 +44,10 @@
 		    background-color: #ffffff;
 		    margin-right: 220px;
 		}
+		
+		.form {
+			width: 800px;
+		}
 	</style>
 </head>
 <body>
@@ -62,7 +67,7 @@
 	<!-- 오른쪽 본문 영역 -->
 	<div class="content-area">
 		<div class="class-header">
-			<h1>${sessionScope.sId} 페이지</h1>
+			<h1>${sessionScope.sId} 비밀번호 확인</h1>
 		</div>
 		
 		<form action="${pageContext.request.contextPath}/company/myPage/companyInfo" method="post" class="form">

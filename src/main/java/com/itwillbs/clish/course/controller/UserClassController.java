@@ -41,17 +41,43 @@ public class UserClassController {
 	@GetMapping("/user/classList")
 	public String classListForm(Model model, HttpSession session,
 			@RequestParam int classType,
-			@RequestParam(required = false)String categoryIdx) {
+			@RequestParam(defaultValue = "1") int pageNum,
+			@RequestParam(required = false)String categoryIdx,
+			@RequestParam(defaultValue = "") String searchClassKeyword) {
 		
 		// 세션 객체에 있는 유저정보를 UserDTO에 저장
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId);
 		
-		// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
-		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		// 검색어 앞 뒤 공백 제거
+		searchClassKeyword = searchClassKeyword.trim();
+		
+		// 페이징 처리
+		int listLimit = 2;
+		int listCount = userClassService.getClassListCount(searchClassKeyword);
+		
+		if(listCount > 0) {
+			// 페이징 정보를 관리하는 PageInfoDTO 객체 생성 및 계산 결과 저장
+			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 3);
+			System.out.println("pageInfoDTO : " + pageInfoDTO);
+			
+			if(pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/user/classList"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+				return "commons/result_process";
+			}
+			
+			// Model 객체에 PageInfoDTO 객체 저장
+			model.addAttribute("pageInfoDTO", pageInfoDTO);
+			// ---------------------------------------------------
+			// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
+			List<ClassDTO> classList = userClassService.getClassList(pageInfoDTO.getStartRow(), listLimit, classType, categoryIdx, searchClassKeyword);
+			
+			// Model 객체에 조회된 게시물 목록 정보(List 객체) 저장
+			model.addAttribute("classList", classList);
+		}
 		
 		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classList", classList);
 		model.addAttribute("userInfo", userInfo);
 		
 		return "/course/user/course_list";
@@ -109,6 +135,11 @@ public class UserClassController {
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
+		
+		// 비회원이라면 로그인 페이지로 이동
+		if(userId == null) {
+			return "/user/login";
+		}
 		
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
 		

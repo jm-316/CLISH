@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 문의 페이지</title>
+<title>Clish - 강의 문의</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
 	#footer-area {
@@ -21,6 +22,9 @@
 		padding: 20px;
 		overflow: hidden;  /* ✅ 내부 넘치는 거 잘라냄 */
 		white-space: nowrap;
+	}
+	.h1 {
+		margin-right: 160px;
 	}
 	.classManage-container {
 		 display: flex;
@@ -51,6 +55,11 @@
 		background-color: #f5f5f5;
 		cursor: pointer;
 	}
+	
+	.pageSection {
+		margin-right: 150px;
+	}
+	
 	.modal {
 		display: none;
 		position: fixed;
@@ -76,6 +85,7 @@
 	.modal_body table {
 		width: 100%;
 		border-collapse: collapse;
+		margin-left: 0px;
 	}
 	.modal_body th {
 		width: 120px;
@@ -132,7 +142,7 @@
 	
 		<div class="content-area">
 			<div class="class-header">
-				<h1>클래스 문의 페이지</h1>
+				<h1 class="h1">강의 문의</h1>
 			</div>
 	
 			<c:choose>
@@ -169,13 +179,43 @@
 					</table>
 				</c:otherwise>
 			</c:choose>
+			<!-- ✅ 페이징 영역 -->
+			<div class="pageSection" style="display: flex; justify-content: center; margin-top: 30px;">
+				<c:if test="${not empty inquiryPageInfo and inquiryPageInfo.maxPage > 0}">
+					
+					<!-- 이전 버튼 -->
+					<input type="button" value="이전"
+						onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum - 1}'"
+						<c:if test="${inquiryPageInfo.pageNum == 1}">disabled</c:if>
+					/>
+			
+					<!-- 페이지 번호들 -->
+					<c:forEach var="i" begin="${inquiryPageInfo.startPage}" end="${inquiryPageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq inquiryPageInfo.pageNum}">
+								<strong style="margin: 0 8px;">${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="?inquiryPageNum=${i}" style="margin: 0 8px;">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+			
+					<!-- 다음 버튼 -->
+					<input type="button" value="다음"
+						onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum + 1}'"
+						<c:if test="${inquiryPageInfo.pageNum == inquiryPageInfo.maxPage}">disabled</c:if>
+					/>
+			
+				</c:if>
+			</div>
 		</div>
 	</div>
 
 	<!-- ✅ 모달 폼 구조 변경 -->
 	<div class="modal" id="inquiry-modal">
 		<div class="modal_body">
-			<h3>문의 상세 보기</h3>
+			<h3>문의 상세보기</h3>
 			<form id="modal-form" action="/company/inquiry/answer" method="post">
 				<input type="hidden" name="inqueryIdx" id="inquiry-idx">
 				<input type="hidden" name="userIdx" id="user-idx">

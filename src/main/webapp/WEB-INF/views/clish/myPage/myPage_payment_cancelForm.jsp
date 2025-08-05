@@ -8,10 +8,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>포트원 결제연동 샘플</title>
+    <title>결제취소신청</title>
+    <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
-    <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+    <link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
     
   </head>
   <body>

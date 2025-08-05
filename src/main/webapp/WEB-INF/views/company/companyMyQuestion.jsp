@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 문의</title>
+<title>Clish - 나의 문의</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
   	#footer-area {
@@ -120,8 +121,7 @@
 		</div>
 
 		<div class="main-content">
-			<h1>${sessionScope.sId}님의 페이지</h1>
-			<h3>나의 문의 목록</h3>
+			<h1>${sessionScope.sId}님의 문의 목록</h1>
 
       		<div class="top-section">
 				<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/company/myPage/writeInquery'">문의 등록</button>
@@ -186,6 +186,35 @@
 				</c:choose>
 			</tbody>
 		</table>
+		
+		<!-- ✅ 페이징 영역 -->
+		<div class="pageSection" style="display: flex; justify-content: center;">
+			<c:if test="${not empty inquiryPageInfo.maxPage or inquiryPageInfo.maxPage > 0}">
+				<!-- 이전 버튼 -->
+				<input type="button" value="이전"
+					onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum - 1}'"
+				<c:if test="${inquiryPageInfo.pageNum == 1}">disabled</c:if>
+				style="margin: 0 8px;" />
+				<!-- 페이지 번호 -->
+				<c:forEach var="i" begin="${inquiryPageInfo.startPage}" end="${inquiryPageInfo.endPage}">
+					<c:choose>
+						<c:when test="${i eq inquiryPageInfo.pageNum}">
+							<strong style="margin: 0 8px;">${i}</strong> 
+						</c:when>
+						<c:otherwise>
+							<a href="?inquiryPageNum=${i}" style="margin: 0 8px;">${i}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			
+				<!-- 다음 버튼 -->
+				<input type="button" value="다음"
+					onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum + 1}'"
+				<c:if test="${inquiryPageInfo.pageNum == inquiryPageInfo.maxPage}">disabled</c:if>
+					style="margin: 0 8px;" />
+			</c:if>
+		</div>
+		
 	</div>
 </div>
 

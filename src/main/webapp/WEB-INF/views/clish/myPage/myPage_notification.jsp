@@ -4,49 +4,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>나의 알림</title>
-<style type="text/css">
-	.notiTr {
-		cursor: pointer;
-	}
-	.pageSection {
-		text-align: center;
-		border: none;
-	}
-	.notiHeader {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 0px 0px 0px 30px;
-		width: 100%;
-	/* 필요하면 width:100% 지정도 가능 */
-	}
-	#allRead {
-		padding: 6px 14px;
-		border-radius: 5px;
-		background: #2a7ae2;
-		color: white;
-		border: none;
-		cursor: pointer;
-		font-weight: bold;
-		font-size: 15px;
-		box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-		transition: background 0.2s;
-	}
-	#allRead:hover {
-		background: #1d4fbb;
-	}
+	<meta charset="UTF-8">
+	<title>Clish - 나의알림</title>
+	<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+	<style type="text/css">
+		.notiTr {
+			cursor: pointer;
+		}
+		.pageSection {
+			text-align: center;
+			border: none;
+		}
+		.notiHeader {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0px 0px 0px 30px;
+			width: 100%;
+		/* 필요하면 width:100% 지정도 가능 */
+		}
+		#allRead {
+			padding: 6px 14px;
+			border-radius: 5px;
+			background: #ff9696cf;
+			color: #252323;
+			border: none;
+			cursor: pointer;
+			font-weight: bold;
+			font-size: 15px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+			transition: background 0.2s;
+		}
+		#allRead:hover {
+			background: #1d4fbb;
+		}
+		
 	
-
-</style>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com" >
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+	</style>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com" >
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
+	<link href="/resources/css/home/top.css" rel="stylesheet" >
+	<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+	<script type="text/javascript" src="/resources/js/home.js"></script>
 
 </head>
 <body>
@@ -59,9 +60,6 @@
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main" >
-	
-		<h1>${sessionScope.sId}의 페이지</h1>
-		
 		<div>
 			<div class="notiHeader">
 				<h3>알림 전체</h3>

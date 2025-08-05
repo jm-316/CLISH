@@ -202,29 +202,13 @@ public class AdminUserController {
 		return "commons/result_process";
 	}
 	
-	// 기업 승인취소
-	@PostMapping("/company/{idx}/cancelApproval")
-	public String cancelApproveCompany(@PathVariable("idx") String idx, Model model) {
-		int success = adminService.modifyStatus(idx, 5);
-		
-		if (success > 0) {
-			model.addAttribute("msg", "승인 취소 되었습니다.");
-			model.addAttribute("targetURL", "/admin/company");
-		} else {
-			model.addAttribute("msg", "다시 시도해주세요!");
-			return "commons/fail";
-		}
-		
-		return "commons/result_process";
-	}
-	
 	// 일반 회원 탈퇴처리
 	@PostMapping("/company/{idx}/withdraw")
 	public String companyWithdraw(@PathVariable("idx") String idx, Model model) {
 		int count = adminService.modifyStatus(idx, 3);
 		
 		if (count > 0) {
-			model.addAttribute("msg", "탈퇴를 처리했습니다.");
+			model.addAttribute("msg", "탈퇴 처리했습니다.");
 			model.addAttribute("targetURL", "/admin/company");
 		} else {
 			model.addAttribute("msg", "다시 시도해주세요!");

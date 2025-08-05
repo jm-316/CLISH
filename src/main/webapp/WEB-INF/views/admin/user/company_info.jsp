@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원상세정보</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -17,7 +18,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3>기업 정보 수정</h3>
+						<h3>기업 상세 정보</h3>
 					</div>
 					<form>
 						<table border="1" style="width: 100%; text-align: left; margin: 0;">
@@ -44,14 +45,21 @@
 								<td>
 									<div style="display: flex;">
 										<div>
-											<c:forEach var="fileDTO" items="${comDto.fileList}">
-												<div>
-													${fileDTO.originalFileName}
-													<a href="/file/${fileDTO.fileId }?type=1">
-														<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
-													</a>
-												</div>
-											</c:forEach>
+											<c:choose>
+												<c:when test="${empty comDto.fileList}">
+													<span>현재 등록된 파일: </span>${comDto.bizFileName}
+												</c:when>
+												<c:otherwise>
+													<c:forEach var="fileDTO" items="${comDto.fileList}">
+														<div>
+															<span>현재 등록된 파일:</span>${fileDTO.originalFileName}
+															<a href="/file/${fileDTO.fileId }?type=1">
+																<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
+															</a>
+														</div>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</div>
 								</td>
@@ -103,7 +111,9 @@
 								</c:when>
 								<c:otherwise>
 									<button type="submit" name="action" value="withdraw" 
-											formaction="/admin/company/${company.userIdx}/withdraw" formmethod="post">탈퇴</button>
+											formaction="/admin/company/${company.userIdx}/withdraw" formmethod="post"
+											onclick="return confirm('정말로 탈퇴 처리하시겠습니까?');"
+											>탈퇴</button>
 								</c:otherwise>
 							</c:choose>
 						</div>

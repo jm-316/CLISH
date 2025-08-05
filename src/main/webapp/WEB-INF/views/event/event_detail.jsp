@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/main.css" >
 <link rel="stylesheet" href="/resources/css/course/sidebar.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
-<title>Event ${eventDTO.eventTitle}</title>
+<title>${eventDTO.eventTitle}</title>
 <style>
 	h3 {
 	padding: 30px 0;

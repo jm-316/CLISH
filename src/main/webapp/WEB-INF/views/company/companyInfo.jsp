@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>기업 정보 수정</title>
+<title>Clish - 기업 정보 수정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/join_form.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
 	#footer-area {
@@ -115,7 +116,10 @@
     input[type="file"] {
         vertical-align: middle;
     }
-
+    
+    button {
+		margin-left: 410px !important;
+	}
 </style>
 </head>
 <body>
@@ -169,7 +173,7 @@
 						<th>이메일</th>
 						<td>
 							<input type="email" id="userEmail" name="userEmail" value="${user.userEmail }" readonly/>
-							<input type="button" id="changeEmail" name="changeEmail" value="이메일변경" />
+							<input type="button" id="changeEmail" name="changeEmail" value="이메일수정" />
 							<button type="button" id="emailVerifyBtn" style="display: none;">[이메일 인증]</button>
 							<button type="button" id="checkEmailVerifiedBtn" style="display: none;">[인증 완료 확인]</button>
 							<span id="email-auth-result" style="display: none; color: red; margin-left: 10px;">이메일 인증 필요</span>
@@ -234,7 +238,7 @@
 					<input type="hidden" name="userType" value="${empty sessionScope.userType ? 2 : sessionScope.userType}" />
 					<input type="hidden" name="userIdx" value="${user.userIdx}" />
 					<p>
-						<button type="submit" >수정하기</button>
+						<button type="submit" class="button">수정하기</button>
 					</p>
 				</form>
 			</div>
@@ -247,7 +251,7 @@
 	window.isEmailVerified = false;
 
 	document.addEventListener("DOMContentLoaded", function () {
-		// ====================== 이메일 변경 관련 ======================
+		// ====================== 이메일 수정 관련 ======================
 		const emailInput = document.getElementById("userEmail");
 		const changeBtn = document.getElementById("changeEmail");
 		const verifyBtn = document.getElementById("emailVerifyBtn");

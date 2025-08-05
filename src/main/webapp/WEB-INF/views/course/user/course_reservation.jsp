@@ -5,12 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>예약 정보 입력</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
@@ -52,9 +53,27 @@
 			    <h1>클래스 예약 정보입력</h1>
 			    <h3 style="text-align: center; margin-bottom: 30px;">[ 예약 상세 정보 ]</h3>
 				
-				<%-- 예약 가능 날짜만 보여주기 --%>			    
-    			예약 날짜: <input type="date" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required/><br>
+				<%-- 예약 가능 날짜 보여주기 --%>			    
+				<c:choose>
+					<c:when test="${param.classType eq 1}">
+		    			예약 날짜: <input type="date" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required/><br>
+					</c:when>
+					<c:otherwise>
+						<input type="hidden" name="reservationClassDateRe" value="${classInfo.startDate}">
+					</c:otherwise>
+				</c:choose>
 			    예약 인원: <input type="text" name="reservationMembers" required /><br>
+			    
+			    <div style="text-align: center; padding-top: 30px; display: flex; justify-content: flex-end;">
+					<c:if test="${not empty param.classType}">
+			           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+			           	클래스 목록</button>
+					</c:if>
+					<%-- 신청가능한 클래스이고 일반 유저일 경우 예약 확정 버튼 표시 --%>
+					<c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
+			            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')" style="margin-left: 10px;">수강 신청</button>
+					</c:if>
+				</div>
 			    
 				<%-- 유저정보와 클래스 정보를 INSERT 하기 위해서 hidden으로 전달 --%>			    
 			    <input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}"><br>
@@ -121,16 +140,7 @@
 				</section>
 			</div>
 		
-			<div style="text-align: center; padding-top: 30px; display: flex;">
-				<c:if test="${not empty param.classType}">
-		           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-		           	클래스 목록</button>
-				</c:if>
-				<%-- 신청가능한 클래스이고 일반 유저일 경우 예약 확정 버튼 표시 --%>
-				<c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
-		            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')">수강 신청</button>
-				</c:if>
-			</div>
+			
 		</form>
 	</div>
 	

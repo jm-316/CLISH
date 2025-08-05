@@ -299,7 +299,8 @@ public class MyPageController {
 	}
 	
 	//------------------------------------------------------------------------------------
-	//결제내역
+	//예약/결제내역
+		
 	// 예약/결제 목록 불러오기
 	@GetMapping("/payment_info")
 	public String payment_info(HttpSession session, Model model,UserDTO user
@@ -375,82 +376,82 @@ public class MyPageController {
 	}
 	
 	//마이페이지 - 필터 : 예약/결제
-	@GetMapping("/payment_info/reservation_payment")
-	public String paymentFilter(Model model, UserDTO user, HttpSession session
-			, @RequestParam(defaultValue = "1") int reservationPageNum
-			, @RequestParam(defaultValue = "reservation_class_date") String reservationOrderBy
-			, @RequestParam(defaultValue = "desc") String reservationOrderDir
-			, @RequestParam(defaultValue = "1") int paymentPageNum
-			, @RequestParam(defaultValue = "pay_time") String paymentOrderBy
-			, @RequestParam(defaultValue = "desc") String paymentOrderDir
-			, @RequestParam("filterType") int filterType) {
-		
-		model.addAttribute("reservationOrderBy", reservationOrderBy);
-		model.addAttribute("reservationOrderDir", reservationOrderDir);
-		model.addAttribute("paymentOrderBy", paymentOrderBy);
-		model.addAttribute("paymentOrderDir", paymentOrderDir);
-		model.addAttribute("filterType",filterType);
-		//세션에 저장된 sId이용 유저정보 불러오기
-		user = getUserFromSession(session);
-		
-		// 페이징에 필요한 변수선언
-		int listLimit = 10;
-		int reservationListCount = myPageService.getReservationCount(user);
-		int paymentListCount = myPageService.getPaymentCount(user);
-		
-		if(filterType == 0 ) { // 필터 : 예약선택
-			if(reservationListCount > 0 ) {
-				// 예약페이지 정보 저장
-				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reservationListCount, reservationPageNum, 3);
-				// pageNum에 이상한 파라미터가 넘어올 때
-				if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
-					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-					model.addAttribute("targetURL", "/myPage/payment_info"); 
-					return "commons/result_process";
-				}
-				 
-				model.addAttribute("reservationPageInfo", pageInfoDTO);
-				// 삭제할 예약목록 삭제
-				myPageService.reservationCheck(user);
-				// 예약목록 불러오기
-				List<ReservationDTO> reservationList =
-					myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user, reservationOrderBy, reservationOrderDir);
-				// 예약목록 정보 저장
-				model.addAttribute("reservationList",reservationList);
+			@GetMapping("/payment_info/reservation_payment")
+			public String paymentFilter(Model model, UserDTO user, HttpSession session
+					, @RequestParam(defaultValue = "1") int reservationPageNum
+					, @RequestParam(defaultValue = "reservation_class_date") String reservationOrderBy
+					, @RequestParam(defaultValue = "desc") String reservationOrderDir
+					, @RequestParam(defaultValue = "1") int paymentPageNum
+					, @RequestParam(defaultValue = "pay_time") String paymentOrderBy
+					, @RequestParam(defaultValue = "desc") String paymentOrderDir
+					, @RequestParam("filterType") int filterType) {
+				
+				model.addAttribute("reservationOrderBy", reservationOrderBy);
+				model.addAttribute("reservationOrderDir", reservationOrderDir);
+				model.addAttribute("paymentOrderBy", paymentOrderBy);
+				model.addAttribute("paymentOrderDir", paymentOrderDir);
+				model.addAttribute("filterType",filterType);
+				//세션에 저장된 sId이용 유저정보 불러오기
+				user = getUserFromSession(session);
+				
+				// 페이징에 필요한 변수선언
+				int listLimit = 10;
+				int reservationListCount = myPageService.getReservationCount(user);
+				int paymentListCount = myPageService.getPaymentCount(user);
+				
+				if(filterType == 0 ) { // 필터 : 예약선택
+					if(reservationListCount > 0 ) {
+						// 예약페이지 정보 저장
+						PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, reservationListCount, reservationPageNum, 3);
+						// pageNum에 이상한 파라미터가 넘어올 때
+						if(reservationPageNum < 1 || reservationPageNum > pageInfoDTO.getMaxPage()) {
+							model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+							model.addAttribute("targetURL", "/myPage/payment_info"); 
+							return "commons/result_process";
+						}
+						 
+						model.addAttribute("reservationPageInfo", pageInfoDTO);
+						// 삭제할 예약목록 삭제
+						myPageService.reservationCheck(user);
+						// 예약목록 불러오기
+						List<ReservationDTO> reservationList =
+							myPageService.getReservationInfo(pageInfoDTO.getStartRow(), listLimit, user, reservationOrderBy, reservationOrderDir);
+						// 예약목록 정보 저장
+						model.addAttribute("reservationList",reservationList);
 
-			}
-		} else if(filterType == 1) {
-			// 결제목록이 존재한다면
-			if(paymentListCount > 0) {
-				//결제페이지정보 저장
-				PageInfoDTO pageInfoDTO = PageUtil.paging(5, paymentListCount, paymentPageNum, 3);
-				
-				// pageNum에 이상한 파라미터가 넘어올 때
-				if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
-					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-					model.addAttribute("targetURL", "/myPage/payment_info"); 
-					return "commons/result_process";
+					}
+				} else if(filterType == 1) {
+					// 결제목록이 존재한다면
+					if(paymentListCount > 0) {
+						//결제페이지정보 저장
+						PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, paymentListCount, paymentPageNum, 3);
+						
+						// pageNum에 이상한 파라미터가 넘어올 때
+						if(paymentPageNum < 1 || paymentPageNum > pageInfoDTO.getMaxPage()) {
+							model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+							model.addAttribute("targetURL", "/myPage/payment_info"); 
+							return "commons/result_process";
+						}
+						
+						model.addAttribute("paymentPageInfo", pageInfoDTO);
+						
+						//결제 정보 불러오기
+						List<PaymentInfoDTO> paymentList = 
+							myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user, paymentOrderBy, paymentOrderDir);
+						
+						//결제시간정보 보기좋게 바꾸기
+						for(PaymentInfoDTO payment : paymentList) {
+							payment.setPayTime(payment.getPayTime());
+						}
+						
+						model.addAttribute("paymentList",paymentList);
+					}
 				}
 				
-				model.addAttribute("paymentPageInfo", pageInfoDTO);
+				model.addAttribute("user",user);
 				
-				//결제 정보 불러오기
-				List<PaymentInfoDTO> paymentList = 
-					myPageService.getPaymentList(pageInfoDTO.getStartRow(), listLimit, user, paymentOrderBy, paymentOrderDir);
-				
-				//결제시간정보 보기좋게 바꾸기
-				for(PaymentInfoDTO payment : paymentList) {
-					payment.setPayTime(payment.getPayTime());
-				}
-				
-				model.addAttribute("paymentList",paymentList);
+				return "/clish/myPage/myPage_payment_filter";
 			}
-		}
-		
-		model.addAttribute("user",user);
-		
-		return "/clish/myPage/myPage_payment_filter";
-	}
 	
 	//예약 취소
 	@PostMapping(value="/payment_info/cancel", produces = "application/json; charset=UTF-8")
@@ -609,8 +610,18 @@ public class MyPageController {
 	// 나의 문의
 	@GetMapping("/myQuestion")
 	public String myQuestion(HttpSession session, Model model, UserDTO user
-			, @RequestParam(defaultValue = "1") int classQuestionPageNum
-			, @RequestParam(defaultValue = "1") int inqueryPageNum) {
+		, @RequestParam(defaultValue = "1") int classQuestionPageNum
+		, @RequestParam(defaultValue = "inquery_datetime") String classQOrderBy
+		, @RequestParam(defaultValue = "desc") String classQOrderDir 
+		, @RequestParam(defaultValue = "1") int inqueryPageNum
+		, @RequestParam(defaultValue = "inquery_datetime") String inqueryOrderBy
+		, @RequestParam(defaultValue = "desc") String inqueryOrderDir ){
+		
+		model.addAttribute("classQOrderBy",classQOrderBy);
+		model.addAttribute("classQOrderDir",classQOrderDir);
+		model.addAttribute("inqueryOrderBy",inqueryOrderBy);
+		model.addAttribute("inqueryOrderDir",inqueryOrderDir);
+		
 		// 세션을 이용한 유저 정보 불러오기
 		user = getUserFromSession(session);
 		// 페이징위한 변수 저장
@@ -630,7 +641,7 @@ public class MyPageController {
 			model.addAttribute("classQPageInfo", pageInfoDTO);
 			
 			// 강의문의 목록 불러오기 
-			List<InqueryDTO> classQDTOList = myPageService.getMyclassQ(pageInfoDTO.getStartRow(), listLimit, user);
+			List<InqueryDTO> classQDTOList = myPageService.getMyclassQ(pageInfoDTO.getStartRow(), listLimit, user, classQOrderBy, classQOrderDir);
 			
 			model.addAttribute("classQDTOList",classQDTOList);
 			model.addAttribute("user", user);
@@ -652,7 +663,7 @@ public class MyPageController {
 			model.addAttribute("inqueryPageInfo", pageInfoDTO);
 
 			// 사이트 문의 목록 불러오기
-			List<InqueryDTO> inqueryDTOList = myPageService.getMyInquery(pageInfoDTO.getStartRow(), listLimit, user);
+			List<InqueryDTO> inqueryDTOList = myPageService.getMyInquery(pageInfoDTO.getStartRow(), listLimit, user, inqueryOrderBy, inqueryOrderDir);
 			
 			model.addAttribute("inqueryDTOList",inqueryDTOList);
 			model.addAttribute("user", user);
@@ -661,6 +672,74 @@ public class MyPageController {
 		
 		return "/clish/myPage/myPage_question";
 	}
+	
+	// 문의 필터링
+	@GetMapping("/myQuestion/question_inquery")
+	public String myQuestionFilter(HttpSession session, Model model, UserDTO user
+		, @RequestParam(defaultValue = "1") int classQuestionPageNum
+		, @RequestParam(defaultValue = "inquery_datetime") String classQOrderBy
+		, @RequestParam(defaultValue = "desc") String classQOrderDir 
+		, @RequestParam(defaultValue = "1") int inqueryPageNum
+		, @RequestParam(defaultValue = "inquery_datetime") String inqueryOrderBy
+		, @RequestParam(defaultValue = "desc") String inqueryOrderDir
+		, @RequestParam("filterType") int filterType){
+		
+		model.addAttribute("classQOrderBy",classQOrderBy);
+		model.addAttribute("classQOrderDir",classQOrderDir);
+		model.addAttribute("inqueryOrderBy",inqueryOrderBy);
+		model.addAttribute("inqueryOrderDir",inqueryOrderDir);
+		model.addAttribute("filterType",filterType);
+		// 세션을 이용한 유저 정보 불러오기
+		user = getUserFromSession(session);
+		// 페이징위한 변수 저장
+		int listLimit = 10;
+		int classQCount = myPageService.getclassQCount(user);
+		int inqueryCount = myPageService.getInqueryCount(user);
+		
+		if (filterType == 0) { // 강의 문의 일때
+			if(classQCount > 0 ) {
+				// 페이지 정보 저장
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, classQCount, classQuestionPageNum, 3);
+				
+				// 이상한pageNum 파라미터 대처
+				if(classQuestionPageNum < 1 || classQuestionPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/myQuestion");
+					return "commons/result_process";
+				}
+				
+				model.addAttribute("classQPageInfo", pageInfoDTO);
+				// 강의문의 목록 불러오기 
+				List<InqueryDTO> classQDTOList = myPageService.getMyclassQ(pageInfoDTO.getStartRow(), listLimit, user, classQOrderBy, classQOrderDir);
+				
+				model.addAttribute("classQDTOList",classQDTOList);
+				model.addAttribute("user", user);
+			}
+		}
+		if (filterType == 1) {
+			// 사이트문의
+			if(inqueryCount > 0 ) {
+				// 페이지 정보 저장
+				PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, inqueryCount, inqueryPageNum, 3);
+				
+				// 이상한pageNum 파라미터 대처
+				if(inqueryPageNum < 1 || inqueryPageNum > pageInfoDTO.getMaxPage()) {
+					model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+					model.addAttribute("targetURL", "/myPage/myQuestion"); 
+					return "commons/result_process";
+				}
+				model.addAttribute("inqueryPageInfo", pageInfoDTO);
+
+				// 사이트 문의 목록 불러오기
+				List<InqueryDTO> inqueryDTOList = myPageService.getMyInquery(pageInfoDTO.getStartRow(), listLimit, user, inqueryOrderBy, inqueryOrderDir);
+				
+				model.addAttribute("inqueryDTOList",inqueryDTOList);
+				model.addAttribute("user", user);
+			}
+		}
+		return "/clish/myPage/myPage_question_filter";
+	}
+	
 	
 	// 문의 수정폼
 	@GetMapping("/myQuestion/inquery/modify")

@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.myPage.dto.PaymentCancelDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
@@ -45,6 +46,7 @@ public class PaymentController {
 	private final PaymentService paymentService;
 	private final MyPageService myPageService;
 	private final MyPageController myPageController;
+	private final NotificationService notificationService;
 	
 	//결제페이지
 	@GetMapping("/payment_info/payReservation")
@@ -105,9 +107,16 @@ public class PaymentController {
 	
 	// 결제결과데이터 저장
 	@GetMapping("/payment_info/payResult")
-	public String payResultPage( PaymentInfoDTO paymentInfoDTO, Model model, RedirectAttributes redirectAttributes) {
-		
+	public String payResultPage( PaymentInfoDTO paymentInfoDTO, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		UserDTO user = new UserDTO();
+		user = myPageController.getUserFromSession(session);
+		//결제 결과 데이터 저장
 		paymentService.putPayInfo(paymentInfoDTO);
+		String payStatus = paymentInfoDTO.getStatus().toString().equals("paid") ? "결제완료 되었습니다" : "결제실패 하셨습니다.";
+		
+		// 결제 결과알림
+		notificationService.send(user.getUserIdx(), 5,
+				paymentInfoDTO.getClassTitle() + "강의에 대한 " + paymentInfoDTO.getAmount().toBigInteger() + "원 결제 요청이 " + payStatus);
 		redirectAttributes.addAttribute("impUid",paymentInfoDTO.getImpUid());
 		
 	    return "redirect:/myPage/payment_info/paymentDetail"; // JSP 파일명에 맞게 수정
@@ -145,7 +154,10 @@ public class PaymentController {
 	
 	// 결제 취소 요청맵핑
 	@PostMapping("/payment_info/cancelPayment")
-	public String cancelPayment(PaymentCancelDTO paymentCancelDTO, Model model, RedirectAttributes redirectAttributes) {
+	public String cancelPayment(PaymentCancelDTO paymentCancelDTO, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+		UserDTO user = new UserDTO();
+		user = myPageController.getUserFromSession(session);
+		
 		//취소요청에 필요한 access토큰 발급
 		String accessToken = paymentService.getAccessToken();
 		// 취소 요청 url
@@ -195,6 +207,10 @@ public class PaymentController {
 	    if (code == 0) { // 취소성공
 	    	//취소정보 저장, 결제정보 업데이트
 	    	paymentService.cancelComplete(paymentCancelDTO);
+	    	// 결제 취소 성공 알림
+	    	notificationService.send(user.getUserIdx(), 5,
+					paymentCancelDTO.getClassTitle() + "강의에 대한 " + paymentCancelDTO.getCancelAmount().toBigInteger() + "원 결제가 취소 되셨습니다.");
+	    	
 	    	//impUid를 리다이렉트할때 파라미터로 전달 
 	    	redirectAttributes.addAttribute("impUid",paymentCancelDTO.getImpUid());
 	    	// 결제취소 상세정보페이지로 이동
@@ -204,6 +220,10 @@ public class PaymentController {
 	        String errorMsg = (String) responseBody.get("message");
 	        // 결제 취소 실패 메세지와 에러메시지를 저장
 	        model.addAttribute("message", "결제 취소 실패: " + errorMsg);
+	     // 결제 취소 알림
+	    	notificationService.send(user.getUserIdx(), 5,
+					paymentCancelDTO.getClassTitle() + "강의에 대한 " + paymentCancelDTO.getCancelAmount().toBigInteger() + "원 결제가 취소 실패 하였습니다.");
+	        
 	        // 실패한 결제 취소 정보를 저장
 	    	model.addAttribute("paymentCancel", paymentCancelDTO);
 	    	// 결제취소 상세정보페이지로 이동

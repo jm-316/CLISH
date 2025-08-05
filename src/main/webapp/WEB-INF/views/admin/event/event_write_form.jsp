@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>이벤트등록</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -64,7 +65,6 @@
 													<input type="date" id="endDate" name="eventEndDate" required/>
 												</div>
 											</div>
-											<span id="startDateError" style="color: red; display: none;"></span>
 										</td>
 									</tr>
 								</tbody>
@@ -91,17 +91,13 @@
 			const today = new Date();
 			
 			if (startDate < today) {
-				errorSpan.textContent = "시작 날자는 오늘보다 뒤일 수 없습니다."
-				errorSpan.style.display = "block";
+				alert("시작 날짜는 오늘과 같거나 이전일 수 없습니다.");
 				e.preventDefault();
 			    return;
-			} else {
-		      errorSpan.textContent = "";
-		      errorSpan.style.display = "none";
 			}
 			
 			if (endDate.getTime() < startDate.getTime()) {
-				alert("종료일이 시작일보다 빠를 수 없습니다.");
+				alert("종료일이 시작일보다 이전일 수 없습니다.");
 				e.preventDefault();
 				return;
 			}

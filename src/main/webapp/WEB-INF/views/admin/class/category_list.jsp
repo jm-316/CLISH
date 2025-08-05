@@ -6,11 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자페이지</title>
+<title>Clish - 카테고리편집</title>
 <link
-	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
+	href="/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -56,7 +57,7 @@
 						<div>
 							<div class="category-header">
 								<h3 class="sub-title">대분류</h3>
-								<button type="button" onclick="onAddModal()">추가</button>
+								<button type="button" onclick="onAddModal()">등록</button>
 							</div>
 						</div>
 						<table id="parentTable">
