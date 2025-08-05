@@ -20,7 +20,7 @@ public interface UserClassMapper {
 
 	int insertReservation(ReservationDTO reservationDTO);
 
-	List<ClassDTO> selectClass(@Param("classType")int classType, @Param("categoryIdx")String categoryIdx);
+	List<ClassDTO> selectClass(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("classType")int classType, @Param("categoryIdx")String categoryIdx, @Param("searchClassKeyword")String searchClassKeyword);
 	
 	List<ReviewDTO> selectAllClassReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit,@Param("classIdx")String classIdx);
 
@@ -28,6 +28,8 @@ public interface UserClassMapper {
 
 	// 총 예약인원을 알기 위한 SELECT
 	int selectCountReservationMembers(String classIdx);
+
+	int selectCountClassList(String searchKeyword);
 
 
 }

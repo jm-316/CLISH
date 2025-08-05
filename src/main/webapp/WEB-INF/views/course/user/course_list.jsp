@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>강의 목록</title>
+<title>클래스 목록</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
@@ -19,36 +19,7 @@
 		const selected = document.getElementById('categorySelect').value;
 		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
 	}
-	
-	const heartBtn = document.getElementById("heartBtn");
-	  heartBtn.addEventListener("click", function () {
-	    this.classList.toggle("active"); // 클릭 시 'active' 클래스 토글
-	  });
 </script>
-<style type="text/css">
-.heart-toggle {
-  background: none;
-  border: none;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.heart-icon {
-  width: 24px;
-  height: 24px;
-  fill: #bbb;
-  transition: fill 0.2s ease;
-}
-
-.heart-toggle.active .heart-icon {
-  fill: #e91e63;             /* 클릭 시 핑크 하트로 변경 */
-}
-</style>
 </head>
 <body>
 	<header>
@@ -60,6 +31,7 @@
 		<div class="main">
 			<div class="main-content">
 				<div class="box">
+				<div id="search-container">
 					<%-- 카테고리별 검색 셀렉트박스 --%>
 					<select id="categorySelect" onchange="filterByCategory()">
 						<option value="">카테고리 선택</option>
@@ -68,14 +40,16 @@
 								${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
 							</option>
 						</c:forEach>
-						<%-- ============= [ 게시물 검색 기능 ] ============ --%>
-						<%-- 검색 기능을 위한 폼 생성 --%>
-						<form action="/course/user/classList?classType=${param.classType}" method="get">
-							<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
-							<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
-							<input type="submit" value="검색" />
-						</form>
 					</select>
+				<%-- 검색 기능을 위한 폼 생성 --%>
+					<form action="/course/user/classList" method="get">
+						<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
+						<input type="hidden" name="classType" value="${param.classType}">
+						<input type="text" name="searchClassKeyword" value="${param.searchClassKeyword}" placeholder="검색어를 입력하세요."/>
+						<input type="submit" value="검색" />
+					</form>
+				</div>
+					
 					
 					<%-- 기업 유저의 경우 클래스 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">
@@ -86,19 +60,19 @@
 	                </c:if>
 				</div>
 				
+				
 				<%-- 클래스 목록 리스트 --%>
 				<table class="table">
 				
 					<thead>
 						<tr>
-							<th colspan="7">강좌 목록</th>
+							<th colspan="6">강좌 목록</th>
 						</tr>
 						<tr>
 							<th>썸네일</th>
 							<th>제목</th>
 							<th>일자</th>
 							<th>장소</th>
-							<th>관심</th>
 							<th colspan="2">진행상태</th>
 						</tr>
 					</thead>
@@ -118,17 +92,6 @@
 									</td>
 									<td>${classItem.startDate} ~ ${classItem.endDate}</td>
 									<td>${classItem.location}</td>
-									<td>
-										<button class="heart-toggle" id="heartBtn" aria-label="Toggle favorite">
-										  <svg viewBox="0 0 24 24" class="heart-icon">
-										    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-										             2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.5 2.09
-										             C12.09 5.01 13.76 4 15.5 4
-										             18 4 20 6 20 8.5
-										             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-										  </svg>
-										</button>
-									</td>
 									<td>
 										<c:choose>
 											<%-- 신청가능 클래스이면서 일반 유저일 경우 예약 버튼 활성화 --%>
@@ -157,11 +120,41 @@
 						<%-- 클래스 목록이 없을 경우 --%>
 						<c:if test="${not hasRegisteredClass}">
 							<tr>
-								<td colspan="7">등록된 강의가 없습니다.</td>
+								<td colspan="6">등록된 강의가 없습니다.</td>
 							</tr>
 						</c:if>
 					</tbody>
 				</table>
+				
+				<%-- 페이지 리스트 --%>
+				<section id="pageList">
+					<c:if test="${not empty param.searchClassKeyword}">
+						<c:set var="searchParams" value="classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}" />
+					</c:if>
+					
+					<c:if test="${not empty pageInfoDTO.maxPage or pageInfoDTO.maxPage > 0}">
+						<input type="button" value="이전" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum - 1}&${searchParams}'" 
+							<c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>
+						>
+						
+						<c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
+							<c:choose>
+								<c:when test="${i eq pageInfoDTO.pageNum}">
+									<strong>${i}</strong>
+								</c:when>
+								<c:otherwise>
+									<a href="/course/user/classList?pageNum=${i}&${searchParams}">${i}</a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						
+						<input type="button" value="다음" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum + 1}&${searchParams}'" 
+							<c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>
+						>
+					</c:if>
+				</section>
 			</div>
 		</div>
 		
