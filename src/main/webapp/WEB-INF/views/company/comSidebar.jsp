@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>기업 사이드바</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <style>
     .sidebar {
@@ -90,10 +90,10 @@
 	        <h3><a href="${pageContext.request.contextPath}/company/myPage/companyCheckPw"><b>기업 정보 수정</b></a></h3>
 	        <!-- ✅ 클래스 관리 드롭다운 메뉴 (수정 및 추가한 부분) -->
              <div class="dropdown">
-			    <div class="dropdown-toggle"><b>클래스 관리 ▼</b></div>
+			    <div class="dropdown-toggle"><b>강의 관리 ▼</b></div>
 			    <div class="submenu">
-			        <p><a href="${pageContext.request.contextPath}/company/myPage/classManage"><b>클래스 목록</b></a></p>
-			        <p><a href="${pageContext.request.contextPath}/company/myPage/classInquiry"><b>클래스 문의</b></a></p>
+			        <p><a href="${pageContext.request.contextPath}/company/myPage/classManage"><b>강의 목록</b></a></p>
+			        <p><a href="${pageContext.request.contextPath}/company/myPage/classInquiry"><b>강의 문의</b></a></p>
 			    </div>
 			</div>
 	        <h3><a href="${pageContext.request.contextPath}/company/myPage/myQuestion"><b>나의 문의</b></a></h3>

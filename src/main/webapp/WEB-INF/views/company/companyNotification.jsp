@@ -5,10 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 알림</title>
+<title>Clish - 나의 알림</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
 	#footer-area {
@@ -113,7 +114,7 @@
     </div>
 
     <div class="main-content">
-      <h1 class="page-title">${sessionScope.sId}의 알림 페이지</h1>
+      <h1 class="page-title">${sessionScope.sId}의 알림 목록</h1>
 
        <!-- ✅ 모두읽음 버튼 영역 -->
       <div class="btn-right-wrap">

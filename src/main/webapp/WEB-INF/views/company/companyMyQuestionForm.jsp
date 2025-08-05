@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사이트 문의 작성</title>
+<title>Clish - 사이트 문의 작성</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
   /* ✅ 전체 컨테이너: flex로 사이드바와 본문 배치 */
@@ -90,7 +92,7 @@
 	
 		<div class="content-area">
 		  	<div class="form-wrapper">
-			    <h2>사이트 문의 <c:out value="${empty inqueryDTO ? '작성' : '수정'}"/></h2>
+			    <h2>사이트 문의 <c:out value="${empty inqueryDTO ? '등록' : '수정'}"/></h2>
 			
 			    <!-- ✅ form action JSTL로 분기해서 변수에 저장 -->
 			    <c:choose>

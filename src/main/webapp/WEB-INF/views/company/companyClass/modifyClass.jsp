@@ -6,9 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 수정 페이지</title>
+<title>Clish - 강의 수정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 </head>
 <body>
@@ -17,8 +18,8 @@
 	</header>
 	<main>
 		<section style="max-width: 800px; margin: 50px auto; padding: 40px;">
-			<h1>클래스 수정 페이지</h1>
-			<h3 style="text-align: center; margin-bottom: 30px;">[ 클래스 정보 수정 ]</h3>
+			<h1>강의 수정</h1>
+			<h3 style="text-align: center; margin-bottom: 30px;">[ 강의 정보 수정 ]</h3>
 
 			<form action="${pageContext.request.contextPath}/company/myPage/modifyClass" method="post" enctype="multipart/form-data">
 			<table class="table-with-side-borders" style="width: 90%;">

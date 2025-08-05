@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 문의 페이지</title>
+<title>Clish - 강의 문의</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
 	#footer-area {
@@ -21,6 +22,9 @@
 		padding: 20px;
 		overflow: hidden;  /* ✅ 내부 넘치는 거 잘라냄 */
 		white-space: nowrap;
+	}
+	.h1 {
+		margin-right: 160px;
 	}
 	.classManage-container {
 		 display: flex;
@@ -51,6 +55,11 @@
 		background-color: #f5f5f5;
 		cursor: pointer;
 	}
+	
+	.pageSection {
+		margin-right: 150px;
+	}
+	
 	.modal {
 		display: none;
 		position: fixed;
@@ -76,6 +85,7 @@
 	.modal_body table {
 		width: 100%;
 		border-collapse: collapse;
+		margin-left: 0px;
 	}
 	.modal_body th {
 		width: 120px;
@@ -132,7 +142,7 @@
 	
 		<div class="content-area">
 			<div class="class-header">
-				<h1>클래스 문의 페이지</h1>
+				<h1 class="h1">강의 문의</h1>
 			</div>
 	
 			<c:choose>
@@ -205,7 +215,7 @@
 	<!-- ✅ 모달 폼 구조 변경 -->
 	<div class="modal" id="inquiry-modal">
 		<div class="modal_body">
-			<h3>문의 상세 보기</h3>
+			<h3>문의 상세보기</h3>
 			<form id="modal-form" action="/company/inquiry/answer" method="post">
 				<input type="hidden" name="inqueryIdx" id="inquiry-idx">
 				<input type="hidden" name="userIdx" id="user-idx">

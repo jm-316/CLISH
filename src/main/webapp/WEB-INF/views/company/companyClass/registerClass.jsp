@@ -5,10 +5,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 개설 페이지</title>
+<title>Clish - 강의 개설</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+<style>
+	.big-button {
+		width: 130px !important;
+	}
+</style>
 </head>
 <body>
 
@@ -17,9 +23,8 @@
 	</header>
 
 	<section style="max-width: 700px; margin: 50px auto; padding: 30px;">
-	    <h2 style="text-align: center; margin-bottom: 20px;">클래스 개설 페이지</h2>
+	    <h2 style="text-align: center; margin-bottom: 20px;">강의 개설</h2>
 	
-<%-- 	    <form action="${pageContext.request.contextPath}/company/myPage/registerClass" method="post"> --%>
 		<form action="${pageContext.request.contextPath}/company/myPage/registerClass" method="post" enctype="multipart/form-data">
 	        
 	        <label><b>강의명</b></label>
@@ -109,7 +114,7 @@
 			<div id="preview-area" style="margin-top: 15px;"></div>
 			
 	        <div style="text-align: center; margin-top: 30px;">
-	            <input type="submit" value="클래스 개설 신청" class="orange-button big-button">
+	            <input type="submit" value="강의 개설 신청" class="orange-button big-button">
 	        </div>
 	    </form>
 	    

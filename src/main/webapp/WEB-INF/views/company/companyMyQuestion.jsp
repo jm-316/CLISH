@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 문의</title>
+<title>Clish - 나의 문의</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
   	#footer-area {
@@ -120,8 +121,7 @@
 		</div>
 
 		<div class="main-content">
-			<h1>${sessionScope.sId}님의 페이지</h1>
-			<h3>나의 문의 목록</h3>
+			<h1>${sessionScope.sId}님의 문의 목록</h1>
 
       		<div class="top-section">
 				<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/company/myPage/writeInquery'">문의 등록</button>

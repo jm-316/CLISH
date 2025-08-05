@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 목록 페이지</title>
+<title>Clish - 강의 목록</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
     <style>
     	#footer-area {
@@ -56,6 +57,7 @@
             height: 30px;
             border: none;
             display: block;
+            margin-left: 40px;
         }
 
         .orange-button:hover {
@@ -63,7 +65,23 @@
             transform: translateY(-2px);
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
+        
+        .registButton {
+            background-color: #FF7601;
+            color: #fff;
+            border-radius: 10px;
+            width: 80px;
+            height: 30px;
+            border: none;
+            display: block;
+        }
 
+        .registButton:hover {
+            background-color: #FF8C00;
+            transform: translateY(-2px);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+		
         .class-filter-box {
             border: 1px solid black;
             padding: 10px;
@@ -101,6 +119,7 @@
 		    white-space: nowrap;          /* 줄바꿈 방지 */
 		    box-sizing: border-box;
 		    cursor: pointer;
+		    margin-left: 60px;
 		}
 		.reserved-btn:hover {
 			background-color: #fff3e0;
@@ -124,20 +143,20 @@
         <!-- 본문 내용 -->
         <div class="content-area">
             <div class="class-header">
-                <h1>클래스 목록 페이지</h1>
+                <h1>강의 목록</h1>
             </div>
 
-            <!-- 클래스 개설 버튼 -->
+            <!-- 강의 개설 버튼 -->
             <div class="button-right">
-                <button class="orange-button"
+                <button class="registButton"
                         onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
-                    클래스 개설
+                    강의 개설
                 </button>
             </div>
 
             <!-- 필터 & 검색창 -->
             <div class="class-filter-box">
-                <h5>클래스 조회</h5>
+                <h5>강의 조회</h5>
                 
                 <!-- 단기 & 정기강의 구분 -->
 				<div style="margin-bottom: 10px;">
@@ -158,7 +177,7 @@
 				</div>
             </div>
 
-            <!-- 강좌 목록 테이블 -->
+            <!-- 강의 목록 테이블 -->
             <div>
                 <table class="class-table">
                     <thead>
@@ -175,7 +194,7 @@
                     <tbody>
                         <c:set var="hasRegisteredClass" value="false" />
                         <c:forEach var="classItem" items="${classList}">
-                        <%-- CLASS 테이블 컬럼 3개 수정 후 클래스 개설 및 클래스 관리에 조회할 수 있게 임시로 관리자 상태 c:if문 주석 처리--%>
+                        <%-- CLASS 테이블 컬럼 3개 수정 후 강의 개설 및 강의 관리에 조회할 수 있게 임시로 관리자 상태 c:if문 주석 처리--%>
                             <c:if test="${classItem.class_status != 1}">
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
@@ -235,7 +254,7 @@
     </footer>
     
 	<script>
-	// 클래스 삭제 함수 (클래스 idx를 파라미터로 받아서 삭제 요청)
+	// 강의 삭제 함수 (강의 idx를 파라미터로 받아서 삭제 요청)
 	function deleteClass(classIdx) {
 	  if(confirm("정말 삭제하시겠습니까?")) {
 	    location.href = '${pageContext.request.contextPath}/company/myPage/deleteClass?classIdx=' + classIdx;
