@@ -6,12 +6,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 목록</title>
+<title>
+<c:if test="${param.classType eq 0}">정기 강의</c:if>
+<c:if test="${param.classType eq 1}">단기 강의</c:if>
+</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
@@ -31,18 +35,19 @@
 		<div class="main">
 			<div class="main-content">
 				<div class="box">
-				<div id="search-container">
+				<div class="search-container">
 					<%-- 카테고리별 검색 셀렉트박스 --%>
-					<select id="categorySelect" onchange="filterByCategory()">
-						<option value="">카테고리 선택</option>
-						<c:forEach var="parentCat" items="${parentCategories}">
-							<option value="${parentCat.categoryIdx}">
-								${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
-							</option>
-						</c:forEach>
-					</select>
-				<%-- 검색 기능을 위한 폼 생성 --%>
+					<%-- 검색 기능을 위한 폼 생성 --%>
 					<form action="/course/user/classList" method="get">
+						<select id="categorySelect" onchange="filterByCategory()">
+							<option value="">카테고리 선택</option>
+							<c:forEach var="parentCat" items="${parentCategories}">
+								<option value="${parentCat.categoryIdx}">
+									${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
+								</option>
+							</c:forEach>
+						</select>
+						
 						<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
 						<input type="hidden" name="classType" value="${param.classType}">
 						<input type="text" name="searchClassKeyword" value="${param.searchClassKeyword}" placeholder="검색어를 입력하세요."/>
@@ -51,17 +56,17 @@
 				</div>
 					
 					
-					<%-- 기업 유저의 경우 클래스 개설 버튼 표시 --%>
+					<%-- 기업 유저의 경우 강의 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">
 		                <button class="orange-button"
 		                        onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
-		                    클래스 개설
+		                    강의 개설
 		                </button>
 	                </c:if>
 				</div>
 				
 				
-				<%-- 클래스 목록 리스트 --%>
+				<%-- 강의 목록 리스트 --%>
 				<table class="table">
 				
 					<thead>
@@ -78,33 +83,38 @@
 					</thead>
 					
 					<tbody>
-						<c:set var="hasRegisteredClass" value="false" /> <%-- 클래스 목록 확인용 변수(boolean) --%> 
-						<%-- 클래스 목록이 있을 경우 --%>
+						<c:set var="hasRegisteredClass" value="false" /> <%-- 강의 목록 확인용 변수(boolean) --%> 
+						<%-- 강의 목록이 있을 경우 --%>
 						<c:forEach var="classItem" items="${classList}">
 							<c:if test="${classItem.classStatus != 1}">
 								<c:set var="hasRegisteredClass" value="true" />
 								<tr>
 									<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
-										<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto;">
+										<img src="/resources/images/logo4-2.png" alt="썸네일" style="width: 100px; height: auto; cursor: pointer;">
 									</td>
-									<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'">
+									<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'" style="cursor: pointer;">
 										${classItem.classTitle}
 									</td>
 									<td>${classItem.startDate} ~ ${classItem.endDate}</td>
 									<td>${classItem.location}</td>
-									<td>
+									<td class="status-cell">
 										<c:choose>
-											<%-- 신청가능 클래스이면서 일반 유저일 경우 예약 버튼 활성화 --%>
+											<%-- 신청가능한 강의이면서 일반 유저일 경우 예약 버튼 활성화 --%>
 											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
-												오픈 <button onclick="location.href='/course/user/classReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
+											  <div class="status-box">
+											    <span>오픈</span>
+											    <button onclick="location.href='/course/user/classReservation?&classType=${classItem.classType}&classIdx=${classItem.classIdx}'">예약</button>
+											  </div>
 											</c:when>
 											<%-- 관리자일 경우 관리자 아이디라는 것을 표시 --%>
 											<c:when test="${userInfo.userType eq 3}">
 												관리자
 											</c:when>
-											<%-- 신청이 마감된 클래스는 예약 버튼 비활성화 및 마감 표시 --%>
+											<%-- 신청이 마감된 강의는 예약 버튼 비활성화 및 마감 표시 --%>
 											<c:otherwise>
-												마감 <button disabled>예약</button>
+												<div class="status-box">
+													마감 <button disabled>예약</button>
+												</div>
 											</c:otherwise>
 										</c:choose>
 									</td>
@@ -117,7 +127,7 @@
 								</tr>
 							</c:if>
 						</c:forEach>
-						<%-- 클래스 목록이 없을 경우 --%>
+						<%-- 강의 목록이 없을 경우 --%>
 						<c:if test="${not hasRegisteredClass}">
 							<tr>
 								<td colspan="6">등록된 강의가 없습니다.</td>
@@ -128,13 +138,9 @@
 				
 				<%-- 페이지 리스트 --%>
 				<section id="pageList">
-					<c:if test="${not empty param.searchClassKeyword}">
-						<c:set var="searchParams" value="classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}" />
-					</c:if>
-					
 					<c:if test="${not empty pageInfoDTO.maxPage or pageInfoDTO.maxPage > 0}">
 						<input type="button" value="이전" 
-							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum - 1}&${searchParams}'" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum - 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}'" 
 							<c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>
 						>
 						
@@ -144,13 +150,13 @@
 									<strong>${i}</strong>
 								</c:when>
 								<c:otherwise>
-									<a href="/course/user/classList?pageNum=${i}&${searchParams}">${i}</a>
+									<a href="/course/user/classList?pageNum=${i}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}">${i}</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						
 						<input type="button" value="다음" 
-							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum + 1}&${searchParams}'" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum + 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}'" 
 							<c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>
 						>
 					</c:if>
