@@ -76,7 +76,7 @@
 			<a href="/myPage/payment_info/reservation_payment?filterType=1" class="filterButton">결제</a>
 		</div>
 		<div>
-			<h3 class="title-fixed">예약 목록</h3>
+			<h3 >예약 목록</h3>
 			<table id="reservationTable">
 				<tr>
 					<th width="90px">결제상태</th>

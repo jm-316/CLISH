@@ -76,10 +76,6 @@
 				  	<c:forEach var="notification" items="${notificationList}">
 					    <tr class="notiTr">
 					    	<td>
-					    		<input type="hidden" class="notiIdx" value="${notification.noticeIdx }">
-					    		<div class="notiContent">${notification.userNoticeMessage}</div>
-					    		<input type="hidden" name="notiUrl" value="${notification.userNoticeLink }">
-					    		
 					    		<c:choose>
 					    			<c:when test="${notification.userNoticeReadStatus eq 2 }">
 					    				<!-- 0일때 안읽음 -->
@@ -90,6 +86,10 @@
 					    				<span class="circle read"></span>
 					    			</c:otherwise>
 					    		</c:choose>
+					    		<input type="hidden" class="notiIdx" value="${notification.noticeIdx }">
+					    			<div class="notiContent">${notification.userNoticeMessage}</div>
+					    		<input type="hidden" name="notiUrl" value="${notification.userNoticeLink }">
+					    		
 					    	</td>
 					      	<td>
 					      		${notification.userNoticeCreatedAt }
