@@ -78,9 +78,9 @@
 		        강의 목록</button>
 		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
+					<button onclick="location.href='/customer/inquiry/write'">강의 문의</button>
 		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		            예약정보 입력</button>
-					<button onclick="location.href='/customer/inquiry/write'">강의 문의</button>
 		        </c:if>
 		        <%-- 정보 수정버튼은 기업 유저일 경우만 표시 --%>
 		        <c:if test="${userInfo.userType eq 2}">
