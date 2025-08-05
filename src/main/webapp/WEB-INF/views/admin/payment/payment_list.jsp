@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지</title>
+<title>Clish - 결제목록</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">

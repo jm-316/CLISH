@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Clish - FAQ</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<c:if test="${not empty msg}">

@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Clish - 문의</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <link
 	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
@@ -51,7 +52,7 @@
 		</div>
 		<div class="modal" id="inquiry-modal">
 			<div class="modal_body">
-				<h3>문의 상세 보기</h3>
+				<h3>문의 상세 정보</h3>
 				<form id="modal-form" action="/admin/inquiry/write" method="post" >
 					<input type="hidden" name="inqueryIdx" id="inquiry-idx"/>
 					<input type="hidden" name="userIdx" id="user-idx"/>

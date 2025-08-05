@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자페이지</title>
+<title>Clish - 기업회원목록</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">

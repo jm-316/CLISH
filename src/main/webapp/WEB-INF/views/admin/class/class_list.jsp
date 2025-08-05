@@ -7,10 +7,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자페이지</title>
+<title>Clish - 강의목록</title>
 <link
-	href="${pageContext.request.contextPath}/resources/css/admin/admin.css"
+	href="/resources/css/admin/admin.css"
 	rel="stylesheet" type="text/css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">

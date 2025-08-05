@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>이벤트수정</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -151,7 +152,7 @@
 			};
 			
 			if (endDate.getTime() < startDate.getTime()) {
-				alert("종료일이 시작일보다 빠를 수 없습니다.");
+				alert("종료일이 시작일보다 이전일 수 없습니다.");
 				e.preventDefault();
 				return;
 			}
