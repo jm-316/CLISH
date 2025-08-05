@@ -112,7 +112,7 @@
 				</table>
 				<div class="button-wrapper">
 					<c:if test="${dbUser.userIdx eq inquiry.inquiry.userIdx}">
-						<button style="background-color: #f65a6e" onclick="location.href='/customer/inquiry/delete/${inquiry.inquiry.inqueryIdx}'">삭제</button>
+						<button style="background-color: #f65a6e" onclick="deleteInquiry('${inquiry.inquiry.inqueryIdx}')">삭제</button>
 						<button onclick="location.href='/customer/inquiry/modify/${inquiry.inquiry.inqueryIdx}'">수정</button>
 					</c:if>
 					<button type="button" onclick="location.href='/customer/inquiry?pageNum=${param.pageNum}'">목록</button>
@@ -121,4 +121,11 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	function deleteInquiry(idx) {
+		if (confirm("삭제하시겠습니까?")) {
+			location.href="/customer/inquiry/delete/" + idx;
+		}
+	}
+</script>
 </html>	

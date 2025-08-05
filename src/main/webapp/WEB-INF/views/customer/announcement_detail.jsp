@@ -67,12 +67,19 @@
 			</div>
 		</div>
 		<div class="button-wrapper">
-			<c:if test="${userType == 3}">
-				<button style="background-color: #f65a6e" onclick="location.href='/customer/announcement/delete/${announcement.supportIdx}'">삭제</button>
+			<c:if test="${sUT == 3}">
+				<button style="background-color: #f65a6e" onclick="deleteAnnouncement('${announcement.supportIdx}')">삭제</button>
 				<button onclick="location.href='/customer/announcement/modify/${announcement.supportIdx}'">수정</button>
 			</c:if>
 			<button onclick="location.href='/customer/announcements?pageNum=${param.pageNum}'">목록</button>
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	function deleteAnnouncement(idx) {
+		if (confirm("삭제하시겠습니까?")) {
+			location.href="/customer/announcement/delete/" + idx;
+		}
+	}
+</script>
 </html>	
