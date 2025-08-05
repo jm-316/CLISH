@@ -55,11 +55,11 @@ public interface MyPageMapper {
 	// 내가한 강의문의수
 	int selectCountClassQ(UserDTO user);
 	// 내가한 강의문의 목록
-	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	List<InqueryDTO> selectAllClassQ(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user, @Param("classQOrderBy")String classQOrderBy, @Param("classQOrderDir")String classQOrderDir);
 	// 내가한 사이트문의 수
 	int selectCountInquery(UserDTO user);
 	//내가한 사이트문의 목록
-	List<InqueryDTO> selectAllInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user);
+	List<InqueryDTO> selectAllInquery(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("user")UserDTO user, @Param("inqueryOrderBy")String inqueryOrderBy, @Param("inqueryOrderDir")String inqueryOrderDir);
 	// 내가한 문의[사이트, 강의] 상세정보 
 	InqueryDTO selectOneInquery(InqueryDTO inqueryDTO);
 	//문의 수정
