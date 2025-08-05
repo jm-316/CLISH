@@ -25,6 +25,30 @@
 	    this.classList.toggle("active"); // 클릭 시 'active' 클래스 토글
 	  });
 </script>
+<style type="text/css">
+.heart-toggle {
+  background: none;
+  border: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-icon {
+  width: 24px;
+  height: 24px;
+  fill: #bbb;
+  transition: fill 0.2s ease;
+}
+
+.heart-toggle.active .heart-icon {
+  fill: #e91e63;             /* 클릭 시 핑크 하트로 변경 */
+}
+</style>
 </head>
 <body>
 	<header>
@@ -44,6 +68,13 @@
 								${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
 							</option>
 						</c:forEach>
+						<%-- ============= [ 게시물 검색 기능 ] ============ --%>
+						<%-- 검색 기능을 위한 폼 생성 --%>
+						<form action="/course/user/classList?classType=${param.classType}" method="get">
+							<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
+							<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
+							<input type="submit" value="검색" />
+						</form>
 					</select>
 					
 					<%-- 기업 유저의 경우 클래스 개설 버튼 표시 --%>
@@ -60,7 +91,7 @@
 				
 					<thead>
 						<tr>
-							<th colspan="6">강좌 목록</th>
+							<th colspan="7">강좌 목록</th>
 						</tr>
 						<tr>
 							<th>썸네일</th>
@@ -126,7 +157,7 @@
 						<%-- 클래스 목록이 없을 경우 --%>
 						<c:if test="${not hasRegisteredClass}">
 							<tr>
-								<td colspan="6">등록된 강의가 없습니다.</td>
+								<td colspan="7">등록된 강의가 없습니다.</td>
 							</tr>
 						</c:if>
 					</tbody>
