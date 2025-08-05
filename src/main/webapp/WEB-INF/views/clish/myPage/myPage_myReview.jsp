@@ -6,13 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>수강 후기 관리</title>
+<title>Clish - 나의리뷰</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+<link href="/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<script type="text/javascript" src="/resources/js/home.js"></script>
 <style type="text/css">
 	#container {
 		text-align: center;
@@ -98,7 +99,6 @@
 	
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	<div id="main">
-		<h1>${sessionScope.sId}님 수강 후기 관리</h1>
 		<div class="reviewbar-container">
 		<input type="button" class="reviewbar" value="작성 가능 수강후기"
 		onclick="location.href='/myPage/myReview?reviewCom=0'">

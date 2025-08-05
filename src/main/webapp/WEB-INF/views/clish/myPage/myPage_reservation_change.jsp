@@ -6,9 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약변경</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<title>예약수정</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+
+<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- jquery date picker -->
@@ -25,7 +27,7 @@
 			<table style="margin-left: auto ; margin-right: auto;" >
 				<tr>
 					<th rowspan="5">
-						<img src="${pageContext.request.contextPath}/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
+						<img src="/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
 						 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
 					</th>
 					<th >${reservationClassInfo.class_title}</th>

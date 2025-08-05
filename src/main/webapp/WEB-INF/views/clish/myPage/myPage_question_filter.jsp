@@ -96,9 +96,6 @@
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main">
-	
-		<h1>${sessionScope.sId}의 페이지</h1>
-		<hr>
 		<div>
 			<a href="/myPage/myQuestion" class="filterButton">전체</a>
 			<a href="/myPage/myQuestion/question_inquery?filterType=0" class="filterButton">강의 문의</a>

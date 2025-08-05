@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 문의</title>
+<title>Clish - 나의문의</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+
 <style type="text/css">
 	.sortable {
 		cursor: pointer;	
@@ -96,9 +98,6 @@
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main">
-	
-		<h1>${sessionScope.sId}의 페이지</h1>
-		<hr>
 		<div>
 			<a href="/myPage/myQuestion" class="filterButton">전체</a>
 			<a href="/myPage/myQuestion/question_inquery?filterType=0" class="filterButton">강의 문의</a>

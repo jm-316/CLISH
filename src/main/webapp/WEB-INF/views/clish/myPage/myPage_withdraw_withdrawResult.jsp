@@ -4,35 +4,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>탈퇴</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" >
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
-
+	<meta charset="UTF-8">
+	<title>탈퇴</title>
+	<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+	<link rel="preconnect" href="https://fonts.googleapis.com" >
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
+	<link href="/resources/css/home/top.css" rel="stylesheet" >
+	<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+	<script type="text/javascript" src="/resources/js/home.js"></script>
 </head>
 <body>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
-	
+
 	<main id="container">
 	
 	<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 	
 	<div id="main">
-	
-		<h1>${sessionScope.sId} 탈퇴</h1>
-		
-		<hr>
-		<p>탈퇴 시 모든 정보가 삭제되며 복구가 불가능합니다.<br> 탈퇴를 원하신다면 아래에 동의 후 버튼을 눌러주세요.</p>
-		<div style="text-align: right">
-			동의합니다.<input type="checkbox" id="agree">
-			<input type="button" value="확인" onclick="withdraw()">
-		</div>
+		<div style="padding: 2em;">
+			<p>탈퇴 시 모든 정보가 삭제되며 복구가 불가능합니다.<br> 탈퇴를 원하신다면 아래에 동의 후 버튼을 눌러주세요.</p>
+			<div style="text-align: right">
+				동의합니다.<input type="checkbox" id="agree">
+				<input type="button" value="확인" onclick="withdraw()">
+			</div>
+		</div>		
 	
 	</div>
 	
@@ -62,8 +60,6 @@
 			} else {
 				alert("동의후 탈퇴 가능합니다.");
 			}
-			
-			
 		}
 	</script>
 </body>

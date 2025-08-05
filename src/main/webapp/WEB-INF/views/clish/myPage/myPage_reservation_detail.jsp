@@ -7,9 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약상세</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<title>예약상세정보</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -18,8 +19,6 @@
 	<main id="container">
 	
 	<div id="main">
-	
-		<h1>예약상세페이지</h1>
 <!-- 		<input type="hidden" id="parent" value="detail"> -->
 		<table style="margin-left: auto ; margin-right: auto;">
 			<tr>

@@ -7,12 +7,14 @@
 	<head>
 	    <meta charset="UTF-8" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	    <title>취소정보</title>
+	    <title>결제취소정보</title>
+	    <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+	    
 	    <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
     
 	</head>
 	<body>
-		<h1>결제 취소 정보</h1>
+		<h1>취소정보</h1>
 		<h3>
 	 	${message } <br>
 	 	결제 취소 번호 : ${paymentCancel.impUid } <br>

@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>동의 문구 보기</title>
+    <title>Clish결제환불정책</title>
+   	<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+    
     <style>
         /* 모달 기본 스타일 */
         .modal {
