@@ -53,7 +53,7 @@ public class NotificationService {
 			case 3 : // 클래스
 				return isCompany(userIdx) ? "/company/myPage/classManage" : "/myPage/notification";
 			case 5 : // 가입 승인 or 결제,결제취소 알림
-				return isCompany(userIdx) ? "/company/myPage" : "/myPage/paymentInfo";
+				return isCompany(userIdx) ? "/company/myPage" : "/myPage/payment_info";
 			default :
 				return isCompany(userIdx) ? "/company/myPage" : "/myPage/notification";
 		}
