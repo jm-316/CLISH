@@ -41,19 +41,66 @@ public class UserClassController {
 	@GetMapping("/user/classList")
 	public String classListForm(Model model, HttpSession session,
 			@RequestParam int classType,
-			@RequestParam(required = false)String categoryIdx) {
+			@RequestParam(defaultValue = "1") int pageNum,
+			@RequestParam(required = false)String categoryIdx,
+			@RequestParam(defaultValue = "") String searchKeyword) {
 		
 		// 세션 객체에 있는 유저정보를 UserDTO에 저장
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId);
 		
-		// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
-		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+		// 검색
+		searchKeyword = searchKeyword.trim();
 		
-		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classList", classList);
-		model.addAttribute("userInfo", userInfo);
-		
+		// 페이징 처리
+//		int listLimit = 10;
+//		int startRow = (pageNum - 1) * listLimit;
+//		
+//		int listCount = userClassService.getBoardListCount(searchKeyword);
+//		
+//		if(listCount > 0) {
+//			int pageListLimit = 3; // 임시) 페이지 당 페이지번호 갯수 3으로 설정(1 2 3 or 4 5 6)
+//			
+//			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+//			// 단, 최대 페이지번호 계산 결과가 0일 경우 기본값으로 1 설정
+//			if(maxPage == 0) {
+//				maxPage = 1;
+//			}
+//			
+//			int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+//			int endPage = startPage + pageListLimit - 1;
+//			
+//			// 6) 단, 마지막 페이지 번호(endPage) 값이 최대 페이지번호(maxpage) 보다 클 경우
+//			//    마지막 페이지 번호를 최대 페이지 번호로 교체
+//			if(endPage > maxPage) {
+//				endPage = maxPage;
+//			}
+//			
+//			if(pageNum < 1 || pageNum > maxPage) {
+//				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+//				model.addAttribute("targetURL", "/board/list"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
+//				return "commons/result_process";
+//			}
+//			
+//			// 3. 페이징 정보를 관리하는 PageInfoDTO 객체 생성 및 계산 결과 저장
+//			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, pageListLimit);
+//			
+//			// Model 객체에 PageInfoDTO 객체 저장
+//			model.addAttribute("pageInfoDTO", pageInfoDTO);
+//			// ---------------------------------------------------
+//			List<ClassDTO> boardList = userClassService.getClassList(startRow, listLimit, searchType, searchKeyword);
+//			
+//			// Model 객체에 조회된 게시물 목록 정보(List 객체) 저장
+//			model.addAttribute("boardList", boardList);
+//		}
+//		
+//		// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
+//		List<ClassDTO> classList = userClassService.getClassList(classType, categoryIdx);
+//		
+//		// model 객체에 담아서 뷰 페이지로 이동
+//		model.addAttribute("classList", classList);
+//		model.addAttribute("userInfo", userInfo);
+//		
 		return "/course/user/course_list";
 	}
 	

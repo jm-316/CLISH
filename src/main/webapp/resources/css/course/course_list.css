@@ -252,26 +252,5 @@ ul.tabnav li a:hover {
   color: #000;
 }
 
-.heart-toggle {
-  background: none;
-  border: none;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.heart-icon {
-  width: 24px;
-  height: 24px;
-  fill: #bbb;
-  transition: fill 0.2s ease;
-}
-
-.heart-toggle.active .heart-icon {
-  fill: #e91e63;             /* 클릭 시 핑크 하트로 변경 */
-}
 

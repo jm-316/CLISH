@@ -137,7 +137,7 @@
 
             <!-- 필터 & 검색창 -->
             <div class="class-filter-box">
-                <h5>강좌 목록</h5>
+                <h5>클래스 조회</h5>
                 
                 <!-- 단기 & 정기강의 구분 -->
 				<div style="margin-bottom: 10px;">
@@ -156,15 +156,6 @@
 				        전체 보기
 				    </a>
 				</div>
-                
-                
-                <div style="margin-bottom: 10px;">
-                    <select>
-                        <option>전체</option>
-                        <option>최신등록순</option>
-                    </select>
-                    <input type="text" placeholder="검색어를 입력하세요" />
-                </div>
             </div>
 
             <!-- 강좌 목록 테이블 -->
