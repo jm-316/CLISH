@@ -203,7 +203,7 @@
 					const div = document.createElement("div");
 					div.innerHTML =
 					    file.originalFileName +
-					    ' <a href="/resources/upload/' + file.subDir + '/' + file.realFileName + '" download="' + file.originalFileName + '">' +
+					    '<a href="/file/' + file.fileId + '?type=1">' +
 					    '    <img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />' +
 					    '</a>';
 		            fileContainer.appendChild(div);
