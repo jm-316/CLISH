@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원상세정보</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -17,7 +18,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3>기업 상세정보</h3>
+						<h3>기업 상세 정보</h3>
 					</div>
 					<form>
 						<table border="1" style="width: 100%; text-align: left; margin: 0;">

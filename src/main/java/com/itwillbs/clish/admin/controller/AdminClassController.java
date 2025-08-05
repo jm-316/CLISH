@@ -207,7 +207,7 @@ public class AdminClassController {
 		return "/admin/class/class_info";
 	}
 	
-	// 강좌 수정
+	// 강의 수정
 	@PostMapping("/class/{idx}/update")
 	public String classInfoModify(@PathVariable("idx") String idx, Model model, 
 			@ModelAttribute ClassDTO classInfo,  @RequestParam("curriculumIdx") List<String> curriculumIdxList,
@@ -233,7 +233,7 @@ public class AdminClassController {
 			int count = adminClassService.modifyClassInfo(idx, classInfo, curriculumList);	
 			
 			if (count > 0) {
-				model.addAttribute("msg", "강좌 정보를 수정했습니다.");
+				model.addAttribute("msg", "강의 정보를 수정했습니다.");
 				model.addAttribute("targetURL", "/admin/class/" + idx);
 			} else {
 				model.addAttribute("msg", "다시 시도해주세요!");
@@ -244,7 +244,7 @@ public class AdminClassController {
 		return "commons/result_process";
 	}
 	
-	// 강좌 승인
+	// 강의 승인
 	@PostMapping("/class/{idx}/approve")
 	public String approveClass(@PathVariable("idx") String idx, @RequestParam("userIdx") String userIdx, Model model) {
 		int success = adminClassService.modifyStatus(userIdx, idx, 2);
@@ -260,7 +260,7 @@ public class AdminClassController {
 		return "commons/result_process";
 	}
 	
-	// 강좌 반려
+	// 강의 반려
 	@PostMapping("/class/{idx}/reject")
 	public String rejectClass (@PathVariable("idx") String idx, @RequestParam("content") String content, Model model) {
 		ClassDTO classInfo = classService.getClassInfo(idx);

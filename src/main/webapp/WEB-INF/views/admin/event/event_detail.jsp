@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>이벤트상세정보</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <style type="text/css">
 .event-detail-container {
 	display: flex;
@@ -38,35 +39,48 @@
 				<div class="bg-light">
 					<div>
 						<div class="flex">
-							<h5 class="section-title">이벤트상세보기</h5>
+							<h5 class="section-title">이벤트 상세 정보</h5>
 						</div>
 					</div>
 					<div class="event-detail-container">
-						<div class="event-info">
-						    <div>제목 : <span>${eventDTO.eventTitle}</span></div>
-						    <div>날짜 : <span>${eventDTO.eventStartDate} ~ ${eventDTO.eventEndDate}</span></div>
-						    <div>상태 : 
-						    	<c:choose>
-						    		<c:when test="${eventDTO.eventInProgress eq 0}">
-						    			<span>종료</span>
-						    		</c:when>
-						    		<c:when test="${eventDTO.eventInProgress eq 1}">
-						    			<span>진행중</span>
-						    		</c:when>
-						    		<c:otherwise>
-								    	<span>예정</span>
-						    		</c:otherwise>
-						    	</c:choose>
-						    </div>
-					  	</div>
-						<div class="event-thumbnail">
-							<span>썸네일</span>
-						    <img src="/file/${thumbnailFile.fileId}?type=2"  alt="이벤트 썸네일" width="500px;"/>
-						</div>
-						<div class="event-content">
-						  <span>이벤트 본문</span>
-						  <img src="/file/${contentFile.fileId}?type=0"  alt="이벤트 내용 이미지" width="500px;"/>
-						</div>
+						<table>
+							<colgroup>
+								<col width="20%">
+								<col width="80%">
+							</colgroup>
+							<tr>
+								<th>제목 :</th>
+								<td>${eventDTO.eventTitle}</td>
+							</tr>
+							<tr>
+								<th>날짜 :</th>
+								<td>${eventDTO.eventStartDate} ~ ${eventDTO.eventEndDate}</td>
+							</tr>
+							<tr>
+								<th>상태 :</th>
+								<td>
+									<c:choose>
+							    		<c:when test="${eventDTO.eventInProgress eq 0}">
+							    			<span>종료</span>
+							    		</c:when>
+							    		<c:when test="${eventDTO.eventInProgress eq 1}">
+							    			<span>진행중</span>
+							    		</c:when>
+							    		<c:otherwise>
+									    	<span>예정</span>
+							    		</c:otherwise>
+							    	</c:choose>
+								</td>
+							</tr>
+							<tr>
+								<th>썸네일</th>
+								<td><img src="/file/${thumbnailFile.fileId}?type=2"  alt="이벤트 썸네일" width="500px;"/></td>
+							</tr>
+							<tr>
+								<th>이벤트 본문</th>
+								<td><img src="/file/${contentFile.fileId}?type=0"  alt="이벤트 내용 이미지" width="500px;"/></td>
+							</tr>
+						</table>
 					</div>
 					<div class="button-wrapper">
 						<button onclick="location.href='/admin/event/modify/${eventDTO.eventIdx}'">수정</button>

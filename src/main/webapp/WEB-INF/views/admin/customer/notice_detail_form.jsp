@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항상세정보</title>
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>
 	<div class="container">
@@ -18,7 +19,7 @@
 				<div class="bg-light">
 					<div>
 						<div>
-							<h5 class="section-title">공지사항 상세보기</h5>
+							<h5 class="section-title">공지사항 상세 정보</h5>
 						</div>
 					</div>
 					<div>
