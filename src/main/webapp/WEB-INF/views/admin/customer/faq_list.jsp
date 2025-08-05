@@ -65,7 +65,7 @@
 													<td>${faq.supportCategory}</td>
 													<td class="flex">
 														<button onclick="location.href='/admin/faq/detail/${faq.supportIdx}'">상세보기</button>
-														<button onclick="location.href='/admin/faq/delete/${faq.supportIdx}'">삭제</button>
+														<button onclick="deleteFaq('${faq.supportIdx}')">삭제</button>
 													</td>
 												</tr>
 											</c:forEach>									
@@ -73,14 +73,18 @@
 									</table>
 								</c:otherwise>
 							</c:choose>
-						
 						</div>
-					
 					</div>
-				
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	function deleteFaq(idx) {
+		if (confirm("삭제하시겠습니까?")) {
+			location.href="/admin/faq/delete/" + idx;
+		}
+	}
+</script>
 </html>
