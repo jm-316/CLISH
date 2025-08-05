@@ -21,11 +21,11 @@
 		</div>
 		<div class="modal">
 			<div class="modal_body">
-				<h3>강좌 반려</h3>
+				<h3>강의 반려</h3>
 				<form action="/admin/class/${classInfo.classIdx}/reject"
 					method="post">
 					<div>
-						<label>강좌명</label> <input type="text"
+						<label>강의명</label> <input type="text"
 							value="${classInfo.classTitle}" readonly />
 					</div>
 					<div>
@@ -42,7 +42,7 @@
 			<div class="main_container">
 				<div class="bg-light">
 					<div>
-						<h3 class="section-title">강좌 수정</h3>
+						<h3 class="section-title">강의 수정</h3>
 					</div>
 					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
