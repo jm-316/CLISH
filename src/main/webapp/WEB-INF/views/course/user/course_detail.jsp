@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>클래스 상세정보</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">

@@ -51,6 +51,18 @@
 			AND
 			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
 			</if>
+			<if test="searchClassKeyword != null">
+			AND
+			class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')			
+			</if>
+		LIMIT
+			#{startRow}  	-- 조회 시작 레코드(row) 번호
+			, #{listLimit}	-- 조회 갯수 
+	</select>
+	
+	<select id="selectCountClassList">
+		SELECT COUNT(*)
+		FROM CLASS
 	</select>
 	
 	<!-- 클래스상세페이지 리뷰 카운트 SELECT -->

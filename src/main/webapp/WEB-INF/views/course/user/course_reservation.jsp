@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>예약 정보 입력</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
