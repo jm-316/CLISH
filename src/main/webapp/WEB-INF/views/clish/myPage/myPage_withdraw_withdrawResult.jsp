@@ -28,9 +28,9 @@
 		<h1>${sessionScope.sId} 탈퇴</h1>
 		
 		<hr>
-		<h1>탈퇴하면어쩌고저쩌고저쩌고</h1>
+		<p>탈퇴 시 모든 정보가 삭제되며 복구가 불가능합니다.<br> 탈퇴를 원하신다면 아래에 동의 후 버튼을 눌러주세요.</p>
 		<div style="text-align: right">
-			<input type="checkbox" id="agree">동의하쉴?
+			동의합니다.<input type="checkbox" id="agree">
 			<input type="button" value="확인" onclick="withdraw()">
 		</div>
 	
@@ -45,7 +45,7 @@
 		function withdraw() {
 			console.log(document.getElementById("agree").checked);
 			if(document.getElementById("agree").checked){
-				if(confirm("정말로 탈퇴하실?")){
+				if(confirm("정말로 탈퇴하시겠습니까?")){
 					fetch('/myPage/withdrawFinal', {
 				        method: 'POST',
 				        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -60,7 +60,7 @@
 				    });
 				}
 			} else {
-				alert("동의해야함");
+				alert("동의후 탈퇴 가능합니다.");
 			}
 			
 			
