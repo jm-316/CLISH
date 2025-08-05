@@ -50,7 +50,6 @@ body {
 
 .box {
 	margin-bottom:			24px;
-	padding-right:			55px;
 	display:				flex;
 	justify-content:		flex-end;
 }
@@ -84,6 +83,7 @@ body {
 .table td {
 	color:					var(--font-main);
 	background:				#fff;
+	align-items: 			center;
 }
 
 .table tr:nth-child(even) td {
@@ -253,5 +253,52 @@ ul.tabnav li a:hover {
   color: #000;
 }
 
+.search-container form {
+	display: flex;
+	align-items: center; /* 세로 중앙 정렬 */
+	gap: 10px; /* 요소 사이 간격 */
+	border: 0px solid;
+}
 
+.search-container select,
+.search-container input[type="text"],
+.search-container input[type="submit"] {
+	padding: 8px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+#pageList input[type="button"],
+#pageList a,
+#pageList strong {
+  padding: 6px 12px;
+  border: none;
+  background-color: #f5f5f5;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#pageList strong {
+  background-color: orange;
+  color: white;
+}
+
+#pageList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0;
+  border: 0px;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* 텍스트와 버튼 간격 */
+}
 

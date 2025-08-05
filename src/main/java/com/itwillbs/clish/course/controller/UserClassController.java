@@ -136,6 +136,11 @@ public class UserClassController {
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
 		
+		// 비회원이라면 로그인 페이지로 이동
+		if(userId == null) {
+			return "/user/login";
+		}
+		
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
 		
 		// 리뷰목록 페이징

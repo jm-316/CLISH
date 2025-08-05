@@ -5,13 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클래스 상세정보</title>
+<title>${classInfo.classTitle}</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_detail.css">
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
@@ -49,9 +50,9 @@
 	<div class="main">
         
 		<section class="class-details">
-			<%-- 클래스에 대한 간단한 설명 --%>
+			<%-- 강의에 대한 간단한 설명 --%>
 			<div class="class-container">
-				<%-- 클래스 썸네일 --%>
+				<%-- 강의 썸네일 --%>
 				<div class="cls-pic">
 					<c:forEach var="file" items="${classInfo.fileList}">
 						<img src="/file/${file.fileId }?type=0" alt="${file.originalFileName }"  id="preview" class="figure-img img-fluid rounded" style="height: 280px;"/>
@@ -72,10 +73,10 @@
 			</div>
 			
 		    <div style="text-align: center; padding-top: 30px; display: flex;">
-		    	<%-- 클래스 목록은 항상 표시 --%>
+		    	<%-- 강의 목록은 항상 표시 --%>
 		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
-		        클래스 목록</button>
-		        <%-- 신청가능한 클래스이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
+		        강의 목록</button>
+		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
 		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		            예약정보 입력</button>
