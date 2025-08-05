@@ -2,7 +2,15 @@ window.onload = () => {
 	var IMP = window.IMP;
 		IMP.init("imp55304474"); // 포트원에서 발급받은 식별코드 입력
 }
+
 	function requestPay() {
+ 		var privacyChecked = document.getElementById('privacy').checked;
+		var policyChecked = document.getElementById('policy').checked;
+		if (!privacyChecked || !policyChecked) {
+			alert("개인정보 수집·이용 동의와 결제 및 환불 정책 동의를 모두 체크해주세요.");
+			return false; // 결제 동작 중단
+		}
+		
 		IMP.request_pay({
 		    pg: "kakaopay", // 고정
 		    pay_method: "card", // 고정
