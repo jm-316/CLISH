@@ -15,7 +15,7 @@
     
   </head>
   <body>
-		<form action="/admin/payment/cancel" method="post" id="cancelRequest" onsubmit="alert('정말 취소 하시겠습니까?')">
+		<form action="/admin/payment/cancel" method="post" id="cancelRequest" onsubmit="confirm('정말 취소 하시겠습니까?')">
 		<h1>${message }</h1>
 		<h1>${paymentCancelClassInfo.reservationClassDate }</h1>
 		<h1>${paymentCancelClassInfo.cancelAmount }</h1>
