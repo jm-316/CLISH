@@ -59,6 +59,7 @@
 		<h1>${sessionScope.sId}의 페이지</h1>
 		<hr>
 		<div>
+			<a href="/myPage/payment_info" class="filterButton">전체</a>
 			<a href="/myPage/payment_info/reservation_payment?filterType=0" class="filterButton">예약</a>
 			<a href="/myPage/payment_info/reservation_payment?filterType=1" class="filterButton">결제</a>
 		</div>

@@ -262,7 +262,7 @@
 		JOIN CLASS C ON I.class_idx = C.class_idx
 		WHERE I.user_idx = #{user.userIdx}
 			AND I.inquery_type = 2
-		ORDER BY I.inquery_status, I.inquery_datetime DESC
+		ORDER BY I.inquery_status, I.${classQOrderBy} ${classQOrderDir}
 		LIMIT
 			#{startRow}
 			, #{listLimit}
@@ -282,7 +282,7 @@
 		FROM INQUERY
 		WHERE user_idx = #{user.userIdx}
 			AND inquery_type = 1
-		ORDER BY inquery_status, inquery_datetime DESC
+		ORDER BY inquery_status, ${inqueryOrderBy} ${inqueryOrderDir}
 		LIMIT
 			#{startRow}
 			, #{listLimit}
