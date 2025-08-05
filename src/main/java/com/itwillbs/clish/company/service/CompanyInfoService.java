@@ -55,12 +55,17 @@ public class CompanyInfoService {
 		return companyInfoMapper.updateCompanyInfo(company);
 		
 	}
-	
 	// ------------------------------------------------------------------------
-	// 기업 - 나의 문의 목록(리스트) 조회
-	public List<InquiryJoinUserDTO> getInquiriesByUserIdx(String userIdx) {
-		return companyInfoMapper.selectInquiriesByUserIdx(userIdx);
+	// 기업 - 나의 문의 총 개수 조회
+	public int getInquiryCountByUserIdx(String userIdx) {
+		return companyInfoMapper.selectInquiryCountByUserIdx(userIdx);
 	}
+	
+	// 기업 - 나의 문의 리스트 조회 (페이징)
+	public List<InquiryJoinUserDTO> getInquiriesByUserIdx(int startRow, int listLimit, String userIdx) {
+		return companyInfoMapper.selectInquiriesByUserIdx(startRow, listLimit, userIdx);
+	}
+	
 	// 문의 등록버튼 로직
 	public void insertInquery(InqueryDTO dto) {
 		companyInfoMapper.insertInquery(dto); 
@@ -70,7 +75,7 @@ public class CompanyInfoService {
 	public String getUserIdxByUserId(String userId) {
 		return companyInfoMapper.selectUserIdxByUserId(userId);
 	}
-	// ------------------------------------------------------------------------
+	
 	// inquery_idx를 기반으로 해당 문의글 1건 조회 - 문의 수정 폼
 	public InqueryDTO getInqueryByIdx(String inqueryIdx) {
 		return companyInfoMapper.selectInqueryByIdx(inqueryIdx);
@@ -85,7 +90,7 @@ public class CompanyInfoService {
 	public void deleteInquery(String inqueryIdx) {
 		companyInfoMapper.deleteInquery(inqueryIdx);
 	}
-	
+	// ------------------------------------------------------------------------
 	// 알림 총 개수 조회
 	public int getNotificationCount(UserDTO user) {
 		return companyInfoMapper.selectCountNotification(user);
@@ -96,11 +101,20 @@ public class CompanyInfoService {
 		return companyInfoMapper.selectAllNotification(startRow, listLimit, user);
 	}
 	
+	// 알림 읽음 처리
+	public void updateNotificationReadStatus(String noticeIdx) {
+		companyInfoMapper.updateNotificationReadStatus(noticeIdx);
+	}
+	
+	// 모두 읽음 처리
+	public int updateAllNotificationReadStatus(String userIdx) {
+		return companyInfoMapper.updateAllNotificationReadStatus(userIdx);
+	}
+	// ------------------------------------------------------------------------
 	// 기업 회원 탈퇴
 	public int withdraw(UserDTO user) {
 		return companyInfoMapper.updateWithdraw(user);
 	}
-	
 
 	
 }

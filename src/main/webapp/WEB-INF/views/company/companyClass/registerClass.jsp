@@ -103,7 +103,7 @@
 			<input type="hidden" name="location" id="location"><br>
 			
 			<label><b>썸네일 업로드</b></label>
-			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*">
+			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*" required="required">
 			
 			<!-- ✅ 썸네일 미리보기 영역 -->
 			<div id="preview-area" style="margin-top: 15px;"></div>

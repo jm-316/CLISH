@@ -12,11 +12,13 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -166,19 +168,46 @@ public class CompanyInfoController {
 	    return "company/companyInfo"; // JSP로 forward
 	}
 	// ------------------------------------------------------------------------------------------------------------------
-	
 	// 기업 - 나의 문의 목록(리스트) 조회
 	@GetMapping("/myPage/myQuestion")
-	public String showInquiryForm(HttpSession session, Model model) {
+	public String showInquiryForm(HttpSession session, Model model, @RequestParam(defaultValue = "1") int inquiryPageNum) {
+		// 세션에서 로그인한 userId 가져오기
 		String userId = (String) session.getAttribute("sId"); 
-        
-		// ① userId가 "hong"일 경우, user_idx로 변환하는 작업이 필요
+		// userIdx 조회
 		String userIdx = companyInfoService.getUserIdxByUserId(userId); 
-	    List<InquiryJoinUserDTO> inquiryList = companyInfoService.getInquiriesByUserIdx(userIdx);
-	    model.addAttribute("test", inquiryList);
-//	    model.addAttribute("inquiryList1", inquiryList);
+		
+		// 한 페이지에 보여줄 문의 수
+		int listLimit = 6;
+		// 전체 문의 개수 조회
+		int inquiryListCount = companyInfoService.getInquiryCountByUserIdx(userIdx);
+		
+		// 페이징 처리
+		if (inquiryListCount > 0) {
+			PageInfoDTO pageInfoDTO = PageUtil.paging(
+				listLimit,                // 한 페이지당 개수
+				inquiryListCount,        // 전체 문의 수
+				inquiryPageNum,          // 현재 페이지 번호
+				3                        // 하단에 보여줄 페이지 번호 수
+			);
+
+			// 페이지 번호 유효성 검사
+			if (inquiryPageNum < 1 || inquiryPageNum > pageInfoDTO.getMaxPage()) {
+				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+				model.addAttribute("targetURL", "/company/myPage");
+				return "commons/result_process";
+			}
+
+			// 페이징 정보 전달
+			model.addAttribute("inquiryPageInfo", pageInfoDTO);
+		
+			// 페이징 적용된 문의 리스트 가져오기
+			List<InquiryJoinUserDTO> inquiryList = companyInfoService.getInquiriesByUserIdx(
+				pageInfoDTO.getStartRow(), listLimit, userIdx
+			);
+
+			model.addAttribute("test", inquiryList);
+		}
 	    
-	    System.out.println("inquiryList = " + inquiryList);
 
         return "company/companyMyQuestion"; 
     }
@@ -291,8 +320,31 @@ public class CompanyInfoController {
 	        model.addAttribute("notificationList", notificationList);
 	    }
 
+	    return "/company/companyNotification";
+	}
+	
+	// 알림 읽음 처리
+	@PostMapping("/myPage/notification/{noticeIdx}/read")
+	@ResponseBody
+	public ResponseEntity<String> readNotification(@PathVariable("noticeIdx") String noticeIdx) {
+	    companyInfoService.updateNotificationReadStatus(noticeIdx);
+	    return ResponseEntity.ok("읽음 처리 완료");
+	}
+	
+	// 모두 읽음 처리
+	@PostMapping("/myPage/notification/all-read")
+	@ResponseBody
+	public Map<String, String> readAllNotification(HttpSession session, UserDTO user) {
+	    String userId = (String) session.getAttribute("sId");
+	    user.setUserId(userId);
 
-	    return "/company/companyNotification";  // ✅ JSP 경로 확정
+	    user = companyInfoService.getUserInfo(user); // user_idx 가져오기
+
+	    int updateCount = companyInfoService.updateAllNotificationReadStatus(user.getUserIdx());
+
+	    Map<String, String> result = new HashMap<>();
+	    result.put("result", updateCount > 0 ? "모두 읽음 처리 완료" : "처리된 알림 없음");
+	    return result;
 	}
 	// -----------------------------------------------------------------------------------------------------
 	// 기업 회원 탈퇴

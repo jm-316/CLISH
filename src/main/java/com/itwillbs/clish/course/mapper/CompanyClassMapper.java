@@ -42,15 +42,19 @@ public interface CompanyClassMapper {
 	
 	// 클래스 예약자 목록 조회
 	List<Map<String, Object>> selectReservationList(String classIdx);
+	// -----------------------------------------------------------------------------------------------------------------------------
+	// // 클래스 문의 총 개수 조회
+	int selectClassInquiryCountByUserIdx(String userIdx);
 	
 	// 클래스 문의 페이지 - 문의 리스트
-	List<InquiryJoinUserDTO> selectClassInquiryList(String userIdx);
+	List<InquiryJoinUserDTO> selectClassInquiryList(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("userIdx") String userIdx);
 	
 	// 클래스 문의 페이지 - 문의 상세 
 	InquiryJoinUserDTO selectClassInquiryDetail(String idx);
 	
 	// 클래스 문의 페이지 - 문의 답변
 	int updateClassInquiry(@Param("idx") String idx, @Param("userIdx") String userIdx, @Param("inqueryAnswer") String inqueryAnswer);
+
 	
 	
 

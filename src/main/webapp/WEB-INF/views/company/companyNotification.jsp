@@ -117,7 +117,7 @@
 
        <!-- ✅ 모두읽음 버튼 영역 -->
       <div class="btn-right-wrap">
-        <button id="btn-notice-readAll" class="btn-notice-readAll">모두읽음</button>
+        <button type="button" id="btn-notice-readAll" class="btn-notice-readAll">모두읽음</button>
       </div>
 	  
 	  <!-- ✅ 알림 테이블 -->
@@ -133,8 +133,8 @@
             <tr class="notiTr" style="cursor:pointer;">
               <td>
                 <input type="hidden" class="notiIdx" value="${notification.noticeIdx}">
-                <input type="hidden" name="notiUrl" value="${notification.userNoticeLink}">
-                <span class="circle ${notification.userNoticeReadStatus eq 2 ? 'unread' : 'read'}"></span>
+  				<input type="hidden" name="notiUrl" value="${notification.userNoticeLink}">
+                <span class="circle ${notification.userNoticeReadStatus == 2 ? 'unread' : 'read'}"></span>
                 ${notification.userNoticeMessage}
               </td>
               <td>${notification.userNoticeCreatedAt}</td>
@@ -184,7 +184,7 @@
 
         $(this).find('.circle').removeClass('unread').addClass('read');
 
-        fetch("/company/notification/" + idx + "/read", {
+        fetch("/company/myPage/notification/" + idx + "/read", {
           method: "POST"
         });
 
@@ -197,8 +197,8 @@
     // 모두 읽음 처리
     $('.btn-notice-readAll').on('click', function () {
       $.ajax({
-        url: '/company/notification/all-read',
-        method: 'PATCH',
+        url: '/company/myPage/notification/all-read',
+        method: 'POST',
         contentType: 'application/json',
         dataType: 'json',
         success: function (response) {

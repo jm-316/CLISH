@@ -169,6 +169,36 @@
 					</table>
 				</c:otherwise>
 			</c:choose>
+			<!-- ✅ 페이징 영역 -->
+			<div class="pageSection" style="display: flex; justify-content: center; margin-top: 30px;">
+				<c:if test="${not empty inquiryPageInfo and inquiryPageInfo.maxPage > 0}">
+					
+					<!-- 이전 버튼 -->
+					<input type="button" value="이전"
+						onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum - 1}'"
+						<c:if test="${inquiryPageInfo.pageNum == 1}">disabled</c:if>
+					/>
+			
+					<!-- 페이지 번호들 -->
+					<c:forEach var="i" begin="${inquiryPageInfo.startPage}" end="${inquiryPageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq inquiryPageInfo.pageNum}">
+								<strong style="margin: 0 8px;">${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="?inquiryPageNum=${i}" style="margin: 0 8px;">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+			
+					<!-- 다음 버튼 -->
+					<input type="button" value="다음"
+						onclick="location.href='?inquiryPageNum=${inquiryPageInfo.pageNum + 1}'"
+						<c:if test="${inquiryPageInfo.pageNum == inquiryPageInfo.maxPage}">disabled</c:if>
+					/>
+			
+				</c:if>
+			</div>
 		</div>
 	</div>
 

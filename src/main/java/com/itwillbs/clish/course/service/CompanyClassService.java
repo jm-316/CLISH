@@ -205,12 +205,16 @@ public class CompanyClassService {
 		FileUtils.deleteFile(fileDTO, session);
 		
 		fileMapper.deleteFile(fileDTO);
-		
+	}
+	// -----------------------------------------------------------------------------------------------
+	// 클래스 문의 총 개수 조회
+	public int getClassInquiryCountByUserIdx(String userIdx) {
+		return companyClassMapper.selectClassInquiryCountByUserIdx(userIdx);
 	}
 	
-	// 클래스 문의 페이지 - 문의 리스트
-	public List<InquiryJoinUserDTO> getClassInquiryList(String userIdx) {
-		return companyClassMapper.selectClassInquiryList(userIdx);
+	// 클래스 문의 리스트 조회 (페이징)
+	public List<InquiryJoinUserDTO> getClassInquiryList(int startRow, int listLimit, String userIdx) {
+		return companyClassMapper.selectClassInquiryList(startRow, listLimit, userIdx);
 	}
 	
 	// 클래스 문의 페이지 - 문의 상세
@@ -226,6 +230,7 @@ public class CompanyClassService {
 		// 알림 서비스 없이 바로 return
 		return result;
 	}
+	
 
 
 
