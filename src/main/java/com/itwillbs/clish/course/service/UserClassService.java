@@ -1,5 +1,6 @@
 package com.itwillbs.clish.course.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -25,29 +26,39 @@ public class UserClassService {
 		return userClassMapper.selectUser(userIdx);
 	}
 	
-	// 
+	// 예약 인원 조회 요청
+	public int getReservationCountByDate(LocalDate date) {
+	    return userClassMapper.selectReservationCountByDate(date);
+	}
+	
+	// 예약 정보 입력 요청
 	public int registReservation(ReservationDTO reservationDTO) {
 		return userClassMapper.insertReservation(reservationDTO);
 	}
 
-	public List<ClassDTO> getClassList(int startRow, int listLimit, int classType, String categoryIdx, String searchClassKeyword) {
-		return userClassMapper.selectClass(startRow, listLimit, classType, categoryIdx, searchClassKeyword);
+	// 강의 리스트전체 조회 요청
+	public List<ClassDTO> getClassList(int startRow, int listLimit, int classType, String categoryIdx, String searchType, String searchClassKeyword) {
+		return userClassMapper.selectClassList(startRow, listLimit, classType, categoryIdx,  searchType, searchClassKeyword);
 	}
 	
+	// 강의 리뷰 조회 요청
 	public List<ReviewDTO> getClassReview(int startRow, int listLimit, String classIdx) {
 		return userClassMapper.selectAllClassReview(startRow, listLimit, classIdx);
 	}
 
+	// 강의 리뷰 갯수 조회 요청
 	public int getClassReviewCount(String classIdx) {
 		return userClassMapper.selectCountClassReview(classIdx);
 	}
 
+	// 예약 인원 조회 요청
 	public int selectReservationMembers(String classIdx) {
 		return userClassMapper.selectCountReservationMembers(classIdx);
 	}
 
-	public int getClassListCount(String searchKeyword) {
-		return userClassMapper.selectCountClassList(searchKeyword);
+	// 강의 리스트 갯수 조회 요청
+	public int getClassListCount(String searchType, String searchClassKeyword) {
+		return userClassMapper.selectCountClassList(searchType, searchClassKeyword);
 	}
 
 

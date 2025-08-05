@@ -1,5 +1,6 @@
 package com.itwillbs.clish.course.mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface UserClassMapper {
 
 	int insertReservation(ReservationDTO reservationDTO);
 
-	List<ClassDTO> selectClass(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("classType")int classType, @Param("categoryIdx")String categoryIdx, @Param("searchClassKeyword")String searchClassKeyword);
+	List<ClassDTO> selectClassList(@Param("startRow")int startRow, @Param("listLimit")int listLimit, @Param("classType")int classType, @Param("categoryIdx")String categoryIdx, @Param("searchType")String searchType, @Param("searchClassKeyword")String searchClassKeyword);
 	
 	List<ReviewDTO> selectAllClassReview(@Param("startRow")int startRow, @Param("listLimit")int listLimit,@Param("classIdx")String classIdx);
 
@@ -29,7 +30,9 @@ public interface UserClassMapper {
 	// 총 예약인원을 알기 위한 SELECT
 	int selectCountReservationMembers(String classIdx);
 
-	int selectCountClassList(String searchKeyword);
+	int selectCountClassList(@Param("searchKeyword")String searchKeyword, @Param("searchClassKeyword")String searchClassKeyword);
+
+	int selectReservationCountByDate(LocalDate date);
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
@@ -43,6 +44,7 @@ public class UserClassController {
 			@RequestParam int classType,
 			@RequestParam(defaultValue = "1") int pageNum,
 			@RequestParam(required = false)String categoryIdx,
+			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchClassKeyword) {
 		
 		// 세션 객체에 있는 유저정보를 UserDTO에 저장
@@ -54,7 +56,7 @@ public class UserClassController {
 		
 		// 페이징 처리
 		int listLimit = 2;
-		int listCount = userClassService.getClassListCount(searchClassKeyword);
+		int listCount = userClassService.getClassListCount(searchType, searchClassKeyword);
 		
 		if(listCount > 0) {
 			// 페이징 정보를 관리하는 PageInfoDTO 객체 생성 및 계산 결과 저장
@@ -71,7 +73,7 @@ public class UserClassController {
 			model.addAttribute("pageInfoDTO", pageInfoDTO);
 			// ---------------------------------------------------
 			// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
-			List<ClassDTO> classList = userClassService.getClassList(pageInfoDTO.getStartRow(), listLimit, classType, categoryIdx, searchClassKeyword);
+			List<ClassDTO> classList = userClassService.getClassList(pageInfoDTO.getStartRow(), listLimit, classType, categoryIdx, searchType, searchClassKeyword);
 			
 			// Model 객체에 조회된 게시물 목록 정보(List 객체) 저장
 			model.addAttribute("classList", classList);
@@ -136,6 +138,13 @@ public class UserClassController {
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
 		
+		int total = classInfo.getClassMember(); // 전체 강의 예약 인원 
+	    int reservationMembers = userClassService.selectReservationMembers(classInfo.getClassIdx()); // 현재 예약 인원 
+	    int availableMembers = total - reservationMembers; // 예약 가능 인원
+		
+	    // 세션 객체에 예약 가능 인원 정보 설정
+	    session.setAttribute("availableMembers", availableMembers);
+	    
 		// 비회원이라면 로그인 페이지로 이동
 		if(userId == null) {
 			return "/user/login";
@@ -170,16 +179,27 @@ public class UserClassController {
 		return "/course/user/course_reservation";
 	}
 	
+	// 예약 인원 조회 API
+	@GetMapping("/userClass/getReservationCount")
+	@ResponseBody
+	public int getReservationCount(@RequestParam("date") String date) {
+	    // 날짜를 LocalDate로 변환
+	    LocalDate localDate = LocalDate.parse(date);
+
+	    // 서비스에서 해당 날짜의 예약 수 조회
+	    return userClassService.getReservationCountByDate(localDate);
+	}
+	
 	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("/user/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO, ClassDTO classDTO,
 			@RequestParam("reservationClassDateRe")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 		
-		classDTO = companyClassService.getClassInfo(classDTO.getClassIdx());
+		classDTO = companyClassService.getClassInfo(classDTO.getClassIdx()); // class 정보
 	    LocalDate startDate = classDTO.getStartDate(); // 클래스 시작일
 	    LocalDate endDate   = classDTO.getEndDate(); // 클래스 마감일
 
-	    int total = classDTO.getClassMember(); // 클래스 총 신청 가능 인원 
+	    int total = classDTO.getClassMember(); // 전체 강의 예약 인원 
 	    int reservationMembers = userClassService.selectReservationMembers(classDTO.getClassIdx()); // 현재 예약 인원 
 	    
 	    // 신청 가능 날짜인지 검사 
@@ -191,6 +211,9 @@ public class UserClassController {
 	    // 예약 가능한지 검사
 	    if(total <= reservationMembers) {
 	    	model.addAttribute("msg", "예약인원이 가득차서 예약할 수 없습니다.");
+	    	return "/commons/fail";
+	    } else if(reservationMembers < 0) {
+	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력해주세요.");
 	    	return "/commons/fail";
 	    }
 	    

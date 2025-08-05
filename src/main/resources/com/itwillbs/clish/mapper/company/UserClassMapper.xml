@@ -19,6 +19,15 @@
 		)
 	</insert>
 	
+	<select id="selectReservationCountByDate" resultType="int">
+	    SELECT 
+	    	COUNT(*) 
+	    FROM 
+	    	RESERVATION
+	    WHERE 
+	    	reservation_date = #{date}
+	</select>
+	
 	<!-- 총 예약 인원 확인 SELECT -->
 	<select id="selectCountReservationMembers" resultType="int">
 		SELECT 
@@ -40,7 +49,7 @@
 	</select>
 	
 	<!-- 클래스 정보 조회 SELECT -->
-	<select id="selectClass" resultType="com.itwillbs.clish.course.dto.ClassDTO">
+	<select id="selectClassList" resultType="com.itwillbs.clish.course.dto.ClassDTO">
 		SELECT *
 		FROM 
 			CLASS
@@ -51,26 +60,50 @@
 			AND
 			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
 			</if>
+			
 			<if test="!searchClassKeyword.equals('')">
 			AND
 			class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')			
 			</if>
+			
+			<choose>
+				<!-- 강의 최신 등록순 -->
+				<when test="searchType.equals('최신')">
+					ORDER BY created_at DESC
+				</when>
+				<!-- 높은 가격 순서로 정렬 -->
+				<when test="searchType.equals('높은가격')">
+					ORDER BY class_price DESC
+				</when>
+				<!-- 낮은 가격 순서로 정렬 -->
+				<when test="searchType.equals('낮은가격')">
+					ORDER BY class_price ASC
+				</when>
+			</choose>
 		LIMIT
 			#{startRow}  	-- 조회 시작 레코드(row) 번호
 			, #{listLimit}	-- 조회 갯수 
 	</select>
 	
-	<select id="selectCountClassList">
-		SELECT COUNT(*)
+	<select id="selectCountClassList" resultType="int">
+		SELECT 
+			COUNT(*)
 		FROM 
 			CLASS
+		<if test="!searchClassKeyword.equals('')">
+		WHERE
+			class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')
+		</if>
 	</select>
 	
 	<!-- 클래스상세페이지 리뷰 카운트 SELECT -->
 	<select id="selectCountClassReview" resultType="int"> 
-		SELECT count(*)
-		FROM REVIEW
-		WHERE class_idx = #{classIdx}
+		SELECT 
+			count(*)
+		FROM 
+			REVIEW
+		WHERE 
+			class_idx = #{classIdx}
 	</select>
 	
 	<!-- 클래스상세페이지 리뷰 불러오기 -->
@@ -121,8 +154,10 @@
 	<!-- 리뷰idx로 첨부 파일 조회 SELECT -->
 	<select id="selectFilesByReviewIdx" parameterType="String" resultType="com.itwillbs.clish.common.file.FileDTO">
 		SELECT *
-		FROM FILE
-		WHERE idx = #{reviewIdx}
+		FROM 
+			FILE
+		WHERE 
+			idx = #{reviewIdx}
 	</select>
 	
 

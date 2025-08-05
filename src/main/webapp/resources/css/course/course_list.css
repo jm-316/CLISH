@@ -302,3 +302,8 @@ ul.tabnav li a:hover {
   gap: 8px; /* 텍스트와 버튼 간격 */
 }
 
+.class-filter {
+  display: flex;
+  align-items: center;
+}
+
