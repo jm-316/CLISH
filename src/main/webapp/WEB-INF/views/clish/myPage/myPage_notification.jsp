@@ -20,7 +20,7 @@
 			justify-content: space-between;
 			align-items: center;
 			margin: 0px 0px 0px 30px;
-			width: 100%;
+			width: 95%;
 		/* 필요하면 width:100% 지정도 가능 */
 		}
 		#allRead {
@@ -37,6 +37,21 @@
 		}
 		#allRead:hover {
 			background: #1d4fbb;
+		}
+		
+		#notificationTable th, #notificationTable td {
+			max-width: 150px; /* 셀 최대 너비 설정 (필요시 조절) */
+			white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+			overflow: hidden; /* 넘치는 텍스트 숨김 */
+			text-overflow: ellipsis; /* 줄임표 ... 표시 */
+			vertical-align: middle;
+			word-wrap: normal;
+		}
+		
+		#notificationTable {
+			table-layout: fixed; /* 테이블 전체 너비 고정 */
+			width: 1200px;
+			
 		}
 		
 	
@@ -65,11 +80,11 @@
 				<h3>알림 전체</h3>
 				<input type="button" value="모두읽음" id="allRead">
 			</div>
-			<table border="1" style="width: 100%; border-collapse: collapse; margin: 5px 0px 0px 30px;">
+			<table border="1" id="notificationTable">
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>알림 내용</th>
-				    <th>알림 시간</th>
+				    <th width="400px;">알림 시간</th>
 			    </tr>
 			    </thead>
 			  	<tbody>
@@ -79,15 +94,15 @@
 					    		<c:choose>
 					    			<c:when test="${notification.userNoticeReadStatus eq 2 }">
 					    				<!-- 0일때 안읽음 -->
-					    				<span class="circle unread"></span>
+					    				<span class="noti-message">${notification.userNoticeMessage}</span><span class="circle unread"></span>
 					    			</c:when>
 					    			<c:otherwise>
 					    				<!--  1일때 읽음 표시 -->
-					    				<span class="circle read"></span>
+					    				<span class="noti-message">${notification.userNoticeMessage}</span><span class="circle read"></span>
 					    			</c:otherwise>
 					    		</c:choose>
 					    		<input type="hidden" class="notiIdx" value="${notification.noticeIdx }">
-					    			<div class="notiContent">${notification.userNoticeMessage}</div>
+<%-- 				    			<div class="notiContent">${notification.userNoticeMessage}</div> --%>
 					    		<input type="hidden" name="notiUrl" value="${notification.userNoticeLink }">
 					    		
 					    	</td>

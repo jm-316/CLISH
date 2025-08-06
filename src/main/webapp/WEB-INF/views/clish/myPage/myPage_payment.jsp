@@ -77,7 +77,7 @@
 		</div>
 		<div>
 			<h3 >예약 목록</h3>
-			<table id="reservationTable">
+			<table id="reservationTable" style="text-align: center;">
 				<tr>
 					<th width="90px">결제상태</th>
 					<th width="180px">예약번호</th>
@@ -173,10 +173,9 @@
 		<div>
 		
 			<h3 >결제 목록</h3>
-			<table id="paymentTable">
+			<table id="paymentTable" style="text-align: center;">
 				<tr>
 					<th width="120px">결제 번호</th>
-					<th width="180px">예약 번호</th>
 					<th class="sortable" data-column="status" width="120px">
 						결제 상태
 						<c:choose>
@@ -217,7 +216,6 @@
 				<c:forEach var="payment" items="${paymentList }" >
 		        	<tr>
 		        		<td>${payment.impUid }</td>
-		        		<td>${payment.reservationIdx}</td>
 		        		<td>${payment.status }</td>
 						<td>${payment.userName}</td>
 						<td>${payment.classTitle}</td>
@@ -239,7 +237,7 @@
 		        	</tr>
 	       		</c:forEach>
 				<tr>
-					<td colspan="9" align="center">
+					<td colspan="8" align="center">
 						<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
 							<input type="button" value="이전" 
 								onclick="location.href='/myPage/payment_info?reservationPageNum=${reservationPageInfo.pageNum }&paymentPageNum=${paymentPageInfo.pageNum - 1}&reservationOrderBy=${reservationOrderBy }&reservationOrderDir=${reservationOrderDir }&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 
