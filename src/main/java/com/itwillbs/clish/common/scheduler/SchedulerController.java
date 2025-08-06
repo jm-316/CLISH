@@ -1,0 +1,25 @@
+package com.itwillbs.clish.common.scheduler;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.itwillbs.clish.myPage.service.MyPageService;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Component
+@AllArgsConstructor
+public class SchedulerController {
+	private final SchedulerService schedulerService;
+	
+    @Scheduled(fixedDelay = 3000) // 작업 종료 후 3000ms(3초) 대기 후 재실행
+    public void printEvery3Seconds() {
+        System.out.println("스케줄러 실행 테스트: " + System.currentTimeMillis());
+    }
+    
+    @Scheduled(cron = "0 */15 * * * ?")
+    public void deleteExpiredReservations() {
+    	schedulerService.checkReservation();
+    }
+}
