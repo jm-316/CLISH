@@ -223,7 +223,7 @@ public class UserClassController {
 	    if(total <= reservMembers) {
 	    	model.addAttribute("msg", "예약인원이 가득차서 예약할 수 없습니다.");
 	    	return "/commons/fail";
-	    } else if(reservMembers <= 0 || reservationMembers > total) {
+	    } else if(reservationMembers <= 0 || reservationMembers > total) {
 	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력하시거나 너무 많은 인원을 입력하셨습니다.");
 	    	return "/commons/fail";
 	    }
