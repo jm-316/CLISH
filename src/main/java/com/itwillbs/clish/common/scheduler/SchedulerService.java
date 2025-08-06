@@ -22,7 +22,7 @@ public class SchedulerService {
 	private final NotificationService notificationService;
 	
 	public void checkReservation() {
-		List<ReservationDTO> toDeleteReservationList = schedulerMapper.SelectDelteReservationList();
+		List<ReservationDTO> toDeleteReservationList = schedulerMapper.SelectDeleteReservationList();
 		
 		for(ReservationDTO reservation: toDeleteReservationList) {
 			UserDTO user = new UserDTO();
@@ -66,6 +66,11 @@ public class SchedulerService {
 			
 			notificationService.send(userIdx, 3,  "등록하신 강의 \"" + classTitle + "\"가 " + classEndDate + "에 마감되었습니다.");
 		}
+	}
+	
+	// 3개월 지난 알림 삭제
+	public void checkNotification() {
+		schedulerMapper.DeleteNotification();
 	}
 
 }

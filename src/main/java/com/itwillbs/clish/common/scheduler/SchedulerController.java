@@ -18,11 +18,18 @@ public class SchedulerController {
 //    	schedulerService.checkReservation();
 //    	schedulerService.checkClassEndDate();
 //    }
-    
+	
+    // 매시 00분 15분 30분 45분 작동
     @Scheduled(cron = "0 */15 * * * ?")
-    public void deleteExpiredReservations() {
+    public void todoQuarterTime() {
     	schedulerService.checkReservation();
     	schedulerService.checkClassEndDate();
+    }
+    
+    //매일 00시 작동
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void todoEveryDay() {
+    	schedulerService.checkNotification();
     }
     
     

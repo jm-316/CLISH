@@ -7,9 +7,11 @@ import com.itwillbs.clish.myPage.dto.ReservationDTO;
 
 public interface SchedulerMapper {
 
-	List<ReservationDTO> SelectDelteReservationList();
+	List<ReservationDTO> SelectDeleteReservationList();
 
 	// 강의 마감 알림
 	List<Map<String, Object>> selectEndClasses();
+
+	void DeleteNotification();
 
 }
