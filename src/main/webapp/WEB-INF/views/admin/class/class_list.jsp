@@ -95,7 +95,7 @@
 							<button class="search-button">검색</button>
 						</div>
 					</form>
-					<div style="height: 450px;">
+					<div style="height: 500px;">
 						<c:choose>
 							<c:when test="${empty classList}">
 								<div class="list-empty">등록된 강의가 없습니다.</div>

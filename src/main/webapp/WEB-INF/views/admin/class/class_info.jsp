@@ -85,6 +85,7 @@
 							<div style="width: 300px;">
 								<label for="startDate">시작날짜</label> 
 								<input type="date" value="${classInfo.startDate}" name="startDate" id="startDate" required/>
+								<input type="hidden" id="originalStartDate" value="${classInfo.startDate}" />
 							</div>
 							<div style="width: 300px;">
 								<label for="endDate">종료날짜</label> 
@@ -272,12 +273,46 @@
 			
 			const startDate = new Date(startInput.value);
 			const endDate = new Date(endInput.value);
+			const originalStartDate = new Date(document.getElementById("originalStartDate").value);
+			const today = new Date();
 			
 			if (endDate.getTime() < startDate.getTime()) {
 				alert("종료일이 시작일보다 빠를 수 없습니다.");
 				e.preventDefault();
 				return;
 			}
+			
+			// 시작 날짜 값을 변경했는지 확인
+			const isStartDateModified = originalStartDate.toISOString().slice(0, 10) !== startInput.value;
+			
+			if (isStartDateModified && startDate < today) {
+				alert("시작 날짜는 오늘과 같거나 이후여야 합니다.");
+				startInput.focus();
+				e.preventDefault();
+				return;
+			}
+			
+			// 정원 검사
+			const memberInput = document.getElementById("classMember");
+			const memberValue = parseInt(memberInput.value);
+			
+			if (isNaN(memberValue) || memberValue < 1) {
+				alert("최소 인원은 1명 이상입니다.");
+				memberInput.focus();
+				e.preventDefault();
+				return;
+			}
+			
+			// 금액 검사
+			const priceInput = document.getElementById("classPrice");
+			const priceValue = parseInt(priceInput.value);
+			
+			if (isNaN(priceValue) || priceValue < 10000) {
+				alert("최소 금액은 10,000원 입니다.");
+				priceInput.focus();
+				e.preventDefault();
+				return;
+				}
 			
 			// 수업 요일 검사
 			const checkboxes = document.querySelectorAll(".day-checkbox");
