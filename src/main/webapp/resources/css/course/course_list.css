@@ -305,5 +305,7 @@ ul.tabnav li a:hover {
 .class-filter {
   display: flex;
   align-items: center;
+  padding-left: 10px;
 }
+
 

@@ -118,10 +118,12 @@
 					
 					<%-- 기업 유저의 경우 강의 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">
-		                <button class="orange-button"
-		                        onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
-		                    강의 개설
-		                </button>
+						<div class="class-filter">
+			                <button class="orange-button"
+			                        onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
+			                    강의 개설
+			                </button>
+						</div>
 	                </c:if>
 				</div>
 				
@@ -131,7 +133,7 @@
 				
 					<thead>
 						<tr>
-							<th colspan="6">강좌 목록</th>
+							<th colspan="7">강좌 목록</th>
 						</tr>
 						<tr>
 							<th>썸네일</th>
@@ -192,7 +194,7 @@
 						<%-- 강의 목록이 없을 경우 --%>
 						<c:if test="${not hasRegisteredClass}">
 							<tr>
-								<td colspan="6">등록된 강의가 없습니다.</td>
+								<td colspan="7">등록된 강의가 없습니다.</td>
 							</tr>
 						</c:if>
 					</tbody>
