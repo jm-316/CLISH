@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
   <style>
   	#footer-area {
       margin-top: 0 !important;

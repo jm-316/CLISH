@@ -34,7 +34,6 @@
 	
 	}
 </style>
-<script type="text/javascript" src="/resources/js/home.js"></script>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>
 <body>

@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script>
 	// 필터안의 카테고리가 바뀌었을 때 함수 실행
 	function filterByCategory() {

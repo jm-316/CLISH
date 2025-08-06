@@ -4,7 +4,6 @@
 <link href="/resources/css/myPage.css" rel="stylesheet">
 <link href="/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="/resources/js/home.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.slide_btn.active {
