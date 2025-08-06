@@ -17,7 +17,7 @@
 	   	   		<a href="/admin/main">MAIN</a>
 	   	    </li>
 	       <li>
-	       		<span>강의 관리</span>
+	       		<span><a href="/admin/classList">강의 관리</a></span>
 	       		<ul>
 	       			<li>
 	       				<a href="/admin/category">카테고리 편집</a>

@@ -94,6 +94,14 @@ public class UserClassController {
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
+		LocalDate start = classInfo.getStartDate(); // LocalDate 타입일 경우
+		LocalDate applyEnd = start.minusDays(1);
+		int daysValue = classInfo.getClassDays();
+		
+		String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
+		int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
+		
+		
 		
 		// 커리큘럼 리스트를 불러올 List<ClassDTO> 객체 생성 
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
@@ -121,6 +129,7 @@ public class UserClassController {
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("curriculumList", curriculumList);
+		model.addAttribute("applyEndDate", applyEnd);
 		
 		return "/course/user/course_detail";
 	}
@@ -214,7 +223,7 @@ public class UserClassController {
 	    if(total <= reservMembers) {
 	    	model.addAttribute("msg", "예약인원이 가득차서 예약할 수 없습니다.");
 	    	return "/commons/fail";
-	    } else if(reservMembers <= 0 || reservationMembers > total) {
+	    } else if(reservationMembers <= 0 || reservationMembers > total) {
 	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력하시거나 너무 많은 인원을 입력하셨습니다.");
 	    	return "/commons/fail";
 	    }

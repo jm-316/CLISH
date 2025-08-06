@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항수정</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/main.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+<link href="/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<link rel="stylesheet" href="/resources/css/home/main.css" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <style type="text/css">
 .button-wrapper {
 	margin-top: 20px;

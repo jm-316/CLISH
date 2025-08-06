@@ -1,6 +1,7 @@
 package com.itwillbs.clish.common.emailAuth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/email")
+@Log4j2
 public class EmailAuthController {
 
     private final EmailAuthService emailAuthService;

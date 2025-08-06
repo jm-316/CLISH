@@ -8,10 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
-<link rel='icon' href='${pageContext.request.contextPath}/resources/images/logo4-2.png' type='image/x-icon'/>
+<link href="/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <style type="text/css">
 	h1 {
 		font-size: 48px;

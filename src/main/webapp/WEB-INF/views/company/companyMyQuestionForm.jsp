@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <style>
   /* ✅ 전체 컨테이너: flex로 사이드바와 본문 배치 */
   .container {

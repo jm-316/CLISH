@@ -47,7 +47,7 @@
 					<div>
 						<h3 class="section-title">강의 상세 정보</h3>
 					</div>
-					<form id="classForm" style="border: none; padding: 10px;" enctype="multipart/form-data">
+					<form id="classForm" style="border: none; padding: 50px;" enctype="multipart/form-data">
 						<input type="hidden" name="userIdx" id="userIdx" value="${classInfo.userIdx}" />
 						<div>
 							<div style="display: flex; flex: 1 1 auto;  align-items: center; justify-content: space-between; margin-left: 30px; margin-right: 30px;">
@@ -67,13 +67,9 @@
 								</div>
 								<div style="width: 350px; height: 350px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
 									<c:forEach var="fileDTO" items="${classInfo.fileList}">
-										<img src="/file/${fileDTO.fileId }?type=0" alt="${fileDTO.originalFileName }" width="300px" height="300px"/>
+										<img src="/file/${fileDTO.fileId}?type=0" alt="${fileDTO.originalFileName }" width="300px" height="300px"/>
 										<div>
 											${fileDTO.originalFileName}
-											<a href="/file/${fileDTO.fileId }?type=1">
-												<img src="/resources/images/download-icon.png" class="img_btn" title="다운로드" />
-											</a>
-					
 											<a href="javascript:deleteFile(${fileDTO.fileId})">
 												<img src="/resources/images/delete-icon.png" class="img_btn" title="삭제" />
 											</a>

@@ -90,7 +90,7 @@
 					</table>
 					<div class="button-wrapper">
 						<button type="submit" id="btn"></button>
-						<button type="button" onclick="location.href='/admin/inquiry'">취소</button>
+						<button type="button" onclick="location.href='/admin/inquiry?pageNum=${pageInfo.pageNum}'">취소</button>
 					</div>
 				</form>
 			</div>
