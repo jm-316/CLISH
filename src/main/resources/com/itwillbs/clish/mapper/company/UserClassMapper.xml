@@ -25,7 +25,7 @@
 	    FROM 
 	    	RESERVATION
 	    WHERE 
-	    	reservation_date = #{date}
+	    	reservation_class_date LIKE CONCAT(#{date}, '%')
 	</select>
 	
 	<!-- 총 예약 인원 확인 SELECT -->
@@ -55,17 +55,20 @@
 			CLASS
 		WHERE 
 			class_type = #{classType}
-			<!-- 카테고리별 정렬 검색조건 -->
-			<if test="categoryIdx != null">
-			AND
-			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
-			</if>
+		AND
+			class_status > 1	
+		<!-- 카테고리별 정렬 검색조건 -->
+		<if test="categoryIdx != null and categoryIdx != ''">
+		AND
+		category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
+		</if>
+		
+		<if test="searchClassKeyword != null and searchClassKeyword != ''">
+		AND
+		class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')			
+		</if>
 			
-			<if test="!searchClassKeyword.equals('')">
-			AND
-			class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')			
-			</if>
-			
+		<if test="searchType != null and searchType != ''">
 			<choose>
 				<!-- 강의 최신 등록순 -->
 				<when test="searchType.equals('최신')">
@@ -80,6 +83,7 @@
 					ORDER BY class_price ASC
 				</when>
 			</choose>
+		</if>
 		LIMIT
 			#{startRow}  	-- 조회 시작 레코드(row) 번호
 			, #{listLimit}	-- 조회 갯수 
@@ -90,9 +94,17 @@
 			COUNT(*)
 		FROM 
 			CLASS
-		<if test="!searchClassKeyword.equals('')">
 		WHERE
+			class_type = #{classType}
+		AND
+			class_status > 1
+		<if test="!searchClassKeyword.equals('')">
+		AND
 			class_title LIKE CONCAT('%', #{searchClassKeyword}, '%')
+		</if>
+		<if test="categoryIdx != null">
+		AND
+			category_idx LIKE CONCAT('%', #{categoryIdx}, '%')
 		</if>
 	</select>
 	

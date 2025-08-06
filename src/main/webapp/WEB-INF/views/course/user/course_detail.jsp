@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${classInfo.classTitle}</title>
+<title>CLISH - ${classInfo.classTitle}</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
@@ -106,6 +106,8 @@
 			<section id="classDetail">
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
+				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
+				<b>신청 기간</b> : ${classInfo.startDate} <br>
 			</section>
 		    
 			<section id="curriCulum" >
@@ -115,7 +117,7 @@
 						<div class="curriculum-box" style="display: flex; align-items: center; justify-content: space-between;">
 							<div style="display: flex; gap: 30px;">
 								<span>${curri.curriculumTitle}</span>
-								<span>${curri.curriculumRuntime}분</span>
+								<span>${curri.curriculumRuntime}</span>
 							</div>
 						</div>
 					</c:forEach>
