@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,7 +108,20 @@
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
 				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
-				<b>신청 기간</b> : ${classInfo.startDate} <br>
+				<b>신청 기간</b> : ${applyEndDate} <br>
+				<b>수강료</b> : <fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0"/>원<br>
+				<b>수업 요일</b> : <%--
+								    	int daysValue = Integer.parseInt(String.valueOf(classInfo.getClassDays()));
+				
+									    String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
+									    int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
+									
+									    for (int i = 0; i < bitValues.length; i++) {
+									        if ((daysValue & bitValues[i]) != 0) {
+									            out.print(dayNames[i] + " ");
+									        }
+									    }
+									--%><br>
 			</section>
 		    
 			<section id="curriCulum" >
