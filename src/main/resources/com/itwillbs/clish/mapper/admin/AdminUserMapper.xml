@@ -21,7 +21,10 @@
 		AND 
 			user_status != 3
 		<if test="!searchKeyword.equals('')">
-		AND user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		AND 
+			user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR  
+			user_id LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		ORDER BY
 		<choose>
@@ -52,6 +55,8 @@
 		<if test="!searchKeyword.equals('')">
 		AND
 			user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		OR  
+			user_id LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 	</select>
 	
