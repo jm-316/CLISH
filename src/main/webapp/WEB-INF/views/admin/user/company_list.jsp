@@ -36,7 +36,7 @@
 							</div>
 						</form>
 					</div>
-					<div style="height: 260px;">
+					<div style="height: 500px;">
 						<c:choose>
 							<c:when test="${empty companys}">
 								<div class="list-empty">검색된 기업이 없습니다.</div>

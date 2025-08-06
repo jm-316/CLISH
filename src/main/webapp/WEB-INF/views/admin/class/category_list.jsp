@@ -12,6 +12,30 @@
 	rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<style type="text/css">
+.child-category {
+	-ms-overflow-style: none;
+ 	height: 500px;
+ 	margin-bottom: 10px;
+ 	overflow-y: auto;
+}
+
+.child-category::-webkit-scrollbar{
+  	display:none;
+}
+
+#childTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#childTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 2px solid #ccc;
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -86,39 +110,41 @@
 							</tbody>
 						</table>
 					</div>
-					<div>
+					<div class="child-category">
 						<div>
 							<div>
 								<h3 class="sub-title">소분류</h3>
 							</div>
 						</div>
-						<table id="childTable">
-							<thead>
-								<tr>
-									<th>대분류</th>
-									<th>소분류</th>
-									<th>카테고리 이름</th>
-									<th>카테고리 순서</th>
-									<th colspan="2"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="category" items="${childCategories}">
+						<div class="table-wrapper">
+							<table id="childTable">
+								<thead>
 									<tr>
-										<td>${fn:substringAfter(category.parentIdx, 'CT_')}</td>
-										<td>${category.categoryName}</td>
-										<td>${category.categoryName}</td>
-										<td>${category.sortOrder}</td>
-										<td class="category-controls">
-											<button type="button"
-												onclick="onModifyModal('${category.categoryIdx}')">수정</button>
-											<button type="button"
-												onclick="deleteCategory('${category.categoryIdx}', ${category.depth})">삭제</button>
-										</td>
+										<th>대분류</th>
+										<th>소분류</th>
+										<th>카테고리 이름</th>
+										<th>카테고리 순서</th>
+										<th colspan="2"></th>
 									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+								</thead>
+								<tbody>
+									<c:forEach var="category" items="${childCategories}">
+										<tr>
+											<td>${fn:substringAfter(category.parentIdx, 'CT_')}</td>
+											<td>${category.categoryName}</td>
+											<td>${category.categoryName}</td>
+											<td>${category.sortOrder}</td>
+											<td class="category-controls">
+												<button type="button"
+													onclick="onModifyModal('${category.categoryIdx}')">수정</button>
+												<button type="button"
+													onclick="deleteCategory('${category.categoryIdx}', ${category.depth})">삭제</button>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="modal" id="modify_category">
