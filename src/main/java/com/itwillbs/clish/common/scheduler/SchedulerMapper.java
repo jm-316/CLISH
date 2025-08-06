@@ -1,11 +1,15 @@
 package com.itwillbs.clish.common.scheduler;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 
 public interface SchedulerMapper {
 
 	List<ReservationDTO> SelectDelteReservationList();
+
+	// 강의 마감 알림
+	List<Map<String, Object>> selectEndClasses();
 
 }

@@ -54,5 +54,18 @@ public class SchedulerService {
 			}
 		}
 	}
+	
+	// 강의 마감 안내
+	public void checkClassEndDate() {
+		List<Map<String, Object>> endClassList = schedulerMapper.selectEndClasses();
+		
+		for (Map<String, Object> classInfo: endClassList) {
+			String userIdx = (String) classInfo.get("user_idx");
+			String classTitle = (String) classInfo.get("class_title");
+			String classEndDate = (String) classInfo.get("end_date");
+			
+			notificationService.send(userIdx, 3,  "등록하신 강의 \"" + classTitle + "\"가 " + classEndDate + "에 마감되었습니다.");
+		}
+	}
 
 }
