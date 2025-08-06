@@ -156,12 +156,17 @@ function loadDailyRevenueChart() {
 	    .then(res => res.json())
 	    .then(data => {
 	      const revenueMap = new Map();
+	      const currentYear = new Date().getFullYear();
+	      
 	      data.forEach(item => {
-	        const month = parseInt((item.date || "").split('-')[1]);
-	        if (!isNaN(month)) {
-	          revenueMap.set(month + "월", item.total);
-	        }
-	      });
+	    	const [yearStr, monthStr] = (item.date || "").split('-');
+	    	const year = parseInt(yearStr);
+	    	const month = parseInt(monthStr);
+	    	
+	        if (!isNaN(year) && year === currentYear && !isNaN(month)) {
+	            revenueMap.set(month + "월", item.total);
+	          }
+	        });
 
 	      const values = labels.map(label => revenueMap.get(label) || 0);
 
@@ -171,7 +176,7 @@ function loadDailyRevenueChart() {
 	        data: {
 	          labels: labels,
 	          datasets: [{
-	            label: "월간 매출",
+	            label: currentYear + " 매출",
 	            data: values,
 	            backgroundColor: "rgba(255, 118, 1, 0.7)",
 	            borderRadius: 6
@@ -199,8 +204,6 @@ function loadDailyRevenueChart() {
 		  .then(data => {
 			  const labels = data.map(item => item.categoryName);
 			  const values = data.map(item => item.total);
-			  
-			  console.log(values);
 			  
 			  const ctx = document.getElementById("categoryChart").getContext("2d");
 			  
