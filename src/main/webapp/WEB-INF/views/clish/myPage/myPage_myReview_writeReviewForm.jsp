@@ -80,7 +80,7 @@
 					</table>
 					<label for="file">첨부파일</label>
 						
-					<input type="file" class="custom-file-input" name="files" multiple>
+					<input type="file" class="custom-file-input" name="files" multiple accept="image/*">
 					<div style="text-align: right;">
 						<input type="submit" value="리뷰등록" >
 						<input type="reset" value="초기화">
@@ -96,25 +96,35 @@
 		</footer>
 		<script>
 			$(function(){
-			    let lastScore = 0;
-			  $(".star-rating .star").click(function(){
-			    const index = $(this).index();
-			    let score = index + 1;
-			    
-			    console.log(lastScore);
-			    if(score === 1 && lastScore === 1) {
-			    	score = 0;
-		    	}
-			    lastScore = score;
-			    $("#score").val(score);
-			    $(this).parent().children(".star").each(function(i){
-			      if(i < score){
-			        $(this).addClass("active");
-			      } else {
-			        $(this).removeClass("active");
-			      }
-			    });
-			  });
+				let lastScore = 0;
+				$(".star-rating .star").click(function(){
+					const index = $(this).index();
+					let score = index + 1;
+					
+					console.log(lastScore);
+					if(score === 1 && lastScore === 1) {
+						score = 0;
+					}
+					lastScore = score;
+					$("#score").val(score);
+					$(this).parent().children(".star").each(function(i){
+						if(i < score){
+							$(this).addClass("active");
+						} else {
+							$(this).removeClass("active");
+						}
+					});
+				});
+				document.querySelector('.custom-file-input').addEventListener('change', function(event) {
+					const files = event.target.files;
+					for (let i = 0; i < files.length; i++) {
+						if (!files[i].type.startsWith('image/')) {
+							alert('이미지 파일만 업로드 가능합니다.');
+							event.target.value = "";  // 파일 입력값 비움
+							return;
+						}
+					}					
+				});
 			});
 		</script>
 	</body>

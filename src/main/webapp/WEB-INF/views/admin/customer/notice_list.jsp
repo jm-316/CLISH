@@ -39,7 +39,7 @@
 						</form>
 					</div>
 					<div>
-						<div style="height: 250px;">
+						<div style="height: 500px;">
 							<c:choose>
 								<c:when test="${empty supportList}">
 									<div class="list-empty">검색된 공지가 없습니다.</div>

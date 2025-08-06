@@ -29,6 +29,14 @@
 					<td><input type="text" name="classTitle" value="${classInfo.classTitle}"></td>
 				</tr>
 				<tr>
+					<th>강의 소개</th>
+					<td><textarea name="classIntro">${classInfo.classIntro}</textarea></td>
+				</tr>
+				<tr>
+					<th>강의 상세 내용</th>
+					<td><textarea name="classContent">${classInfo.classContent}</textarea></td>
+				</tr>
+				<tr>
 				  <th>카테고리</th>
 				  <td>
 				    <!-- 대분류 -->
@@ -52,6 +60,14 @@
 				    </select>
 				  </td>
 				</tr>
+		        <tr>
+					<th>수강료</th>
+					<td><input type="number" name="classPrice" value="${classInfo.classPrice}"></td>
+				</tr>
+				<tr>
+					<th>정원</th>
+					<td><input type="number" name="classMember" value="${classInfo.classMember}"></td>
+				</tr>
 				<tr>
 					<th>상태</th>
 					<td>
@@ -62,19 +78,38 @@
 		        	</select><br>
 		            </td>
 		        </tr>
-		        <tr>
-					<th>수강료</th>
-					<td><input type="number" name="classPrice" value="${classInfo.classPrice}"></td>
-				</tr>
+<!-- 				<tr> -->
+<!-- 					<th>강의 기간</th> -->
+<!-- 					<td> -->
+<%-- 						<input type="date" name="startDate" value="${classInfo.startDate}"> --%>
+<%-- 						~ <input type="date" name="endDate" value="${classInfo.endDate}"> --%>
+<!-- 					</td> -->
+<!-- 				</tr> -->
+				<!-- 날짜 설정 -->
 				<tr>
-					<th>정원</th>
-					<td><input type="number" name="classMember" value="${classInfo.classMember}"></td>
-				</tr>
-				<tr>
-					<th>강의 기간</th>
+					<th>강의 시작일</th>
 					<td>
-						<input type="date" name="startDate" value="${classInfo.startDate}">
-						~ <input type="date" name="endDate" value="${classInfo.endDate}">
+						<input type="date" name="startDate" id="startDateInput"
+						       value="${classInfo.startDate}" 
+						       min="<%= java.time.LocalDate.now().plusDays(1).toString() %>">
+					</td>
+				</tr>
+				<tr>
+					<th>강의 종료일</th>
+					<td>
+						<input type="date" name="endDate" id="endDateInput"
+						       value="${classInfo.endDate}" 
+						       min="<%= java.time.LocalDate.now().plusDays(1).toString() %>">
+					</td>
+				</tr>
+		        <!-- 강의 구분 선택 -->
+				<tr>
+					<th>강의 구분</th>
+					<td>
+						<select name="classType" id="classType">
+							<option value="0" ${classInfo.classType == 0 ? 'selected' : ''}>정기 강의</option>
+            				<option value="1" ${classInfo.classType == 1 ? 'selected' : ''}>단기 강의</option>
+						</select>
 					</td>
 				</tr>
 				<tr>
@@ -105,14 +140,6 @@
 						       value="">
 						<input type="hidden" name="location" id="location" value="${classInfo.location}">
 					</td>
-				</tr>
-				<tr>
-					<th>강의 소개</th>
-					<td><textarea name="classIntro">${classInfo.classIntro}</textarea></td>
-				</tr>
-				<tr>
-					<th>강의 상세 내용</th>
-					<td><textarea name="classContent">${classInfo.classContent}</textarea></td>
 				</tr>
 				<tr>
 					<th>썸네일 수정</th>
@@ -179,7 +206,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<!-- ✅ 요일 처리 스크립트 -->
+	<!-- 요일 처리 스크립트 -->
 	<script>
 	window.addEventListener("DOMContentLoaded", function () {
 		// 추가된 주소 복원 코드
@@ -208,14 +235,14 @@
 	    document.getElementById("classDays").value = total;
 	});
 
-	// ✅ 커리큘럼 추가 함수
+	// 커리큘럼 추가 함수
 	function addCurriculum() {
 		const container = document.getElementById("curriculumContainer");
 		const template = document.getElementById("curriculumTemplate").innerHTML;
 		container.insertAdjacentHTML("beforeend", template);
 	}
 
-	// ✅ 커리큘럼 삭제 함수
+	// 커리큘럼 삭제 함수
 	function removeCurriculum(button) {
 		const box = button.parentElement;
 		box.remove();
@@ -266,6 +293,56 @@
 	    }).open();
 	  });
 	</script>
+	
+	<!-- 날짜 제약 관련 스크립트 -->
+	<script>
+	window.addEventListener('DOMContentLoaded', () => {
+		const startDateInput = document.querySelector('input[name="startDate"]');
+		const endDateInput = document.querySelector('input[name="endDate"]');
+		const classTypeSelect = document.querySelector('select[name="classType"]');
 
+		// 시작일은 오늘+1일부터 선택 가능
+		const today = new Date();
+		today.setDate(today.getDate() + 1);
+		const minDateStr = today.toISOString().split('T')[0];
+		
+		if (startDateInput) {
+			startDateInput.setAttribute('min', minDateStr);
+		}
+		if (endDateInput) {
+			endDateInput.setAttribute('min', minDateStr);
+		}
+
+		// 시작일 변경 시 종료일도 최소값 재설정
+		startDateInput.addEventListener('change', () => {
+			const start = startDateInput.value;
+			endDateInput.setAttribute('min', start);
+			
+			if (classTypeSelect.value === '1') {
+				endDateInput.value = start;
+			}
+		});
+
+		// 강의 구분 변경 시 종료일 제어
+		classTypeSelect.addEventListener('change', () => {
+			const type = classTypeSelect.value;
+			const start = startDateInput.value;
+			
+			if (type === '1') {
+				endDateInput.readOnly = true;
+				endDateInput.value = startDateInput.value;
+			} else {
+				endDateInput.readOnly = false;
+			}
+		});
+
+		// 페이지 로딩 시 초기 상태 반영
+		if (classTypeSelect.value === '1') {
+			endDateInput.readOnly = true;
+			endDateInput.value = startDateInput.value;
+		}
+	});
+	</script>
+	
 </body>
 </html>

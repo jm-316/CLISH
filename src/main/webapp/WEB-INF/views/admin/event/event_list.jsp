@@ -41,7 +41,7 @@
 						</form>
 					</div>
 					<div>
-						<div style="height: 250px;">
+						<div style="height: 450px;">
 							<c:choose>
 								<c:when test="${empty eventList}">
 									<div class="list-empty">검색된 이벤트가 없습니다.</div>

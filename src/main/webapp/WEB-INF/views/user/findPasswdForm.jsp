@@ -114,6 +114,15 @@ body {
     min-height: 18px;  
 }
 
+.pw-check-result2 {
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    min-height: 18px;
+    color: #888;
+}
+
 </style>
 </head>
 <body>
@@ -136,8 +145,11 @@ body {
    		<label>새 비밀번호</label>
 	    <input type="password" class="password1" placeholder="새 비밀번호 입력">
 	    <span class="pw-check-result"></span>
+	    
 	    <label>비밀번호 확인</label>
 	    <input type="password" class="password2" placeholder="비밀번호 확인">
+	    <span class="pw-check-result2"></span>
+	    
 	    <button type="button" class="pw-change-btn">비밀번호 변경</button>
 	    <span class="pw-change-result"></span>
 	</div>

@@ -12,6 +12,29 @@
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css"
 	rel="stylesheet" type="text/css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<style type="text/css">
+.pending-class {
+	-ms-overflow-style: none;
+ 	height: 350px;
+ 	margin-bottom: 10px;
+ 	overflow-y: auto;
+}
+
+.pending-class::-webkit-scrollbar{
+  	display:none;
+}
+
+.pending-class table {
+  	border-collapse: collapse;
+}
+
+.pending-class table thead th {
+  	position: sticky;
+  	top: 0;
+  	z-index: 1;
+  	border-bottom: 2px solid #ccc;
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -25,15 +48,15 @@
 					<div>
 						<h5 class="section-title">강의 목록</h5>
 					</div>
+					<div>
+						<h3 class="sub-title">등록 대기</h3>
+					</div>
 					<c:choose>
 						<c:when test="${empty pendingClassList}">
 							<div class="list-empty">등록 요청된 강의가 없습니다.</div>
 						</c:when>
 						<c:otherwise>
-							<div>
-								<div>
-									<h3 class="sub-title">등록 대기</h3>
-								</div>
+							<div class="pending-class">
 								<table id="table">
 									<thead>
 										<tr class="test">
@@ -72,7 +95,7 @@
 							<button class="search-button">검색</button>
 						</div>
 					</form>
-					<div>
+					<div style="height: 500px;">
 						<c:choose>
 							<c:when test="${empty classList}">
 								<div class="list-empty">등록된 강의가 없습니다.</div>
@@ -90,20 +113,16 @@
 									</thead>
 									<tbody>
 										<c:forEach var="classItem" items="${classList}">
-											<c:if test="${classItem.class_status != 1}">
-												<c:set var="hasRegisteredClass" value="true" />
-												<tr
-													onclick="location.href='/admin/class/${classItem.class_idx}'">
-													<td>${classItem.class_title}</td>
-													<td>${classItem.parent_category_name}</td>
-													<td>${classItem.child_category_name}</td>
-													<td><c:choose>
-															<c:when test="${classItem.class_status == 2}">오픈</c:when>
-															<c:otherwise>마감</c:otherwise>
-														</c:choose></td>
-													<td><button>수정</button></td>
-												</tr>
-											</c:if>
+											<tr onclick="location.href='/admin/class/${classItem.class_idx}'">
+												<td>${classItem.class_title}</td>
+												<td>${classItem.parent_category_name}</td>
+												<td>${classItem.child_category_name}</td>
+												<td><c:choose>
+														<c:when test="${classItem.class_status == 2}">오픈</c:when>
+														<c:otherwise>마감</c:otherwise>
+													</c:choose></td>
+												<td><button>수정</button></td>
+											</tr>
 										</c:forEach>
 									</tbody>
 								</table>

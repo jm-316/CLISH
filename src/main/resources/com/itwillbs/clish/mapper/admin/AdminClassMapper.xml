@@ -22,9 +22,10 @@
 			CATEGORY pc
 		ON
 			cc.parent_idx = pc.category_idx
-		<if test="!searchKeyword.equals('')">
 		WHERE
-			c.class_title LIKE CONCAT('%', #{searchKeyword}, '%')
+			c.class_status != 1
+		<if test="!searchKeyword.equals('')">
+			AND c.class_title LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		ORDER BY
 		<choose>

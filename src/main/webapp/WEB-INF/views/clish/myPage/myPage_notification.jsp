@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,22 +40,40 @@
 			background: #1d4fbb;
 		}
 		
-		#notificationTable th, #notificationTable td {
-			max-width: 150px; /* 셀 최대 너비 설정 (필요시 조절) */
-			white-space: nowrap; /* 텍스트를 한 줄로 유지 */
-			overflow: hidden; /* 넘치는 텍스트 숨김 */
-			text-overflow: ellipsis; /* 줄임표 ... 표시 */
-			vertical-align: middle;
-			word-wrap: normal;
-		}
-		
 		#notificationTable {
-			table-layout: fixed; /* 테이블 전체 너비 고정 */
-			width: 1200px;
-			
+			width: 1200px;          /* 테이블 전체 너비 */
+			table-layout: fixed;    /* 고정 너비 레이아웃 */
 		}
-		
-	
+
+		#notificationTable {
+			width: 1200px;
+			table-layout: fixed;
+		}
+
+		#notificationTable th:first-child,
+		#notificationTable td:first-child {
+			width: 1000px;
+			white-space: normal;           /* 줄바꿈 허용 */
+			word-break: break-word;        /* 긴 단어 줄바꿈 */
+			overflow-wrap: break-word;     /* 추가 줄바꿈 허용 */
+			/* 아래 속성으로 내용이 셀 영역 넘는 걸 방지 */
+			overflow: hidden;
+		}
+
+		#notificationTable th:last-child,
+		#notificationTable td:last-child {
+			width: 200px;
+			white-space: nowrap;
+			text-align: center;
+		}
+
+		/* 내부 .noti-message span 같은 요소가 너무 넓게 나오지 않도록 제한 */
+		#notificationTable .noti-message {
+			max-width: 100%;       /* 부모 셀 너비 최대 100%로 제한 */
+			word-break: break-word;
+			white-space: normal;
+			overflow-wrap: break-word;
+		}
 	</style>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com" >
@@ -82,7 +101,7 @@
 				<thead style="background-color: #f5f5f5;">
 	   			<tr>
 	      			<th>알림 내용</th>
-				    <th width="400px;">알림 시간</th>
+				    <th width="200px;">알림 시간</th>
 			    </tr>
 			    </thead>
 			  	<tbody>
@@ -105,7 +124,7 @@
 					    		
 					    	</td>
 					      	<td>
-					      		${notification.userNoticeCreatedAt }
+					      		<fmt:formatDate value="${notification.userNoticeCreatedAt }" pattern="yy-MM-dd HH:mm:ss" />
 					      	</td>
 					    </tr>			
 				  	</c:forEach>

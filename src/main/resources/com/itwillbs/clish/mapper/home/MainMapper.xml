@@ -16,7 +16,7 @@
 			, location
 			, class_intro
             , class_type
-			, TIMESTAMPDIFF(DAY, start_date, end_date) as class_length
+			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
 			class_status in (1, 2)
@@ -37,7 +37,7 @@
 			, class_intro
             , class_type
             , created_at
-			, TIMESTAMPDIFF(DAY, start_date, end_date) as class_length			
+			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length			
 		FROM CLASS
 		WHERE
 			class_status in (1, 2)
@@ -58,7 +58,7 @@
 			, class_intro
             , class_type
             , created_at
-			, TIMESTAMPDIFF(DAY, start_date, end_date) as class_length
+			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
 			class_status in (1, 2)
@@ -80,7 +80,7 @@
 			, class_intro
             , class_type
             , created_at
-			, TIMESTAMPDIFF(DAY, start_date, end_date) as class_length
+			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
 			class_status in (1, 2)

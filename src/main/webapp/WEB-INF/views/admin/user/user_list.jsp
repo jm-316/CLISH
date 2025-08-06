@@ -35,7 +35,7 @@
 						</form>
 					</div>
 					<div>
-						<div style="height: 260px;">
+						<div style="height: 500px;">
 							<c:choose>
 								<c:when test="${empty users}">
 									<div class="list-empty">검색된 회원이 없습니다.</div>
