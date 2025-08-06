@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html lang="ko">
  	 <head>
@@ -48,7 +49,11 @@
 							<td><input type="text" value="${reviewDTO.classTitle }" name="classTitle" readonly></td>
 						</tr><tr>
 							<th>수업 일</th>
-							<td><input type="text" value="${reviewDTO.reservationClassDate}" readonly></td>
+							<fmt:parseDate var="reservationClassDate" 
+									value="${reviewDTO.reservationClassDate}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
+							<td><input type="text" value="<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/>" readonly></td>
 						</tr><tr>
 							<th>주문 번호</th>
 							<td><input type="text" value="${reviewDTO.reservationIdx}"name="reservationIdx" readonly></td>

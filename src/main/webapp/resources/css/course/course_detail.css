@@ -59,7 +59,7 @@ ul.tabnav li {
 
 #classDetail {
 	padding: 40px 20px;
-	height: 200px;
+	height: auto;
 }
 
 /* 섹션 영역 */

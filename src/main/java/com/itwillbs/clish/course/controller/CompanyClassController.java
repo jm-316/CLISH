@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +144,34 @@ public class CompanyClassController {
 		    }
 		}
 		companyClass.setClassDays(classDaysValue);
+		
+		 // 날짜 유효성 검사
+	    LocalDate today = LocalDate.now();
+	    LocalDate minStartDate = today.plusDays(1);
+	    LocalDate startDate = companyClass.getStartDate();
+	    LocalDate endDate = companyClass.getEndDate();
+	    int classType = companyClass.getClassType(); // 0: 정기, 1: 단기
+
+	    if (startDate == null || startDate.isBefore(minStartDate)) {
+	        model.addAttribute("msg", "시작일은 개설일 다음 날부터 선택 가능합니다.");
+	        model.addAttribute("targetURL", "/company/myPage/registerClass");
+	        return "commons/result_process";
+	    }
+
+	    if (classType == 1) { // 단기 강의
+	        if (endDate == null || !startDate.equals(endDate)) {
+	            model.addAttribute("msg", "단기 강의는 시작일과 종료일이 같아야 합니다.");
+	            model.addAttribute("targetURL", "/company/myPage/registerClass");
+	            return "commons/result_process";
+	        }
+	    } else if (classType == 0) { // 정기 강의
+	        if (endDate == null || endDate.isBefore(startDate)) {
+	            model.addAttribute("msg", "정기 강의는 종료일이 시작일보다 빠를 수 없습니다.");
+	            model.addAttribute("targetURL", "/company/myPage/registerClass");
+	            return "commons/result_process";
+	        }
+	    }
+
 		// ------------------------------------------------------------------------------------------------------
 	    // 강좌 등록
 		int result = companyClassService.registerClass(companyClass, session); 

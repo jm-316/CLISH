@@ -186,6 +186,7 @@
                             <th>대분류</th>
                             <th>소분류</th>
                             <th>상태</th>
+                            <th>승인 여부</th>
                             <th>수정</th>
                             <th>삭제</th>
                         </tr>
@@ -193,8 +194,6 @@
                     <tbody>
                         <c:set var="hasRegisteredClass" value="false" />
                         <c:forEach var="classItem" items="${classList}">
-                        <%-- CLASS 테이블 컬럼 3개 수정 후 강의 개설 및 강의 관리에 조회할 수 있게 임시로 관리자 상태 c:if문 주석 처리--%>
-                            <c:if test="${classItem.class_status != 1}">
                                 <c:set var="hasRegisteredClass" value="true" />
                                 <tr onclick="location.href='${pageContext.request.contextPath}/company/myPage/classDetail?classIdx=${classItem.class_idx}'">
 									<!-- 버튼: 예약자 수 / 총 정원 -->
@@ -213,6 +212,28 @@
                                             <c:otherwise>마감</c:otherwise>
                                         </c:choose>
                                     </td>
+                                    <!-- =================================== 지피티 =================================== -->
+                                    <td>
+										<c:choose>
+											<c:when test="${classItem.class_status == 1}">
+												<span style="color: gray;">승인대기</span>
+											</c:when>
+											<c:when test="${classItem.class_status == 2}">
+												<span style="color: green;">승인</span>
+											</c:when>
+											<c:when test="${classItem.class_status == 3}">
+												<c:choose>
+													<c:when test="${classItem.reservedCount >= classItem.class_member}">
+														<span style="color: orange;">마감</span>
+													</c:when>
+													<c:otherwise>
+														<span style="color: red;">반려</span>
+													</c:otherwise>
+												</c:choose>
+											</c:when>
+										</c:choose>
+									</td>
+                                    <!-- =================================== 지피티 =================================== -->
                                     <td>
 								        <!-- 버튼 클릭 시, 수정 페이지로 이동 -->
 								        <button class="orange-button"
@@ -228,7 +249,6 @@
 									    </button>
 									</td>
                                 </tr>
-                            </c:if>
                         </c:forEach>
                         <c:if test="${not hasRegisteredClass}">
                             <tr><td colspan="5">등록된 강의가 없습니다.</td></tr>

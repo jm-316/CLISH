@@ -38,6 +38,22 @@
 		background-color: #004080; /* 클릭 시 더 어두운 파란색 */
 	}
 	
+	#reservationTable th, #reservationTable td,
+	#paymentTable th, #paymentTable td {
+		max-width: 150px; /* 셀 최대 너비 설정 (필요시 조절) */
+		white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+		overflow: hidden; /* 넘치는 텍스트 숨김 */
+		text-overflow: ellipsis; /* 줄임표 ... 표시 */
+		vertical-align: middle;
+		word-wrap: normal;
+	}
+
+	#reservationTable, #paymentTable {
+		table-layout: fixed; /* 테이블 전체 너비 고정 */
+		width: 1000px;
+		
+	}
+	
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,7 +78,7 @@
 		<c:if test="${filterType eq 0 }">
 			<div>
 				<h3>예약 목록</h3>
-				<table id="reservationTable">
+				<table id="reservationTable" style="text-align: center;">
 					<tr>
 						<th width="90px">결제상태</th>
 						<th width="180px">예약번호</th>
@@ -156,13 +172,12 @@
 				</table>
 			</div>
 		</c:if>
-		<c:if test="${filterType eq 1 }">
+		<c:if test="${filterType eq 1 }" >
 			<div>
 				<h3 >결제 목록</h3>
-				<table id="paymentTable">
+				<table id="paymentTable" style="text-align: center; overflow: hidden;">
 					<tr>
 						<th width="120px">결제 번호</th>
-						<th width="180px">예약 번호</th>
 						<th class="sortable" data-column="status" width="120px">
 							결제 상태
 							<c:choose>
@@ -203,7 +218,6 @@
 					<c:forEach var="payment" items="${paymentList }" >
 			        	<tr>
 			        		<td>${payment.impUid }</td>
-			        		<td>${payment.reservationIdx}</td>
 			        		<td>${payment.status }</td>
 							<td>${payment.userName}</td>
 							<td>${payment.classTitle}</td>
@@ -225,7 +239,7 @@
 			        	</tr>
 		       		</c:forEach>
 					<tr>
-						<td colspan="9" align="center">
+						<td colspan="8" align="center">
 							<c:if test="${not empty paymentPageInfo.maxPage or paymentPageInfo.maxPage > 0}">
 								<input type="button" value="이전" 
 									onclick="location.href='/myPage/payment_info/reservation_payment?filterType=1&paymentPageNum=${paymentPageInfo.pageNum - 1}&paymentOrderBy=${paymentOrderBy }&paymentOrderDir=${paymentOrderDir }'" 

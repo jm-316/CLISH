@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${classInfo.classTitle}</title>
+<title>CLISH - ${classInfo.classTitle}</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
@@ -14,24 +14,18 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_detail.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script>
-	// 카테고리 셀렉트 박스가 바뀌었을 때 함수 실행
-	function filterByCategory() {
-		const selected = document.getElementById('categorySelect').value;
-		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
-	}
-	
 	document.getElementById("reservationClassDateRe").addEventListener("change", function() {
 	    const selectedDate = this.value;
 
 	    // 날짜가 변경되면 예약 인원 초기화
-	    document.getElementById("reservationCount").val = "0";
+	    document.getElementById("reservationCount").value = "0";
 
 	    if (selectedDate) {
 	        // AJAX로 예약 인원 조회
 	        fetch(`/userClass/getReservationCount?date=${selectedDate}`)
 	            .then(response => response.json())
 	            .then(count => {
-	                document.getElementById("reservationCount").val = `예약 인원: ${count}`;
+	                document.getElementById("reservationCount").value = `${count}`;
 	            })
 	            .catch(err => console.error(err));
 	    }
@@ -80,7 +74,7 @@
 						<input type="hidden" name="reservationClassDateRe" value="${classInfo.startDate}">
 					</c:otherwise>
 				</c:choose>
-			    예약 인원 : <input type="number" name="reservationMembers" required /><br>
+			    예약 인원 : <input type="number" name="reservationMembers" required/><br>
 			    
 			    <div style="text-align: center; padding-top: 30px; display: flex; justify-content: flex-end;">
 					<c:if test="${not empty param.classType}">
@@ -123,7 +117,7 @@
 						<div class="curriculum-box" style="display: flex; align-items: center; justify-content: space-between;">
 							<div style="display: flex; gap: 30px;">
 								<span>${curri.curriculumTitle}</span>
-								<span>${curri.curriculumRuntime}분</span>
+								<span>${curri.curriculumRuntime}</span>
 							</div>
 						</div>
 					</c:forEach>

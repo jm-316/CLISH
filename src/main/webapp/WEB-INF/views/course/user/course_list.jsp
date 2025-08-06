@@ -2,13 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>
-<c:if test="${param.classType eq 0}">정기 강의</c:if>
-<c:if test="${param.classType eq 1}">단기 강의</c:if>
+<c:if test="${param.classType eq 0}">CLISH - 정기 강의</c:if>
+<c:if test="${param.classType eq 1}">CLISH - 단기 강의</c:if>
 </title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/top.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css">
@@ -17,15 +18,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script>
-	// 필터안의 카테고리가 바뀌었을 때 함수 실행
-	function filterByCategory() {
-		const selected = document.getElementById('categorySelect').value;
-		location.href = '/course/user/classList?classType=${param.classType}&categoryIdx=' + selected;
-	}
-	
 	window.onload = () => {
-			// when filter button is clicked filter options are shown and hidden when clicked again	
-			//필터 버튼을 클릭하면 필터 옵션이 표시되고 다시 클릭하면 숨겨집니다.
+		// when filter button is clicked filter options are shown and hidden when clicked again	
+		//필터 버튼을 클릭하면 필터 옵션이 표시되고 다시 클릭하면 숨겨집니다.
 		const filterButton = document.getElementById("filter-button");
 		
 		filterButton.addEventListener("click", () => {
@@ -59,70 +54,67 @@
 		<div class="main">
 			<div class="main-content">
 				<div class="box">
-				<div class="search-container">
-					<%-- 카테고리별 검색 셀렉트박스 --%>
-					<%-- 검색 기능을 위한 폼 생성 --%>
-					<form action="/course/user/classList" method="get">
-						<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
-						<input type="hidden" name="classType" value="${param.classType}">
-						<input type="text" name="searchClassKeyword" value="${param.searchClassKeyword}" placeholder="검색어를 입력하세요."/>
-						<input type="submit" value="검색" />
-					</form>
-				</div>
-<!-- 	==============================================================				 -->
+					<div class="search-container">
+						<%-- 카테고리별 검색 셀렉트박스 --%>
+						<%-- 검색 기능을 위한 폼 생성 --%>
+						<form action="/course/user/classList" method="get">
+							<%-- 파라미터에 검색어(searchKeyword) 있을 경우 해당 내용 표시 --%>
+							<input type="hidden" name="classType" value="${param.classType}">
+							<input type="text" name="searchClassKeyword" value="${param.searchClassKeyword}" placeholder="제목을 입력하세요."/>
+							<input type="submit" value="검색" />
+						</form>
+					</div>
+						
+					<div class="class-filter">
+						<button id="filter-button">필터</button>	
+					</div>
 					
-				<div class="class-filter">
-					<button id="filter-button" >필터</button>	
-				</div>
+					<div id="main-filter" style="display: none; width: 500px; position: absolute; right: 50px; z-index: 100; margin-top: 50px;">
+						<form action="/course/user/classList" method="get" style="border-radius: 30px;">
+							<input type="hidden" name="classType" value="${param.classType}">
+							
+							<select name="searchType">
+								<option value="">유형별 필터링</option>
+								<option <c:if test="${param.filterType eq '최신'}">selected</c:if> value="최신">최신</option>
+								<option <c:if test="${param.filterType eq '인기'}">selected</c:if> value="인기">인기</option>
+								<option <c:if test="${param.filterType eq '평점'}">selected</c:if> value="평점">평점</option>
+								<option <c:if test="${param.filterType eq '높은가격'}">selected</c:if> value="높은가격">높은가격</option>
+								<option <c:if test="${param.filterType eq '낮은가격'}">selected</c:if> value="낮은가격">낮은가격</option>
+							</select>
+							
+							<%-- 추후 개발 예정 --%>
+							<select name="region">
+								<option value="">지역 선택</option>
+								<option <c:if test="${param.region eq '서울'}">selected</c:if> value="서울">서울</option>
+								<option <c:if test="${param.region eq '인천'}">selected</c:if> value="인천">인천</option>
+								<option <c:if test="${param.region eq '대전'}">selected</c:if> value="대전">대전</option>
+								<option <c:if test="${param.region eq '대구'}">selected</c:if> value="대전">대구</option>
+								<option <c:if test="${param.region eq '울산'}">selected</c:if> value="울산">울산</option>
+								<option <c:if test="${param.region eq '부산'}">selected</c:if> value="울산">부산</option>
+								<option <c:if test="${param.region eq '광주'}">selected</c:if> value="광주">광주</option>
+								<option <c:if test="${param.region eq '세종'}">selected</c:if> value="새종">세종</option>
+							</select>
+							
+							<select id="categorySelect" name="categoryIdx">
+								<option value="">카테고리 선택</option>
+								<c:forEach var="parentCat" items="${parentCategories}">
+									<option value="${parentCat.categoryIdx}">
+										${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
+									</option>
+								</c:forEach>
+							</select>
+							
+							<%-- 추후 개발 예정 --%>
+							<div>
+								<label for="price" style="font-size: 12px">상한 금액: 0원</label>
+							  <input type="range" id="price" name="price" min="0" max="5000000" step="50000" style="width: 300px;"/>
+							  <label for="price" style="font-size: 12px">5,000,000원</label><br>
+							  <div style="text-align: center;"><p>금액: <output id="value"></output>원</p></div>
+							</div>
 				
-				<div id="main-filter" style="display: none; width: 500px; position: absolute; right: 50px; z-index: 100; margin-top: 50px;">
-					<form action="/course/user/classList?filterType=${param.filterType}&region=${param.region}&price=${param.price}" method="get" style="border-radius: 30px;">
-						<input type="hidden" name="classType" value="${param.classType}">
-						<select name="filterType">
-							<option value="">유형별 필터링</option>
-							<option <c:if test="${param.filterType eq '최신'}">selected</c:if> value="최신">최신</option>
-							<option <c:if test="${param.filterType eq '인기'}">selected</c:if> value="인기">인기</option>
-							<option <c:if test="${param.filterType eq '평점'}">selected</c:if> value="평점">평점</option>
-							<option <c:if test="${param.filterType eq '높은가격'}">selected</c:if> value="높은가격">높은가격</option>
-							<option <c:if test="${param.filterType eq '낮은가격'}">selected</c:if> value="낮은가격">낮은가격</option>
-						</select>
-						
-						<%-- 추후 개발 예정 --%>
-						<select name="region">
-							<option value="">지역 선택</option>
-							<option <c:if test="${param.region eq '서울'}">selected</c:if> value="서울">서울</option>
-							<option <c:if test="${param.region eq '인천'}">selected</c:if> value="인천">인천</option>
-							<option <c:if test="${param.region eq '대전'}">selected</c:if> value="대전">대전</option>
-							<option <c:if test="${param.region eq '대구'}">selected</c:if> value="대전">대구</option>
-							<option <c:if test="${param.region eq '울산'}">selected</c:if> value="울산">울산</option>
-							<option <c:if test="${param.region eq '부산'}">selected</c:if> value="울산">부산</option>
-							<option <c:if test="${param.region eq '광주'}">selected</c:if> value="광주">광주</option>
-							<option <c:if test="${param.region eq '세종'}">selected</c:if> value="새종">세종</option>
-						</select>
-						
-						<select id="categorySelect" onchange="filterByCategory()">
-							<option value="">카테고리 선택</option>
-							<c:forEach var="parentCat" items="${parentCategories}">
-								<option value="${parentCat.categoryIdx}">
-									${fn:substringAfter(parentCat.categoryIdx, 'CT_')}
-								</option>
-							</c:forEach>
-						</select>
-						
-						<%-- 추후 개발 예정 --%>
-						<div>
-							<label for="price" style="font-size: 12px">상한 금액: 0원</label>
-						  <input type="range" id="price" name="price" min="0" max="5000000" step="50000" style="width: 300px;"/>
-						  <label for="price" style="font-size: 12px">5,000,000원</label><br>
-						  <div style="text-align: center;"><p>금액: <output id="value"></output>원</p></div>
-						</div>
-			
-						<input type="submit" value="검색"  />
-					</form>
-				</div>
-<!-- 	==============================================================				 -->
-
-
+							<input type="submit" value="검색"  />
+						</form>
+					</div>
 					
 					<%-- 기업 유저의 경우 강의 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">
@@ -146,6 +138,7 @@
 							<th>제목</th>
 							<th>일자</th>
 							<th>장소</th>
+							<th>수강료</th>
 							<th colspan="2">진행상태</th>
 						</tr>
 					</thead>
@@ -165,6 +158,7 @@
 									</td>
 									<td>${classItem.startDate} ~ ${classItem.endDate}</td>
 									<td>${classItem.location}</td>
+									<td><fmt:formatNumber value="${classItem.classPrice}" type="number" maxFractionDigits="0"/>원</td>
 									<td class="status-cell">
 										<c:choose>
 											<%-- 신청가능한 강의이면서 일반 유저일 경우 예약 버튼 활성화 --%>
@@ -208,7 +202,7 @@
 				<section id="pageList">
 					<c:if test="${not empty pageInfoDTO.maxPage or pageInfoDTO.maxPage > 0}">
 						<input type="button" value="이전" 
-							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum - 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}'" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum - 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}&categoryIdx=${param.categoryIdx}&filterType=${param.filterType}&region=${param.region}&price=${param.price}'" 
 							<c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>
 						>
 						
@@ -218,13 +212,13 @@
 									<strong>${i}</strong>
 								</c:when>
 								<c:otherwise>
-									<a href="/course/user/classList?pageNum=${i}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}">${i}</a>
+									<a href="/course/user/classList?pageNum=${i}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}&categoryIdx=${param.categoryIdx}&filterType=${param.filterType}&region=${param.region}&price=${param.price}">${i}</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						
 						<input type="button" value="다음" 
-							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum + 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}'" 
+							onclick="location.href='/course/user/classList?pageNum=${pageInfoDTO.pageNum + 1}&classType=${param.classType}&searchClassKeyword=${param.searchClassKeyword}&categoryIdx=${param.categoryIdx}&filterType=${param.filterType}&region=${param.region}&price=${param.price}'" 
 							<c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>
 						>
 					</c:if>

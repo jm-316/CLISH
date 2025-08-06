@@ -54,15 +54,14 @@ public class UserClassController {
 		// 검색어 앞 뒤 공백 제거
 		searchClassKeyword = searchClassKeyword.trim();
 		
-		// 페이징 처리
-		int listLimit = 2;
-		int listCount = userClassService.getClassListCount(searchType, searchClassKeyword);
+		int listLimit = 3; // 한 페이지에 보이는 최대 갯수
+		int listCount = userClassService.getClassListCount(searchType, searchClassKeyword, categoryIdx, classType); // 총 조회된 클래스 갯수
+		
+		System.out.println("searchType : " + searchType);
 		
 		if(listCount > 0) {
 			// 페이징 정보를 관리하는 PageInfoDTO 객체 생성 및 계산 결과 저장
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, listCount, pageNum, 3);
-			System.out.println("pageInfoDTO : " + pageInfoDTO);
-			
 			if(pageNum < 1 || pageNum > pageInfoDTO.getMaxPage()) {
 				model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 				model.addAttribute("targetURL", "/user/classList"); // 기본 페이지가 1페이지이므로 페이지 파라미터 불필요
@@ -71,9 +70,9 @@ public class UserClassController {
 			
 			// Model 객체에 PageInfoDTO 객체 저장
 			model.addAttribute("pageInfoDTO", pageInfoDTO);
-			// ---------------------------------------------------
+			
 			// 클래스 리스트를 불러올 List<ClassDTO> 객체 생성
-			List<ClassDTO> classList = userClassService.getClassList(pageInfoDTO.getStartRow(), listLimit, classType, categoryIdx, searchType, searchClassKeyword);
+			List<ClassDTO> classList = userClassService.getClassList(pageInfoDTO.getStartRow(), listLimit, searchType, searchClassKeyword, categoryIdx, classType);
 			
 			// Model 객체에 조회된 게시물 목록 정보(List 객체) 저장
 			model.addAttribute("classList", classList);
@@ -95,6 +94,14 @@ public class UserClassController {
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
+		LocalDate start = classInfo.getStartDate(); // LocalDate 타입일 경우
+		LocalDate applyEnd = start.minusDays(1);
+		int daysValue = classInfo.getClassDays();
+		
+		String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
+		int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
+		
+		
 		
 		// 커리큘럼 리스트를 불러올 List<ClassDTO> 객체 생성 
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);
@@ -122,6 +129,7 @@ public class UserClassController {
 		model.addAttribute("classInfo", classInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("curriculumList", curriculumList);
+		model.addAttribute("applyEndDate", applyEnd);
 		
 		return "/course/user/course_detail";
 	}
@@ -185,6 +193,8 @@ public class UserClassController {
 	public int getReservationCount(@RequestParam("date") String date) {
 	    // 날짜를 LocalDate로 변환
 	    LocalDate localDate = LocalDate.parse(date);
+	    
+	    System.out.println("localDate : " + localDate);
 
 	    // 서비스에서 해당 날짜의 예약 수 조회
 	    return userClassService.getReservationCountByDate(localDate);
@@ -193,14 +203,15 @@ public class UserClassController {
 	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("/user/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO, ClassDTO classDTO,
-			@RequestParam("reservationClassDateRe")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+			@RequestParam("reservationClassDateRe")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+			@RequestParam("reservationMembers")int reservationMembers) {
 		
 		classDTO = companyClassService.getClassInfo(classDTO.getClassIdx()); // class 정보
 	    LocalDate startDate = classDTO.getStartDate(); // 클래스 시작일
 	    LocalDate endDate   = classDTO.getEndDate(); // 클래스 마감일
 
 	    int total = classDTO.getClassMember(); // 전체 강의 예약 인원 
-	    int reservationMembers = userClassService.selectReservationMembers(classDTO.getClassIdx()); // 현재 예약 인원 
+	    int reservMembers = userClassService.selectReservationMembers(classDTO.getClassIdx()); // 현재 예약 인원 
 	    
 	    // 신청 가능 날짜인지 검사 
 	    if (date.isBefore(startDate) || date.isAfter(endDate)) {
@@ -209,11 +220,11 @@ public class UserClassController {
 	    }
 	    
 	    // 예약 가능한지 검사
-	    if(total <= reservationMembers) {
+	    if(total <= reservMembers) {
 	    	model.addAttribute("msg", "예약인원이 가득차서 예약할 수 없습니다.");
 	    	return "/commons/fail";
-	    } else if(reservationMembers < 0) {
-	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력해주세요.");
+	    } else if(reservMembers <= 0 || reservationMembers > total) {
+	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력하시거나 너무 많은 인원을 입력하셨습니다.");
 	    	return "/commons/fail";
 	    }
 	    

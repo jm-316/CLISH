@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html lang="ko">
  	 <head>
@@ -35,7 +36,10 @@
 		</header>
 		
 		<main id="container">
-	
+			<fmt:parseDate var="reservationClassDate" 
+									value="${reservationClassInfo.reservation_class_date}"
+									pattern="yyyy-MM-dd'T'HH:mm"
+									type="both" />
 			<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
 		
 			<div id="main">
@@ -48,7 +52,7 @@
 							<td><input type="text" value="${reservationClassInfo.class_title }" name="classTitle" readonly></td>
 						</tr><tr>
 							<th>수업 일</th>
-							<td><input type="text" value="${reservationClassInfo.reservation_class_date}" readonly></td>
+							<td><input type="text" value="<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/>" readonly></td>
 						</tr><tr>
 							<th>주문 번호</th>
 							<td><input type="text" value="${reservationClassInfo.reservation_idx}"name="reservationIdx" readonly></td>
