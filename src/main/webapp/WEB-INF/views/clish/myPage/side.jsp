@@ -14,9 +14,9 @@
 </style>
 
 <div id="side" >
-	<div class="title-fixed" id="userProfileHeader">
-		<h1 ><a href="/myPage/main">${sessionScope.sId}'s page</a></h1>
-	</div>
+		<div class="title-fixed" id="userProfileHeader">
+			<h1 ><a href="/myPage/main">${sessionScope.sId}'s page</a></h1>
+		</div>
 	<input type="button" value="정보변경" class="slide_btn" onclick="location.href='/myPage/change_user_info'"><br>
 <!-- 	<input type="button" value="즐겨찾기" class="slide_btn" onclick="location.href='/myPage/favoriteClass'"><br> -->
 	<input type="button" value="예약/결제" class="slide_btn" onclick="location.href='/myPage/payment_info'"><br>
@@ -33,7 +33,8 @@
 		.then(res => res.json())
 		.then(data => {
 			const header = document.getElementById('userProfileHeader');
-			
+			const link = document.createElement('a');
+			link.href = '/myPage/main';
 			const img = document.createElement('img');
 			img.src = data.src;
 	        img.alt = '프로필 이미지';
@@ -43,9 +44,11 @@
 	        img.style.marginRight = '10px';
 	        img.style.verticalAlign = 'middle';
 	        
-	        header.append(img);
+	        link.appendChild(img);
+	        
+	        header.appendChild(link);
 			
-		}).catch(err => console.log("에러에러"));
+		}).catch(err => console.log("프로필이미지를 불러올 수 없습니다."));
 		
 		const buttons = document.querySelectorAll('.slide_btn');
 		
