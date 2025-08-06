@@ -329,16 +329,16 @@
 			const start = startDateInput.value;
 			
 			if (type === '1') {
-				endDateInput.disabled = true;
+				endDateInput.readOnly = true;
 				endDateInput.value = startDateInput.value;
 			} else {
-				endDateInput.disabled = false;
+				endDateInput.readOnly = false;
 			}
 		});
 
 		// 페이지 로딩 시 초기 상태 반영
 		if (classTypeSelect.value === '1') {
-			endDateInput.disabled = true;
+			endDateInput.readOnly = true;
 			endDateInput.value = startDateInput.value;
 		}
 	});

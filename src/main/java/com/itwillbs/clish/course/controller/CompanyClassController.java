@@ -285,6 +285,10 @@ public class CompanyClassController {
 	    LocalDate startDate = classInfo.getStartDate();
 	    LocalDate endDate = classInfo.getEndDate();
 	    int classType = classInfo.getClassType(); // 0: 정기, 1: 단기
+	    
+	    System.out.println("🟡 startDate: " + startDate);  // 실제 서버에 들어온 값
+	    System.out.println("🟡 endDate: " + endDate);
+	    System.out.println("🟡 isEqual: " + startDate.isEqual(endDate));
 
 	    if (startDate == null || startDate.isBefore(minStartDate)) {
 	        model.addAttribute("msg", "시작일은 오늘 이후로만 설정할 수 있습니다.");
@@ -293,7 +297,7 @@ public class CompanyClassController {
 	    }
 
 	    if (classType == 1) { // 단기 강의
-	        if (!startDate.equals(endDate)) {
+	        if (startDate == null || endDate == null || !startDate.isEqual(endDate)) {
 	            model.addAttribute("msg", "단기 강의는 시작일과 종료일이 같아야 합니다.");
 	            model.addAttribute("targetURL", "/company/myPage/modifyClass?classIdx=" + classIdx);
 	            return "commons/result_process";
