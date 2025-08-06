@@ -49,6 +49,34 @@ public class CompanyInfoController {
 		return "company/companyCheckPw";
 	}
 	
+	// 비밀번호 확인 일치시 수정페이지로 불일치시 비밀번호가 틀렸습니다 메시지
+	@PostMapping("/myPage/companyInfo")
+	public String companyInfoForm(UserDTO user, HttpSession session, Model model) {
+		// 로그인한 기업회원 정보 조회
+		String inputPw = user.getUserPassword();
+		
+		// 세션에서 userId 설정
+		user.setUserId((String) session.getAttribute("sId"));
+		
+		// DB에서 암호화된 비번 포함한 기업회원 정보 조회
+		user = companyInfoService.getUserInfo(user);
+		
+		
+		// 비밀번호 검증 (암호화된 비번 비교)
+		if (user != null && companyInfoService.matchesPassword(inputPw, user.getUserPassword())) {
+			model.addAttribute("user", user);
+			
+			CompanyDTO company = companyInfoService.getCompanyInfo(user.getUserIdx());
+			model.addAttribute("company", company);
+			
+			return "company/companyInfo";
+		}
+		
+		model.addAttribute("msg", "비밀번호가 틀렸습니다.");
+		model.addAttribute("targetUrl", "/company/myPage/companyCheckPw");
+		return "commons/result_process";
+	}
+	
 	// 기업전화번호 중복 확인 
 	@GetMapping("/myPage/checkPhone")
 	@ResponseBody
@@ -59,33 +87,6 @@ public class CompanyInfoController {
 	    return String.valueOf(isDuplicate); // "true" 또는 "false" 문자열로 반환
 	}
 	
-	// 비밀번호 확인 일치시 수정페이지로 불일치시 비밀번호가 틀렸습니다 메시지
-	@PostMapping("/myPage/companyInfo")
-	public String companyInfoForm(UserDTO user, HttpSession session, Model model) {
-		// 로그인한 기업회원 정보 조회
-		String inputPw = user.getUserPassword();
-		
-		// 세션에서 userId 설정
-	    user.setUserId((String) session.getAttribute("sId"));
-	    
-	    // DB에서 암호화된 비번 포함한 기업회원 정보 조회
-	    user = companyInfoService.getUserInfo(user);
-		
-
-	    // 비밀번호 검증 (암호화된 비번 비교)
-	    if (user != null && companyInfoService.matchesPassword(inputPw, user.getUserPassword())) {
-	        model.addAttribute("user", user);
-	        
-	        CompanyDTO company = companyInfoService.getCompanyInfo(user.getUserIdx());
-	        model.addAttribute("company", company);
-	        
-	        return "company/companyInfo";
-	    }
-	    
-	    model.addAttribute("msg", "비밀번호가 틀렸습니다.");
-	    model.addAttribute("targetUrl", "/company/myPage/companyCheckPw");
-	    return "commons/result_process";
-	}
 	
 	@PostMapping("/myPage/companyInfoSubmit")
 	// 수정정보 UPDATE문 으로 반영 후 메인페이지로 이동
