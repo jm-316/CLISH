@@ -66,18 +66,26 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${course.classLength}  일</p>
 					</div>
 
 					<div class="content-fragment fragment-body">
 						<p class="description-text">${course.classIntro}</p>
 					</div>
 					<div class="content-fragment fragment-body">
-						<p class=" orange-tag">${course.location}</p>
+						<p class=" orange-tag">
+						<script type="text/javascript">
+						(function () {
+							let location = "${course.location}"
+							let shortenedLocation = location.slice(0, 2);
+		 					document.write(shortenedLocation);
+						})();
+						</script></p>
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<span class="meta-text">	
+						<span class="meta-text">
+							
 						<script type="text/javascript">
 							(function () {
 			 					let coursePrice = "${course.classPrice}";
@@ -153,7 +161,7 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${course.classLength}  일</p>
 					</div>
 
 					<div class="content-fragment fragment-body">
@@ -235,7 +243,7 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${course.classLength}  일</p>
 					</div>
 
 					<div class="content-fragment fragment-body">
@@ -317,7 +325,7 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${course.classLength}  일</p>
 					</div>
 
 					<div class="content-fragment fragment-body">
