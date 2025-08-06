@@ -81,7 +81,7 @@
 					</table>
 					<label for="file">첨부파일</label>
 						
-					<input type="file" class="custom-file-input" name="files" multiple>
+					<input type="file" class="custom-file-input" name="files" multiple accept="image/*">
 					
 					<c:forEach var="fileDTO" items="${reviewDTO.fileList}">
 						<div class="file_item">
@@ -150,6 +150,18 @@
 				      }
 				    });
 			    });
+			    
+			    document.querySelector('.custom-file-input').addEventListener('change', function(event) {
+					const files = event.target.files;
+					for (let i = 0; i < files.length; i++) {
+						if (!files[i].type.startsWith('image/')) {
+							alert('이미지 파일만 업로드 가능합니다.');
+							event.target.value = "";  // 파일 입력값 비움
+							return;
+						}
+					}					
+		    	});
+			    
 			});
 		</script>
 	</body>
