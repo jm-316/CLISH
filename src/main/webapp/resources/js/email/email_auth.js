@@ -164,7 +164,8 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
             if(data.foundId) {
                 onFindIdSuccess(data.foundId);
             } else {
-                alert("해당 이메일로 가입된 아이디를 찾을 수 없습니다.");
+				alert("해당 이메일로 가입된 아이디를 찾을 수 없습니다.");
+				window.close();
             }
         })
         .catch(() => {

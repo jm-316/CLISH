@@ -7,7 +7,10 @@ export function initPasswordChangeModule({formSelector, userId, userEmail}) {
     const submitBtn = form.querySelector(".pw-change-btn");
     const resultSpan = form.querySelector(".pw-change-result");
     const pwCheckResult = form.querySelector(".pw-check-result");
-    let isPwOk = false;
+    const pwCheckResult2 = form.querySelector(".pw-check-result2");
+    const pwChangeResult = form.querySelector(".pw-change-result");
+	let isPwOk = false;
+	let isPw2Ok = false;
 
     // 비밀번호 유효성 검사 및 안전도
     pw1.onblur = function() {
@@ -23,7 +26,27 @@ export function initPasswordChangeModule({formSelector, userId, userEmail}) {
             isPwOk = true;
         }
     };
-
+	
+	// pw1 = pw2 확인
+	pw2.addEventListener('input', function() {
+        const pwd1 = pw1.value;
+        const pwd2 = pw2.value;
+        if(pwd2.length === 0) {
+            pwCheckResult2.innerText = '';
+            isPw2Ok = false;
+            return;
+        }
+        if(pwd1 === pwd2) {
+            pwCheckResult2.innerText = '비밀번호 일치';
+            pwCheckResult2.style.color = 'green';
+            isPw2Ok = true;
+        } else {
+            pwCheckResult2.innerText = '비밀번호 불일치';
+            pwCheckResult2.style.color = 'red';
+            isPw2Ok = false;
+        }
+    });
+	
     submitBtn.onclick = function() {
         const pwVal1 = pw1.value.trim();
         const pwVal2 = pw2.value.trim();
