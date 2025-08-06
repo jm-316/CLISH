@@ -279,6 +279,34 @@ public class CompanyClassController {
 		}
 		classInfo.setClassDays(classDays); // DTO에 설정
 		
+		// 날짜 유효성 검사 추가
+	    LocalDate today = LocalDate.now();
+	    LocalDate minStartDate = today.plusDays(1);
+	    LocalDate startDate = classInfo.getStartDate();
+	    LocalDate endDate = classInfo.getEndDate();
+	    int classType = classInfo.getClassType(); // 0: 정기, 1: 단기
+
+	    if (startDate == null || startDate.isBefore(minStartDate)) {
+	        model.addAttribute("msg", "시작일은 오늘 이후로만 설정할 수 있습니다.");
+	        model.addAttribute("targetURL", "/company/myPage/modifyClass?classIdx=" + classIdx);
+	        return "commons/result_process";
+	    }
+
+	    if (classType == 1) { // 단기 강의
+	        if (!startDate.equals(endDate)) {
+	            model.addAttribute("msg", "단기 강의는 시작일과 종료일이 같아야 합니다.");
+	            model.addAttribute("targetURL", "/company/myPage/modifyClass?classIdx=" + classIdx);
+	            return "commons/result_process";
+	        }
+	    } else if (classType == 0) { // 정기 강의
+	    	if (endDate == null || !endDate.isAfter(startDate)) {
+	            model.addAttribute("msg", "정기 강의의 종료일은 시작일보다 이후여야 합니다.");
+	            model.addAttribute("targetURL", "/company/myPage/modifyClass?classIdx=" + classIdx);
+	            return "commons/result_process";
+	        }
+	    }
+		
+	    // 강의 정보 + 커리큘럼 수정 반영
 		int count = companyClassService.modifyClassInfo(classIdx, classInfo, curriculumList, session);	
 		
 		if (count > 0) {
