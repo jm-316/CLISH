@@ -61,8 +61,8 @@
 			<h3>커리큘럼</h3>
 			<div id="curri-area">
 			  <div class="curri-item">
-			    제목: <input type="text" name="curriculumTitle"><br>
-			    시간: <input type="text" name="curriculumRuntime"><br>
+			    제목: <input type="text" name="curriculumTitle" placeholder="1강. 커리큘럼 제목 입력"><br>
+			    시간: <input type="text" name="curriculumRuntime" placeholder="예: 1시간20분"><br>
 			  </div>
 			</div>
 			
@@ -110,7 +110,7 @@
 			<label><b>썸네일 업로드</b></label>
 			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*" required="required">
 			
-			<!-- 썸네일 미리보기 영역 -->
+			<!-- ✅ 썸네일 미리보기 영역 -->
 			<div id="preview-area" style="margin-top: 15px;"></div>
 			
 	        <div style="text-align: center; margin-top: 30px;">
@@ -121,14 +121,17 @@
 	    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
+		let curriculumCount = 1;
+		
 		function addCurriculum() {
 			const div = document.createElement('div');
 			div.classList.add("curri-item");
 			div.innerHTML = `
-			제목: <input type="text" name="curriculumTitle"><br>
-			시간: <input type="text" name="curriculumRuntime"><br><br>
+			제목: <input type="text" name="curriculumTitle" placeholder="${curriculumCount}강. 커리큘럼 제목 입력"><br>
+			시간: <input type="text" name="curriculumRuntime" name="curriculumRuntime" placeholder="예: 1시간20분"><br><br>
 			`;
 			document.getElementById("curri-area").appendChild(div);
+			curriculumCount++;
 		}
 		
 		// 썸네일 미리보기 기능
