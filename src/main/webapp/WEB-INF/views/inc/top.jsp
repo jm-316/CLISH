@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script type="text/javascript" src="/resources/js/home.js"></script>
 <section id="top-menu">
-  <a  href="/"><img id="logo" alt="logo" src="${pageContext.request.contextPath}/resources/images/logo4-2.png"></a>
+  <a  href="/"><img id="logo" alt="logo" src="/resources/images/logo4-2.png"></a>
   <nav>
       <ul id="flex-item2" class="flex-item2">
           <li>
