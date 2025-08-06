@@ -36,7 +36,7 @@ public class AdminEventController {
 			@RequestParam( defaultValue = "1") int pageNum, 
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword) {
-		int listLimit = 5;
+		int listLimit = 10;
 		int eventCount = adminEventService.getEventCount(searchType, searchKeyword);
 		
 		if (eventCount > 0) {

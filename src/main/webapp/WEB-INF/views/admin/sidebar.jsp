@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<nav class="navbar">
@@ -17,7 +17,7 @@
 	   	   		<a href="/admin/main">MAIN</a>
 	   	    </li>
 	       <li>
-	       		<span><a href="/admin/classList">강의 관리</a></span>
+	       		<span><a href="/admin/classList" style="color: black;">강의 관리</a></span>
 	       		<ul>
 	       			<li>
 	       				<a href="/admin/category">카테고리 편집</a>
@@ -26,7 +26,7 @@
 	       		</ul>
 	       	</li>
 	     	<li>
-	           <span>회원 관리</span>
+	           <span><a href="/admin/user" style="color: black;">회원 관리</a></span>
 	           <ul>
 	             <li>
 	               <a href="/admin/user">일반 회원 목록</a>
@@ -35,7 +35,7 @@
 	           </ul>
 			</li>
 			<li>
-				<span>결제 관리</span>
+				<span><a href="/admin/paymentList" style="color: black;">결제 관리</a></span>
 				<ul>
 					<li>
 						<a href="/admin/paymentList">결제 목록</a>

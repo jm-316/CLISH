@@ -60,9 +60,11 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
-	<nav>
-		<jsp:include page="/WEB-INF/views/event/sidebar.jsp" />
-	</nav>
+	<!-- 	only one link so removed for now -->
+	
+<!-- 	<nav> -->
+<%-- 		<jsp:include page="/WEB-INF/views/event/sidebar.jsp" /> --%>
+<!-- 	</nav> -->
 	<main>
 	
 		<section id="event-details">
@@ -73,7 +75,7 @@
 			<hr>
 			<h3>제목: <span id="title">${eventDTO.eventTitle}</span></h3>
 			<div id="flex-container2">
-				<c:choose>
+				<c:choose>	
 				    <c:when test="${empty eventBanner.fileId}">
 				        <img class="img" src="${pageContext.request.contextPath}/resources/images/logo4-2.png" alt="${eventDTO.eventTitle}" >
 				    </c:when>
