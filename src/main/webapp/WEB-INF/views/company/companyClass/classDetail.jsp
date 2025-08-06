@@ -66,7 +66,7 @@
 					    <td>
 					        <c:if test="${not empty classInfo.fileList}">
 							    <c:forEach var="file" items="${classInfo.fileList}">
-							        <img src="${pageContext.request.contextPath}/resources/upload/${file.subDir}/${file.realFileName}" width="200" />
+							        <img src="/file/${file.fileId}?type=0"  width="200" />
 							        <br>
 							        <span>${file.originalFileName}</span>
 							    </c:forEach>
