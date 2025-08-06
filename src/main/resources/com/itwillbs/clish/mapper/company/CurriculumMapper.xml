@@ -19,6 +19,7 @@
 		SELECT *
 		FROM CURRICULUM
 		WHERE class_idx = #{classIdx}
+		ORDER BY CAST(SUBSTRING_INDEX(curriculum_title, '강', 1) AS UNSIGNED)
 	</select>
 	
 	<!-- 수정페이지에서 커리큘럼 내용 수정 -->
