@@ -117,11 +117,6 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	        alert("인증 요청한 이메일과 일치하지 않습니다.");
 	        return;
 	    }
-
-		if(options.purpose === "findLoginId") {
-//			console.log("testing");
-			startFindLoginId(email);
-		}
 		
 		fetch(`/email/check?email=${encodeURIComponent(email)}`)
 		.then(res => res.json())
@@ -129,6 +124,11 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 			if(data.verified) {
 				resultSpan.innerText = "이메일 인증 완료!";
 				resultSpan.style.color = "green";
+				
+				if(options.purpose === "findLoginId") {
+					console.log("testing1111");
+					startFindLoginId(email);
+				}
 				
 				emailInput.readOnly = true;
 				verifyBtn.disabled = true;

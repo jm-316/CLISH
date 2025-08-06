@@ -42,6 +42,9 @@ public class ClassDTO implements FileUploadHelpper{
 	private String classIntro; // 소개글
 	private String classContent; // 상세내용
 	private String classPic1; // 썸네일
+	
+	private int classLength; // classLength mySQL = TIMESTAMPDIFF(DAY, start_date, end_date) as class_length
+	
 	private List<FileDTO> fileList;
 	private MultipartFile[] files;
 	

@@ -2,6 +2,7 @@ package com.itwillbs.clish.home.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.clish.admin.dto.CategoryDTO;
-import com.itwillbs.clish.admin.dto.EventDTO;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.admin.dto.SupportDTO;
@@ -32,6 +32,7 @@ import com.itwillbs.clish.admin.service.CategoryService;
 import com.itwillbs.clish.admin.service.NotificationService;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.file.FileDTO;
+import com.itwillbs.clish.common.file.FileService;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.home.service.MainService;
@@ -49,6 +50,7 @@ public class MainController {
 	private final AdminCustomerService adminCustomerService;
 	private final NotificationService notificationService;
 	private final UserService userService;
+	private final FileService fileService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -73,6 +75,36 @@ public class MainController {
 		model.addAttribute("classList2", classList2);
 		model.addAttribute("classListLongLatest", classListLongLatest);
 		model.addAttribute("classListShortLatest", classListShortLatest);
+		
+		int listSize = classList.size();
+		int listSize2 = classList2.size();
+		int listSize3 = classListLongLatest.size();
+		int listSize4 = classListShortLatest.size();
+		model.addAttribute("listSize", listSize);
+		model.addAttribute("listSize2", listSize2);
+		model.addAttribute("listSize3", listSize3);
+		model.addAttribute("listSize4", listSize4);
+		List<FileDTO> fileDTO = new ArrayList<FileDTO>();
+		for(int i = 0; i < listSize; i++) {
+			fileDTO.add(fileService.getFile(classList.get(i).getClassIdx(), "image"));	
+		}
+		List<FileDTO> fileDTO2 = new ArrayList<FileDTO>();
+		for(int i = 0; i < listSize2; i++) {
+			fileDTO2.add(fileService.getFile(classList2.get(i).getClassIdx(), "image"));	
+		}
+		List<FileDTO> fileDTO3 = new ArrayList<FileDTO>();
+		for(int i = 0; i < listSize3; i++) {
+			fileDTO3.add(fileService.getFile(classListLongLatest.get(i).getClassIdx(), "image"));	
+		}
+		List<FileDTO> fileDTO4 = new ArrayList<FileDTO>();
+		for(int i = 0; i < listSize4; i++) {
+			fileDTO4.add(fileService.getFile(classListShortLatest.get(i).getClassIdx(), "image"));	
+		}
+		model.addAttribute("fileDTO", fileDTO);
+		model.addAttribute("fileDTO2", fileDTO2);
+		model.addAttribute("fileDTO3", fileDTO2);
+		model.addAttribute("fileDTO4", fileDTO2);
+		System.out.println("fileDto : " + model.getAttribute("fileDTO"));
 		
 //		return "home";
 		return "main";

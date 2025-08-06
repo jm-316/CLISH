@@ -28,26 +28,25 @@
 			<div class="class-filter">
 				<button onclick="location.href='/course/user/classList?classType=0'">필터</button>
 				
-<!-- 				<button>높은 가격</button><button>낮은 가격</button> -->
 			</div>
 		</div>
 	</div>
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->
 	<div class="carousel">
 	<div class="carousel-track">
-		<c:forEach var="course" items="${classList2}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
+		<c:forEach var="i" begin="0" end="${listSize2 -1}">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${classList2.get(i).classIdx}&classType=${classList2.get(i).classType}&categoryIdx=${classList2.get(i).categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
-						<h3 class="content-text">${course.classTitle}</h3>
+						<h3 class="content-text">${classList2.get(i).classTitle}</h3>
 					</div>
 					<div class="small-thumbnail">  
 					<c:choose>
-					    <c:when test="${empty course.classPic1}">
-					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${course.classTitle}" >
+					    <c:when test="${empty fileDTO2.get(i).fileId}">
+					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${classList2.get(i).classTitle}" >
 					    </c:when>
 					    <c:otherwise>
-					        <img src="${course.classPic1}" alt="${course.classTitle}" >
+					        <img src="/file/${fileDTO2.get(i).fileId}?type=0" alt="${classList2.get(i).classTitle}" >
 					    </c:otherwise>
 					</c:choose>
 						
@@ -57,7 +56,7 @@
 						<span class="meta-text">	
 						<script type="text/javascript"> 
 							(function () {
-								let courseCategory = "${course.categoryIdx}";
+								let courseCategory = "${classList2.get(i).categoryIdx}";
 								let modifiedCategory = courseCategory.substring(3).replace(/_/g, " ");
 								document.write(modifiedCategory);
 							})();
@@ -66,21 +65,29 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${classList2.get(i).classLength} 일</p> 
 					</div>
 
 					<div class="content-fragment fragment-body">
-						<p class="description-text">${course.classIntro}</p>
+						<p class="description-text">${classList2.get(i).classIntro}</p>
 					</div>
 					<div class="content-fragment fragment-body">
-						<p class=" orange-tag">${course.location}</p>
+						<p class=" orange-tag">
+						<script type="text/javascript">
+						(function () {
+							let location = "${classList2.get(i).location}"
+							let shortenedLocation = location.slice(0, 2);
+		 					document.write(shortenedLocation);
+						})();
+						</script></p>
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<span class="meta-text">	
+						<span class="meta-text">
+							
 						<script type="text/javascript">
 							(function () {
-			 					let coursePrice = "${course.classPrice}";
+			 					let coursePrice = "${classList2.get(i).classPrice}";
 			 					let stopIndex = coursePrice.indexOf(".");
 			 					let modifiedPrice = coursePrice.substring(0, stopIndex);
 			 					let modifiedPriceComma = Number(modifiedPrice).toLocaleString('ko-KR');
@@ -122,19 +129,19 @@
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->
 	<div class="carousel">
 	<div class="carousel-track">
-		<c:forEach var="course" items="${classList}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
+		<c:forEach var="i" begin="0" end="${listSize -1}">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${classList.get(i).classIdx}&classType=${classList.get(i).classType}&categoryIdx=${classList.get(i).categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
-						<h3 class="content-text">${course.classTitle}</h3>
+						<h3 class="content-text">${classList.get(i).classTitle}</h3>
 					</div>
 					<div class="small-thumbnail">  
 					<c:choose>
-					    <c:when test="${empty course.classPic1}">
-					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${course.classTitle}" >
+					    <c:when test="${empty fileDTO.get(i).fileId}">
+					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${classList.get(i).classTitle}" >
 					    </c:when>
 					    <c:otherwise>
-					        <img src="${course.classPic1}" alt="${course.classTitle}" >
+					        <img src="/file/${fileDTO.get(i).fileId}?type=0" alt="${classList.get(i).classTitle}" >
 					    </c:otherwise>
 					</c:choose>
 						
@@ -144,7 +151,7 @@
 						<span class="meta-text">	
 						<script type="text/javascript"> 
 							(function () {
-								let courseCategory = "${course.categoryIdx}";
+								let courseCategory = "${classList.get(i).categoryIdx}";
 								let modifiedCategory = courseCategory.substring(3).replace(/_/g, " ");
 								document.write(modifiedCategory);
 							})();
@@ -153,21 +160,28 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${classList.get(i).classLength} 일</p> 
 					</div>
 
 					<div class="content-fragment fragment-body">
-						<p class="description-text">${course.classIntro}</p>
+						<p class="description-text">${classList.get(i).classIntro}</p>
 					</div>
 					<div class="content-fragment fragment-body">
-						<p class=" orange-tag">${course.location}</p>
+						<p class=" orange-tag">
+						<script type="text/javascript">
+							(function () {
+								let location = "${classList.get(i).location}"
+								let shortenedLocation = location.slice(0, 2);
+			 					document.write(shortenedLocation);
+							})();
+						</script></p>
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
 						<span class="meta-text">	
 						<script type="text/javascript">
 							(function () {
-			 					let coursePrice = "${course.classPrice}";
+			 					let coursePrice = "${classList.get(i).classPrice}";
 			 					let stopIndex = coursePrice.indexOf(".");
 			 					let modifiedPrice = coursePrice.substring(0, stopIndex);
 			 					let modifiedPriceComma = Number(modifiedPrice).toLocaleString('ko-KR');
@@ -204,19 +218,19 @@
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->
 	<div class="carousel">
 	<div class="carousel-track">
-		<c:forEach var="course" items="${classListLongLatest}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
+		<c:forEach var="i" begin="0" end="${listSize3 -1}">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${classListLongLatest.get(i).classIdx}&classType=${classListLongLatest.get(i).classType}&categoryIdx=${classListLongLatest.get(i).categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
-						<h3 class="content-text">${course.classTitle}</h3>
+						<h3 class="content-text">${classListLongLatest.get(i).classTitle}</h3>
 					</div>
 					<div class="small-thumbnail">  
 					<c:choose>
-					    <c:when test="${empty course.classPic1}">
-					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${course.classTitle}" >
+					    <c:when test="${empty fileDTO3.get(i).fileId}">
+					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${classListLongLatest.get(i).classTitle}" >
 					    </c:when>
 					    <c:otherwise>
-					        <img src="${course.classPic1}" alt="${course.classTitle}" >
+					        <img src="/file/${fileDTO3.get(i).fileId}?type=0" alt="${classListLongLatest.get(i).classTitle}" >
 					    </c:otherwise>
 					</c:choose>
 						
@@ -226,7 +240,7 @@
 						<span class="meta-text">	
 						<script type="text/javascript"> 
 							(function () {
-								let courseCategory = "${course.categoryIdx}";
+								let courseCategory = "${classListLongLatest.get(i).categoryIdx}";
 								let modifiedCategory = courseCategory.substring(3).replace(/_/g, " ");
 								document.write(modifiedCategory);
 							})();
@@ -235,21 +249,29 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${classListLongLatest.get(i).classLength} 일</p> 
 					</div>
 
 					<div class="content-fragment fragment-body">
-						<p class="description-text">${course.classIntro}</p>
+						<p class="description-text">${classListLongLatest.get(i).classIntro}</p>
 					</div>
 					<div class="content-fragment fragment-body">
-						<p class=" orange-tag">${course.location}</p>
+						<p class=" orange-tag">
+							<script type="text/javascript">
+								(function () {
+									let location = "${classListLongLatest.get(i).location}"
+									let shortenedLocation = location.slice(0, 2);
+				 					document.write(shortenedLocation);
+								})();
+							</script>
+						</p>
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
 						<span class="meta-text">	
 						<script type="text/javascript">
 							(function () {
-			 					let coursePrice = "${course.classPrice}";
+			 					let coursePrice = "${classListLongLatest.get(i).classPrice}";
 			 					let stopIndex = coursePrice.indexOf(".");
 			 					let modifiedPrice = coursePrice.substring(0, stopIndex);
 			 					let modifiedPriceComma = Number(modifiedPrice).toLocaleString('ko-KR');
@@ -286,19 +308,19 @@
 <!-- 		carousel from: https://codepen.io/CalculateQuick/pen/qEEZRmN -->
 	<div class="carousel">
 	<div class="carousel-track">
-		<c:forEach var="course" items="${classListShortLatest}">
-			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${course.classIdx}&classType=${course.classType}&categoryIdx=${course.categoryIdx}'">
+		<c:forEach var="i" begin="0" end="${listSize4 -1}">
+			<article class="deconstructed-card" onclick="location.href='/course/user/classDetail?classIdx=${classListShortLatest.get(i).classIdx}&classType=${classListShortLatest.get(i).classType}&categoryIdx=${classListShortLatest.get(i).categoryIdx}'">
 	
 					<div class="content-fragment fragment-heading">
-						<h3 class="content-text">${course.classTitle}</h3>
+						<h3 class="content-text">${classListShortLatest.get(i).classTitle}</h3>
 					</div>
 					<div class="small-thumbnail">  
 					<c:choose>
-					    <c:when test="${empty course.classPic1}">
-					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${course.classTitle}" >
+					    <c:when test="${empty fileDTO4.get(i).fileId}">
+					        <img src="${pageContext.request.contextPath}/resources/images/example_thumbnail.jpg" alt="${classListShortLatest.get(i).classTitle}" >
 					    </c:when>
 					    <c:otherwise>
-					        <img src="${course.classPic1}" alt="${course.classTitle}" >
+					        <img src="/file/${fileDTO4.get(i).fileId}?type=0" alt="${classListShortLatest.get(i).classTitle}" >
 					    </c:otherwise>
 					</c:choose>
 						
@@ -308,7 +330,7 @@
 						<span class="meta-text">	
 						<script type="text/javascript"> 
 							(function () {
-								let courseCategory = "${course.categoryIdx}";
+								let courseCategory = "${classListShortLatest.get(i).categoryIdx}";
 								let modifiedCategory = courseCategory.substring(3).replace(/_/g, " ");
 								document.write(modifiedCategory);
 							})();
@@ -317,21 +339,29 @@
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
-						<p class="">강의 기간 : ${course.classDays}  일</p>
+						<p class="">강의 기간 : ${classListShortLatest.get(i).classLength} 일</p> 
 					</div>
 
 					<div class="content-fragment fragment-body">
-						<p class="description-text">${course.classIntro}</p>
+						<p class="description-text">${classListShortLatest.get(i).classIntro}</p>
 					</div>
 					<div class="content-fragment fragment-body">
-						<p class=" orange-tag">${course.location}</p>
+						<p class=" orange-tag">
+							<script type="text/javascript">
+								(function () {
+									let location = "${classListShortLatest.get(i).location}"
+									let shortenedLocation = location.slice(0, 2);
+				 					document.write(shortenedLocation);
+								})();
+							</script>
+						</p>
 					</div>
 					<div class="content-fragment fragment-meta">
 <!-- 						<div class="meta-line"></div> -->
 						<span class="meta-text">	
 						<script type="text/javascript">
 							(function () {
-			 					let coursePrice = "${course.classPrice}";
+			 					let coursePrice = "${classListShortLatest.get(i).classPrice}";
 			 					let stopIndex = coursePrice.indexOf(".");
 			 					let modifiedPrice = coursePrice.substring(0, stopIndex);
 			 					let modifiedPriceComma = Number(modifiedPrice).toLocaleString('ko-KR');

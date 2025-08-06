@@ -76,7 +76,7 @@ public class AdminUserController {
 		
 		searchKeyword = searchKeyword.trim();
 		
-		int listLimit = 5;
+		int listLimit = 10;
 		int listCount = adminService.getUserListCount(searchKeyword);
 		
 		if (listCount > 0) {
@@ -116,7 +116,7 @@ public class AdminUserController {
 		                  phone.substring(4, 8) + 
 		                  "****";
 		} else {
-		    maskedPhone = "잘못된 번호";
+		    maskedPhone = "";
 		}
 		
 		return maskedPhone;
@@ -149,7 +149,7 @@ public class AdminUserController {
 			Model model) {
 		searchKeyword = searchKeyword.trim();
 		
-		int listLimit = 5;
+		int listLimit = 10;
 		int listCount = adminService.getCompanyListCount(searchKeyword);
 		
 		if (listCount > 0) {

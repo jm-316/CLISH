@@ -36,7 +36,7 @@ public class AdminCustomerController {
 	public String notice(Model model, @RequestParam(defaultValue = "1") int pageNum, 
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword) {
-		int listLimit = 5;
+		int listLimit = 10;
 		int announcementCount = adminCustomerService.getAnnouncementCount(searchKeyword);
 		
 		if (announcementCount > 0) {
@@ -85,8 +85,6 @@ public class AdminCustomerController {
 	@PostMapping("/notice/modify")
 	public String noticeModify(SupportDTO supportDTO, Model model) throws IllegalStateException, IOException {
 		int update = adminCustomerService.modifySupport(supportDTO);
-		
-		System.out.println("supportDTO" + supportDTO);
 		
 		if (update > 0) {
 			model.addAttribute("msg", "공지사항을 수정했습니다.");
@@ -193,7 +191,7 @@ public class AdminCustomerController {
 	// 문의 리스트 
 	@GetMapping("/inquiry")
 	public String inquiryList(Model model, @RequestParam(defaultValue = "1") int pageNum) {
-		int listLimit = 5;
+		int listLimit = 10;
 		int inquiryCount = adminCustomerService.getInquiryCount();
 		
 		if (inquiryCount > 0) {

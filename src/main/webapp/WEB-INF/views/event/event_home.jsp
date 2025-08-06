@@ -40,9 +40,10 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include> 
 	</header>
-	<nav>
-		<jsp:include page="/WEB-INF/views/event/sidebar.jsp" />
-	</nav>
+<!-- 	only one link so removed for now -->
+<!-- 	<nav> -->
+<%-- 		<jsp:include page="/WEB-INF/views/event/sidebar.jsp" /> --%>
+<!-- 	</nav> -->
 	<main id="main" class="main">
 	<div class="main">
 		<div class="main-content">
@@ -62,7 +63,6 @@
 					</tr>
 				</thead>
 				<tbody>
-<%-- 					<c:set var="eventSize" value="${fn:length(eventList)}" /> --%>
 					
 					<c:forEach var="i" begin="0" end="${eventSize -1}">
 					

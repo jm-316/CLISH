@@ -38,7 +38,7 @@ body {
     display: block;
 }
 .findid-form input[type="email"] {
-    width: 100%;
+    width: 93%;
     padding: 9px 10px;
     font-size: 15px;
     border: 1px solid #d9d9d9;
@@ -114,7 +114,7 @@ body {
             if(window.opener) {
                 var userIdInput = window.opener.document.querySelector('input[name="userId"]');
                 if(userIdInput) userIdInput.value = foundId;
-                var rememberCheckbox = window.opener.document.querySelector('input[name="rememb	erId"]');
+                var rememberCheckbox = window.opener.document.querySelector('input[name="rememberId"]');
                 if(rememberCheckbox) rememberCheckbox.checked = true;
                 window.opener.document.cookie = "rememberId=" + encodeURIComponent(foundId) + ";path=/;max-age=2592000"; // 30일
             }

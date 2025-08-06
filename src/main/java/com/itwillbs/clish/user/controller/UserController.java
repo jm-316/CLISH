@@ -211,10 +211,10 @@ public class UserController {
 	// 아이디 찾기 AJAX 작동
 	@GetMapping("/findLoginId")
 	@ResponseBody
-	public Map<String, Object> findLoginId(@RequestParam String email) {
+	public Map<String, Object> findLoginId(@RequestParam String email, HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 		
-		// 1. 이메일로 아이디 찾기 (서비스/DAO/Mapper 등에서 실제 구현)
+		// 1. 이메일로 아이디 찾기
 		String foundId = userService.findUserIdByEmail(email);
 		
 		// 2. 결과 반환

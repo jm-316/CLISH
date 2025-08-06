@@ -56,16 +56,6 @@
 			  </select>
 			</div>
 	
-			<!-- 커리큘럼 등록 폼 (여러개 입력 가능) -->
-			<h3>커리큘럼</h3>
-			<div id="curri-area">
-			  <div class="curri-item">
-			    제목: <input type="text" name="curriculumTitle" placeholder="1강. 커리큘럼 제목 입력"><br>
-			    시간: <input type="text" name="curriculumRuntime" placeholder="예: 1시간20분"><br>
-			  </div>
-			</div>
-			
-			<button type="button" onclick="addCurriculum()" style="width: 100px;">커리큘럼 추가</button><br><br>
 			
 	        <label><b>수강료</b></label>
 	        <input type="number" name="classPrice" value="0" required>
@@ -112,9 +102,20 @@
 			<!-- ✅ 썸네일 미리보기 영역 -->
 			<div id="preview-area" style="margin-top: 15px;"></div>
 			
+			<!-- 커리큘럼 등록 폼 (여러개 입력 가능) -->
+			<h3>커리큘럼</h3>
+			<div id="curri-area">
+			  <div class="curri-item">
+			    제목: <input type="text" name="curriculumTitle" placeholder="1강. 커리큘럼 제목 입력"><br>
+			    시간: <input type="text" name="curriculumRuntime" placeholder="예: 1시간20분"><br>
+			  </div>
+			</div>
+			<button type="button" onclick="addCurriculum()" style="width: 100px;">커리큘럼 추가</button><br><br>
+	        
 	        <div style="text-align: center; margin-top: 30px;">
 	            <input type="submit" value="강의 개설 신청" class="orange-button big-button">
 	        </div>
+	        
 	    </form>
 	    
 	    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
