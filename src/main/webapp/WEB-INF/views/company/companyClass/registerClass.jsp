@@ -110,7 +110,7 @@
 			<label><b>썸네일 업로드</b></label>
 			<input type="file" name="files" id="thumbnailInput" multiple accept="image/*" required="required">
 			
-			<!-- ✅ 썸네일 미리보기 영역 -->
+			<!-- 썸네일 미리보기 영역 -->
 			<div id="preview-area" style="margin-top: 15px;"></div>
 			
 	        <div style="text-align: center; margin-top: 30px;">
@@ -177,7 +177,47 @@
 		  }).open();
 		});
 		</script>
+		<!-- 날짜 제약 관련 스크립트 -->
+		<script>
+		window.addEventListener('DOMContentLoaded', () => {
+		  const startDateInput = document.querySelector('input[name="startDate"]');
+		  const endDateInput = document.querySelector('input[name="endDate"]');
+		  const classTypeSelect = document.querySelector('select[name="classType"]');
+
+		  const today = new Date();
+		  today.setDate(today.getDate() + 1);
+		  const minDateStr = today.toISOString().split('T')[0];
+
+		  startDateInput.setAttribute('min', minDateStr);
+		  endDateInput.setAttribute('min', minDateStr);
+
+		  startDateInput.addEventListener('change', () => {
+		    const start = startDateInput.value;
+		    endDateInput.setAttribute('min', start);
+		    if (classTypeSelect.value === '1') {
+		      endDateInput.value = start;
+		    }
+		  });
+
+		  classTypeSelect.addEventListener('change', () => {
+		    const type = classTypeSelect.value;
+		    const start = startDateInput.value;
+		    if (type === '1') {
+		      endDateInput.disabled = true;
+		      endDateInput.value = start;
+		    } else {
+		      endDateInput.disabled = false;
+		    }
+		  });
+
+		  if (classTypeSelect.value === '1') {
+		    endDateInput.disabled = true;
+		    endDateInput.value = startDateInput.value;
+		  }
+		});
+		</script>
 	</section>
+	
 	<footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp" />
     </footer>

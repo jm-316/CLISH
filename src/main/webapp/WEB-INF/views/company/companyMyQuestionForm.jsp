@@ -50,6 +50,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin: 0px !important;
   }
 
   th, td {

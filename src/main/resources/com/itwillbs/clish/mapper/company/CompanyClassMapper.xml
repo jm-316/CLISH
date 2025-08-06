@@ -70,7 +70,7 @@
 	    JOIN CATEGORY CC ON C.CATEGORY_IDX = CC.CATEGORY_IDX
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
 	    WHERE C.USER_IDX = #{userIdx}
-	    AND C.CLASS_STATUS IN (2, 3)
+	    AND C.CLASS_STATUS IN (1, 2, 3)
 	</select>
 	
 	<!-- 단기 & 정기강의 조회 -->
@@ -84,7 +84,7 @@
 	    LEFT JOIN CATEGORY PC ON CC.PARENT_IDX = PC.CATEGORY_IDX
 		<where>
 			C.USER_IDX = #{userIdx}
-			AND C.CLASS_STATUS IN (2, 3)
+			AND C.CLASS_STATUS IN (1, 2, 3)
 		  
 			<if test="type == 'short'">
 				AND <![CDATA[Datediff(C.END_DATE, C.START_DATE) = 0]]>
