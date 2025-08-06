@@ -10,10 +10,10 @@
 <title>Clish - 이벤트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <!-- 강의 사이드바 css 활용 -->
-<link rel="stylesheet" href="/resources/css/course/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <style type="text/css">
  	#detail { 
 		padding: 20px;

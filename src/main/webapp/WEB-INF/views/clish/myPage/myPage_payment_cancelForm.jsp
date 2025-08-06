@@ -12,7 +12,7 @@
     <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
-    <link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
     
   </head>
   <body>

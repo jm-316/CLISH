@@ -9,8 +9,8 @@
 <title>예약수정</title>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 
-<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- jquery date picker -->

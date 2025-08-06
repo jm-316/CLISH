@@ -9,8 +9,8 @@
 <title>${reservationClassInfo.class_title} - 결제</title>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 
-<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
 <!-- jQuery와 포트원 결제 SDK 로드 -->
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- <script src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script> -->

@@ -14,8 +14,8 @@
     	<link rel="preconnect" href="https://fonts.googleapis.com" >
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Myeongjo&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap" rel="stylesheet">
-		<link href="/resources/css/home/top.css" rel="stylesheet" >
-		<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+		<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
     	<style>
 			.star {
 			  font-size: 30px;
@@ -28,7 +28,7 @@
 		</style>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     	<script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
-    	<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+    	<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<header>

@@ -6,9 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Clish - 대시보드</title>
-<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
-<link href="/resources/css/admin/dashboard.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin/dashboard.css" rel="stylesheet" type="text/css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 <script src="https://kit.fontawesome.com/a96e186b03.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>

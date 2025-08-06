@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link href="/resources/css/myPage.css" rel="stylesheet">
-<link href="/resources/css/home/top.css" rel="stylesheet" >
-<link rel="stylesheet" href="/resources/css/the_best_styles.css" >
+<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.slide_btn.active {

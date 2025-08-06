@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Clish - 강의목록</title>
 <link
-	href="/resources/css/admin/admin.css"
+	href="${pageContext.request.contextPath}/resources/css/admin/admin.css"
 	rel="stylesheet" type="text/css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>

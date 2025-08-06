@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>${classInfo.classTitle}</title>
 <link
-	href="/resources/css/admin/modal.css"
+	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
 </head>

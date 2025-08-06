@@ -8,7 +8,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/home/top.css" rel="stylesheet" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/main.css" >
-<link rel="stylesheet" href="/resources/css/course/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/sidebar.css">
 <title>${eventDTO.eventTitle}</title>
 <style>
 	h3 {

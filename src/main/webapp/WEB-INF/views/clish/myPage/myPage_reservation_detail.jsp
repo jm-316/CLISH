@@ -9,8 +9,8 @@
 <meta charset="UTF-8">
 <title>예약상세정보</title>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
-<link href="/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
-<link href="/resources/css/myPage.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/the_best_styles.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/myPage.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
