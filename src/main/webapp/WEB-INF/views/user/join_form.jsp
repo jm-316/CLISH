@@ -74,7 +74,7 @@
 					<tr>
 						<th><label for="userBirth"><c:if test="${sessionScope.userType == 1}">생년월일</c:if><c:if test="${sessionScope.userType == 2}">설립일</c:if></label></th>
 						<td>
-							<input type="date" name="userBirth" id="userBirth" required>
+							<input type="date" name="userBirth" id="userBirth" max="9999-12-31" required>
 							<span id="birthCheckResult"></span>
 						</td>
 					</tr>
