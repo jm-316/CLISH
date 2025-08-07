@@ -89,7 +89,7 @@
 									  <div style="text-align: center;"><p>금액: <output id="value"></output>원</p></div>
 									</div>
 						
-									<input type="submit" value="검색"  />
+									<input type="submit" value="정렬"  />
 								</form>
 							</div>
 							
