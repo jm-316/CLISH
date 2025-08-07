@@ -268,12 +268,13 @@ table button {
 /* filter */
 .filter-form {
 	display: flex;
-  	justify-content: space-between;
+  	justify-content: flex-start;
+  	gap: 20px;
   	align-items: center;
   	border: none;
   	background-color: #F3F6F9;
   	padding: 30px;
-  	height: 50px;
+  	height: 40px;
 }
 
 .filter-select {
