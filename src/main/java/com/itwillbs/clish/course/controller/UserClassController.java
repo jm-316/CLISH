@@ -1,5 +1,6 @@
 package com.itwillbs.clish.course.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,10 +12,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.clish.admin.service.AdminCustomerService;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.course.dto.ClassDTO;
@@ -22,6 +25,7 @@ import com.itwillbs.clish.course.dto.CurriculumDTO;
 import com.itwillbs.clish.course.service.CompanyClassService;
 import com.itwillbs.clish.course.service.CurriculumService;
 import com.itwillbs.clish.course.service.UserClassService;
+import com.itwillbs.clish.myPage.dto.InqueryDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
 import com.itwillbs.clish.myPage.dto.ReviewDTO;
 import com.itwillbs.clish.user.dto.UserDTO;
@@ -37,6 +41,7 @@ public class UserClassController {
 	private final UserClassService userClassService;
 	private final UserService userService;
 	private final CurriculumService curriculumService;
+	private final AdminCustomerService adminCustomerService;
 	
 	// 클래스 리스트
 	@GetMapping("/user/classList")
@@ -96,12 +101,6 @@ public class UserClassController {
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
 		LocalDate start = classInfo.getStartDate(); // LocalDate 타입일 경우
 		LocalDate applyEnd = start.minusDays(1);
-		int daysValue = classInfo.getClassDays();
-		
-		String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
-		int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
-		
-		
 		
 		// 커리큘럼 리스트를 불러올 List<ClassDTO> 객체 생성 
 		List<CurriculumDTO> curriculumList = curriculumService.getCurriculumList(classIdx);

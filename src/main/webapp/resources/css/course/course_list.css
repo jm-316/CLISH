@@ -308,4 +308,10 @@ ul.tabnav li a:hover {
   padding-left: 10px;
 }
 
+.class-open {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
 

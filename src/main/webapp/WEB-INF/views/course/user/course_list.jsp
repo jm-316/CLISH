@@ -118,7 +118,7 @@
 					
 					<%-- 기업 유저의 경우 강의 개설 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 2}">
-						<div class="class-filter">
+						<div class="class-open">
 			                <button class="orange-button"
 			                        onclick="location.href='${pageContext.request.contextPath}/company/myPage/registerClass'">
 			                    강의 개설
@@ -163,6 +163,12 @@
 									<td><fmt:formatNumber value="${classItem.classPrice}" type="number" maxFractionDigits="0"/>원</td>
 									<td class="status-cell">
 										<c:choose>
+											<c:when test="${userInfo.userIdx eq null}">
+											  <div class="status-box">
+												<span>오픈</span>
+											    <button onclick="location.href='/user/login'">예약</button>
+											  </div>
+											</c:when>
 											<%-- 신청가능한 강의이면서 일반 유저일 경우 예약 버튼 활성화 --%>
 											<c:when test="${classItem.classStatus == 2 and userInfo.userType eq 1}">
 											  <div class="status-box">

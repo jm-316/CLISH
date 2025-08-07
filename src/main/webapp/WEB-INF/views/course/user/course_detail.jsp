@@ -78,13 +78,22 @@
 		        강의 목록</button>
 		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
+		          <div class="status-box" style="padding-left: 10px;">
 					<button onclick="location.href='/customer/inquiry/write'">강의 문의</button>
 		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		            예약정보 입력</button>
+		          </div>
 		        </c:if>
 		        <%-- 정보 수정버튼은 기업 유저일 경우만 표시 --%>
 		        <c:if test="${userInfo.userType eq 2}">
+		          <div class="status-box" style="padding-left: 10px;">
 					<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">정보 수정</button>
+				  </div>
+				</c:if>
+				<c:if test="${userInfo.userIdx eq null}">
+				  <div class="status-box" style="padding-left: 10px;">
+				    <button onclick="location.href='/user/login'">예약</button>
+				  </div>
 				</c:if>
 		    </div>
 					
@@ -109,18 +118,7 @@
 				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
 				<b>신청 기간</b> : ${applyEndDate} <br>
 				<b>수강료</b> : <fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0"/>원<br>
-				<b>수업 요일</b> : <%--
-								    	int daysValue = Integer.parseInt(String.valueOf(classInfo.getClassDays()));
-				
-									    String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
-									    int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
-									
-									    for (int i = 0; i < bitValues.length; i++) {
-									        if ((daysValue & bitValues[i]) != 0) {
-									            out.print(dayNames[i] + " ");
-									        }
-									    }
-									--%><br>
+				<b>수업 요일</b> : ${classInfo.dayString}<br>
 			</section>
 		    
 			<section id="curriCulum" >

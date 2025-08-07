@@ -57,4 +57,18 @@ public class ClassDTO implements FileUploadHelpper{
 	public String getIdx() {
 		return classIdx;
 	}
+	
+	public String getDayString() {
+	    int daysValue = this.classDays; // 필드 값
+	    String[] dayNames = {"월", "화", "수", "목", "금", "토", "일"};
+	    int[] bitValues = {1, 2, 4, 8, 16, 32, 64};
+
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < bitValues.length; i++) {
+	        if ((daysValue & bitValues[i]) != 0) {
+	            sb.append(dayNames[i]).append(" ");
+	        }
+	    }
+	    return sb.toString().trim();
+	}
 }
