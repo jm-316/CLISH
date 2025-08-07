@@ -126,10 +126,10 @@ public class UserClassController {
 		}
 		
 		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classInfo", classInfo);
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("curriculumList", curriculumList);
-		model.addAttribute("applyEndDate", applyEnd);
+		model.addAttribute("classInfo", classInfo); // 클래스 정보
+		model.addAttribute("userInfo", userInfo); // 유저 정보
+		model.addAttribute("curriculumList", curriculumList); // 커리큘럼 목록
+		model.addAttribute("applyEndDate", applyEnd); // 신청 마감일
 		
 		return "/course/user/course_detail";
 	}
@@ -145,6 +145,8 @@ public class UserClassController {
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
+		LocalDate start = classInfo.getStartDate(); // LocalDate 타입일 경우
+		LocalDate applyEnd = start.minusDays(1);
 		
 		int total = classInfo.getClassMember(); // 전체 강의 예약 인원 
 	    int reservationMembers = userClassService.selectReservationMembers(classInfo.getClassIdx()); // 현재 예약 인원 
@@ -177,10 +179,11 @@ public class UserClassController {
 		}
 		
 		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classInfo", classInfo);
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("curriculumList", curriculumList);
-		model.addAttribute("availableMembers", availableMembers);
+		model.addAttribute("classInfo", classInfo); // 클래스 정보
+		model.addAttribute("userInfo", userInfo); // 유저 정보
+		model.addAttribute("curriculumList", curriculumList); // 커리큘럼 목록
+		model.addAttribute("availableMembers", availableMembers); // 예약 가능 인원
+		model.addAttribute("applyEndDate", applyEnd); // 신청 마감일
 		
 		return "/course/user/course_reservation";
 	}

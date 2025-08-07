@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,6 +116,10 @@
 			<section id="classDetail">
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
+				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
+				<b>신청 마감일</b> : ${applyEndDate} <br>
+				<b>수강료</b> : <fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0"/>원<br>
+				<b>수업 요일</b> : ${classInfo.dayString}<br>
 			</section>
 		    
 			<section id="curriCulum" >
