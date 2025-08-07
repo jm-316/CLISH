@@ -141,8 +141,8 @@ public class FileUtils {
 			String realPath = session.getServletContext().getRealPath(uploadPath); // 로컬작업용
 			
 			// 업로드 디렉토리의 파일 정보를 Path 객체로 가져오기
-//			Path path = Paths.get(realPath, fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
-			Path path = Paths.get(absolutePath.toString(), fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
+//			Path path = Paths.get(absolutePath.toString(), fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize(); // 서버업로드용
+			Path path = Paths.get(realPath, fileDTO.getSubDir()).resolve(fileDTO.getRealFileName()).normalize();
 			
 			// 해당 파일에 대한 Resource 객체 생성
 			Resource resource = new UrlResource(path.toUri());

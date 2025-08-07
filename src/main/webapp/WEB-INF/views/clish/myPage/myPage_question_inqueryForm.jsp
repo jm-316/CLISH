@@ -53,8 +53,11 @@
 					</tr>
 					<c:if test="${!empty inqueryDTO.classTitle }">
 						<tr>
-							<th>강의명</th>
-							<td colspan="3"> <input type="text" value="${inqueryDTO.classTitle }"></td>
+							<th style="white-space:nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">강의명</th>
+							<td colspan="3">
+								${inqueryDTO.classTitle }
+								<input type="hidden" value="${inqueryDTO.classTitle }" readonly>
+							</td>
 						</tr>
 					</c:if>
 		        	<tr>

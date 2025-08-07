@@ -46,17 +46,23 @@
 				<form action="/myPage/myReview/writeReview" method="post" enctype="multipart/form-data">
 					<input type="text" value="${reservationClassInfo.class_idx }" name="classIdx" hidden>
 					<input type="text" value="${reservationClassInfo.user_idx }" name="userIdx" hidden>
+					<input type="text" value="${reservationClassInfo.reservation_idx }" name="reservationIdx" hidden>
 					<table>
 						<tr>
 							<th>강의 명</th>
-							<td><input type="text" value="${reservationClassInfo.class_title }" name="classTitle" readonly></td>
-						</tr><tr>
+							<td>
+								<input type="hidden" value="${reservationClassInfo.class_title }" name="classTitle" readonly>
+								${reservationClassInfo.class_title }
+							</td>
+						</tr>
+						<tr>
 							<th>수업 일</th>
-							<td><input type="text" value="<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/>" readonly></td>
-						</tr><tr>
-							<th>주문 번호</th>
-							<td><input type="text" value="${reservationClassInfo.reservation_idx}"name="reservationIdx" readonly></td>
-						</tr><tr>
+							<td>
+								<input type="hidden" value="<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/>" readonly>
+								<fmt:formatDate value="${reservationClassDate}" pattern="yy-MM-dd "/>
+							</td>
+						</tr>
+						<tr>
 							<th>평가 점수</th>
 							<td>
 			<!-- 					<input type="text" placeholder="0점 ~ 5점" name="reviewScore" > -->
