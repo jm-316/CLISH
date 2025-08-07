@@ -27,8 +27,7 @@
 			<table style="margin-left: auto ; margin-right: auto;" >
 				<tr>
 					<th rowspan="5">
-						<img src="/resources/upload/${reservationClassInfo.sub_dir}/${reservationClassInfo.real_file_name}"
-						 alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
+						<img src="/file/${reservationClassInfo.file_id}?type=0" alt="${reservationClassInfo.original_file_name }" width="200px" height="250px" >
 					</th>
 					<th >${reservationClassInfo.class_title}</th>
 				</tr>
@@ -81,7 +80,7 @@
 <%-- 					<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}" --%>
 <%-- 					<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td> --%>
 					<td>
-						<input type="text" id="datepicker" value="${classDate}" 
+						<input type="text" id="datepicker" value="${classDate}" name="reservationClassDatePic"
 							required <c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>>
 						<input type="hidden" name="reservationClassDate" id="hiddenReservationClassDate" value="${classDate}">
 					</td>
@@ -158,6 +157,8 @@
 				dateFormat: 'yy-mm-dd', // 날짜 형식 설정 (선택)
 				onSelect: function(dateText) {
 					$("#hiddenReservationClassDate").val(dateText);
+					
+					reservationDateChanged();
 				}
 			});
 			
@@ -179,7 +180,7 @@
 		    });
 		 	
 		 	// 예약날자 변경시 작동
-		    $('input[name="reservationClassDate"]').on('change', function() {
+		    function reservationDateChanged() {
 		    	selectedReservationDateTime = getSelectedReservationDateTime();
 		    	
 		    	console.log('예약 날짜/시간 변경:', selectedReservationDateTime);
@@ -222,7 +223,7 @@
 		                console.error('fetch 에러:', error);
 		                alert('서버 통신 중 오류가 발생했습니다.');
 		            });
-		    });
+		    };
 		 
 		 
 		 
