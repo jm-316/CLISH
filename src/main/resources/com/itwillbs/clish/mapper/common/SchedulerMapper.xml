@@ -40,4 +40,17 @@
 		WHERE DATE_SUB(NOW(), INTERVAL 3 MONTH) > user_notice_created_at;
 	</delete>
 	
+	<!-- 이벤트 상태 업데이트 -->
+	<update id="updateAllEventStatus">
+		UPDATE
+			EVENT
+		SET
+			event_in_progress = 
+			CASE
+				WHEN event_in_progress = 0 THEN 0
+				WHEN CURRENT_DATE &lt; event_start_date THEN 2
+				WHEN CURRENT_DATE &gt; event_end_date THEN 0
+				ELSE 1
+			END
+	</update>
 </mapper>

@@ -30,6 +30,7 @@ public class SchedulerController {
     @Scheduled(cron = "0 0 0 * * ?")
     public void todoEveryDay() {
     	schedulerService.checkNotification();
+    	schedulerService.checkEventDate();
     }
     
     

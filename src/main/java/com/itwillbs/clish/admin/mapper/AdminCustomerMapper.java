@@ -1,7 +1,6 @@
 package com.itwillbs.clish.admin.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -42,7 +41,7 @@ public interface AdminCustomerMapper {
 	int selectCountAnnouncement(@Param("searchKeyword")String searchKeyword);
 
 	// 공지사항 리스트 (페이징)
-	List<SupportDTO> selectAnnouncements(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
+	List<SupportDTO> selectAnnouncementList(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 
 	// 1:1 문의 등록
 	int insertInquery(InqueryDTO inqueryDTO);

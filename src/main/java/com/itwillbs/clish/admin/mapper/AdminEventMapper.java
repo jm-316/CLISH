@@ -26,7 +26,4 @@ public interface AdminEventMapper {
 	// 이벤트 삭제
 	void deletedEvent(String idx);
 
-	// 이벤트 상태 업데이트
-	void updateAllEventStatus();
-
 }

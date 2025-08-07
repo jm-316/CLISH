@@ -50,9 +50,6 @@ public class AdminEventController {
 			model.addAttribute("pageInfo", pageInfoDTO);
 			model.addAttribute("pageNum", pageNum);
 			
-			// 이벤트 상태 최신화
-			adminEventService.updateAllEventStatus();
-			
 			List<EventDTO> eventList = adminEventService.getEvents(pageInfoDTO.getStartRow(), listLimit, searchType, searchKeyword);
 			model.addAttribute("eventList", eventList);
 		}
