@@ -79,7 +79,7 @@
 		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
 		          <div class="status-box" style="padding-left: 10px;">
-					<button onclick="location.href='/customer/inquiry/write'">강의 문의</button>
+					<button onclick="showAlert()">강의 문의</button>
 		            <button class="orange-button" onclick="location.href='/course/user/classReservation?classIdx=${classInfo.classIdx}&classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
 		            예약정보 입력</button>
 		          </div>
@@ -231,6 +231,10 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
+		function showAlert() {
+	      alert("서비스 준비중입니다.");
+	    }
+		
 		$(function(){
 			//평점보여주기
 			$(".star-rating").each(function() {

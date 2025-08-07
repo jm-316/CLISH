@@ -26,8 +26,7 @@
 		<h2>추천 정기 강의</h2>
 		<div id="class-filter-wrapper">
 			<div class="class-filter">
-				<button onclick="location.href='/course/user/classList?classType=0'">필터</button>
-				
+				<button onclick="location.href='/course/user/classList?classType=0'">정기 강의</button>
 			</div>
 		</div>
 	</div>
@@ -122,7 +121,7 @@
 		<h2>추천 단기 강의</h2>
 		<div id="class-filter-wrapper">
 			<div class="class-filter">
-					<button onclick="location.href='/course/user/classList?classType=1'">필터</button>			
+				<button onclick="location.href='/course/user/classList?classType=1'">단기 강의</button>			
 			</div>
 		</div>
 	</div>

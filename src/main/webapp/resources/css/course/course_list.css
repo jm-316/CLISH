@@ -314,4 +314,24 @@ ul.tabnav li a:hover {
   padding-left: 10px;
 }
 
+.class-filter-wrapper {
+  position: relative; /* 기준이 되는 부모 */
+  display: inline-block;
+}
+
+#class-main-filter {
+  display: none;
+  position: absolute;
+  top: 100%; /* 버튼 바로 아래 */
+  right: 0;
+  z-index: 9999;
+  width: 500px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+
 

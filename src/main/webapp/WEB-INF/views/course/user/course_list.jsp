@@ -17,32 +17,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_list.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
-<script>
-	window.onload = () => {
-		// when filter button is clicked filter options are shown and hidden when clicked again	
-		//필터 버튼을 클릭하면 필터 옵션이 표시되고 다시 클릭하면 숨겨집니다.
-		const filterButton = document.getElementById("filter-button");
-		
-		filterButton.addEventListener("click", () => {
-		  const filterArea = document.getElementById("main-filter");
-		  
-		  if (filterArea.style.display === "block") {
-		    filterArea.style.display = "none"; // Hide it
-		  } else {
-		    filterArea.style.display = "block"; // Show it
-		  }
-		});
-	}
-	
-	// 슬라이더 값을 보여주는 자바스크립트
-	const value = document.querySelector("#value");
-	const input = document.querySelector("#price");
-	value.textContent = input.value;
-	input.addEventListener("input", (event) => {
-		let newValue = event.target.value
-	  value.textContent = newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
-	});
-</script>
 </head>
 <body>
 	<header>
@@ -64,12 +38,13 @@
 							<input type="submit" value="검색" />
 						</form>
 					</div>
+					
 						
 					<div class="class-filter">
-						<button id="filter-button">필터</button>	
-					</div>
+						<button id="class-filter-button">필터</button>	
+					</div>	
 					
-					<div id="main-filter" style="display: none; width: 500px; position: absolute; right: 50px; z-index: 100; margin-top: 50px;">
+					<div id="class-main-filter" style="display: none; width: auto; position: absolute;; right: 50px; z-index: 100; margin-top: 50px;">
 						<form action="/course/user/classList" method="get" style="border-radius: 30px;">
 							<input type="hidden" name="classType" value="${param.classType}">
 							
@@ -237,5 +212,29 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include> 
 	</footer>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			const filterButton = document.getElementById("class-filter-button");
+			const filterArea = document.getElementById("class-main-filter");
+	
+			if (filterButton && filterArea) {
+				filterButton.addEventListener("click", () => {
+					filterArea.style.display = (filterArea.style.display === "block") ? "none" : "block";
+				});
+			}
+			
+			// 슬라이더 값 표시
+			const value = document.querySelector("#value");
+			const input = document.querySelector("#price");
+			if (value && input) {
+				value.textContent = input.value;
+				input.addEventListener("input", (event) => {
+					let newValue = event.target.value;
+					value.textContent = newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				});
+			}
+		});
+	</script>
 </body>
 </html>
