@@ -1,6 +1,8 @@
 export function initJoinForm() {
 //	console.log('initJoinForm 실행됨');
 	// const값 모음
+	const userType = document.querySelector('input[name="userType"]').value;
+	const bizFileInput = document.getElementById('bizFile');
 	const nicknameInput = document.getElementById('userRepName');
 	const resultSpan = document.getElementById('nicknameCheckResult');
 	const idInput = document.getElementById("userId");
@@ -32,7 +34,20 @@ export function initJoinForm() {
 	let isPhoneOk = false;
 	let isAddressOk = false;
 	let isAgreeChkOk = false;
-
+	
+	
+	if (userType == "2" && bizFileInput) {
+	    bizFileInput.addEventListener('change', function () {
+	        // 파일 선택/해제 시 마다 폼 상태 업데이트
+	        updateSubmitButton();
+	    });
+	}
+	
+	function isBizFileUploaded() {
+  		// 기업회원이 아닐 경우 항상 true, 기업회원은 파일이 선택되어야 true
+	    if (userType != "2") return true;
+	    return bizFileInput && bizFileInput.files && bizFileInput.files.length > 0;
+	}
 	
 	// 이메일 인증전 disabled 처리 
 	disabledFields.forEach(el => {
@@ -304,7 +319,7 @@ export function initJoinForm() {
 		console.log(isAgreeChkOk);
 		
 	    if(isNicknameOk && isBirthOk && isIdOk && isPwOk && isPwMatchOk && 
-					isPhoneOk && isAddressOk && isAgreeChkOk) {
+					isPhoneOk && isAddressOk && isAgreeChkOk && isBizFileUploaded()) {
 	        submitBtn.disabled = false;	
 	    } else{
 	        submitBtn.disabled = true;

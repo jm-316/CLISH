@@ -111,15 +111,20 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String showLoginForm(HttpServletRequest request, HttpSession session) {
-		String lastAddress =  request.getHeader("Referer");
+//	public String showLoginForm(HttpServletRequest request, HttpSession session) {
+	public String showLoginForm(HttpSession session, @RequestParam("prevURL") String prevURL, @RequestParam("params") String params) {
+//		String lastAddress =  request.getHeader("Referer");
+//		
+//		// 세션에 로그인 클릭한 페이지 저장
+//		if(lastAddress != null
+//	        && !lastAddress.contains("/user/login")
+//	        && !lastAddress.contains("/user/join")) {
+//	        session.setAttribute("lastAddress", lastAddress);
+//	    }
 		
-		// 세션에 로그인 클릭한 페이지 저장
-		if(lastAddress != null
-	        && !lastAddress.contains("/user/login")
-	        && !lastAddress.contains("/user/join")) {
-	        session.setAttribute("lastAddress", lastAddress);
-	    }
+		session.setAttribute("prevURL", prevURL);
+		session.setAttribute("params", params);
+		
 		
 	    return "user/login_form";
 	}
@@ -132,7 +137,9 @@ public class UserController {
 	        HttpServletResponse response, HttpSession session, RedirectAttributes redirect) {
 		
 	    UserDTO dbUser = userService.selectUserId(userDTO.getUserId());
-	    String lastAddress = (String) session.getAttribute("lastAddress");
+//	    String lastAddress = (String) session.getAttribute("lastAddress");
+	    String prevURLParams = (String)session.getAttribute("params");
+	    String lastAddress = (String)session.getAttribute("prevURL") + (prevURLParams.length() > 0 ? "?" + prevURLParams : "");
 	    String sessionCaptcha = (String) session.getAttribute("captcha");
 	    Integer failCount = (Integer) session.getAttribute("loginFailCount"); // 세션에 로그인 시도 횟수
 	    

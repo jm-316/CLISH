@@ -141,9 +141,8 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	                }
 	            }
 				
-				// 모든 버튼 활성화
-				document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
-					.forEach(el => el.disabled = false);
+				window.isEmailVerified = true;
+				tryEnableFormAfterEmailVerified();
 			
 			} else {
 				resultSpan.innerText = "아직 인증되지 않았습니다.";
@@ -191,6 +190,36 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
             resultSpan.style.color = "red";
             callback(false); // 실패
         });	
+	}
+	
+	function tryEnableFormAfterEmailVerified() {
+	    const userType = document.querySelector('input[name="userType"]').value;
+	    const bizFileInput = document.getElementById('bizFile');
+	    if(userType == "2") { // 기업회원
+	        if(bizFileInput && bizFileInput.files && bizFileInput.files.length > 0) {
+	            setFormEnable(true);
+	        } else {
+	            setFormEnable(false);
+	            alert('사업자등록증 파일을 먼저 등록해 주세요!');
+	        }
+	    } else { // 일반회원
+	        setFormEnable(true);
+	    }
+	}
+	
+	function setFormEnable(isEnable) {
+	    document.querySelectorAll('.required_auth input, .required_auth select, .required_auth button')
+	        .forEach(el => el.disabled = !isEnable);
+	}
+	
+	const userType = document.querySelector('input[name="userType"]').value;
+	const bizFileInput = document.getElementById('bizFile');
+	if(userType == "2" && bizFileInput) {
+	    bizFileInput.addEventListener('change', function () {
+	        if(window.isEmailVerified) {
+	            tryEnableFormAfterEmailVerified();
+	        }
+	    });
 	}
 }
 
