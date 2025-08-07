@@ -77,6 +77,7 @@
 		    			예약 날짜 : <input type="date" id="reservationClassDateRe" name="reservationClassDateRe" value="${classInfo.startDate}" readonly/><br>
 					</c:when>
 					<c:otherwise>
+		    			예약 날짜 : <input type="text" id="reservationClassDateDisplay" name="reservationClassDateDisplay" value="${classInfo.startDate} ~ ${classInfo.endDate}" readonly/><br>
 						<input type="hidden" name="reservationClassDateRe" value="${classInfo.startDate}">
 					</c:otherwise>
 				</c:choose>
