@@ -267,7 +267,7 @@ public class DBController {
 			payment.setReservationMembers(1);
 			payment.setReservationClassDate(makeReservationClassDate());
 			payment.setReservationCom(makeReservationCom());
-			payment.setClassIdx(selectClassIdx());
+			payment.setClassIdx("CLSFAKEDATA");
 			payment.setReservationStatus(2);
 			//PAYMENT_INFO
 			payment.setImpUid(makeRandomimpUid());
@@ -303,7 +303,7 @@ public class DBController {
 	private LocalDateTime makeReservationClassDate() {
 		Random random = new Random();
 
-	    // 시작 날짜: 2020-01-01 00:00:00
+	    // 시작 날짜: 2025-01-01 00:00:00
 	    LocalDateTime start = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 	    // 종료 날짜: 2025-07-31 23:59:59
 	    LocalDateTime end = LocalDateTime.of(2025, 7, 31, 23, 59, 59);
@@ -748,18 +748,7 @@ public class DBController {
 
 	private String selectClassIdx() {
 		String[] classTitles = {
-		        "CLS20250806150041",
-		        "CLS20250806151204",
-		        "CLS20250806151240",
-		        "CLS20250806151920",
-		        "CLS20250806152401",
-		        "CLS20250806152620",
-		        "CLS20250806153057",
-		        "CLS20250806160703",
-		        "CLS20250806163104",
-		        "CLS20250806163838",
-		        "CLS20250806170534",
-		        "CLS20250806171457"
+		        "CLSFAKEDATA"
 		    };
 
 		    Random random = new Random();

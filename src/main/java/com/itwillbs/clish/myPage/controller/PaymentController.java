@@ -110,6 +110,9 @@ public class PaymentController {
 	public String payResultPage( PaymentInfoDTO paymentInfoDTO, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		UserDTO user = new UserDTO();
 		user = myPageController.getUserFromSession(session);
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+		System.out.println(paymentInfoDTO.getReservationIdx());
+		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		//결제 결과 데이터 저장
 		paymentService.putPayInfo(paymentInfoDTO);
 		String payStatus = paymentInfoDTO.getStatus().toString().equals("paid") ? "결제완료 되었습니다" : "결제실패 하셨습니다.";

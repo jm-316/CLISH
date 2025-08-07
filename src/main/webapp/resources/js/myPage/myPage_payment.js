@@ -6,6 +6,8 @@ window.onload = () => {
 	function requestPay() {
  		var privacyChecked = document.getElementById('privacy').checked;
 		var policyChecked = document.getElementById('policy').checked;
+		
+		
 		if (!privacyChecked || !policyChecked) {
 			alert("개인정보 수집·이용 동의와 결제 및 환불 정책 동의를 모두 체크해주세요.");
 			return false; // 결제 동작 중단
@@ -26,7 +28,7 @@ window.onload = () => {
 		    if (rsp.success) {
 			    // 결제 성공 시 서버에 결제정보 전달
 			    $.post("/myPage/payment/verify", { imp_uid: rsp.imp_uid }, function(data) {
-					
+					let safeClassTitle = data.classTitle.replace(/(\r\n|\n|\r)/gm, ' ').trim();
 	//			      // 서버 검증 후 처리
 					if (!isMobile()) {
 			        	window.location.href =
@@ -38,8 +40,6 @@ window.onload = () => {
 				            + `&userName=` + data.userName 
 							+ `&payMethod=` + data.payMethod
 				            + `&payTime=`+ data.payTime 
-							+ `&classTitle=` + encodeURIComponent(data.classTitle)
-							+ `&requestTime=` + data.requestTime
 							+ `&receiptUrl=` + encodeURIComponent(data.receiptUrl);
 		        	}
 	//			

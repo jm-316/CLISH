@@ -112,9 +112,6 @@ public class MyPageController {
 		int listLimit = 2;
 		// 나의 최근 예약 목록 수
 		int myRecentReservationCount = myPageService.getRecentReservationCount(user);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-		System.out.println(myRecentReservationCount);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		// 나의 최근 예약 목록 수 가 1개 이상일 때
 		if(myRecentReservationCount > 0 ) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentReservationCount, recentReservePageNum, 3);
@@ -138,9 +135,6 @@ public class MyPageController {
 		
 		// 나의 최근 1:1 문의 답변[7일]
 		int myRecentSiteInqueryCount = myPageService.getRecentSiteInqueryCount(user);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-		System.out.println(myRecentSiteInqueryCount);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		// 나의 최근 1:1 문의 답변 수 가 1개 이상일 때
 		if(myRecentSiteInqueryCount > 0 ) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentSiteInqueryCount, recentSiteInqueryPageNum, 3);
@@ -164,9 +158,6 @@ public class MyPageController {
 		
 		// 나의 최근 강의 문의 답변[7일]
 		int myRecentClassInqueryCount = myPageService.getRecentClassInqueryCount(user);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-		System.out.println(myRecentClassInqueryCount);
-		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		// 나의 최근 1:1 문의 답변 수 가 1개 이상일 때
 		if(myRecentClassInqueryCount > 0 ) {
 			PageInfoDTO pageInfoDTO = PageUtil.paging(listLimit, myRecentClassInqueryCount, recentClassInqueryPageNum, 3);
