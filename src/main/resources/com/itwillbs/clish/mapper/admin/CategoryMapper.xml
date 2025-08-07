@@ -99,7 +99,7 @@
 		FROM
 			CATEGORY
 		WHERE
-	    	category_idx = CONCAT('CT_', #{categoryName})
+	    	category_idx LIKE CONCAT('%', #{categoryName}, '%')
 		<if test="currentIdx != null and currentIdx != ''">
 		   AND category_idx != #{currentIdx}
 		 </if>

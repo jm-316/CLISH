@@ -115,6 +115,8 @@ public class AdminClassController {
 	public String deleteCategory(@RequestParam("cId") String categoryIdx, @RequestParam("depth") int depth, Model model) {
 		int count = adminClassService.removeCategory(categoryIdx, depth);
 		
+		System.out.println("count : " + count);
+		
 		if (count > 0) {
 			model.addAttribute("msg", "카테고리를 삭제했습니다.");
 			model.addAttribute("targetURL", "/admin/category");
@@ -135,11 +137,13 @@ public class AdminClassController {
 	        @RequestParam(required = false) String parentIdx,
 	        @RequestParam(required = false) String currentIdx) {
 		
-		System.out.println("currentIdx : " + currentIdx);
+//		System.out.println("currentIdx : " + currentIdx);
 		
 		// 중복 검사
 		boolean isNameDuplicate = categoryService.isCategoryNameDuplicate(categoryName, parentIdx, currentIdx);
 		boolean isOrderDuplicate = categoryService.isSortOrderDuplicate(sortOrder, parentIdx, currentIdx);
+		
+		System.out.println("isOrderDuplicate :" + isOrderDuplicate);
 		
 		Map<String, Boolean> result = new HashMap<>();
 		
