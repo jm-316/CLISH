@@ -199,7 +199,6 @@
 	<main id="container">
 	
 		<jsp:include page="/WEB-INF/views/clish/myPage/side.jsp"></jsp:include>
-		
 		<div class="main">
 			<section class="subSection">
 				<p class="subTitle">알림사항</p>
