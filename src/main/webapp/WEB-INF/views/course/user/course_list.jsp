@@ -150,7 +150,7 @@
 											<c:when test="${userInfo.userIdx eq null}">
 											  <div class="status-box">
 												<span>오픈</span>
-											    <button onclick="location.href='/user/login'">예약</button>
+											    <button onclick="location.href='/user/login?prevURL=<%=request.getAttribute("javax.servlet.forward.request_uri") %>&params=${pageContext.request.queryString}'">예약</button>
 											  </div>
 											</c:when>
 											<%-- 신청가능한 강의이면서 일반 유저일 경우 예약 버튼 활성화 --%>

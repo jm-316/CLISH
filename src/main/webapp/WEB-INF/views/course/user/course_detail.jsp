@@ -92,7 +92,7 @@
 				</c:if>
 				<c:if test="${userInfo.userIdx eq null}">
 				  <div class="status-box" style="padding-left: 10px;">
-				    <button onclick="location.href='/user/login'">예약</button>
+				    <button onclick="location.href='/user/login?prevURL=<%=request.getAttribute("javax.servlet.forward.request_uri") %>&params=${pageContext.request.queryString}'">예약</button>
 				  </div>
 				</c:if>
 		    </div>
