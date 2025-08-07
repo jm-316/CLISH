@@ -449,16 +449,18 @@
 			}).done(function(response) {
 				// 버튼 클릭할 때마다 테이블 새로 생성
 				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
+				console.log(response);
 				$("#phoneCheckResult").html(msg);
 				if(response.status == 'fail'){
 					isPhoneOk = false;
+					updateSubmitButton(); //비동기라 안에 있어야함
 				} else {
 					isPhoneOk = true;
+					updateSubmitButton(); //비동기라 안에 있어야함
 				}
 			}).fail(function(response){
 				alert("잠시후 다시 시도하세요");	
 			})
-			updateSubmitButton();
 		});
 		
 		// 7. 주소 검색 API

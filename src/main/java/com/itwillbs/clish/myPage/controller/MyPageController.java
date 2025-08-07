@@ -245,6 +245,7 @@ public class MyPageController {
 	
 	//핸드폰중복 확인 
 	@GetMapping("/check/userPhoneNumber")
+	@ResponseBody
 	public ResponseEntity<Map<String, String>> checkPhoneNumber(UserDTO userDTO) {
 		// 리턴받을 맵객체
 		Map<String, String> response = new HashMap<>(); 
