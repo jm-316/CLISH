@@ -90,6 +90,15 @@
 			class_status = #{status}
 	</select>
 	
+	<select id="existsReservationByClassIdx" resultType="boolean">
+		SELECT 
+			COUNT(*) > 0
+		FROM
+			RESERVATION
+		WHERE
+			class_idx = #{classIdx}
+	</select>
+	
 	<!-- 강좌 승인 -->
 	<update id="updateClassStatus">
 		UPDATE
