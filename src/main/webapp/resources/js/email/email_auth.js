@@ -140,9 +140,12 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	                    onEmailAuthSuccess();
 	                }
 	            }
+
+				if(options.purpose === "join") {
+	                window.isEmailVerified = true;
+					tryEnableFormAfterEmailVerified();
+	            }
 				
-				window.isEmailVerified = true;
-				tryEnableFormAfterEmailVerified();
 			
 			} else {
 				resultSpan.innerText = "아직 인증되지 않았습니다.";
@@ -212,14 +215,16 @@ export function initEmailAuth(emailInputId, buttonId, statusSpanId, options) {
 	        .forEach(el => el.disabled = !isEnable);
 	}
 	
-	const userType = document.querySelector('input[name="userType"]').value;
-	const bizFileInput = document.getElementById('bizFile');
-	if(userType == "2" && bizFileInput) {
-	    bizFileInput.addEventListener('change', function () {
-	        if(window.isEmailVerified) {
-	            tryEnableFormAfterEmailVerified();
-	        }
-	    });
+	if(options.purpose === "join") {
+		const userType = document.querySelector('input[name="userType"]').value;
+		const bizFileInput = document.getElementById('bizFile');
+		if(userType == "2" && bizFileInput) {
+		    bizFileInput.addEventListener('change', function () {
+		        if(window.isEmailVerified) {
+		            tryEnableFormAfterEmailVerified();
+		        }
+		    });
+		}
 	}
 }
 

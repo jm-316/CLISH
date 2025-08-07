@@ -112,7 +112,9 @@ public class UserController {
 	
 	@GetMapping("/login")
 //	public String showLoginForm(HttpServletRequest request, HttpSession session) {
-	public String showLoginForm(HttpSession session, @RequestParam("prevURL") String prevURL, @RequestParam("params") String params) {
+	public String showLoginForm(HttpSession session, 
+			@RequestParam(value="prevURL", required=false) String prevURL, 
+		    @RequestParam(value="params", required=false) String params) {
 //		String lastAddress =  request.getHeader("Referer");
 //		
 //		// 세션에 로그인 클릭한 페이지 저장
@@ -122,10 +124,9 @@ public class UserController {
 //	        session.setAttribute("lastAddress", lastAddress);
 //	    }
 		
-		session.setAttribute("prevURL", prevURL);
-		session.setAttribute("params", params);
-		
-		
+		if(prevURL != null) session.setAttribute("prevURL", prevURL);
+	    if(params != null) session.setAttribute("params", params);
+
 	    return "user/login_form";
 	}
 	
