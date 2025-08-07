@@ -151,6 +151,11 @@ public class CompanyClassController {
 	    LocalDate startDate = companyClass.getStartDate();
 	    LocalDate endDate = companyClass.getEndDate();
 	    int classType = companyClass.getClassType(); // 0: 정기, 1: 단기
+	    
+	    System.out.println("📌 startDate: " + startDate);
+	    System.out.println("📌 endDate: " + endDate);
+	    System.out.println("📌 isEqual: " + (startDate != null && endDate != null ? startDate.isEqual(endDate) : "null"));
+
 
 	    if (startDate == null || startDate.isBefore(minStartDate)) {
 	        model.addAttribute("msg", "시작일은 개설일 다음 날부터 선택 가능합니다.");
@@ -159,7 +164,7 @@ public class CompanyClassController {
 	    }
 
 	    if (classType == 1) { // 단기 강의
-	        if (endDate == null || !startDate.equals(endDate)) {
+	        if (startDate == null || endDate == null || !startDate.isEqual(endDate)) {
 	            model.addAttribute("msg", "단기 강의는 시작일과 종료일이 같아야 합니다.");
 	            model.addAttribute("targetURL", "/company/myPage/registerClass");
 	            return "commons/result_process";
