@@ -39,7 +39,7 @@ public class AdminCustomerService {
 	
 	// 공지사항 리스트 (페이지 기능 추가)
 	public List<SupportDTO> getAnnouncementList(int startRow, int listLimit, String searchType, String searchKeyword) {
-		return adminCustomerMapper.selectAnnouncements(startRow, listLimit, searchType, searchKeyword);
+		return adminCustomerMapper.selectAnnouncementList(startRow, listLimit, searchType, searchKeyword);
 	}
 	
 	// SUPPORT 테이블 등록
