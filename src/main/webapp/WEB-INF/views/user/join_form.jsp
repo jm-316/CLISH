@@ -25,13 +25,13 @@
 					<tr>
 						<th>사업자등록번호</th>
 						<td>
-							<input type="text" name="bizRegNo" required>
+							<input type="text" id="bizRegNo" name="bizRegNo" required>
 						</td>
 					</tr>
 					<tr>
 						<th>사업자등록증 업로드</th>
 						<td>
-							<input type="file" name="bizFile" accept=".jpg,.jpeg,.png,.pdf" required>
+							<input type="file" id="bizFile" name="bizFile" accept=".jpg,.jpeg,.png,.pdf" required>
 							<span id="biz-file-result" style="margin-left: 10px; color: green;"></span>
 						</td>
 					</tr>

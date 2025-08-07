@@ -90,6 +90,15 @@
 			class_status = #{status}
 	</select>
 	
+	<select id="existsReservationByClassIdx" resultType="boolean">
+		SELECT 
+			COUNT(*) > 0
+		FROM
+			RESERVATION
+		WHERE
+			class_idx = #{classIdx}
+	</select>
+	
 	<!-- 강좌 승인 -->
 	<update id="updateClassStatus">
 		UPDATE
@@ -125,22 +134,20 @@
 	<!-- 카테고리 존재 여부 -->
 	<select id="existsByCategory" resultType="boolean">
 		SELECT COUNT(*) > 0
-		FROM
-			CLASS
-		WHERE
-			<choose>
+		FROM CLASS
+		WHERE 
+		<choose>
 			<when test="depth == 2">
-			category_idx = #{categoryIdx}
+				category_idx = #{categoryIdx}
 			</when>
 			<when test="depth == 1">
-			category_idx = (
-				SELECT category_idx 
-				FROM CATEGORY
-				WHERE parent_idx = #{categoryIdx}
-			)
+				category_idx IN (
+					SELECT category_idx FROM CATEGORY WHERE parent_idx = #{categoryIdx}
+				)
 			</when>
-			</choose>
+		</choose>
 	</select>
+
 </mapper>  
   
   

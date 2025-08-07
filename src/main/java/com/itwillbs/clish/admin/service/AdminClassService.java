@@ -52,6 +52,7 @@ public class AdminClassService {
 	// 강좌 승인 요청
 	@Transactional
 	public int modifyStatus(String userIdx, String idx, int status) {
+		
 		int update = adminClassMapper.updateClassStatus(idx, status);
 		
 		if (update > 0) {
@@ -65,6 +66,12 @@ public class AdminClassService {
 	// 강좌 정보 수정
 	@Transactional
 	public int modifyClassInfo(String idx, ClassDTO classInfo, List<CurriculumDTO> curriculumList) throws IllegalStateException, IOException {
+		boolean hasRservation = adminClassMapper.existsReservationByClassIdx(idx);
+		
+		if (hasRservation) {
+			return -1;
+		}
+		
 		int update = adminClassMapper.updateClassInfo(idx, classInfo);
 		int updateCurriculume = 0;
 		

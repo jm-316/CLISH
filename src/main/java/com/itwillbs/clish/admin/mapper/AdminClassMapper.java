@@ -27,4 +27,6 @@ public interface AdminClassMapper {
 
 	// 하위 카테고리 확인
 	boolean existsByCategory(@Param("categoryIdx") String categoryIdx, @Param("depth") int depth);
+
+	boolean existsReservationByClassIdx(String idx);
 }

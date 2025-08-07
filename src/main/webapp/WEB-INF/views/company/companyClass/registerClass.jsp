@@ -63,11 +63,21 @@
 	        <label><b>정원</b></label>
 	        <input type="number" name="classMember" required>
 	
-	        <label><b>강의 시작일</b></label>
-	        <input type="date" name="startDate" required>
+<!-- 	        <label><b>강의 시작일</b></label> -->
+<!-- 	        <input type="date" name="startDate" required> -->
 	
-	        <label><b>강의 종료일</b></label>
-	        <input type="date" name="endDate" required>
+<!-- 	        <label><b>강의 종료일</b></label> -->
+<!-- 	        <input type="date" name="endDate" required> -->
+
+			<!-- 강의 시작일 -->
+			<label><b>강의 시작일</b></label>
+			<input type="date" name="startDate" id="startDateInput"
+			       required min="<%= java.time.LocalDate.now().plusDays(1).toString() %>">
+			
+			<!-- 강의 종료일 -->
+			<label><b>강의 종료일</b></label>
+			<input type="date" name="endDate" id="endDateInput"
+			       required min="<%= java.time.LocalDate.now().plusDays(1).toString() %>">
 	
 	        <label><b>강의 구분</b></label>
 			<select name="classType" required>
@@ -121,103 +131,123 @@
 	    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
-		let curriculumCount = 1;
+		document.addEventListener("DOMContentLoaded", function () {
+		    let curriculumCount = 1;
 		
-		function addCurriculum() {
-			const div = document.createElement('div');
-			div.classList.add("curri-item");
-			div.innerHTML = `
-			제목: <input type="text" name="curriculumTitle" placeholder="${curriculumCount}강. 커리큘럼 제목 입력"><br>
-			시간: <input type="text" name="curriculumRuntime" name="curriculumRuntime" placeholder="예: 1시간20분"><br><br>
-			`;
-			document.getElementById("curri-area").appendChild(div);
-			curriculumCount++;
-		}
-		
-		// 썸네일 미리보기 기능
-		document.getElementById('thumbnailInput').addEventListener('change', function(event) {
-		    const previewArea = document.getElementById('preview-area');
-		    previewArea.innerHTML = ""; // 기존 이미지 제거
-		
-		    const files = event.target.files;
-		    for (let i = 0; i < files.length; i++) {
-		      const file = files[i];
-		
-		      if (file.type.startsWith("image/")) {
-		        const reader = new FileReader();
-		        reader.onload = function(e) {
-		          const img = document.createElement('img');
-		          img.src = e.target.result;
-		          img.style.width = "300px";
-		          img.style.marginBottom = "10px";
-		          previewArea.appendChild(img);
-		        };
-		        reader.readAsDataURL(file);
-		      }
+		    // ✅ 커리큘럼 추가
+		    function addCurriculum() {
+		        const div = document.createElement('div');
+		        div.classList.add("curri-item");
+		        div.innerHTML = `
+		            제목: <input type="text" name="curriculumTitle" placeholder="${curriculumCount}강. 커리큘럼 제목 입력"><br>
+		            시간: <input type="text" name="curriculumRuntime" placeholder="예: 1시간20분"><br><br>
+		        `;
+		        document.getElementById("curri-area").appendChild(div);
+		        curriculumCount++;
 		    }
-		  });
 		
-		// 주소 검색 버튼 이벤트 바인딩
-		document.getElementById("btnSearchAddress").addEventListener("click", function () {
-		  new daum.Postcode({
-		    oncomplete: function (data) {
-		      let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-		      let detail = "";
+		    // 전역에서도 쓸 수 있게 window에 등록
+		    window.addCurriculum = addCurriculum;
 		
-		      document.getElementById("classPostcode").value = data.zonecode;
-		      document.getElementById("classAddress1").value = addr;
-		      document.getElementById("classAddress2").focus();
+		    // ✅ 썸네일 미리보기 기능
+		    document.getElementById('thumbnailInput').addEventListener('change', function(event) {
+		        const previewArea = document.getElementById('preview-area');
+		        previewArea.innerHTML = ""; // 기존 이미지 제거
 		
-		      // detail 주소 입력될 때마다 location 필드도 업데이트
-		      document.getElementById("classAddress2").addEventListener("input", function () {
-		        detail = this.value;
-		        document.getElementById("location").value = addr + " " + detail;
-		      });
-		      
-		      // ✅ 2. 주소 선택 직후 기본값으로도 location 초기 세팅
-		      document.getElementById("location").value = addr;
-		    }
-		  }).open();
+		        const files = event.target.files;
+		        for (let i = 0; i < files.length; i++) {
+		            const file = files[i];
+		
+		            if (file.type.startsWith("image/")) {
+		                const reader = new FileReader();
+		                reader.onload = function(e) {
+		                    const img = document.createElement('img');
+		                    img.src = e.target.result;
+		                    img.style.width = "300px";
+		                    img.style.marginBottom = "10px";
+		                    previewArea.appendChild(img);
+		                };
+		                reader.readAsDataURL(file);
+		            }
+		        }
+		    });
+		
+		    // ✅ 주소 검색 버튼 이벤트 바인딩
+		    document.getElementById("btnSearchAddress").addEventListener("click", function () {
+		        new daum.Postcode({
+		            oncomplete: function (data) {
+		                let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+		                let detail = "";
+		
+		                document.getElementById("classPostcode").value = data.zonecode;
+		                document.getElementById("classAddress1").value = addr;
+		                document.getElementById("classAddress2").focus();
+		
+		                document.getElementById("classAddress2").addEventListener("input", function () {
+		                    detail = this.value;
+		                    document.getElementById("location").value = addr + " " + detail;
+		                });
+		
+		                document.getElementById("location").value = addr;
+		            }
+		        }).open();
+		    });
+		
 		});
 		</script>
 		<!-- 날짜 제약 관련 스크립트 -->
 		<script>
 		window.addEventListener('DOMContentLoaded', () => {
-		  const startDateInput = document.querySelector('input[name="startDate"]');
-		  const endDateInput = document.querySelector('input[name="endDate"]');
-		  const classTypeSelect = document.querySelector('select[name="classType"]');
+			  const startDateInput = document.querySelector('input[name="startDate"]');
+			  const endDateInput = document.querySelector('input[name="endDate"]');
+			  const classTypeSelect = document.querySelector('select[name="classType"]');
 
-		  const today = new Date();
-		  today.setDate(today.getDate() + 1);
-		  const minDateStr = today.toISOString().split('T')[0];
+			  const today = new Date();
+			  today.setDate(today.getDate() + 1);
+			  const minDateStr = today.toISOString().split('T')[0];
 
-		  startDateInput.setAttribute('min', minDateStr);
-		  endDateInput.setAttribute('min', minDateStr);
+			  startDateInput.setAttribute('min', minDateStr);
+			  endDateInput.setAttribute('min', minDateStr);
 
-		  startDateInput.addEventListener('change', () => {
-		    const start = startDateInput.value;
-		    endDateInput.setAttribute('min', start);
-		    if (classTypeSelect.value === '1') {
-		      endDateInput.value = start;
-		    }
-		  });
+			  // 시작일 바뀌면 종료일도 자동 설정
+			  startDateInput.addEventListener('change', () => {
+			    const start = startDateInput.value;
+			    endDateInput.setAttribute('min', start);
+			    if (classTypeSelect.value === '1') {
+			      endDateInput.value = start;
+			    }
+			  });
 
-		  classTypeSelect.addEventListener('change', () => {
-		    const type = classTypeSelect.value;
-		    const start = startDateInput.value;
-		    if (type === '1') {
-		      endDateInput.disabled = true;
-		      endDateInput.value = start;
-		    } else {
-		      endDateInput.disabled = false;
-		    }
-		  });
+			  // 강의 구분 변경 시 종료일 처리
+			  classTypeSelect.addEventListener('change', () => {
+			    const type = classTypeSelect.value;
+			    const start = startDateInput.value;
+			    if (type === '1') {
+			      endDateInput.readOnly = false;
+			      endDateInput.value = start;
+			      endDateInput.readOnly = true;
+			    } else {
+			      endDateInput.readOnly = false;
+			    }
+			  });
 
-		  if (classTypeSelect.value === '1') {
-		    endDateInput.disabled = true;
-		    endDateInput.value = startDateInput.value;
-		  }
-		});
+			  // 최초 로드시 단기강의면 종료일 셋팅
+			  if (classTypeSelect.value === '1') {
+			    endDateInput.readOnly = false; // 일단 열고
+			    endDateInput.value = startDateInput.value; // 값 셋팅하고
+			    endDateInput.readOnly = true; // 다시 잠그기
+			  }
+
+			  // 폼 제출 직전에도 종료일 강제 맞춤
+			  const form = document.querySelector('form');
+			  form.addEventListener('submit', () => {
+			    if (classTypeSelect.value === '1') {
+			      endDateInput.readOnly = false;
+			      endDateInput.value = startDateInput.value;
+			      endDateInput.readOnly = true;
+			    }
+			  });
+			});
 		</script>
 	</section>
 	

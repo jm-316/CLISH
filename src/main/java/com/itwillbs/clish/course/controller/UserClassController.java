@@ -47,7 +47,7 @@ public class UserClassController {
 	// 클래스 리스트
 	@GetMapping("/user/classList")
 	public String classListForm(Model model, HttpSession session,
-			@RequestParam int classType,
+			@RequestParam(defaultValue = "0") int classType,
 			@RequestParam(defaultValue = "1") int pageNum,
 			@RequestParam(required = false)String categoryIdx,
 			@RequestParam(defaultValue = "") String searchType,
@@ -93,7 +93,7 @@ public class UserClassController {
 	// 클래스 상세 페이지
 	@GetMapping("/user/classDetail")
 	public String classDetailForm(@RequestParam String classIdx, Model model, HttpSession session,
-			@RequestParam int classType,
+			@RequestParam(defaultValue = "0") int classType,
 			@RequestParam(required = false)String categoryIdx,
 			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
@@ -138,7 +138,7 @@ public class UserClassController {
 	@GetMapping("/user/classReservation")
 	public String classReservation(@RequestParam String classIdx, Model model, HttpSession session, 
 			ClassDTO classDTO, UserDTO userDTO, ReservationDTO reservationDTO,
-			@RequestParam int classType,
+			@RequestParam(defaultValue = "0") int classType,
 			@RequestParam(required = false)String categoryIdx,
 			@RequestParam(defaultValue = "1") int reviewPageNum) {
 		
