@@ -42,7 +42,7 @@
 					        </button>
 					    </div>
 					    <br>
-					    <input type="file" name="files" id="profileImage" accept="image/*" style="margin-top: 10px;">
+					    <input type="file" name="files"  class="custom-file-input" id="profileImage" accept="image/*" style="margin-top: 10px;">
 					    <input type="hidden" id="profileImageAction" name="profileImageAction" value="none">
 					    <input type="hidden" id="deleteProfileImgFlag" name="deleteProfileImgFlag" value="false">
 					</td>
@@ -561,6 +561,18 @@
 		    // 파일 선택된 것도 비워줌
 		    profileImageInput.value = '';
 		});
+		
+		document.querySelector('.custom-file-input').addEventListener('change', function(event) {
+			const files = event.target.files;
+			for (let i = 0; i < files.length; i++) {
+				if (!files[i].type.startsWith('image/')) {
+					alert('이미지 파일만 업로드 가능합니다.');
+					document.getElementById('profilePreview').src = profileUrl;
+					profileImageInput.value = '';  // 파일 입력값 비움
+					return;
+				}
+			}					
+    	});
 		
 	});
 	
