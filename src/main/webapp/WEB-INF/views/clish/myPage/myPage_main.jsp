@@ -502,7 +502,7 @@
 	    window.open(
 	        '/myPage/payment_info/detail?reservationIdx=' + encodeURIComponent(reservationIdx),
 	        'reservationDetail',
-	        `width=600,height=1500,resizable=yes,scrollbars=yes`
+	        `width=1345,height=670,resizable=yes,scrollbars=yes`
 	    );
 	}
 	
@@ -512,7 +512,7 @@
 	    window.open(
 	        '/myPage/payment_info/payReservation?from=list&reservationIdx=' + encodeURIComponent(reservationIdx),
 	        'payReservation',
-	        `width=600,height=1500,resizable=yes,scrollbars=yes`
+	        `width=1085,height=555,resizable=yes,scrollbars=yes`
 	    );
 	}
 	
