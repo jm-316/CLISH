@@ -123,6 +123,21 @@
 		.reserved-btn:hover {
 			background-color: #fff3e0;
 		}
+		
+		#reservationModal {
+		    display: none;
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background: #fff;
+		    padding: 20px;
+		    border: 1px solid #ccc;
+		    z-index: 999;
+		    max-height: 80vh;         /* 브라우저 화면 80%까지만 높이 허용 */
+		    overflow-y: auto;         /* 내부 스크롤 허용 */
+		    box-sizing: border-box;
+		}
     </style>
 </head>
 <body>
@@ -222,14 +237,7 @@
 												<span style="color: green;">승인</span>
 											</c:when>
 											<c:when test="${classItem.class_status == 3}">
-												<c:choose>
-													<c:when test="${classItem.reservedCount >= classItem.class_member}">
-														<span style="color: orange;">마감</span>
-													</c:when>
-													<c:otherwise>
-														<span style="color: red;">반려</span>
-													</c:otherwise>
-												</c:choose>
+												<span style="color: red;">반려</span>
 											</c:when>
 										</c:choose>
 									</td>
@@ -260,8 +268,7 @@
     </div>
 	
 	<!-- 예약자 모달창 -->
-	<div id="reservationModal" style="display:none; position:fixed; top:50%; left:50%;
-         transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #ccc; z-index:999;">
+	<div id="reservationModal">
 		<h3>예약자 목록</h3>
 		<div id="reservationContent">로딩 중...</div>
 		<button onclick="closeReservationModal()">닫기</button>
