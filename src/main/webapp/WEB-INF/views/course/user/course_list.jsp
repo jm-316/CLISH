@@ -137,7 +137,12 @@
 									<td onclick="location.href='/course/user/classDetail?classIdx=${classItem.classIdx}&classType=${classItem.classType}&categoryIdx=${classItem.categoryIdx}'" style="cursor: pointer;">
 										${classItem.classTitle}
 									</td>
-									<td>${classItem.startDate}</td>
+									<c:if test="${classItem.classType eq 1}">
+										<td>${classItem.startDate}</td>
+									</c:if>
+									<c:if test="${classItem.classType eq 0}">
+										<td>${classItem.startDate} ~ ${classItem.endDate}</td>
+									</c:if>
 									<td>${classItem.location}</td>
 									<td><fmt:formatNumber value="${classItem.classPrice}" type="number" maxFractionDigits="0"/>원</td>
 									<td class="status-cell">
