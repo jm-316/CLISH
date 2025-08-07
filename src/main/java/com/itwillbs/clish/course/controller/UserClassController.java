@@ -187,17 +187,14 @@ public class UserClassController {
 	}
 	
 	// 예약 인원 조회 API
-	@GetMapping("/userClass/getReservationCount")
-	@ResponseBody
-	public int getReservationCount(@RequestParam("date") String date) {
-	    // 날짜를 LocalDate로 변환
-	    LocalDate localDate = LocalDate.parse(date);
-	    
-	    System.out.println("localDate : " + localDate);
-
-	    // 서비스에서 해당 날짜의 예약 수 조회
-	    return userClassService.getReservationCountByDate(localDate);
-	}
+//	@GetMapping("/course/user/getAvailablePeople")
+//	@ResponseBody
+//	public int getAvailablePeople(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, ClassDTO classDTO) {
+//	    // 예시: DB에서 해당 날짜의 예약 가능 인원을 조회
+//	    int totalSeats = classDTO.getClassMember();
+//	    int reserved = reservationService.getReservedCountByDate(date);  // 예약된 수 조회
+//	    return totalSeats - reserved;
+//	}
 	
 	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("/user/reservationInfo")

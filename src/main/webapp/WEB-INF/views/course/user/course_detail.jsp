@@ -85,7 +85,7 @@
 		          </div>
 		        </c:if>
 		        <%-- 정보 수정버튼은 기업 유저일 경우만 표시 --%>
-		        <c:if test="${userInfo.userType eq 2}">
+		        <c:if test="${userInfo.userType eq 2 and userInfo.userStatus eq 1}">
 		          <div class="status-box" style="padding-left: 10px;">
 					<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">정보 수정</button>
 				  </div>

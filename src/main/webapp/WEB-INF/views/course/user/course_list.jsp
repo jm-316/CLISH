@@ -189,7 +189,7 @@
 										</c:choose>
 									</td>
 									<%-- 기업 유저의 경우 수정버튼 표시 --%>
-									<c:if test="${userInfo.userType eq 2}">
+									<c:if test="${userInfo.userType eq 2 and userInfo.userStatus eq 1}">
 										<td>
 											<button onclick="location.href='/company/myPage/modifyClass?classIdx=${classItem.classIdx}'">수정</button>
 										</td>

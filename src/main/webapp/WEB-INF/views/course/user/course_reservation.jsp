@@ -13,22 +13,28 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course/course_detail.css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	document.getElementById("reservationClassDateRe").addEventListener("change", function() {
-	    const selectedDate = this.value;
-
-	    // 날짜가 변경되면 예약 인원 초기화
-	    document.getElementById("reservationCount").value = "0";
+	$(document).ready(function () {
+	  $("#reservationDate").on("change", function () {
+	    const selectedDate = $(this).val();
 
 	    if (selectedDate) {
-	        // AJAX로 예약 인원 조회
-	        fetch(`/userClass/getReservationCount?date=${selectedDate}`)
-	            .then(response => response.json())
-	            .then(count => {
-	                document.getElementById("reservationCount").value = `${count}`;
-	            })
-	            .catch(err => console.error(err));
+	      $.ajax({
+	        url: "/course/user/getAvailablePeople", // ← 이 URL은 아래에서 설명하는 Controller 경로
+	        type: "GET",
+	        data: { date: selectedDate },
+	        success: function (response) {
+	          $("#availablePeople").val(response + "명 예약 가능");
+	        },
+	        error: function () {
+	          $("#availablePeople").val("조회 실패");
+	        }
+	      });
+	    } else {
+	      $("#availablePeople").val("");
 	    }
+	  });
 	});
 </script>
 <style type="text/css">
@@ -68,7 +74,7 @@
 				<c:choose>
 					<c:when test="${param.classType eq 1}">
 		    			예약 날짜 : <input type="date" id="reservationClassDateRe" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required/><br>
-		    			예약 가능 인원 : <input type="text" id="reservationCount" value="날짜를 선택해주세요" readonly="readonly" style="margin-top: 8px;">
+		    			예약 가능 인원 : <input type="text" id="reservationCount" readonly placeholder="날짜를 선택해주세요" style="margin-top: 8px;">
 					</c:when>
 					<c:otherwise>
 						<input type="hidden" name="reservationClassDateRe" value="${classInfo.startDate}">
