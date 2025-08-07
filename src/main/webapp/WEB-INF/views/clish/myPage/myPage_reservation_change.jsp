@@ -75,8 +75,11 @@
 					<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="classDate"/>
 <%-- 					<td><input type="date" value="${classDate}" name="reservationClassDate" min="${reservationClassInfo.start_date}" max="${reservationClassInfo.end_date}" --%>
 <%-- 					<c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td> --%>
-					<td><input type="text" id="datepicker" name="reservationClassDate" value="${classDate}" 
-						required <c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>></td>
+					<td>
+						<input type="text" id="datepicker" value="${classDate}" 
+							required <c:if test="${reservationClassInfo.class_type eq 0 }">readonly</c:if>>
+						<input type="hidden" name="reservationClassDate" id="hiddenReservationClassDate" value="${classDate}">
+					</td>
 					<td><input type="text" value="${reservationClassInfo.reservation_members}" name="reservationMembers" id="reservationMembers"></td>
 					<fmt:parseDate var="reservationCom" 
 										value="${reservationClassInfo.reservation_com}"
@@ -147,8 +150,13 @@
 					return [allowed, "", allowed ? "선택 가능 날짜" : "선택 불가 날짜"];
 				},
 				
-				dateFormat: 'yy-mm-dd' // 날짜 형식 설정 (선택)
+				dateFormat: 'yy-mm-dd', // 날짜 형식 설정 (선택)
+				onSelect: function(dateText) {
+					$("#hiddenReservationClassDate").val(dateText);
+				}
 			});
+			
+			$("#hiddenReservationClassDate").val($("#datepicker").val());
 			
 			<c:if test="${reservationClassInfo.class_type eq 0}">
 		    	$("#datepicker").datepicker("option", "disabled", true);
