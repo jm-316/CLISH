@@ -74,7 +74,7 @@
 			
 		    <div style="text-align: center; padding-top: 30px; display: flex;">
 		    	<%-- 강의 목록은 항상 표시 --%>
-		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}'">
 		        강의 목록</button>
 		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
