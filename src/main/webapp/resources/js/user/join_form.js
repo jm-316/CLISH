@@ -89,11 +89,11 @@ export function initJoinForm() {
 	
 	    const pattern = /^\d{4}-\d{2}-\d{2}$/;
 	    if(!pattern.test(birth)) {
-	        resultSpan.innerText = '생년월일 형식은 ****-**-**입니다.';z
+	        resultSpan.innerText = '올바르지 못한 형식입니다.';
 	        resultSpan.style.color = 'red';
 			isBirthOk = false;
 	    } else{
-	        resultSpan.innerText = '올바른 생년월일 형식입니다!';
+	        resultSpan.innerText = '올바른 형식입니다!';
 	        resultSpan.style.color = 'green';
 			isBirthOk = true;
 	    }
