@@ -14,4 +14,7 @@ public interface SchedulerMapper {
 
 	void DeleteNotification();
 
+	// 이벤트 날짜 확인 및 상태 업데이트
+	void updateAllEventStatus();
+
 }

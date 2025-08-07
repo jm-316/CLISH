@@ -131,11 +131,6 @@ public class AdminEventService {
 		adminEventMapper.deletedEvent(idx);
 	}
 	
-	// 이벤트 상태 업데이트
-	public void updateAllEventStatus() {
-		adminEventMapper.updateAllEventStatus();
-		
-	}
 	
 	// 아이디 생성 로직
 	private String createIdx(String name) {

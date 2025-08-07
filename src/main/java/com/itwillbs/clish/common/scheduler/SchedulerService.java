@@ -73,4 +73,10 @@ public class SchedulerService {
 		schedulerMapper.DeleteNotification();
 	}
 
+	// 이벤트 날짜 확인
+	public void checkEventDate() {
+		schedulerMapper.updateAllEventStatus();
+		
+	}
+
 }
