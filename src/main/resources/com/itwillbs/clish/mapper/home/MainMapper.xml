@@ -19,7 +19,7 @@
 			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
-			class_status in (1, 2)
+			class_status = 2
 		AND
 			class_type = 0
 		LIMIT 10
@@ -40,7 +40,7 @@
 			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length			
 		FROM CLASS
 		WHERE
-			class_status in (1, 2)
+			class_status = 2
 		AND
 			class_type = 1
 		LIMIT 10
@@ -61,7 +61,7 @@
 			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
-			class_status in (1, 2)
+			class_status = 2
 		AND
 			class_type = 1
 		ORDER BY created_at DESC
@@ -83,7 +83,7 @@
 			, TIMESTAMPDIFF(DAY, start_date, end_date) + 1 as class_length
 		FROM CLASS
 		WHERE
-			class_status in (1, 2)
+			class_status = 2
 		AND
 			class_type = 0
 		ORDER BY created_at DESC
