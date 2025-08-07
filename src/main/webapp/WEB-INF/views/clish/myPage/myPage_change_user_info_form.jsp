@@ -421,7 +421,7 @@
 		});
 		
 		// 6. 전화번호 중복 & 정규표현식 체크
-		phoneInput.addEventListener('blur', function() {
+		phoneInput.addEventListener('input', function() {
 		    const phone = this.value.replace(/\s+/g, "");
 		    const resultSpan = document.getElementById('phoneCheckResult');
 		    const pattern = /^\d{3}-\d{4}-\d{4}$/;
@@ -449,13 +449,16 @@
 			}).done(function(response) {
 				// 버튼 클릭할 때마다 테이블 새로 생성
 				const msg = response.msg || '처리 완료'; // 없으면 기본 메시지
-				console.log(response);
-				$("#phoneCheckResult").html(msg);
+
 				if(response.status == 'fail'){
 					isPhoneOk = false;
+					resultSpan.style.color = 'red';
+					$("#phoneCheckResult").html(msg);
 					updateSubmitButton(); //비동기라 안에 있어야함
 				} else {
 					isPhoneOk = true;
+					resultSpan.style.color = 'green';
+					$("#phoneCheckResult").html(msg);
 					updateSubmitButton(); //비동기라 안에 있어야함
 				}
 			}).fail(function(response){
@@ -538,10 +541,6 @@
 		        reader.readAsDataURL(file);  // 파일을 DataURL 형식으로 읽기 (이미지 미리보기용)
 		        profileImageAction.value = 'insert';
 		        deleteProfileImgFlag.value = 'false';
-		        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
-		        console.log(profileImageAction.value);
-		        console.log(deleteProfileImgFlag.value);
-		        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
 		    } else {
 		        // 파일선택 취소 시 "none" 처리
 		        profileImageAction.value = 'none';
@@ -555,10 +554,6 @@
 		    // 삭제 의도를 서버에 전달할 수 있게 hidden input 값을 true로 설정
 		    profileImageAction.value = 'delete';
 		    deleteProfileImgFlag.value = 'true';
-	        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
-			console.log(profileImageAction.value);
-			console.log(deleteProfileImgFlag.value);	
-	        console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
 
 		    // 파일 선택된 것도 비워줌
 		    profileImageInput.value = '';
