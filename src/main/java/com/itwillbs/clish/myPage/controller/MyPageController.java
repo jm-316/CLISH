@@ -488,7 +488,11 @@ public class MyPageController {
 		}
 		
 		// 예약상세정보 불러오기
-		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation); 
+		Map<String,Object> reservationDetailInfo = myPageService.reservationDetailInfo(reservation);
+		ClassDTO claSs1 = new ClassDTO();
+		claSs1.setClassDays((Integer) reservationDetailInfo.get("class_days"));
+		reservationDetailInfo.put("classDaysNames",claSs1.getDayString() ); 
+		
 		
 		model.addAttribute("user", user);
 		model.addAttribute("reservationClassInfo", reservationDetailInfo);
@@ -517,6 +521,11 @@ public class MyPageController {
 		}
 
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation); 
+		
+		ClassDTO claSs1 = new ClassDTO();
+		claSs1.setClassDays((Integer) reservationClassInfo.get("class_days"));
+		reservationClassInfo.put("classDaysNames",claSs1.getDayString() ); 
+		
 		model.addAttribute("reservationClassInfo", reservationClassInfo);
 		model.addAttribute("user",user);
 		

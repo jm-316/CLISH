@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.clish.admin.service.NotificationService;
+import com.itwillbs.clish.course.dto.ClassDTO;
 import com.itwillbs.clish.myPage.dto.PaymentCancelDTO;
 import com.itwillbs.clish.myPage.dto.PaymentInfoDTO;
 import com.itwillbs.clish.myPage.dto.ReservationDTO;
@@ -68,7 +69,9 @@ public class PaymentController {
 		
 		reservation = myPageService.getReservationDetail(reservation);
 		Map<String,Object> reservationClassInfo = myPageService.reservationDetailInfo(reservation);
-		
+		ClassDTO claSs1 = new ClassDTO();
+		claSs1.setClassDays((Integer) reservationClassInfo.get("class_days"));
+		reservationClassInfo.put("classDaysNames",claSs1.getDayString() ); 
 		model.addAttribute("reservationClassInfo", reservationClassInfo);
 		model.addAttribute("user",user);
 		return "/clish/myPage/myPage_payment_payForm";

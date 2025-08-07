@@ -46,7 +46,12 @@
 				<tr>
 					<th>${reservationClassInfo.start_date}</th>
 					<th>${reservationClassInfo.end_date}</th>
-				</tr> 
+				</tr>
+				<tr>
+					<th>수업 요일</th>
+					<th>${reservationClassInfo.classDaysNames }</th>
+				</tr>
+				
 			</table>
 			<table >
 				<tr>
