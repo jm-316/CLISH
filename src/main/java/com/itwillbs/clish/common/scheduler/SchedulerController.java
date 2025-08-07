@@ -2,13 +2,14 @@ package com.itwillbs.clish.common.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.itwillbs.clish.myPage.service.MyPageService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Component
+@Controller
 @AllArgsConstructor
 public class SchedulerController {
 	private final SchedulerService schedulerService;

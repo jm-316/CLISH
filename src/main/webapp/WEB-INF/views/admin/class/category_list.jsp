@@ -25,7 +25,7 @@
 }
 
 #childTable {
-  width: 100%;
+  width: 95%;
   border-collapse: collapse;
 }
 
