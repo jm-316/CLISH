@@ -589,7 +589,7 @@
 	
 	<!--  최근예약목록수 -->
 	<select id="countRecentReservationCount" resultType="int">
-		SELECT IFNULL(count(*), 0)
+		SELECT count(*)
 		FROM RESERVATION r
 		WHERE
 			r.reservation_status = 1
@@ -620,7 +620,7 @@
 	
 	<!-- 최근 1:1문의 답변 수 -->
 	<select id="countRecentSiteInqueryCount" resultType="int">
-		SELECT IFNULL(count(*), 0)
+		SELECT count(*)
 		FROM INQUERY
 		WHERE
 			inquery_type = 1
@@ -629,7 +629,7 @@
 			AND
 			user_idx = #{userIdx}
 			AND 
-			inquery_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+			inquery_answer_datetime >= DATE_SUB(NOW(), INTERVAL 7 DAY)
 	</select>
 	
 	<!-- 최근 1:1문의 답변 목록  -->
@@ -651,7 +651,7 @@
 	
 	<!-- 최근 강의문의 답변 수 -->
 	<select id="countRecentClassInqueryCount" resultType="int">
-		SELECT IFNULL(count(*), 0)
+		SELECT count(*)
 		FROM INQUERY
 		WHERE
 			inquery_type = 2
