@@ -79,4 +79,28 @@ public class SchedulerService {
 		
 	}
 
+	public void toStartClass() {
+		List<Map<String,Object>> toStartReserveInfo = schedulerMapper.selectToStartReservation();
+		
+		if (toStartReserveInfo != null && !toStartReserveInfo.isEmpty()) {
+		
+			for(Map<String,Object> toStartReserve: toStartReserveInfo) {
+				ReservationDTO reservation = new ReservationDTO();
+				reservation.setReservationIdx((String) toStartReserve.get("reservation_idx"));
+				
+				toStartReserve = myPageMapper.ReservationDetailInfo(reservation);
+				
+				String userIdx = (String)toStartReserve.get("user_idx");
+				String classTitle = (String)toStartReserve.get("class_title");
+				
+				String reservationMembers = toStartReserve.get("reservation_members").toString();
+				String reservationCom = ((LocalDateTime)toStartReserve.get("reservation_com")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+				String reservationClassDate = ((LocalDateTime)toStartReserve.get("reservation_class_date")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				notificationService.send(userIdx, 5, 
+					"예약하신 " + classTitle + "강의가 " + reservationClassDate + "에 시작합니다."  );
+			}
+		}
+		
+	}
+
 }

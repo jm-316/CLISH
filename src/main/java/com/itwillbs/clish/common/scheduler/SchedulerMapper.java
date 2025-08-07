@@ -17,4 +17,6 @@ public interface SchedulerMapper {
 	// 이벤트 날짜 확인 및 상태 업데이트
 	void updateAllEventStatus();
 
+	List<Map<String, Object>> selectToStartReservation();
+
 }

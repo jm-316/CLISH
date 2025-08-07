@@ -53,4 +53,11 @@
 				ELSE 1
 			END
 	</update>
+	
+	<select id="selectToStartReservation" resultType="map">
+		SELECT *
+		FROM RESERVATION
+		WHERE reservation_status = 2
+		AND DATE(reservation_class_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+	</select>
 </mapper>
