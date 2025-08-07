@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,27 +74,28 @@
 				<%-- 예약 가능 날짜 보여주기 --%>			    
 				<c:choose>
 					<c:when test="${param.classType eq 1}">
-		    			예약 날짜 : <input type="date" id="reservationClassDateRe" name="reservationClassDateRe" min="${classInfo.startDate}" max="${classInfo.endDate}" required/><br>
-		    			예약 가능 인원 : <input type="text" id="reservationCount" readonly placeholder="날짜를 선택해주세요" style="margin-top: 8px;">
+		    			예약 날짜 : <input type="date" id="reservationClassDateRe" name="reservationClassDateRe" value="${classInfo.startDate}" readonly/><br>
 					</c:when>
 					<c:otherwise>
 						<input type="hidden" name="reservationClassDateRe" value="${classInfo.startDate}">
 					</c:otherwise>
 				</c:choose>
-			    예약 인원 : <input type="number" name="reservationMembers" required/><br>
+		    			예약 가능 인원 : <input type="text" name="availableMembersDisplay" id="availableMembersDisplay" placeholder="${availableMembers}" readonly style="margin-top: 8px;">
+					    예약 인원 : <input type="number" name="reservationMembers" required/><br>
 			    
 			    <div style="text-align: center; padding-top: 30px; display: flex; justify-content: flex-end;">
 					<c:if test="${not empty param.classType}">
-			           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+			           	<button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}'">
 			           	클래스 목록</button>
 					</c:if>
 					<%-- 신청가능한 클래스이고 일반 유저일 경우 예약 확정 버튼 표시 --%>
 					<c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
-			            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간입니다.')" style="margin-left: 10px;">수강 신청</button>
+			            <button type="submit" class="orange-button" onclick="alert('결제 대기 시간은 2시간 입니다.')" style="margin-left: 10px;">수강 신청</button>
 					</c:if>
 				</div>
 			</section>
 			
+			<input type="hidden" id="availableMembers" name="availableMembers" value="${availableMembers}">
 			<input type="hidden" id="classIdx" name="classIdx" value="${classInfo.classIdx}">
 			<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.userIdx}">
 		</form>
@@ -114,6 +116,10 @@
 			<section id="classDetail">
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
+				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
+				<b>신청 마감일</b> : ${applyEndDate} <br>
+				<b>수강료</b> : <fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0"/>원<br>
+				<b>수업 요일</b> : ${classInfo.dayString}<br>
 			</section>
 		    
 			<section id="curriCulum" >

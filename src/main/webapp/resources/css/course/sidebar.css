@@ -126,7 +126,7 @@
 .parent-category.open > .child-category {
 	display:				block;
 }
-.child-category li a {
+.child-category li a, .category-list li a {
 	display:				block;
 	font-size:				15px;
 	color:					var(--font-sub);
@@ -136,7 +136,7 @@
 	transition:				background 0.13s, color 0.13s;
 	position:				relative;
 }
-.child-category li a:hover {
+.child-category li a:hover, .category-list li a:hover {
 	background:				var(--hover-orange);
 	color:					#fff;
 }

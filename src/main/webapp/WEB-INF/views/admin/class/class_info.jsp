@@ -9,9 +9,10 @@
 <meta charset="UTF-8">
 <title>${classInfo.classTitle}</title>
 <link
-	href="${pageContext.request.contextPath}/resources/css/admin/modal.css"
+	href="/resources/css/admin/modal.css"
 	rel="stylesheet" type="text/css">
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
 </style>
@@ -76,7 +77,7 @@
 										</div>
 									</c:forEach>
 									<c:if test="${empty classInfo.fileList}">
-										<input type="file"  name="files" multiple required>
+										<input type="file"  name="files"  accept="image/png, image/jpeg" multiple required>
 									</c:if>
 								</div>
 							</div>
@@ -333,6 +334,21 @@
 				return;
 			}
 		});
+		
+		$("input[name='files']").change(function(){
+			  let fileVal = $(this).val();
+			  let valTypeArr = fileVal.split(".")
+			  let fileType = valTypeArr.pop().toLowerCase()
+			  let fileTypeArr = ['jpg','jpeg','gif','png','ai','psd','svg',''];
+
+
+			  if($.inArray(fileType,fileTypeArr)==-1){
+			    alert("이미지 파일만 등록가능합니다.")
+			    $(this).val("")
+			  }else{
+			    $("#logo").val(fileVal)
+			  }
+			});
 	</script>
 </body>
 </html>

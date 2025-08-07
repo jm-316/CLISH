@@ -15,7 +15,7 @@
 <style type="text/css">
 .pending-class {
 	-ms-overflow-style: none;
- 	height: 350px;
+ 	height: 300px;
  	margin-bottom: 10px;
  	overflow-y: auto;
 }
@@ -95,7 +95,10 @@
 							<button class="search-button">검색</button>
 						</div>
 					</form>
-					<div style="height: 500px;">
+					<div style="height: 550px;">
+						<div>
+							<h3 class="sub-title">등록 완료</h3>
+						</div>
 						<c:choose>
 							<c:when test="${empty classList}">
 								<div class="list-empty">등록된 강의가 없습니다.</div>

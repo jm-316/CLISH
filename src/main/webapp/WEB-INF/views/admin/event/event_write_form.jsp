@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>이벤트등록</title>
 <link rel='icon' href='/resources/images/logo4-2.png' type='image/x-icon'/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -37,14 +38,14 @@
 									<tr>
 										<th>썸네일<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
-											<input type="file" name="thumbnailFile" required />
+											<input type="file" name="thumbnailFile" accept="image/png, image/jpeg" required />
 											<input type="hidden" name="fileTypes" value="thumbnail" />
 										</td>
 									</tr>
 									<tr>
 										<th>이벤트페이지<span style="vertical-align: middle; margin-left: 5px; color: red;">*</span></th>
 										<td>
-											<input type="file" name="contentFile" required/>
+											<input type="file" name="contentFile" accept="image/png, image/jpeg" required/>
 											<input type="hidden" name="fileTypes" value="content" />
 										</td>
 									</tr>
@@ -103,6 +104,36 @@
 			}
 			
 		});
+		
+		$("input[name='thumbnailFile']").change(function(){
+			  let fileVal = $(this).val();
+			  let valTypeArr = fileVal.split(".")
+			  let fileType = valTypeArr.pop().toLowerCase()
+			  let fileTypeArr = ['jpg','jpeg','gif','png','ai','psd','svg',''];
+
+
+			  if($.inArray(fileType,fileTypeArr)==-1){
+			    alert("이미지 파일만 등록가능합니다.")
+			    $(this).val("")
+			  }else{
+			    $("#logo").val(fileVal)
+			 }
+		});
+		
+		$("input[name='contentFile']").change(function(){
+			  let fileVal = $(this).val();
+			  let valTypeArr = fileVal.split(".")
+			  let fileType = valTypeArr.pop().toLowerCase()
+			  let fileTypeArr = ['jpg','jpeg','gif','png','ai','psd','svg',''];
+
+
+			  if($.inArray(fileType,fileTypeArr)==-1){
+			    alert("이미지 파일만 등록가능합니다.")
+			    $(this).val("")
+			  }else{
+			    $("#logo").val(fileVal)
+			  }
+			});
 	
 	</script>
 </body>

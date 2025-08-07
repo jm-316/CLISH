@@ -74,7 +74,7 @@
 			
 		    <div style="text-align: center; padding-top: 30px; display: flex;">
 		    	<%-- 강의 목록은 항상 표시 --%>
-		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}&categoryIdx=${param.categoryIdx}'">
+		        <button class="orange-button" onclick="location.href='/course/user/classList?classType=${param.classType}'">
 		        강의 목록</button>
 		        <%-- 신청가능한 강의이고 일반 유저일 경우 예약정보 입력 버튼, 강의 문의 활성화 --%>
 		        <c:if test="${userInfo.userType eq 1 and classInfo.classStatus eq 2}">
@@ -116,7 +116,7 @@
 		    	<b>강사명</b> : ${userInfo.userName} <br>
 				<b>강의 컨텐츠</b> : ${classInfo.classContent} <br>
 				<b>운영 기간</b> : ${classInfo.startDate} ~ ${classInfo.endDate} <br>
-				<b>신청 기간</b> : ${applyEndDate} <br>
+				<b>신청 마감일</b> : ${applyEndDate} <br>
 				<b>수강료</b> : <fmt:formatNumber value="${classInfo.classPrice}" type="number" maxFractionDigits="0"/>원<br>
 				<b>수업 요일</b> : ${classInfo.dayString}<br>
 			</section>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.clish.admin.service.AdminCustomerService;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
@@ -125,10 +126,10 @@ public class UserClassController {
 		}
 		
 		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classInfo", classInfo);
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("curriculumList", curriculumList);
-		model.addAttribute("applyEndDate", applyEnd);
+		model.addAttribute("classInfo", classInfo); // 클래스 정보
+		model.addAttribute("userInfo", userInfo); // 유저 정보
+		model.addAttribute("curriculumList", curriculumList); // 커리큘럼 목록
+		model.addAttribute("applyEndDate", applyEnd); // 신청 마감일
 		
 		return "/course/user/course_detail";
 	}
@@ -144,13 +145,12 @@ public class UserClassController {
 		String userId = (String)session.getAttribute("sId");
 		UserDTO userInfo = userService.selectUserId(userId); // user 정보
 		ClassDTO classInfo = companyClassService.getClassInfo(classIdx); // class 정보
+		LocalDate start = classInfo.getStartDate(); // LocalDate 타입일 경우
+		LocalDate applyEnd = start.minusDays(1);
 		
 		int total = classInfo.getClassMember(); // 전체 강의 예약 인원 
 	    int reservationMembers = userClassService.selectReservationMembers(classInfo.getClassIdx()); // 현재 예약 인원 
 	    int availableMembers = total - reservationMembers; // 예약 가능 인원
-		
-	    // 세션 객체에 예약 가능 인원 정보 설정
-	    session.setAttribute("availableMembers", availableMembers);
 	    
 		// 비회원이라면 로그인 페이지로 이동
 		if(userId == null) {
@@ -179,35 +179,25 @@ public class UserClassController {
 		}
 		
 		// model 객체에 담아서 뷰 페이지로 이동
-		model.addAttribute("classInfo", classInfo);
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("curriculumList", curriculumList);
+		model.addAttribute("classInfo", classInfo); // 클래스 정보
+		model.addAttribute("userInfo", userInfo); // 유저 정보
+		model.addAttribute("curriculumList", curriculumList); // 커리큘럼 목록
+		model.addAttribute("availableMembers", availableMembers); // 예약 가능 인원
+		model.addAttribute("applyEndDate", applyEnd); // 신청 마감일
 		
 		return "/course/user/course_reservation";
 	}
-	
-	// 예약 인원 조회 API
-//	@GetMapping("/course/user/getAvailablePeople")
-//	@ResponseBody
-//	public int getAvailablePeople(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, ClassDTO classDTO) {
-//	    // 예시: DB에서 해당 날짜의 예약 가능 인원을 조회
-//	    int totalSeats = classDTO.getClassMember();
-//	    int reserved = reservationService.getReservedCountByDate(date);  // 예약된 수 조회
-//	    return totalSeats - reserved;
-//	}
 	
 	// 예약 정보 INSERT 및 myPage 이동
 	@GetMapping("/user/reservationInfo")
 	public String classReservationSuccess(Model model, HttpSession session, ReservationDTO reservationDTO, ClassDTO classDTO,
 			@RequestParam("reservationClassDateRe")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-			@RequestParam("reservationMembers")int reservationMembers) {
+			@RequestParam("reservationMembers")int reservationMembers,
+			@RequestParam("availableMembers") int availableMembers) {
 		
 		classDTO = companyClassService.getClassInfo(classDTO.getClassIdx()); // class 정보
 	    LocalDate startDate = classDTO.getStartDate(); // 클래스 시작일
 	    LocalDate endDate   = classDTO.getEndDate(); // 클래스 마감일
-
-	    int total = classDTO.getClassMember(); // 전체 강의 예약 인원 
-	    int reservMembers = userClassService.selectReservationMembers(classDTO.getClassIdx()); // 현재 예약 인원 
 	    
 	    // 신청 가능 날짜인지 검사 
 	    if (date.isBefore(startDate) || date.isAfter(endDate)) {
@@ -216,11 +206,13 @@ public class UserClassController {
 	    }
 	    
 	    // 예약 가능한지 검사
-	    if(total <= reservMembers) {
+	    if(availableMembers < reservationMembers) {
 	    	model.addAttribute("msg", "예약인원이 가득차서 예약할 수 없습니다.");
 	    	return "/commons/fail";
-	    } else if(reservationMembers <= 0 || reservationMembers > total) {
-	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력하시거나 너무 많은 인원을 입력하셨습니다.");
+	    } 
+	    
+	    if(reservationMembers <= 0) {
+	    	model.addAttribute("msg", "한 명 이상의 예약 인원을 입력해주세요.");
 	    	return "/commons/fail";
 	    }
 	    

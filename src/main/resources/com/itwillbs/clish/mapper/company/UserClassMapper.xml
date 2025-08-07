@@ -111,7 +111,7 @@
 	<!-- 클래스상세페이지 리뷰 카운트 SELECT -->
 	<select id="selectCountClassReview" resultType="int"> 
 		SELECT 
-			count(*)
+			COUNT(*)
 		FROM 
 			REVIEW
 		WHERE 
@@ -172,6 +172,16 @@
 			idx = #{reviewIdx}
 	</select>
 	
+<!-- 	<select id="countByDate" resultType="int"> -->
+<!-- 	    SELECT  -->
+<!-- 	    	SUM(reservation_members)  -->
+<!-- 	    FROM  -->
+<!-- 	    	RESERVATION -->
+<!-- 		WHERE  -->
+<!-- 			DATE(reservation_class_date) like concat('%', #{date} ,'%') -->
+<!-- 		AND  -->
+<!-- 			class_idx = #{classIdx} -->
+<!-- 	</select> -->
 
 </mapper>
 

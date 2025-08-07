@@ -333,5 +333,12 @@ ul.tabnav li a:hover {
   border-radius: 10px;
 }
 
+.filter-search-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 
 
