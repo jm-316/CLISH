@@ -216,7 +216,10 @@
 				<c:forEach var="payment" items="${paymentList }" >
 		        	<tr>
 		        		<td>${payment.impUid }</td>
-		        		<td>${payment.status }</td>
+		        		<td>
+		        			<c:if test="${payment.status  eq 'cancelled'}">취소완료 </c:if>
+		        			<c:if test="${payment.status  eq 'paid'}">결제완료 </c:if>
+		        		</td>
 						<td>${payment.userName}</td>
 						<td>${payment.classTitle}</td>
 <%-- 						<td>${payment.reservationClassDate }</td> --%>
@@ -230,8 +233,10 @@
 									pattern="yyyy-MM-dd HH:mm"
 									type="both" />
 						<td><fmt:formatDate value="${payTimeFormatted}" pattern="yy-MM-dd HH:mm"/></td>
-						<td><input type="button" value="결제취소" data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" 
-							<c:if test="${payment.status eq 'cancelled' }"> disabled </c:if>></td>
+						<td>
+						<fmt:formatDate value="${reservationClassDate}" pattern="yyyy-MM-dd" var="reservationClassDateStr" />
+						<input type="button" value="결제취소" data-imp-num="${payment.impUid}" onclick="cancelPayment(this)" 
+							<c:if test="${payment.status eq 'cancelled' or reservationClassDateStr <= today }"> disabled </c:if>></td>
 						<td><input type="button" value="상세보기" data-imp-num="${payment.impUid}" data-status="${payment.status }"
 	          onclick="paymentInfo(this)"> </td>
 		        	</tr>

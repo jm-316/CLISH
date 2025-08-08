@@ -3,6 +3,7 @@ package com.itwillbs.clish.myPage.controller;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -370,6 +371,7 @@ public class MyPageController {
 			
 			model.addAttribute("paymentList",paymentList);
 		}
+		model.addAttribute("today", LocalDate.now().toString());
 		model.addAttribute("user",user);
 		
 		return "/clish/myPage/myPage_payment";
@@ -448,7 +450,7 @@ public class MyPageController {
 						model.addAttribute("paymentList",paymentList);
 					}
 				}
-				
+				model.addAttribute("today", LocalDate.now().toString());
 				model.addAttribute("user",user);
 				
 				return "/clish/myPage/myPage_payment_filter";

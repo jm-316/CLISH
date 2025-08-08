@@ -148,8 +148,6 @@ public class PaymentController {
 		
 		Map<String,Object> paymentCancelClassInfo = paymentService.getCancelBefore(paymentInfoDTO);
 		
-		System.out.println(paymentCancelClassInfo);
-
 		String payTime = paymentService.convertUnixToDateTimeString((long)paymentCancelClassInfo.get("payTime")/1000L);
 		
 		model.addAttribute("paymentCancelClassInfo",paymentCancelClassInfo);
@@ -243,8 +241,8 @@ public class PaymentController {
 		//전달받은 impUid를 이용 결제 취소 정보 저장
 		paymentCancelDTO = paymentService.getCancelResult(paymentCancelDTO);
 		// 요청시간, 취소시간 스트링으로 변환
-    	String requestTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelRequestTime()/1000L);
-    	String cancelTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelledAt()/1000L);
+    	String requestTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelRequestTime());
+    	String cancelTime = paymentService.convertUnixToDateTimeString(paymentCancelDTO.getCancelledAt());
 
     	model.addAttribute("requestTime",requestTime);
     	model.addAttribute("cancelTime",cancelTime);
