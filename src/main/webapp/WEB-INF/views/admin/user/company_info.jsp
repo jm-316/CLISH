@@ -45,14 +45,10 @@
 								<td>
 									<div style="display: flex;">
 										<div>
-											/resources/upload/${comDto.bizFileName}
-											<a href="/file/${comDto.userIdx}?type=1">
+											${comDto.bizFileName}
+											<a href="/file/${comDto.bizFilePath}?type=1">
 												<input type="button" class="btn-download" value="다운로드"/>
 											</a>
-<%-- 											<a href="/usr/local/tomcat/upload/${comDto.bizFilePath}" download="${comDto.bizFileName}"> --%>
-<!-- 												<input type="button" class="btn-download" value="다운로드"/> -->
-<!-- 											</a> -->
-											<div>${company }</div>
 										</div>
 									</div>
 								</td>
