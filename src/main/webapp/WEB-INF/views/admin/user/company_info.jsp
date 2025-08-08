@@ -46,7 +46,7 @@
 									<div style="display: flex;">
 										<div>
 											${comDto.bizFileName}
-											<a href="/resources/upload/${comDto.bizFilePath}" download="${comDto.bizFileName}">
+											<a href="/file/${comDto.bizFilePath}?type=1">
 												<input type="button" class="btn-download" value="다운로드"/>
 											</a>
 										</div>
