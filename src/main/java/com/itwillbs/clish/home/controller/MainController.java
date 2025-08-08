@@ -102,8 +102,8 @@ public class MainController {
 		}
 		model.addAttribute("fileDTO", fileDTO);
 		model.addAttribute("fileDTO2", fileDTO2);
-		model.addAttribute("fileDTO3", fileDTO2);
-		model.addAttribute("fileDTO4", fileDTO2);
+		model.addAttribute("fileDTO3", fileDTO3);
+		model.addAttribute("fileDTO4", fileDTO4);
 		System.out.println("fileDto : " + model.getAttribute("fileDTO"));
 		
 //		return "home";
