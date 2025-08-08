@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.clish.admin.dto.InquiryJoinUserDTO;
 import com.itwillbs.clish.admin.dto.NotificationDTO;
 import com.itwillbs.clish.common.dto.PageInfoDTO;
+import com.itwillbs.clish.common.file.FileUtils;
 import com.itwillbs.clish.common.utils.PageUtil;
 import com.itwillbs.clish.company.service.CompanyInfoService;
 import com.itwillbs.clish.course.service.CompanyClassService;
@@ -115,17 +116,18 @@ public class CompanyInfoController {
 	        if (file != null && !file.isEmpty()) {
 	            try {
 	                String uploadDirPath = "/usr/local/tomcat/webapps/resources/upload/biz";
-	                File uploadDir = new File(uploadDirPath);
-	                if (!uploadDir.exists()) uploadDir.mkdirs();
+	                String subDir = FileUtils.createDirectories(uploadDirPath);
+//	                File uploadDir = new File(uploadDirPath);
+//	                if (!uploadDir.exists()) uploadDir.mkdirs();
 
 	                String originName = file.getOriginalFilename();
 	                String uuid = UUID.randomUUID().toString();
 	                String newFileName = uuid + "_" + originName;
-	                File dest = new File(uploadDir, newFileName);
+	                File dest = new File(uploadDirPath + "/" + subDir, newFileName);
 	                file.transferTo(dest);
 
 	                company.setBizFileName(newFileName);
-	                company.setBizFilePath("/resources/upload/biz/" + newFileName);
+	                company.setBizFilePath(subDir + newFileName);
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	                throw new RuntimeException("파일 업로드 실패");
